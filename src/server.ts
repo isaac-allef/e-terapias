@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import express from 'express';
 import routes from './routes';
+import globalExceptionHandler from './middlewares/globalExceptionHandler';
 
 const app = express();
 
@@ -11,6 +12,8 @@ app.use('/', routes);
 app.get('/', (request, response) => {
     return response.json('Hello World!');
 });
+
+app.use(globalExceptionHandler);
 
 // eslint-disable-next-line no-console
 app.listen(3333, () => console.log("🤞️ It's running..."));
