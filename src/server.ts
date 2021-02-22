@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import express from 'express';
 import eterapiasRoute from './routes/eterapias.routes';
 import fieldJournalTemplatesRoute from './routes/fieldJournalTemplates.routes';
