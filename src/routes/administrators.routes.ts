@@ -12,6 +12,9 @@ administratorsRoute.post('/', async (request, response) => {
         email,
         password,
     });
+
+    delete administrator.password;
+
     return response.json(administrator);
 });
 

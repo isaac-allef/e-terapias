@@ -1,4 +1,5 @@
 import { getRepository } from 'typeorm';
+import { hash } from 'bcryptjs';
 import Administrator from '../entities/Administrator';
 import AppError from '../errors/AppError';
 
@@ -19,9 +20,11 @@ class CreateAdministratorService {
             throw new AppError('Email address already used.');
         }
 
+        const hashedPassword = await hash(password, 9);
+
         const administrator = administratorRepository.create({
             email,
-            password,
+            password: hashedPassword,
         });
 
         await administratorRepository.save(administrator);
