@@ -1,4 +1,4 @@
-import { getRepository } from 'typeorm';
+import { EntityManager, getRepository } from 'typeorm';
 import Field from '../entities/Field';
 import FieldJournal from '../entities/FieldJournal';
 import AppError from '../errors/AppError';
@@ -10,12 +10,17 @@ interface Field_request {
 }
 
 interface Request {
+    transactionalEntityManager: EntityManager;
     fieldJournal: FieldJournal;
     fields: Field_request[];
 }
 
 class CreateFieldsService {
-    public async execute({ fieldJournal, fields }: Request): Promise<Field[]> {
+    public async execute({
+        transactionalEntityManager,
+        fieldJournal,
+        fields,
+    }: Request): Promise<Field[]> {
         const fieldRepository = getRepository(Field);
 
         const fieldArray = fields.map(field => {
@@ -45,7 +50,7 @@ class CreateFieldsService {
             throw new AppError('Field type not valide.', 500);
         });
 
-        await fieldRepository.save(fieldArray);
+        await transactionalEntityManager.save(fieldArray);
 
         return fieldArray;
     }

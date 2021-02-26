@@ -1,4 +1,4 @@
-import { getRepository } from 'typeorm';
+import { getManager, getRepository } from 'typeorm';
 import FieldJournal from '../entities/FieldJournal';
 import CreateFieldsService from './CreateFieldsService';
 
@@ -23,14 +23,16 @@ class CreateFieldJournalService {
             // eterapia: eterapia_id,
         });
 
-        await fieldJournalRepository.save(fieldJournal);
+        await getManager().transaction(async transactionalEntityManager => {
+            await transactionalEntityManager.save(fieldJournal);
 
-        const createFieldsService = new CreateFieldsService();
-        await createFieldsService.execute({
-            fieldJournal,
-            fields,
+            const createFieldsService = new CreateFieldsService();
+            await createFieldsService.execute({
+                transactionalEntityManager,
+                fieldJournal,
+                fields,
+            });
         });
-
         return fieldJournal;
     }
 }
