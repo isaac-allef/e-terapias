@@ -16,13 +16,13 @@ class Field {
     @Column()
     name: string;
 
-    @Column()
+    @Column({ nullable: true })
     string_value: string;
 
-    @Column()
+    @Column({ nullable: true })
     int_value: number;
 
-    @Column()
+    @Column({ nullable: true })
     date_value: Date;
 
     @ManyToOne(_type => FieldJournal, _fields => Field)
