@@ -1,9 +1,19 @@
 import { Router } from 'express';
+import CreateFieldJournalService from '../services/CreateFieldJournalService';
 
 const fieldJournalsRoute = Router();
 
-fieldJournalsRoute.post('/', (request, response) => {
-    return response.json({ message: 'Create' });
+fieldJournalsRoute.post('/', async (request, response) => {
+    const { title, fields } = request.body;
+
+    const createFieldJournal = new CreateFieldJournalService();
+
+    const fieldJournal = await createFieldJournal.execute({
+        title,
+        fields,
+    });
+
+    return response.json(fieldJournal);
 });
 
 fieldJournalsRoute.get('/', (request, response) => {
