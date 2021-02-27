@@ -1,9 +1,19 @@
 import { Router } from 'express';
+import CreateFieldJournalTemplateService from '../services/CreateFieldJournalTemplateService';
 
 const fieldJournalTemplatesRoute = Router();
 
-fieldJournalTemplatesRoute.post('/', (request, response) => {
-    return response.json({ message: 'Create' });
+fieldJournalTemplatesRoute.post('/', async (request, response) => {
+    const { name, description } = request.body;
+
+    const fieldJournalTemplateService = new CreateFieldJournalTemplateService();
+
+    const fieldJournalTemplate = await fieldJournalTemplateService.execute({
+        name,
+        description,
+    });
+
+    return response.json(fieldJournalTemplate);
 });
 
 fieldJournalTemplatesRoute.get('/', (request, response) => {
