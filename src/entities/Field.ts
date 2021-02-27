@@ -25,7 +25,7 @@ class Field {
     @Column({ nullable: true })
     date_value: Date;
 
-    @ManyToOne(_type => FieldJournal, _fields => Field)
+    @ManyToOne(() => FieldJournal, fieldJournal => fieldJournal.fields)
     fieldJournal: FieldJournal;
 
     @CreateDateColumn()

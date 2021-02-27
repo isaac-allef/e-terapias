@@ -19,17 +19,13 @@ class FieldJournal {
     @Column()
     title: string;
 
-    @ManyToOne(_type => Moderator, _fieldJournal => FieldJournal, {
-        eager: true,
-    })
+    @ManyToOne(_type => Moderator, _fieldJournal => FieldJournal)
     moderator: Moderator;
 
-    @ManyToOne(_type => Eterapia, _fieldJournal => FieldJournal, {
-        eager: true,
-    })
+    @ManyToOne(_type => Eterapia, _fieldJournal => FieldJournal)
     eterapia: Eterapia;
 
-    @OneToMany(_type => Field, _fieldJournal => FieldJournal, { eager: true })
+    @OneToMany(() => Field, field => field.fieldJournal, { eager: true })
     fields: Field[];
 
     @CreateDateColumn()
