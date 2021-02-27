@@ -5,7 +5,7 @@ import CreateFieldsService from './CreateFieldsService';
 interface Field_request {
     name: string;
     type: string;
-    value: string | number | Date;
+    value: string | number | Date | boolean;
 }
 
 interface Request {

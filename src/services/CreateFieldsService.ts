@@ -6,7 +6,7 @@ import AppError from '../errors/AppError';
 interface Field_request {
     name: string;
     type: string;
-    value: string | number | Date;
+    value: string | number | Date | boolean;
 }
 
 interface Request {
@@ -43,6 +43,14 @@ class CreateFieldsService {
                 return fieldRepository.create({
                     name: field.name,
                     date_value: field.value as Date,
+                    fieldJournal,
+                });
+            }
+
+            if (field.type === 'boolean') {
+                return fieldRepository.create({
+                    name: field.name,
+                    boolean_value: field.value as boolean,
                     fieldJournal,
                 });
             }
