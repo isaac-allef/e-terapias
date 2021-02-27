@@ -8,6 +8,11 @@ import {
 } from 'typeorm';
 import Eterapia from './Eterapia';
 
+interface FieldModels {
+    name: string;
+    type: string;
+}
+
 @Entity()
 class FieldJournalModel {
     @PrimaryGeneratedColumn('uuid')
@@ -16,8 +21,11 @@ class FieldJournalModel {
     @Column()
     name: string;
 
-    @Column()
-    description: string;
+    @Column({ type: 'jsonb' })
+    description: {
+        title: string;
+        fieldModels: FieldModels[];
+    };
 
     @OneToMany(_type => Eterapia, _fieldJournalModel => FieldJournalModel)
     eterapias: Eterapia[];
