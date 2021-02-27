@@ -25,6 +25,9 @@ class Field {
     @Column({ nullable: true })
     date_value: Date;
 
+    @Column({ nullable: true })
+    boolean_value: boolean;
+
     @ManyToOne(() => FieldJournal, fieldJournal => fieldJournal.fields)
     fieldJournal: FieldJournal;
 
