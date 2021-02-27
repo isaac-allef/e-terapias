@@ -1,4 +1,6 @@
 import { Router } from 'express';
+import { getRepository } from 'typeorm';
+import FieldJournal from '../entities/FieldJournal';
 import CreateFieldJournalService from '../services/CreateFieldJournalService';
 
 const fieldJournalsRoute = Router();
@@ -16,8 +18,12 @@ fieldJournalsRoute.post('/', async (request, response) => {
     return response.json(fieldJournal);
 });
 
-fieldJournalsRoute.get('/', (request, response) => {
-    return response.json({ message: 'List' });
+fieldJournalsRoute.get('/', async (request, response) => {
+    const fieldJournalRepository = getRepository(FieldJournal);
+
+    const fieldJournals = await fieldJournalRepository.find();
+
+    return response.json(fieldJournals);
 });
 
 fieldJournalsRoute.put('/', (request, response) => {
