@@ -1,6 +1,8 @@
 import { getManager, getRepository } from 'typeorm';
+import Eterapia from '../entities/Eterapia';
 import FieldJournal from '../entities/FieldJournal';
 import CreateFieldsService from './CreateFieldsService';
+import GetEterapiaByIdService from './GetEterapiaByIdService';
 
 interface Field_request {
     name: string;
@@ -11,16 +13,28 @@ interface Field_request {
 interface Request {
     title: string;
     fields: Field_request[];
+    eterapiaId: string;
 }
 
 class CreateFieldJournalService {
-    public async execute({ title, fields }: Request): Promise<FieldJournal> {
+    public async execute({
+        title,
+        fields,
+        eterapiaId,
+    }: Request): Promise<FieldJournal> {
         const fieldJournalRepository = getRepository(FieldJournal);
+        const eterapiaRepository = getRepository(Eterapia);
+
+        const getEterapiaById = new GetEterapiaByIdService();
+        const eterapia = await getEterapiaById.execute({
+            eterapiaId,
+            eterapiaRepository,
+        });
 
         const fieldJournal = fieldJournalRepository.create({
             title,
+            eterapia,
             // moderator: moderator_id,
-            // eterapia: eterapia_id,
         });
 
         await getManager().transaction(async transactionalEntityManager => {

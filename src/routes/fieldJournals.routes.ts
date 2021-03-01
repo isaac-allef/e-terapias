@@ -6,13 +6,14 @@ import CreateFieldJournalService from '../services/CreateFieldJournalService';
 const fieldJournalsRoute = Router();
 
 fieldJournalsRoute.post('/', async (request, response) => {
-    const { title, fields } = request.body;
+    const { title, fields, eterapiaId } = request.body;
 
     const createFieldJournal = new CreateFieldJournalService();
 
     const fieldJournal = await createFieldJournal.execute({
         title,
         fields,
+        eterapiaId,
     });
 
     return response.json(fieldJournal);
