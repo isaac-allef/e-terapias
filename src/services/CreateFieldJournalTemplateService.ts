@@ -1,14 +1,14 @@
 import { getRepository } from 'typeorm';
-import FieldJournalModel from '../entities/FieldJournalModel';
+import FieldJournalTemplate from '../entities/FieldJournalTemplate';
 
-interface FieldModels {
+interface FieldTemplates {
     name: string;
     type: string;
 }
 
 interface Description {
     title: string;
-    fieldModels: FieldModels[];
+    fieldTemplates: FieldTemplates[];
 }
 
 interface Request {
@@ -20,8 +20,10 @@ class CreateFieldJournalTemplateService {
     public async execute({
         name,
         description,
-    }: Request): Promise<FieldJournalModel> {
-        const fieldJournalTemplateRepository = getRepository(FieldJournalModel);
+    }: Request): Promise<FieldJournalTemplate> {
+        const fieldJournalTemplateRepository = getRepository(
+            FieldJournalTemplate,
+        );
 
         const fieldJournalTemplate = fieldJournalTemplateRepository.create({
             name,

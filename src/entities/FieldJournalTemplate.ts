@@ -8,13 +8,13 @@ import {
 } from 'typeorm';
 import Eterapia from './Eterapia';
 
-interface FieldModels {
+interface FieldTemplates {
     name: string;
     type: string;
 }
 
 @Entity()
-class FieldJournalModel {
+class FieldJournalTemplate {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
@@ -24,10 +24,10 @@ class FieldJournalModel {
     @Column({ type: 'jsonb' })
     description: {
         title: string;
-        fieldModels: FieldModels[];
+        fieldTemplates: FieldTemplates[];
     };
 
-    @OneToMany(() => Eterapia, eterapia => eterapia.fieldJournalModel)
+    @OneToMany(() => Eterapia, eterapia => eterapia.fieldJournalTemplate)
     eterapias: Eterapia[];
 
     @CreateDateColumn()
@@ -37,4 +37,4 @@ class FieldJournalModel {
     update_at: Date;
 }
 
-export default FieldJournalModel;
+export default FieldJournalTemplate;

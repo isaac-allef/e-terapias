@@ -10,7 +10,7 @@ import {
     UpdateDateColumn,
 } from 'typeorm';
 import FieldJournal from './FieldJournal';
-import FieldJournalModel from './FieldJournalModel';
+import FieldJournalTemplate from './FieldJournalTemplate';
 
 import Moderator from './Moderator';
 
@@ -26,13 +26,13 @@ class Eterapia {
     fieldJournals: FieldJournal[];
 
     @ManyToOne(
-        () => FieldJournalModel,
-        fieldJournalModel => fieldJournalModel.eterapias,
+        () => FieldJournalTemplate,
+        fieldJournalTemplate => fieldJournalTemplate.eterapias,
         {
             eager: true,
         },
     )
-    fieldJournalModel: FieldJournalModel;
+    fieldJournalTemplate: FieldJournalTemplate;
 
     @ManyToMany(_type => Moderator, _eterapias => Eterapia)
     @JoinTable()
