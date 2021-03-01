@@ -21,7 +21,7 @@ class Moderator {
     @Column()
     password: string;
 
-    @OneToMany(_type => FieldJournal, _moderator => Moderator)
+    @OneToMany(() => FieldJournal, fieldJournal => fieldJournal.moderator)
     fieldJournals: FieldJournal[];
 
     @ManyToMany(_type => Eterapia, _moderators => Moderator, { eager: true })

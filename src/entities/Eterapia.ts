@@ -22,12 +22,16 @@ class Eterapia {
     @Column()
     name: string;
 
-    @OneToMany(_type => FieldJournal, _eterapia => Eterapia)
+    @OneToMany(() => FieldJournal, fieldJournal => fieldJournal.eterapia)
     fieldJournals: FieldJournal[];
 
-    @ManyToOne(_type => FieldJournalModel, _eterapias => Eterapia, {
-        eager: true,
-    })
+    @ManyToOne(
+        () => FieldJournalModel,
+        fieldJournalModel => fieldJournalModel.eterapias,
+        {
+            eager: true,
+        },
+    )
     fieldJournalModel: FieldJournalModel;
 
     @ManyToMany(_type => Moderator, _eterapias => Eterapia)

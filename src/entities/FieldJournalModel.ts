@@ -27,7 +27,7 @@ class FieldJournalModel {
         fieldModels: FieldModels[];
     };
 
-    @OneToMany(_type => Eterapia, _fieldJournalModel => FieldJournalModel)
+    @OneToMany(() => Eterapia, eterapia => eterapia.fieldJournalModel)
     eterapias: Eterapia[];
 
     @CreateDateColumn()

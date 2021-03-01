@@ -19,10 +19,10 @@ class FieldJournal {
     @Column()
     title: string;
 
-    @ManyToOne(_type => Moderator, _fieldJournal => FieldJournal)
+    @ManyToOne(() => Moderator, moderator => moderator.fieldJournals)
     moderator: Moderator;
 
-    @ManyToOne(_type => Eterapia, _fieldJournal => FieldJournal)
+    @ManyToOne(() => Eterapia, eterapia => eterapia.fieldJournals)
     eterapia: Eterapia;
 
     @OneToMany(() => Field, field => field.fieldJournal, { eager: true })
