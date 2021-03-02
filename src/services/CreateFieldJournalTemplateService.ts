@@ -1,5 +1,6 @@
 import { getRepository } from 'typeorm';
 import FieldJournalTemplate from '../entities/FieldJournalTemplate';
+import AppError from '../errors/AppError';
 
 interface FieldTemplates {
     name: string;
@@ -21,6 +22,8 @@ class CreateFieldJournalTemplateService {
         name,
         description,
     }: Request): Promise<FieldJournalTemplate> {
+        this.validateDescription(description);
+
         const fieldJournalTemplateRepository = getRepository(
             FieldJournalTemplate,
         );
@@ -33,6 +36,41 @@ class CreateFieldJournalTemplateService {
         await fieldJournalTemplateRepository.save(fieldJournalTemplate);
 
         return fieldJournalTemplate;
+    }
+
+    private validateDescription(description: Description) {
+        const { title, fieldTemplates } = description;
+
+        if (!title) {
+            throw new AppError('Property ttitle not found.');
+        }
+
+        // eslint-disable-next-line no-plusplus
+        for (let i = 0; i < fieldTemplates.length; i++) {
+            const fieldTemplate = fieldTemplates[i];
+
+            const fieldTemplateLength = Object.keys(fieldTemplate).length;
+
+            if (fieldTemplateLength > 2) {
+                throw new AppError(
+                    'Each object in fieldTemplates must has two properties only, name and type',
+                );
+            }
+
+            // eslint-disable-next-line no-prototype-builtins
+            const hasPropertyName = fieldTemplate.hasOwnProperty('name');
+
+            if (!hasPropertyName) {
+                throw new AppError('Property name not found.');
+            }
+
+            // eslint-disable-next-line no-prototype-builtins
+            const hasPropertyType = fieldTemplate.hasOwnProperty('type');
+
+            if (!hasPropertyType) {
+                throw new AppError('Property type not found.');
+            }
+        }
     }
 }
 
