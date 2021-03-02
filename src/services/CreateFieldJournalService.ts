@@ -1,9 +1,8 @@
 import { getManager, getRepository } from 'typeorm';
-import Eterapia from '../entities/Eterapia';
 import FieldJournal from '../entities/FieldJournal';
 import Moderator from '../entities/Moderator';
+import AppError from '../errors/AppError';
 import CreateFieldsService from './CreateFieldsService';
-import GetEterapiaByIdService from './GetEterapiaByIdService';
 import GetModeratorByIdService from './GetModeratorByIdService';
 
 interface Field_request {
@@ -27,20 +26,19 @@ class CreateFieldJournalService {
         moderatorId,
     }: Request): Promise<FieldJournal> {
         const fieldJournalRepository = getRepository(FieldJournal);
-        const eterapiaRepository = getRepository(Eterapia);
         const moderatorRepository = getRepository(Moderator);
-
-        const getEterapiaById = new GetEterapiaByIdService();
-        const eterapia = await getEterapiaById.execute({
-            eterapiaId,
-            eterapiaRepository,
-        });
 
         const getModeratorById = new GetModeratorByIdService();
         const moderator = await getModeratorById.execute({
             moderatorId,
             moderatorRepository,
         });
+
+        const eterapia = moderator.eterapias.find(ete => ete.id === eterapiaId);
+
+        if (!eterapia) {
+            throw new AppError('Eterapia not found in this relationship.');
+        }
 
         const fieldJournal = fieldJournalRepository.create({
             title,
