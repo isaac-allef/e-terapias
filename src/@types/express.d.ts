@@ -3,5 +3,8 @@ declare namespace Express {
         administrator: {
             id: string;
         };
+        moderator: {
+            id: string;
+        };
     }
 }

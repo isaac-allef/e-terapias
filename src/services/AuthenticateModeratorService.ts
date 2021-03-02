@@ -34,7 +34,7 @@ class AuthenticateModeratorService {
             throw new AppError('Incorrect email/password combination', 401);
         }
 
-        const { secret, expiresIn } = authConfig.jwt;
+        const { secret, expiresIn } = authConfig.jwtModerator;
 
         const token = sign({}, secret, {
             subject: moderator.id,
