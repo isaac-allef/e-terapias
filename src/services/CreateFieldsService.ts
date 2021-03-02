@@ -2,6 +2,7 @@ import { EntityManager, getRepository } from 'typeorm';
 import Field from '../entities/Field';
 import FieldJournal from '../entities/FieldJournal';
 import AppError from '../errors/AppError';
+import FieldsMatchWithFieldsTemplateService from './FieldsMatchWithFieldTemplatesService';
 
 interface Field_request {
     name: string;
@@ -22,6 +23,22 @@ class CreateFieldsService {
         fields,
     }: Request): Promise<Field[]> {
         const fieldRepository = getRepository(Field);
+
+        const {
+            fieldTemplates,
+        } = fieldJournal.eterapia.fieldJournalTemplate.description;
+
+        const fieldsMatchWithFieldsTemplate = new FieldsMatchWithFieldsTemplateService();
+        const matching = await fieldsMatchWithFieldsTemplate.execute({
+            fields,
+            fieldTemplates,
+        });
+
+        if (!matching) {
+            throw new AppError(
+                'No matching between fields and field templates',
+            );
+        }
 
         const fieldArray = fields.map(field => {
             if (field.type === 'string') {
