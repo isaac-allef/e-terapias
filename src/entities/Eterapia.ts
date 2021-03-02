@@ -34,7 +34,7 @@ class Eterapia {
     )
     fieldJournalTemplate: FieldJournalTemplate;
 
-    @ManyToMany(_type => Moderator, _eterapias => Eterapia)
+    @ManyToMany(() => Moderator, moderator => moderator.eterapias)
     @JoinTable()
     moderators: Moderator[];
 

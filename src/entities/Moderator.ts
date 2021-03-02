@@ -24,7 +24,9 @@ class Moderator {
     @OneToMany(() => FieldJournal, fieldJournal => fieldJournal.moderator)
     fieldJournals: FieldJournal[];
 
-    @ManyToMany(_type => Eterapia, _moderators => Moderator, { eager: true })
+    @ManyToMany(() => Eterapia, eterapia => eterapia.moderators, {
+        eager: true,
+    })
     eterapias: Eterapia[];
 
     @CreateDateColumn()
