@@ -1,9 +1,21 @@
 import { Router } from 'express';
+import CreateModeratorService from '../services/CreateModeratorService';
 
 const moderatorsRoute = Router();
 
-moderatorsRoute.post('/', (request, response) => {
-    return response.json({ message: 'Create' });
+moderatorsRoute.post('/', async (request, response) => {
+    const { email, password } = request.body;
+
+    const createModerator = new CreateModeratorService();
+
+    const moderator = await createModerator.execute({
+        email,
+        password,
+    });
+
+    delete moderator.password;
+
+    return response.json(moderator);
 });
 
 moderatorsRoute.get('/', (request, response) => {
