@@ -1,5 +1,10 @@
 import { Router } from 'express';
+import { getRepository } from 'typeorm';
+import Eterapia from '../entities/Eterapia';
+import Moderator from '../entities/Moderator';
 import CreateModeratorService from '../services/CreateModeratorService';
+import GetEterapiaByIdService from '../services/GetEterapiaByIdService';
+import GetModeratorByIdService from '../services/GetModeratorByIdService';
 
 const moderatorsRoute = Router();
 
@@ -22,8 +27,32 @@ moderatorsRoute.get('/', (request, response) => {
     return response.json({ message: 'List' });
 });
 
-moderatorsRoute.put('/', (request, response) => {
-    return response.json({ message: 'Update' });
+moderatorsRoute.put('/:id', async (request, response) => {
+    const { id } = request.params;
+
+    const { eterapiaId } = request.body;
+
+    const moderatorRepository = getRepository(Moderator);
+
+    const getModeratorById = new GetModeratorByIdService();
+    const moderator = await getModeratorById.execute({
+        moderatorId: id,
+        moderatorRepository,
+    });
+
+    const eterapiaRepository = getRepository(Eterapia);
+
+    const getEterapiaById = new GetEterapiaByIdService();
+    const eterapia = await getEterapiaById.execute({
+        eterapiaId,
+        eterapiaRepository,
+    });
+
+    moderator.eterapias.push(eterapia);
+
+    moderatorRepository.save(moderator);
+
+    return response.json(moderator);
 });
 
 moderatorsRoute.delete('/', (request, response) => {
