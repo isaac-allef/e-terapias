@@ -6,12 +6,12 @@
     "password": "1234",
     "database": "e-terapias",
     "entities": [
-        "./src/entities/*.ts"
+        "./src/typeorm/entities/*.ts"
     ],
     "migrations": [
-        "./src/database/migrations/*.ts"
+        "./src/typeorm/migrations/*.ts"
     ],
     "cli": {
-        "migrationsDir": "./src/database/migrations"
+        "migrationsDir": "./src/typeorm/migrations"
     }
 }

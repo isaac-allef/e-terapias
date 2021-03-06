@@ -1,5 +1,5 @@
 import { Repository } from 'typeorm';
-import Moderator from '../entities/Moderator';
+import Moderator from '../typeorm/entities/Moderator';
 import AppError from '../errors/AppError';
 
 interface Request {

@@ -6,6 +6,8 @@ import {
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
+
+import IFieldJournalTemplate from '../../models/IFieldJournalTemplate';
 import Eterapia from './Eterapia';
 
 interface FieldTemplates {
@@ -14,7 +16,7 @@ interface FieldTemplates {
 }
 
 @Entity()
-class FieldJournalTemplate {
+class FieldJournalTemplate implements IFieldJournalTemplate {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 

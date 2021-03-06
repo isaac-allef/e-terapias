@@ -1,22 +1,10 @@
 import { Router } from 'express';
-import CreateAdministratorService from '../services/CreateAdministratorService';
+import AdministratorController from '../controllers/AdministratorController';
 
 const administratorsRoute = Router();
+const administratorController = new AdministratorController();
 
-administratorsRoute.post('/', async (request, response) => {
-    const { email, password } = request.body;
-
-    const createAdministrator = new CreateAdministratorService();
-
-    const administrator = await createAdministrator.execute({
-        email,
-        password,
-    });
-
-    delete administrator.password;
-
-    return response.json(administrator);
-});
+administratorsRoute.post('/', administratorController.create);
 
 administratorsRoute.get('/', (request, response) => {
     return response.json({ message: 'List' });

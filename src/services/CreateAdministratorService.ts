@@ -1,7 +1,7 @@
-import { getRepository } from 'typeorm';
 import { hash } from 'bcryptjs';
-import Administrator from '../entities/Administrator';
+import Administrator from '../typeorm/entities/Administrator';
 import AppError from '../errors/AppError';
+import AdministratorRepository from '../typeorm/repositories/AdministratorRepository';
 
 interface Request {
     email: string;
@@ -9,12 +9,12 @@ interface Request {
 }
 
 class CreateAdministratorService {
-    public async execute({ email, password }: Request): Promise<Administrator> {
-        const administratorRepository = getRepository(Administrator);
+    constructor(private administratorRepository: AdministratorRepository) {}
 
-        const checkAdministratorExists = await administratorRepository.findOne({
-            where: { email },
-        });
+    public async execute({ email, password }: Request): Promise<Administrator> {
+        const checkAdministratorExists = await this.administratorRepository.findByEmail(
+            email,
+        );
 
         if (checkAdministratorExists) {
             throw new AppError('Email address already used.');
@@ -22,12 +22,10 @@ class CreateAdministratorService {
 
         const hashedPassword = await hash(password, 9);
 
-        const administrator = administratorRepository.create({
+        const administrator = await this.administratorRepository.create({
             email,
             password: hashedPassword,
         });
-
-        await administratorRepository.save(administrator);
 
         return administrator;
     }

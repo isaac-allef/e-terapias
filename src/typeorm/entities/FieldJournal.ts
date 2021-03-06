@@ -7,12 +7,14 @@ import {
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
+
+import IFieldJournal from '../../models/IFieldJournal';
 import Eterapia from './Eterapia';
 import Field from './Field';
 import Moderator from './Moderator';
 
 @Entity()
-class FieldJournal {
+class FieldJournal implements IFieldJournal {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 

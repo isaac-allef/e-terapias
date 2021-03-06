@@ -1,10 +1,10 @@
 import { compare } from 'bcryptjs';
-import { getRepository } from 'typeorm';
 import { sign } from 'jsonwebtoken';
 import authConfig from '../config/auth';
 
 import AppError from '../errors/AppError';
-import Moderator from '../entities/Moderator';
+import Moderator from '../typeorm/entities/Moderator';
+import ModeratorRepository from '../typeorm/repositories/ModeratorRepository';
 
 interface Request {
     email: string;
@@ -17,12 +17,10 @@ interface Response {
 }
 
 class AuthenticateModeratorService {
-    public async execute({ email, password }: Request): Promise<Response> {
-        const moderatorRepository = getRepository(Moderator);
+    constructor(private moderatorRepository: ModeratorRepository) {}
 
-        const moderator = await moderatorRepository.findOne({
-            where: { email },
-        });
+    public async execute({ email, password }: Request): Promise<Response> {
+        const moderator = await this.moderatorRepository.findByEmail(email);
 
         if (!moderator) {
             throw new AppError('Incorrect email/password combination', 401);

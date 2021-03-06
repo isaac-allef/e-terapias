@@ -1,7 +1,7 @@
-import { getRepository } from 'typeorm';
 import { hash } from 'bcryptjs';
 import AppError from '../errors/AppError';
-import Moderator from '../entities/Moderator';
+import Moderator from '../typeorm/entities/Moderator';
+import ModeratorRepository from '../typeorm/repositories/ModeratorRepository';
 
 interface Request {
     email: string;
@@ -9,12 +9,12 @@ interface Request {
 }
 
 class CreateModeratorService {
-    public async execute({ email, password }: Request): Promise<Moderator> {
-        const moderatorRepository = getRepository(Moderator);
+    constructor(private moderatorRepository: ModeratorRepository) {}
 
-        const checkModeratorExists = await moderatorRepository.findOne({
-            where: { email },
-        });
+    public async execute({ email, password }: Request): Promise<Moderator> {
+        const checkModeratorExists = await this.moderatorRepository.findByEmail(
+            email,
+        );
 
         if (checkModeratorExists) {
             throw new AppError('Email address already used.');
@@ -22,12 +22,10 @@ class CreateModeratorService {
 
         const hashedPassword = await hash(password, 9);
 
-        const moderator = moderatorRepository.create({
+        const moderator = await this.moderatorRepository.create({
             email,
             password: hashedPassword,
         });
-
-        await moderatorRepository.save(moderator);
 
         return moderator;
     }

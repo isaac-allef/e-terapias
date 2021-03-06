@@ -6,10 +6,12 @@ import {
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
+
+import IField from '../../models/IField';
 import FieldJournal from './FieldJournal';
 
 @Entity()
-class Field {
+class Field implements IField {
     @PrimaryGeneratedColumn('increment')
     id: number;
 

@@ -1,5 +1,5 @@
 import { Repository } from 'typeorm';
-import FieldJournalTemplate from '../entities/FieldJournalTemplate';
+import FieldJournalTemplate from '../typeorm/entities/FieldJournalTemplate';
 import AppError from '../errors/AppError';
 
 interface Request {

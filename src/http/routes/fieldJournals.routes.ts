@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { getRepository } from 'typeorm';
-import FieldJournal from '../entities/FieldJournal';
-import CreateFieldJournalService from '../services/CreateFieldJournalService';
+import FieldJournal from '../../typeorm/entities/FieldJournal';
+import CreateFieldJournalService from '../../services/CreateFieldJournalService';
 
 const fieldJournalsRoute = Router();
 

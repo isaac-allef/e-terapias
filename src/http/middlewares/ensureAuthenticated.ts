@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import { verify } from 'jsonwebtoken';
 
-import authConfig from '../config/auth';
-import AppError from '../errors/AppError';
+import authConfig from '../../config/auth';
+import AppError from '../../errors/AppError';
 
 interface TokenPayload {
     iat: number;
@@ -10,7 +10,7 @@ interface TokenPayload {
     sub: string;
 }
 
-export default function ensureAuthenticatedModerator(
+export default function ensureAuthenticated(
     request: Request,
     response: Response,
     next: NextFunction,
@@ -24,11 +24,11 @@ export default function ensureAuthenticatedModerator(
     const [, token] = authHeader.split(' ');
 
     try {
-        const decoded = verify(token, authConfig.jwtModerator.secret);
+        const decoded = verify(token, authConfig.jwt.secret);
 
         const { sub } = decoded as TokenPayload;
 
-        request.moderator = {
+        request.administrator = {
             id: sub,
         };
 

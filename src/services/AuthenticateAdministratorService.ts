@@ -1,10 +1,10 @@
 import { compare } from 'bcryptjs';
-import { getRepository } from 'typeorm';
 import { sign } from 'jsonwebtoken';
 import authConfig from '../config/auth';
 
 import AppError from '../errors/AppError';
-import Administrator from '../entities/Administrator';
+import Administrator from '../typeorm/entities/Administrator';
+import AdministratorRepository from '../typeorm/repositories/AdministratorRepository';
 
 interface Request {
     email: string;
@@ -17,12 +17,12 @@ interface Response {
 }
 
 class AuthenticateAdministratorService {
-    public async execute({ email, password }: Request): Promise<Response> {
-        const administratorRepository = getRepository(Administrator);
+    constructor(private administratorRepository: AdministratorRepository) {}
 
-        const administrator = await administratorRepository.findOne({
-            where: { email },
-        });
+    public async execute({ email, password }: Request): Promise<Response> {
+        const administrator = await this.administratorRepository.findByEmail(
+            email,
+        );
 
         if (!administrator) {
             throw new AppError('Incorrect email/password combination', 401);

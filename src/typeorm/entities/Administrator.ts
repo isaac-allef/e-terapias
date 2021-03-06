@@ -6,8 +6,10 @@ import {
     UpdateDateColumn,
 } from 'typeorm';
 
+import IAdministrator from '../../models/IAdministrator';
+
 @Entity()
-class Administrator {
+class Administrator implements IAdministrator {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 

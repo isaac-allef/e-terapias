@@ -1,6 +1,6 @@
 import { EntityManager, getRepository } from 'typeorm';
-import Field from '../entities/Field';
-import FieldJournal from '../entities/FieldJournal';
+import Field from '../typeorm/entities/Field';
+import FieldJournal from '../typeorm/entities/FieldJournal';
 import AppError from '../errors/AppError';
 import FieldsMatchWithFieldsTemplateService from './FieldsMatchWithFieldTemplatesService';
 

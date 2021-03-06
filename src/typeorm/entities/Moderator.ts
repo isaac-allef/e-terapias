@@ -7,11 +7,13 @@ import {
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
+
+import IModerator from '../../models/IModerator';
 import Eterapia from './Eterapia';
 import FieldJournal from './FieldJournal';
 
 @Entity()
-class Moderator {
+class Moderator implements IModerator {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 

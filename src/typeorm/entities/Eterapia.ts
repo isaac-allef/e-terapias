@@ -9,13 +9,15 @@ import {
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
+
+import IEterapia from '../../models/IEterapia';
 import FieldJournal from './FieldJournal';
 import FieldJournalTemplate from './FieldJournalTemplate';
 
 import Moderator from './Moderator';
 
 @Entity()
-class Eterapia {
+class Eterapia implements IEterapia {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 

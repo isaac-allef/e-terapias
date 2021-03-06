@@ -4,7 +4,7 @@ import 'express-async-errors';
 import routes from './routes';
 import globalExceptionHandler from './middlewares/globalExceptionHandler';
 
-import './database';
+import '../typeorm/index';
 
 const app = express();
 

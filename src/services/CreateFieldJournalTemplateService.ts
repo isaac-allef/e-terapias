@@ -1,6 +1,6 @@
-import { getRepository } from 'typeorm';
-import FieldJournalTemplate from '../entities/FieldJournalTemplate';
+import FieldJournalTemplate from '../typeorm/entities/FieldJournalTemplate';
 import AppError from '../errors/AppError';
+import FieldJournalTemplateRepository from '../typeorm/repositories/FieldJournalTemplateRepository';
 
 interface FieldTemplates {
     name: string;
@@ -18,22 +18,22 @@ interface Request {
 }
 
 class CreateFieldJournalTemplateService {
+    constructor(
+        private fieldJournalTemplateRepository: FieldJournalTemplateRepository,
+    ) {}
+
     public async execute({
         name,
         description,
     }: Request): Promise<FieldJournalTemplate> {
         this.validateDescription(description);
 
-        const fieldJournalTemplateRepository = getRepository(
-            FieldJournalTemplate,
+        const fieldJournalTemplate = await this.fieldJournalTemplateRepository.create(
+            {
+                name,
+                description,
+            },
         );
-
-        const fieldJournalTemplate = fieldJournalTemplateRepository.create({
-            name,
-            description,
-        });
-
-        await fieldJournalTemplateRepository.save(fieldJournalTemplate);
 
         return fieldJournalTemplate;
     }

@@ -1,5 +1,5 @@
 import { Repository } from 'typeorm';
-import Eterapia from '../entities/Eterapia';
+import Eterapia from '../typeorm/entities/Eterapia';
 import AppError from '../errors/AppError';
 
 interface Request {

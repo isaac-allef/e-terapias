@@ -1,6 +1,6 @@
 import { getManager, getRepository } from 'typeorm';
-import FieldJournal from '../entities/FieldJournal';
-import Moderator from '../entities/Moderator';
+import FieldJournal from '../typeorm/entities/FieldJournal';
+import Moderator from '../typeorm/entities/Moderator';
 import AppError from '../errors/AppError';
 import CreateFieldsService from './CreateFieldsService';
 import GetModeratorByIdService from './GetModeratorByIdService';
