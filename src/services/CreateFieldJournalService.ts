@@ -1,9 +1,10 @@
-import { getManager, getRepository } from 'typeorm';
+import { getManager } from 'typeorm';
 import FieldJournal from '../typeorm/entities/FieldJournal';
-import Moderator from '../typeorm/entities/Moderator';
 import AppError from '../errors/AppError';
-import CreateFieldsService from './CreateFieldsService';
-import GetModeratorByIdService from './GetModeratorByIdService';
+import AddFieldsService from './AddFieldsService';
+import FieldJournalRepository from '../typeorm/repositories/FieldJournalRepository';
+import ModeratorRepository from '../typeorm/repositories/ModeratorRepository';
+import FieldRepository from '../typeorm/repositories/FieldRepository';
 
 interface Field_request {
     name: string;
@@ -19,20 +20,23 @@ interface Request {
 }
 
 class CreateFieldJournalService {
+    constructor(
+        private fieldJournalRepository: FieldJournalRepository,
+        private fieldRepository: FieldRepository,
+        private moderatorRepository: ModeratorRepository,
+    ) {}
+
     public async execute({
         title,
         fields,
         eterapiaId,
         moderatorId,
     }: Request): Promise<FieldJournal> {
-        const fieldJournalRepository = getRepository(FieldJournal);
-        const moderatorRepository = getRepository(Moderator);
+        const moderator = await this.moderatorRepository.findById(moderatorId);
 
-        const getModeratorById = new GetModeratorByIdService();
-        const moderator = await getModeratorById.execute({
-            moderatorId,
-            moderatorRepository,
-        });
+        if (!moderator) {
+            throw new AppError('Moderator not found.');
+        }
 
         const eterapia = moderator.eterapias.find(ete => ete.id === eterapiaId);
 
@@ -40,22 +44,25 @@ class CreateFieldJournalService {
             throw new AppError('Eterapia not found in this relationship.');
         }
 
-        const fieldJournal = fieldJournalRepository.create({
+        const fieldJournal = this.fieldJournalRepository.createWithoutSave({
             title,
             eterapia,
             moderator,
         });
+        // await this.fieldJournalRepository.save(fieldJournal);
+
+        const createFieldsService = new AddFieldsService(this.fieldRepository);
+        const fieldArray = await createFieldsService.execute({
+            fieldJournal,
+            fields,
+        });
+        // this.fieldRepository.saveArray(fieldArray);
 
         await getManager().transaction(async transactionalEntityManager => {
             await transactionalEntityManager.save(fieldJournal);
-
-            const createFieldsService = new CreateFieldsService();
-            await createFieldsService.execute({
-                transactionalEntityManager,
-                fieldJournal,
-                fields,
-            });
+            await transactionalEntityManager.save(fieldArray);
         });
+
         return fieldJournal;
     }
 }

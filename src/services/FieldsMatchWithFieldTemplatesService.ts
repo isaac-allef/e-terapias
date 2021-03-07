@@ -15,10 +15,7 @@ interface Request {
 }
 
 class FieldsMatchWithFieldTemplatesService {
-    public async execute({
-        fields,
-        fieldTemplates,
-    }: Request): Promise<boolean> {
+    public execute({ fields, fieldTemplates }: Request): boolean {
         if (fields.length !== fieldTemplates.length) {
             return false;
         }

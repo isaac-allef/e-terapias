@@ -1,32 +1,13 @@
 import { Router } from 'express';
-import { getRepository } from 'typeorm';
-import FieldJournal from '../../typeorm/entities/FieldJournal';
-import CreateFieldJournalService from '../../services/CreateFieldJournalService';
+import FieldJournalController from '../controllers/FieldJournalController';
+
+const fieldJournalController = new FieldJournalController();
 
 const fieldJournalsRoute = Router();
 
-fieldJournalsRoute.post('/', async (request, response) => {
-    const { title, fields, eterapiaId, moderatorId } = request.body;
+fieldJournalsRoute.post('/', fieldJournalController.create);
 
-    const createFieldJournal = new CreateFieldJournalService();
-
-    const fieldJournal = await createFieldJournal.execute({
-        title,
-        fields,
-        eterapiaId,
-        moderatorId,
-    });
-
-    return response.json(fieldJournal);
-});
-
-fieldJournalsRoute.get('/', async (request, response) => {
-    const fieldJournalRepository = getRepository(FieldJournal);
-
-    const fieldJournals = await fieldJournalRepository.find();
-
-    return response.json(fieldJournals);
-});
+fieldJournalsRoute.get('/', fieldJournalController.list);
 
 fieldJournalsRoute.put('/', (request, response) => {
     return response.json({ message: 'Update' });
