@@ -4,11 +4,11 @@
 //     value: string | number | Date | boolean;
 // }
 
-import FieldJournal from '../typeorm/entities/FieldJournal';
+import IFieldJournal from '../models/IFieldJournal';
 
 interface ICreateField {
     name: string;
-    fieldJournal: FieldJournal;
+    fieldJournal: IFieldJournal;
     string_value?: string;
     int_value?: number;
     date_value?: Date;

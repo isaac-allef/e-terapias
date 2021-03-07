@@ -14,6 +14,10 @@ interface IField {
     boolean_value: boolean;
 
     fieldJournal: FieldJournal;
+
+    created_at: Date;
+
+    update_at: Date;
 }
 
 export default IField;

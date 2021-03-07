@@ -12,6 +12,10 @@ interface IFieldJournal {
     eterapia: Eterapia;
 
     fields: Field[];
+
+    created_at: Date;
+
+    update_at: Date;
 }
 
 export default IFieldJournal;

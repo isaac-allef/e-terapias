@@ -1,8 +1,8 @@
-import Field from '../typeorm/entities/Field';
-import FieldJournal from '../typeorm/entities/FieldJournal';
 import AppError from '../errors/AppError';
 import FieldsMatchWithFieldsTemplateService from './FieldsMatchWithFieldTemplatesService';
-import FieldRepository from '../typeorm/repositories/FieldRepository';
+import IFieldRepository from '../repositories/IFieldRepository';
+import IFieldJournal from '../models/IFieldJournal';
+import IField from '../models/IField';
 
 interface Field_request {
     name: string;
@@ -11,14 +11,14 @@ interface Field_request {
 }
 
 interface Request {
-    fieldJournal: FieldJournal;
+    fieldJournal: IFieldJournal;
     fields: Field_request[];
 }
 
 class AddFieldsService {
-    constructor(private fieldRepository: FieldRepository) {}
+    constructor(private fieldRepository: IFieldRepository) {}
 
-    public async execute({ fieldJournal, fields }: Request): Promise<Field[]> {
+    public async execute({ fieldJournal, fields }: Request): Promise<IField[]> {
         const {
             fieldTemplates,
         } = fieldJournal.eterapia.fieldJournalTemplate.description;

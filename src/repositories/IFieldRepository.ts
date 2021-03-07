@@ -1,7 +1,7 @@
 import ICreateField from '../dtos/ICreateField';
-import Field from '../typeorm/entities/Field';
+import IField from '../models/IField';
 
 export default interface IFieldRepository {
-    createWithoutSave(data: ICreateField): Field;
-    saveArray(field: Field[]): Promise<void>;
+    createWithoutSave(data: ICreateField): IField;
+    saveArray(field: IField[]): Promise<void>;
 }

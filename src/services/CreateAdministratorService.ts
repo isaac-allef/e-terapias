@@ -1,7 +1,7 @@
 import { hash } from 'bcryptjs';
-import Administrator from '../typeorm/entities/Administrator';
 import AppError from '../errors/AppError';
-import AdministratorRepository from '../typeorm/repositories/AdministratorRepository';
+import IAdministrator from '../models/IAdministrator';
+import IAdministratorRepository from '../repositories/IAdministratorRepository';
 
 interface Request {
     email: string;
@@ -9,9 +9,12 @@ interface Request {
 }
 
 class CreateAdministratorService {
-    constructor(private administratorRepository: AdministratorRepository) {}
+    constructor(private administratorRepository: IAdministratorRepository) {}
 
-    public async execute({ email, password }: Request): Promise<Administrator> {
+    public async execute({
+        email,
+        password,
+    }: Request): Promise<IAdministrator> {
         const checkAdministratorExists = await this.administratorRepository.findByEmail(
             email,
         );

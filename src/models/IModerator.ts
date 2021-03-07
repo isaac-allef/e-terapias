@@ -11,6 +11,10 @@ interface IModerator {
     fieldJournals: FieldJournal[];
 
     eterapias: Eterapia[];
+
+    created_at: Date;
+
+    update_at: Date;
 }
 
 export default IModerator;

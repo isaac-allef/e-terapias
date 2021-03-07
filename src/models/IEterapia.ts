@@ -3,7 +3,7 @@ import FieldJournalTemplate from './IFieldJournalTemplate';
 
 import Moderator from './IModerator';
 
-interface EterapiaModel {
+interface IEterapia {
     id: string;
 
     name: string;
@@ -15,4 +15,4 @@ interface EterapiaModel {
     moderators: Moderator[];
 }
 
-export default EterapiaModel;
+export default IEterapia;

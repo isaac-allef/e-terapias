@@ -1,12 +1,13 @@
-import Eterapia from '../typeorm/entities/Eterapia';
-import Moderator from '../typeorm/entities/Moderator';
 // import ICreateField from './ICreateField';
+
+import IEterapia from '../models/IEterapia';
+import IModerator from '../models/IModerator';
 
 interface ICreateFieldJournal {
     title: string;
     // fields: ICreateField[];
-    eterapia: Eterapia;
-    moderator: Moderator;
+    eterapia: IEterapia;
+    moderator: IModerator;
 }
 
 export default ICreateFieldJournal;

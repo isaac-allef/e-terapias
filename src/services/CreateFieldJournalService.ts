@@ -1,10 +1,10 @@
 import { getManager } from 'typeorm';
-import FieldJournal from '../typeorm/entities/FieldJournal';
 import AppError from '../errors/AppError';
+import IFieldJournal from '../models/IFieldJournal';
+import IFieldJournalRepository from '../repositories/IFieldJournalRepository';
+import IFieldRepository from '../repositories/IFieldRepository';
+import IModeratorRepository from '../repositories/IModeratorRepository';
 import AddFieldsService from './AddFieldsService';
-import FieldJournalRepository from '../typeorm/repositories/FieldJournalRepository';
-import ModeratorRepository from '../typeorm/repositories/ModeratorRepository';
-import FieldRepository from '../typeorm/repositories/FieldRepository';
 
 interface Field_request {
     name: string;
@@ -21,9 +21,9 @@ interface Request {
 
 class CreateFieldJournalService {
     constructor(
-        private fieldJournalRepository: FieldJournalRepository,
-        private fieldRepository: FieldRepository,
-        private moderatorRepository: ModeratorRepository,
+        private fieldJournalRepository: IFieldJournalRepository,
+        private fieldRepository: IFieldRepository,
+        private moderatorRepository: IModeratorRepository,
     ) {}
 
     public async execute({
@@ -31,7 +31,7 @@ class CreateFieldJournalService {
         fields,
         eterapiaId,
         moderatorId,
-    }: Request): Promise<FieldJournal> {
+    }: Request): Promise<IFieldJournal> {
         const moderator = await this.moderatorRepository.findById(moderatorId);
 
         if (!moderator) {

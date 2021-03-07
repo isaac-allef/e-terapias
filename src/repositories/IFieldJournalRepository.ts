@@ -1,9 +1,9 @@
 import ICreateFieldJournal from '../dtos/ICreateFieldJournal';
-import FieldJournal from '../typeorm/entities/FieldJournal';
+import IFieldJournal from '../models/IFieldJournal';
 
 export default interface IFieldJournalRepository {
-    createWithoutSave(data: ICreateFieldJournal): FieldJournal;
-    save(fieldJournal: FieldJournal): Promise<void>;
-    findById(id: string): Promise<FieldJournal | undefined>;
-    all(): Promise<FieldJournal[] | []>;
+    createWithoutSave(data: ICreateFieldJournal): IFieldJournal;
+    save(fieldJournal: IFieldJournal): Promise<void>;
+    findById(id: string): Promise<IFieldJournal | undefined>;
+    all(): Promise<IFieldJournal[] | []>;
 }

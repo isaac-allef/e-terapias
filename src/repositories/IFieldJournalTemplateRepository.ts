@@ -1,7 +1,7 @@
 import ICreateFieldJournalTemplate from '../dtos/ICreateFieldJournalTemplate';
-import FieldJournalTemplate from '../typeorm/entities/FieldJournalTemplate';
+import IFieldJournalTemplate from '../models/IFieldJournalTemplate';
 
 export default interface IFieldJournalTemplateRepository {
-    create(data: ICreateFieldJournalTemplate): Promise<FieldJournalTemplate>;
-    findById(id: string): Promise<FieldJournalTemplate | undefined>;
+    create(data: ICreateFieldJournalTemplate): Promise<IFieldJournalTemplate>;
+    findById(id: string): Promise<IFieldJournalTemplate | undefined>;
 }

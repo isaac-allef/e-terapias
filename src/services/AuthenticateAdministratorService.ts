@@ -3,8 +3,8 @@ import { sign } from 'jsonwebtoken';
 import authConfig from '../config/auth';
 
 import AppError from '../errors/AppError';
-import Administrator from '../typeorm/entities/Administrator';
-import AdministratorRepository from '../typeorm/repositories/AdministratorRepository';
+import IAdministrator from '../models/IAdministrator';
+import IAdministratorRepository from '../repositories/IAdministratorRepository';
 
 interface Request {
     email: string;
@@ -12,12 +12,12 @@ interface Request {
 }
 
 interface Response {
-    administrator: Administrator;
+    administrator: IAdministrator;
     token: string;
 }
 
 class AuthenticateAdministratorService {
-    constructor(private administratorRepository: AdministratorRepository) {}
+    constructor(private administratorRepository: IAdministratorRepository) {}
 
     public async execute({ email, password }: Request): Promise<Response> {
         const administrator = await this.administratorRepository.findByEmail(

@@ -1,7 +1,7 @@
 import { hash } from 'bcryptjs';
 import AppError from '../errors/AppError';
-import Moderator from '../typeorm/entities/Moderator';
-import ModeratorRepository from '../typeorm/repositories/ModeratorRepository';
+import IModerator from '../models/IModerator';
+import IModeratorRepository from '../repositories/IModeratorRepository';
 
 interface Request {
     email: string;
@@ -9,9 +9,9 @@ interface Request {
 }
 
 class CreateModeratorService {
-    constructor(private moderatorRepository: ModeratorRepository) {}
+    constructor(private moderatorRepository: IModeratorRepository) {}
 
-    public async execute({ email, password }: Request): Promise<Moderator> {
+    public async execute({ email, password }: Request): Promise<IModerator> {
         const checkModeratorExists = await this.moderatorRepository.findByEmail(
             email,
         );

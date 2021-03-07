@@ -1,9 +1,9 @@
 import ICreateModeratorDTO from '../dtos/ICreateModeratorDTO';
-import Moderator from '../typeorm/entities/Moderator';
+import IModerator from '../models/IModerator';
 
 export default interface IModeratorRepository {
-    create(data: ICreateModeratorDTO): Promise<Moderator>;
-    findByEmail(email: string): Promise<Moderator | undefined>;
-    findById(id: string): Promise<Moderator | undefined>;
-    save(moderator: Moderator): Promise<void>;
+    create(data: ICreateModeratorDTO): Promise<IModerator>;
+    findByEmail(email: string): Promise<IModerator | undefined>;
+    findById(id: string): Promise<IModerator | undefined>;
+    save(moderator: IModerator): Promise<void>;
 }

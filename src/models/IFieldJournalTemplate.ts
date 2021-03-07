@@ -16,6 +16,10 @@ interface IFieldJournalTemplate {
     };
 
     eterapias: Eterapia[];
+
+    created_at: Date;
+
+    update_at: Date;
 }
 
 export default IFieldJournalTemplate;
