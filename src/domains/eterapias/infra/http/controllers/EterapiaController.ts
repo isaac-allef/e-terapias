@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import AppError from '../../../../../shared/errors/AppError';
+import FieldJournalTemplateRepository from '../../../../fieldJournals/infra/typeorm/repositories/FieldJournalTemplateRepository';
 import EterapiaRepository from '../../typeorm/repositories/EterapiaRepository';
-import FieldJournalTemplateRepository from '../../../../../typeorm/repositories/FieldJournalTemplateRepository';
 
 class EterapiaController {
     public async create(

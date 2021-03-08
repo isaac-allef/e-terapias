@@ -1,7 +1,7 @@
 import { EntityRepository, getRepository, Repository } from 'typeorm';
-import ICreateFieldJournal from '../../dtos/ICreateFieldJournal';
-import IFieldJournalRepository from '../../repositories/IFieldJournalRepository';
-import FieldJournal from '../entities/FieldJournal';
+import IFieldJournalRepository from '../../../repositories/IFieldJournalRepository';
+import FieldJournal from '../../../../../typeorm/entities/FieldJournal';
+import ICreateFieldJournal from '../../../dtos/ICreateFieldJournal';
 
 @EntityRepository()
 class FieldJournalRepository implements IFieldJournalRepository {

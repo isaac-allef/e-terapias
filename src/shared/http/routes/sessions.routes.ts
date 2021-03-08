@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import SessionAdministratorController from '../../domains/administrators/infra/http/controllers/SessionAdministratorController';
-import SessionModeratorController from '../../domains/moderators/infra/http/controllers/SessionModeratorController';
+import SessionAdministratorController from '../../../domains/administrators/infra/http/controllers/SessionAdministratorController';
+import SessionModeratorController from '../../../domains/moderators/infra/http/controllers/SessionModeratorController';
 
 const sessionsRouter = Router();
 const sessionAdministratorController = new SessionAdministratorController();

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import CreateFieldJournalTemplateService from '../../services/CreateFieldJournalTemplateService';
+import CreateFieldJournalTemplateService from '../../../services/CreateFieldJournalTemplateService';
 import FieldJournalTemplateRepository from '../../typeorm/repositories/FieldJournalTemplateRepository';
 
 class FieldJournalTemplateController {

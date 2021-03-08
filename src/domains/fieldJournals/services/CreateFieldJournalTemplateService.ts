@@ -1,4 +1,4 @@
-import AppError from '../shared/errors/AppError';
+import AppError from '../../../shared/errors/AppError';
 import IFieldJournalTemplate from '../models/IFieldJournalTemplate';
 import IFieldJournalTemplateRepository from '../repositories/IFieldJournalTemplateRepository';
 

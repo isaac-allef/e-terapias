@@ -7,7 +7,7 @@ import {
     UpdateDateColumn,
 } from 'typeorm';
 
-import IFieldJournalTemplate from '../../models/IFieldJournalTemplate';
+import IFieldJournalTemplate from '../../domains/fieldJournals/models/IFieldJournalTemplate';
 import Eterapia from './Eterapia';
 
 interface FieldTemplates {
