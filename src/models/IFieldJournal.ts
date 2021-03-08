@@ -1,6 +1,6 @@
 import Eterapia from './IEterapia';
 import Field from './IField';
-import Moderator from './IModerator';
+import Moderator from '../domains/moderators/models/IModerator';
 
 interface IFieldJournal {
     id: string;

@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import CreateFieldJournalService from '../../services/CreateFieldJournalService';
 import FieldJournalRepository from '../../typeorm/repositories/FieldJournalRepository';
 import FieldRepository from '../../typeorm/repositories/FieldRepository';
-import ModeratorRepository from '../../typeorm/repositories/ModeratorRepository';
+import ModeratorRepository from '../../domains/moderators/infra/typeorm/repositories/ModeratorRepository';
 
 class FieldJournalController {
     public async create(

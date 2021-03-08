@@ -1,7 +1,7 @@
 import FieldJournal from './IFieldJournal';
 import FieldJournalTemplate from './IFieldJournalTemplate';
 
-import Moderator from './IModerator';
+import Moderator from '../domains/moderators/models/IModerator';
 
 interface IEterapia {
     id: string;

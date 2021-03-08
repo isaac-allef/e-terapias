@@ -3,7 +3,7 @@ import AppError from '../shared/errors/AppError';
 import IFieldJournal from '../models/IFieldJournal';
 import IFieldJournalRepository from '../repositories/IFieldJournalRepository';
 import IFieldRepository from '../repositories/IFieldRepository';
-import IModeratorRepository from '../repositories/IModeratorRepository';
+import IModeratorRepository from '../domains/moderators/repositories/IModeratorRepository';
 import AddFieldsService from './AddFieldsService';
 
 interface Field_request {

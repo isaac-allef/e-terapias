@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import AuthenticateModeratorService from '../../services/AuthenticateModeratorService';
+import AuthenticateModeratorService from '../../../services/AuthenticateModeratorService';
 import ModeratorRepository from '../../typeorm/repositories/ModeratorRepository';
 
 class SessionModeratorController {

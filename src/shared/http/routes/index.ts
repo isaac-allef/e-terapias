@@ -3,7 +3,7 @@ import administratorsRoute from '../../../domains/administrators/infra/http/rout
 import eterapiasRoute from '../../../http/routes/eterapias.routes';
 import fieldJournalsRoute from '../../../http/routes/fieldJournals.routes';
 import fieldJournalTemplatesRoute from '../../../http/routes/fieldJournalTemplates.routes';
-import moderatorsRoute from '../../../http/routes/moderators.routes';
+import moderatorsRoute from '../../../domains/moderators/infra/http/routes/moderators.routes';
 import sessionsRouter from '../../../http/routes/sessions.routes';
 
 const routes = Router();

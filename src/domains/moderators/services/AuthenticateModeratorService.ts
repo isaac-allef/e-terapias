@@ -1,8 +1,8 @@
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
-import authConfig from '../config/auth';
+import authConfig from '../../../config/auth';
 
-import AppError from '../shared/errors/AppError';
+import AppError from '../../../shared/errors/AppError';
 import IModerator from '../models/IModerator';
 import IModeratorRepository from '../repositories/IModeratorRepository';
 

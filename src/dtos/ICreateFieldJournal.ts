@@ -1,7 +1,7 @@
 // import ICreateField from './ICreateField';
 
 import IEterapia from '../models/IEterapia';
-import IModerator from '../models/IModerator';
+import IModerator from '../domains/moderators/models/IModerator';
 
 interface ICreateFieldJournal {
     title: string;

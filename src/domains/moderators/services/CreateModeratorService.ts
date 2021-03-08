@@ -1,5 +1,5 @@
 import { hash } from 'bcryptjs';
-import AppError from '../shared/errors/AppError';
+import AppError from '../../../shared/errors/AppError';
 import IModerator from '../models/IModerator';
 import IModeratorRepository from '../repositories/IModeratorRepository';
 

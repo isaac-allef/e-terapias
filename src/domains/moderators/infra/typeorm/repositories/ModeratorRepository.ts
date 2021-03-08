@@ -1,7 +1,7 @@
 import { EntityRepository, getRepository, Repository } from 'typeorm';
-import ICreateAdministratorDTO from '../../domains/administrators/dtos/ICreateAdministratorDTO';
-import IModeratorRepository from '../../repositories/IModeratorRepository';
-import Moderator from '../entities/Moderator';
+import ICreateAdministratorDTO from '../../../../administrators/dtos/ICreateAdministratorDTO';
+import IModeratorRepository from '../../../repositories/IModeratorRepository';
+import Moderator from '../../../../../typeorm/entities/Moderator';
 
 @EntityRepository()
 class ModeratorRepository implements IModeratorRepository {
