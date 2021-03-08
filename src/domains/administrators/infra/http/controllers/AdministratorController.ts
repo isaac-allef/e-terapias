@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
-import AuthenticateAdministratorService from '../../services/AuthenticateAdministratorService';
+import CreateAdministratorService from '../../../services/CreateAdministratorService';
 import AdministratorRepository from '../../typeorm/repositories/AdministratorRepository';
 
-class SessionAdministratorController {
+class AdministratorController {
     public async create(
         request: Request,
         response: Response,
@@ -11,22 +11,19 @@ class SessionAdministratorController {
 
         const administratorRepository = new AdministratorRepository();
 
-        const authenticateAdministrator = new AuthenticateAdministratorService(
+        const createAdministrator = new CreateAdministratorService(
             administratorRepository,
         );
 
-        const {
-            administrator,
-            token,
-        } = await authenticateAdministrator.execute({
+        const administrator = await createAdministrator.execute({
             email,
             password,
         });
 
         // delete administrator.password;
 
-        return response.json({ administrator, token });
+        return response.json(administrator);
     }
 }
 
-export default SessionAdministratorController;
+export default AdministratorController;

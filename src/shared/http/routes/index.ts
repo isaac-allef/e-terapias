@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import administratorsRoute from '../../../http/routes/administrators.routes';
+import administratorsRoute from '../../../domains/administrators/infra/http/routes/administrators.routes';
 import eterapiasRoute from '../../../http/routes/eterapias.routes';
 import fieldJournalsRoute from '../../../http/routes/fieldJournals.routes';
 import fieldJournalTemplatesRoute from '../../../http/routes/fieldJournalTemplates.routes';

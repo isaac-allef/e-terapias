@@ -1,5 +1,5 @@
 import { hash } from 'bcryptjs';
-import AppError from '../shared/errors/AppError';
+import AppError from '../../../shared/errors/AppError';
 import IAdministrator from '../models/IAdministrator';
 import IAdministratorRepository from '../repositories/IAdministratorRepository';
 

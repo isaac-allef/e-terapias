@@ -1,5 +1,5 @@
 import { EntityRepository, getRepository, Repository } from 'typeorm';
-import ICreateAdministratorDTO from '../../dtos/ICreateAdministratorDTO';
+import ICreateAdministratorDTO from '../../domains/administrators/dtos/ICreateAdministratorDTO';
 import IModeratorRepository from '../../repositories/IModeratorRepository';
 import Moderator from '../entities/Moderator';
 
