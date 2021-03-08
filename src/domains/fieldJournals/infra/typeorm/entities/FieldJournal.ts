@@ -8,10 +8,10 @@ import {
     UpdateDateColumn,
 } from 'typeorm';
 
-import IFieldJournal from '../../domains/fieldJournals/models/IFieldJournal';
-import Eterapia from './Eterapia';
+import IFieldJournal from '../../../models/IFieldJournal';
+import Eterapia from '../../../../eterapias/infra/typeorm/entities/Eterapia';
 import Field from './Field';
-import Moderator from './Moderator';
+import Moderator from '../../../../moderators/infra/typeorm/entities/Moderator';
 
 @Entity()
 class FieldJournal implements IFieldJournal {

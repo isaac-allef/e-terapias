@@ -7,7 +7,7 @@ import {
     UpdateDateColumn,
 } from 'typeorm';
 
-import IField from '../../domains/fieldJournals/models/IField';
+import IField from '../../../models/IField';
 import FieldJournal from './FieldJournal';
 
 @Entity()

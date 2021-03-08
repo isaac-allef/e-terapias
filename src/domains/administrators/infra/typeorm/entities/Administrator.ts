@@ -6,7 +6,7 @@ import {
     UpdateDateColumn,
 } from 'typeorm';
 
-import IAdministrator from '../../domains/administrators/models/IAdministrator';
+import IAdministrator from '../../../models/IAdministrator';
 
 @Entity()
 class Administrator implements IAdministrator {

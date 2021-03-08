@@ -10,11 +10,11 @@ import {
     UpdateDateColumn,
 } from 'typeorm';
 
-import IEterapia from '../../domains/eterapias/models/IEterapia';
-import FieldJournal from './FieldJournal';
-import FieldJournalTemplate from './FieldJournalTemplate';
+import IEterapia from '../../../models/IEterapia';
+import FieldJournal from '../../../../fieldJournals/infra/typeorm/entities/FieldJournal';
+import FieldJournalTemplate from '../../../../fieldJournals/infra/typeorm/entities/FieldJournalTemplate';
 
-import Moderator from './Moderator';
+import Moderator from '../../../../moderators/infra/typeorm/entities/Moderator';
 
 @Entity()
 class Eterapia implements IEterapia {

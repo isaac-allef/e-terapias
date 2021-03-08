@@ -6,7 +6,7 @@
     "password": "1234",
     "database": "e-terapias",
     "entities": [
-        "./src/typeorm/entities/*.ts"
+        "./src/domains/**/infra/typeorm/entities/*.ts"
     ],
     "migrations": [
         "./src/shared/infra/typeorm/migrations/*.ts"

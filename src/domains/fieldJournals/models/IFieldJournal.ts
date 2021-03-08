@@ -1,6 +1,6 @@
 import Field from './IField';
-import Eterapia from '../../../typeorm/entities/Eterapia';
-import Moderator from '../../../typeorm/entities/Moderator';
+import Eterapia from '../../eterapias/infra/typeorm/entities/Eterapia';
+import Moderator from '../../moderators/infra/typeorm/entities/Moderator';
 
 interface IFieldJournal {
     id: string;

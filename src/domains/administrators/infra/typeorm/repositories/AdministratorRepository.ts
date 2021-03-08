@@ -1,7 +1,7 @@
 import { EntityRepository, getRepository, Repository } from 'typeorm';
 import ICreateAdministratorDTO from '../../../dtos/ICreateAdministratorDTO';
 import IAdministratorRepository from '../../../repositories/IAdministratorRepository';
-import Administrator from '../../../../../typeorm/entities/Administrator';
+import Administrator from '../entities/Administrator';
 
 @EntityRepository()
 class AdministratorRepository implements IAdministratorRepository {

@@ -1,4 +1,4 @@
-import Eterapia from '../../../typeorm/entities/Eterapia';
+import Eterapia from '../../eterapias/infra/typeorm/entities/Eterapia';
 
 interface FieldTemplates {
     name: string;

@@ -1,7 +1,7 @@
 import { EntityRepository, getRepository, Repository } from 'typeorm';
 import ICreateEterapiaDTO from '../../../dtos/ICreateEterapiaDTO';
 import IEterapiaRepository from '../../../repositories/IEterapiaRepository';
-import Eterapia from '../../../../../typeorm/entities/Eterapia';
+import Eterapia from '../entities/Eterapia';
 
 @EntityRepository()
 class EterapiaRepository implements IEterapiaRepository {

@@ -8,9 +8,9 @@ import {
     UpdateDateColumn,
 } from 'typeorm';
 
-import IModerator from '../../domains/moderators/models/IModerator';
-import Eterapia from './Eterapia';
-import FieldJournal from './FieldJournal';
+import IModerator from '../../../models/IModerator';
+import Eterapia from '../../../../eterapias/infra/typeorm/entities/Eterapia';
+import FieldJournal from '../../../../fieldJournals/infra/typeorm/entities/FieldJournal';
 
 @Entity()
 class Moderator implements IModerator {
