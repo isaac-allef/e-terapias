@@ -1,0 +1,18 @@
+import { Router } from 'express';
+import administratorsRoute from '../../../http/routes/administrators.routes';
+import eterapiasRoute from '../../../http/routes/eterapias.routes';
+import fieldJournalsRoute from '../../../http/routes/fieldJournals.routes';
+import fieldJournalTemplatesRoute from '../../../http/routes/fieldJournalTemplates.routes';
+import moderatorsRoute from '../../../http/routes/moderators.routes';
+import sessionsRouter from '../../../http/routes/sessions.routes';
+
+const routes = Router();
+
+routes.use('/sessions', sessionsRouter);
+routes.use('/administrators', administratorsRoute);
+routes.use('/eterapias', eterapiasRoute);
+routes.use('/fieldjournaltemplates', fieldJournalTemplatesRoute);
+routes.use('/moderators', moderatorsRoute);
+routes.use('/fieldjournals', fieldJournalsRoute);
+
+export default routes;

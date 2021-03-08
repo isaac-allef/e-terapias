@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import AppError from '../../errors/AppError';
+import AppError from '../../shared/errors/AppError';
 import CreateModeratorService from '../../services/CreateModeratorService';
 import EterapiaRepository from '../../typeorm/repositories/EterapiaRepository';
 import ModeratorRepository from '../../typeorm/repositories/ModeratorRepository';

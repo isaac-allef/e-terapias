@@ -1,5 +1,5 @@
 import { getManager } from 'typeorm';
-import AppError from '../errors/AppError';
+import AppError from '../shared/errors/AppError';
 import IFieldJournal from '../models/IFieldJournal';
 import IFieldJournalRepository from '../repositories/IFieldJournalRepository';
 import IFieldRepository from '../repositories/IFieldRepository';
