@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import AppError from '../../../../../shared/errors/AppError';
 import CreateModeratorService from '../../../services/CreateModeratorService';
-import EterapiaRepository from '../../../../../typeorm/repositories/EterapiaRepository';
+import EterapiaRepository from '../../../../eterapias/infra/typeorm/repositories/EterapiaRepository';
 import ModeratorRepository from '../../typeorm/repositories/ModeratorRepository';
 
 class ModeratorController {

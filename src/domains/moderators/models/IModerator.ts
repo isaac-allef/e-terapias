@@ -1,4 +1,4 @@
-import Eterapia from '../../../models/IEterapia';
+import Eterapia from '../../eterapias/models/IEterapia';
 import FieldJournal from '../../../models/IFieldJournal';
 
 interface IModerator {

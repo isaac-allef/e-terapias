@@ -10,7 +10,7 @@ import {
     UpdateDateColumn,
 } from 'typeorm';
 
-import IEterapia from '../../models/IEterapia';
+import IEterapia from '../../domains/eterapias/models/IEterapia';
 import FieldJournal from './FieldJournal';
 import FieldJournalTemplate from './FieldJournalTemplate';
 
