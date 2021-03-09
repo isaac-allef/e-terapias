@@ -10,7 +10,7 @@ interface Request {
     fields: IRequestField[];
 }
 
-class AddFieldsService {
+class CreateFieldsWithoutSaveService {
     constructor(private fieldRepository: IFieldRepository) {}
 
     public async execute({ fieldJournal, fields }: Request): Promise<IField[]> {
@@ -65,4 +65,4 @@ class AddFieldsService {
     }
 }
 
-export default AddFieldsService;
+export default CreateFieldsWithoutSaveService;
