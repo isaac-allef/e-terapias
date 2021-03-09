@@ -52,14 +52,14 @@ class CreateFieldJournalService {
         // await this.fieldJournalRepository.save(fieldJournal);
 
         const createFieldsService = new AddFieldsService(this.fieldRepository);
-        const fieldArray = await createFieldsService.execute({
-            fieldJournal,
-            fields,
-        });
-        // this.fieldRepository.saveArray(fieldArray);
 
         await getManager().transaction(async transactionalEntityManager => {
             await transactionalEntityManager.save(fieldJournal);
+            const fieldArray = await createFieldsService.execute({
+                fieldJournal,
+                fields,
+            });
+            // this.fieldRepository.saveArray(fieldArray);
             await transactionalEntityManager.save(fieldArray);
         });
 
