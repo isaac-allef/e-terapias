@@ -30,7 +30,9 @@ class Field implements IField {
     @Column({ nullable: true })
     boolean_value: boolean;
 
-    @ManyToOne(() => FieldJournal, fieldJournal => fieldJournal.fields)
+    @ManyToOne(() => FieldJournal, fieldJournal => fieldJournal.fields, {
+        onDelete: 'CASCADE',
+    })
     fieldJournal: FieldJournal;
 
     @CreateDateColumn()
