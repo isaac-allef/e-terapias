@@ -6,4 +6,5 @@ export default interface IFieldJournalRepository {
     save(fieldJournal: IFieldJournal): Promise<void>;
     findById(id: string): Promise<IFieldJournal | undefined>;
     all(): Promise<IFieldJournal[] | []>;
+    delete(fieldJournal: IFieldJournal): Promise<void>;
 }

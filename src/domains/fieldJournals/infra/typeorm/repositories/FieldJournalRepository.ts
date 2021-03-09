@@ -42,6 +42,10 @@ class FieldJournalRepository implements IFieldJournalRepository {
 
         return fieldJournal;
     }
+
+    public async delete(fieldJournal: FieldJournal): Promise<void> {
+        await this.ormRepository.remove(fieldJournal);
+    }
 }
 
 export default FieldJournalRepository;

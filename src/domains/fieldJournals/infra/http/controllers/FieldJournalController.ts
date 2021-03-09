@@ -3,6 +3,7 @@ import CreateFieldJournalService from '../../../services/CreateFieldJournalServi
 import FieldJournalRepository from '../../typeorm/repositories/FieldJournalRepository';
 import FieldRepository from '../../typeorm/repositories/FieldRepository';
 import ModeratorRepository from '../../../../moderators/infra/typeorm/repositories/ModeratorRepository';
+import AppError from '../../../../../shared/errors/AppError';
 
 class FieldJournalController {
     public async create(
@@ -37,6 +38,34 @@ class FieldJournalController {
         const fieldJournals = await fieldJournalRepository.all();
 
         return response.json(fieldJournals);
+    }
+
+    public async show(request: Request, response: Response): Promise<Response> {
+        const { id } = request.params;
+
+        const fieldJournalRepository = new FieldJournalRepository();
+
+        const fieldJournal = await fieldJournalRepository.findById(id);
+
+        return response.json(fieldJournal);
+    }
+
+    public async delete(
+        request: Request,
+        response: Response,
+    ): Promise<Response> {
+        const { id } = request.params;
+        const fieldJournalRepository = new FieldJournalRepository();
+
+        const fieldJournal = await fieldJournalRepository.findById(id);
+
+        if (!fieldJournal) {
+            throw new AppError('Field journal not found.');
+        }
+
+        await fieldJournalRepository.delete(fieldJournal);
+
+        return response.json(fieldJournal);
     }
 }
 

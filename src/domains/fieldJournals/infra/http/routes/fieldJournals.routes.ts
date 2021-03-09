@@ -9,12 +9,12 @@ fieldJournalsRoute.post('/', fieldJournalController.create);
 
 fieldJournalsRoute.get('/', fieldJournalController.list);
 
+fieldJournalsRoute.get('/:id', fieldJournalController.show);
+
 fieldJournalsRoute.put('/', (request, response) => {
     return response.json({ message: 'Update' });
 });
 
-fieldJournalsRoute.delete('/', (request, response) => {
-    return response.json({ message: 'Delete' });
-});
+fieldJournalsRoute.delete('/:id', fieldJournalController.delete);
 
 export default fieldJournalsRoute;
