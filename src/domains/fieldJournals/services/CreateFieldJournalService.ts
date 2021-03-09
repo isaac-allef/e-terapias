@@ -1,10 +1,9 @@
-import { getManager } from 'typeorm';
 import AppError from '../../../shared/errors/AppError';
 import IFieldJournal from '../models/IFieldJournal';
 import IFieldJournalRepository from '../repositories/IFieldJournalRepository';
 import IFieldRepository from '../repositories/IFieldRepository';
 import IModeratorRepository from '../../moderators/repositories/IModeratorRepository';
-import AddFieldsService from './AddFieldsService';
+import CreateFieldsWithoutSaveService from './CreateFieldsWithoutSaveService';
 
 interface Field_request {
     name: string;
@@ -49,19 +48,17 @@ class CreateFieldJournalService {
             eterapia,
             moderator,
         });
-        // await this.fieldJournalRepository.save(fieldJournal);
 
-        const createFieldsService = new AddFieldsService(this.fieldRepository);
-
-        await getManager().transaction(async transactionalEntityManager => {
-            await transactionalEntityManager.save(fieldJournal);
-            const fieldArray = await createFieldsService.execute({
-                fieldJournal,
-                fields,
-            });
-            // this.fieldRepository.saveArray(fieldArray);
-            await transactionalEntityManager.save(fieldArray);
+        const createFieldsService = new CreateFieldsWithoutSaveService(
+            this.fieldRepository,
+        );
+        const fieldArray = await createFieldsService.execute({
+            fieldJournal,
+            fields,
         });
+
+        fieldJournal.fields = fieldArray;
+        await this.fieldJournalRepository.save(fieldJournal);
 
         return fieldJournal;
     }

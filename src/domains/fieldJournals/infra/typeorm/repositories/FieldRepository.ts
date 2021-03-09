@@ -13,7 +13,6 @@ class FieldRepository implements IFieldRepository {
 
     public createWithoutSave({
         name,
-        fieldJournal,
         string_value,
         int_value,
         date_value,
@@ -21,7 +20,6 @@ class FieldRepository implements IFieldRepository {
     }: ICreateField): Field {
         const field = this.ormRepository.create({
             name,
-            fieldJournal,
             string_value,
             int_value,
             date_value,

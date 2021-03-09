@@ -27,7 +27,10 @@ class FieldJournal implements IFieldJournal {
     @ManyToOne(() => Eterapia, eterapia => eterapia.fieldJournals)
     eterapia: Eterapia;
 
-    @OneToMany(() => Field, field => field.fieldJournal, { eager: true })
+    @OneToMany(() => Field, field => field.fieldJournal, {
+        eager: true,
+        cascade: true,
+    })
     fields: Field[];
 
     @CreateDateColumn()

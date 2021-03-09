@@ -40,14 +40,12 @@ class AddFieldsService {
                 return this.fieldRepository.createWithoutSave({
                     name: field.name,
                     string_value: field.value as string,
-                    fieldJournal,
                 });
             }
             if (field.type === 'int') {
                 return this.fieldRepository.createWithoutSave({
                     name: field.name,
                     int_value: field.value as number,
-                    fieldJournal,
                 });
             }
 
@@ -55,7 +53,6 @@ class AddFieldsService {
                 return this.fieldRepository.createWithoutSave({
                     name: field.name,
                     date_value: field.value as Date,
-                    fieldJournal,
                 });
             }
 
@@ -63,7 +60,6 @@ class AddFieldsService {
                 return this.fieldRepository.createWithoutSave({
                     name: field.name,
                     boolean_value: field.value as boolean,
-                    fieldJournal,
                 });
             }
 
