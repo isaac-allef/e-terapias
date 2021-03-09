@@ -44,6 +44,10 @@ class EterapiaRepository implements IEterapiaRepository {
     public async save(eterapia: Eterapia): Promise<void> {
         await this.ormRepository.save(eterapia);
     }
+
+    public async delete(eterapia: Eterapia): Promise<void> {
+        await this.ormRepository.remove(eterapia);
+    }
 }
 
 export default EterapiaRepository;

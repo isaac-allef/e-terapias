@@ -27,6 +27,15 @@ class EterapiaController {
         return response.json(eterapias);
     }
 
+    public async show(request: Request, response: Response): Promise<Response> {
+        const { id } = request.params;
+        const eterapiaRepository = new EterapiaRepository();
+
+        const eterapia = await eterapiaRepository.findById(id);
+
+        return response.json(eterapia);
+    }
+
     public async update(
         request: Request,
         response: Response,
@@ -58,6 +67,24 @@ class EterapiaController {
         eterapia.fieldJournalTemplate = fieldJournalTemplate;
 
         eterapiaRepository.save(eterapia);
+
+        return response.json(eterapia);
+    }
+
+    public async delete(
+        request: Request,
+        response: Response,
+    ): Promise<Response> {
+        const { id } = request.params;
+        const eterapiaRepository = new EterapiaRepository();
+
+        const eterapia = await eterapiaRepository.findById(id);
+
+        if (!eterapia) {
+            throw new AppError('Eterapia not found.');
+        }
+
+        await eterapiaRepository.delete(eterapia);
 
         return response.json(eterapia);
     }

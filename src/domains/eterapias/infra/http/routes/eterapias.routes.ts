@@ -8,10 +8,10 @@ eterapiasRoute.post('/', eterapiaController.create);
 
 eterapiasRoute.get('/', eterapiaController.list);
 
+eterapiasRoute.get('/:id', eterapiaController.show);
+
 eterapiasRoute.put('/:id', eterapiaController.update);
 
-eterapiasRoute.delete('/', (request, response) => {
-    return response.json({ message: 'Delete' });
-});
+eterapiasRoute.delete('/:id', eterapiaController.delete);
 
 export default eterapiasRoute;

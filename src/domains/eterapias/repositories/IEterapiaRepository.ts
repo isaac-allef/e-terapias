@@ -7,4 +7,5 @@ export default interface IEterapiaRepository {
     findByName(name: string): Promise<IEterapia | undefined>;
     all(): Promise<IEterapia[] | []>;
     save(eterapia: IEterapia): Promise<void>;
+    delete(eterapia: IEterapia): Promise<void>;
 }
