@@ -6,21 +6,12 @@ const administratorController = new AdministratorController();
 
 administratorsRoute.post('/', administratorController.create);
 
-administratorsRoute.get('/', (request, response) => {
-    return response.json({ message: 'List' });
-});
+administratorsRoute.get('/', administratorController.list);
 
-administratorsRoute.put('/', (request, response) => {
-    return response.json({ message: 'Update' });
-});
+administratorsRoute.get('/:id', administratorController.show);
 
-administratorsRoute.delete('/', (request, response) => {
-    return response.json({ message: 'Delete' });
-});
+administratorsRoute.put('/:id', administratorController.update);
 
-administratorsRoute.get('/:id', (request, response) => {
-    const { id } = request.params;
-    return response.json({ message: `Show: ${id}` });
-});
+administratorsRoute.delete('/:id', administratorController.delete);
 
 export default administratorsRoute;
