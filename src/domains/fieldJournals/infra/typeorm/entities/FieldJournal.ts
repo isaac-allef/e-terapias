@@ -21,10 +21,14 @@ class FieldJournal implements IFieldJournal {
     @Column()
     title: string;
 
-    @ManyToOne(() => Moderator, moderator => moderator.fieldJournals)
+    @ManyToOne(() => Moderator, moderator => moderator.fieldJournals, {
+        onDelete: 'CASCADE',
+    })
     moderator: Moderator;
 
-    @ManyToOne(() => Eterapia, eterapia => eterapia.fieldJournals)
+    @ManyToOne(() => Eterapia, eterapia => eterapia.fieldJournals, {
+        onDelete: 'CASCADE',
+    })
     eterapia: Eterapia;
 
     @OneToMany(() => Field, field => field.fieldJournal, {
