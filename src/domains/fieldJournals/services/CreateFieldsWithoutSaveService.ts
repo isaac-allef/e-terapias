@@ -3,16 +3,11 @@ import FieldsMatchWithFieldsTemplateService from './FieldsMatchWithFieldTemplate
 import IFieldRepository from '../repositories/IFieldRepository';
 import IFieldJournal from '../models/IFieldJournal';
 import IField from '../models/IField';
-
-interface Field_request {
-    name: string;
-    type: string;
-    value: string | number | Date | boolean;
-}
+import IRequestField from '../dtos/IRequestField';
 
 interface Request {
     fieldJournal: IFieldJournal;
-    fields: Field_request[];
+    fields: IRequestField[];
 }
 
 class AddFieldsService {

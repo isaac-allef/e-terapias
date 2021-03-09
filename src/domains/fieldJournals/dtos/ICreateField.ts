@@ -1,9 +1,3 @@
-// interface ICreateField {
-//     name: string;
-//     type: string;
-//     value: string | number | Date | boolean;
-// }
-
 interface ICreateField {
     name: string;
     string_value?: string;

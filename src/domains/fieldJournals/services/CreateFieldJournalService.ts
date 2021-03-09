@@ -4,16 +4,11 @@ import IFieldJournalRepository from '../repositories/IFieldJournalRepository';
 import IFieldRepository from '../repositories/IFieldRepository';
 import IModeratorRepository from '../../moderators/repositories/IModeratorRepository';
 import CreateFieldsWithoutSaveService from './CreateFieldsWithoutSaveService';
-
-interface Field_request {
-    name: string;
-    type: string;
-    value: string | number | Date | boolean;
-}
+import IRequestField from '../dtos/IRequestField';
 
 interface Request {
     title: string;
-    fields: Field_request[];
+    fields: IRequestField[];
     eterapiaId: string;
     moderatorId: string;
 }
