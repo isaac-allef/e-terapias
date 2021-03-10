@@ -6,19 +6,12 @@ const moderatorController = new ModeratorController();
 
 moderatorsRoute.post('/', moderatorController.create);
 
-moderatorsRoute.get('/', (request, response) => {
-    return response.json({ message: 'List' });
-});
+moderatorsRoute.get('/', moderatorController.list);
+
+moderatorsRoute.get('/:id', moderatorController.show);
 
 moderatorsRoute.put('/:id', moderatorController.update);
 
-moderatorsRoute.delete('/', (request, response) => {
-    return response.json({ message: 'Delete' });
-});
-
-moderatorsRoute.get('/:id', (request, response) => {
-    const { id } = request.params;
-    return response.json({ message: `Show: ${id}` });
-});
+moderatorsRoute.delete('/:id', moderatorController.delete);
 
 export default moderatorsRoute;

@@ -41,8 +41,18 @@ class ModeratorRepository implements IModeratorRepository {
         return moderator;
     }
 
+    public async all(): Promise<Moderator[] | []> {
+        const moderators = await this.ormRepository.find();
+
+        return moderators;
+    }
+
     public async save(moderator: Moderator): Promise<void> {
         await this.ormRepository.save(moderator);
+    }
+
+    public async delete(moderator: Moderator): Promise<void> {
+        await this.ormRepository.remove(moderator);
     }
 }
 

@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import AppError from '../../../../../shared/errors/AppError';
 import CreateModeratorService from '../../../services/CreateModeratorService';
-import EterapiaRepository from '../../../../eterapias/infra/typeorm/repositories/EterapiaRepository';
 import ModeratorRepository from '../../typeorm/repositories/ModeratorRepository';
 
 class ModeratorController {
@@ -25,13 +24,31 @@ class ModeratorController {
         return response.json(administrator);
     }
 
+    public async list(request: Request, response: Response): Promise<Response> {
+        const moderatorRepository = new ModeratorRepository();
+
+        const moderators = await moderatorRepository.all();
+
+        return response.json(moderators);
+    }
+
+    public async show(request: Request, response: Response): Promise<Response> {
+        const { id } = request.params;
+
+        const moderatorRepository = new ModeratorRepository();
+
+        const moderators = await moderatorRepository.findById(id);
+
+        return response.json(moderators);
+    }
+
     public async update(
         request: Request,
         response: Response,
     ): Promise<Response> {
         const { id } = request.params;
 
-        const { eterapiaId } = request.body;
+        const { email, password } = request.body;
 
         const moderatorRepository = new ModeratorRepository();
         const moderator = await moderatorRepository.findById(id);
@@ -40,16 +57,29 @@ class ModeratorController {
             throw new AppError('Moderator not found.');
         }
 
-        const eterapiaRepository = new EterapiaRepository();
-        const eterapia = await eterapiaRepository.findById(eterapiaId);
-
-        if (!eterapia) {
-            throw new AppError('Eterapia not found.');
-        }
-
-        moderator.eterapias.push(eterapia);
+        moderator.email = email;
+        moderator.password = password;
 
         moderatorRepository.save(moderator);
+
+        return response.json(moderator);
+    }
+
+    public async delete(
+        request: Request,
+        response: Response,
+    ): Promise<Response> {
+        const { id } = request.params;
+
+        const moderatorRepository = new ModeratorRepository();
+
+        const moderator = await moderatorRepository.findById(id);
+
+        if (!moderator) {
+            throw new AppError('Moderator not found.');
+        }
+
+        await moderatorRepository.delete(moderator);
 
         return response.json(moderator);
     }
