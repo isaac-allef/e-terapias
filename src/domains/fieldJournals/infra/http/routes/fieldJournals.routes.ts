@@ -11,9 +11,7 @@ fieldJournalsRoute.get('/', fieldJournalController.list);
 
 fieldJournalsRoute.get('/:id', fieldJournalController.show);
 
-fieldJournalsRoute.put('/', (request, response) => {
-    return response.json({ message: 'Update' });
-});
+fieldJournalsRoute.put('/:id', fieldJournalController.update);
 
 fieldJournalsRoute.delete('/:id', fieldJournalController.delete);
 

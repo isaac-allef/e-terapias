@@ -50,6 +50,28 @@ class FieldJournalController {
         return response.json(fieldJournal);
     }
 
+    public async update(
+        request: Request,
+        response: Response,
+    ): Promise<Response> {
+        const { id } = request.params;
+        const { title } = request.body;
+
+        const fieldJournalRepository = new FieldJournalRepository();
+
+        const fieldJournal = await fieldJournalRepository.findById(id);
+
+        if (!fieldJournal) {
+            throw new AppError('Field Journal not found.');
+        }
+
+        fieldJournal.title = title;
+
+        fieldJournalRepository.save(fieldJournal);
+
+        return response.json(fieldJournal);
+    }
+
     public async delete(
         request: Request,
         response: Response,
