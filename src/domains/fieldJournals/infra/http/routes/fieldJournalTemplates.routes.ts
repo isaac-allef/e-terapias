@@ -6,12 +6,13 @@ const fieldJournalTemplateController = new FieldJournalTemplateController();
 
 fieldJournalTemplatesRoute.post('/', fieldJournalTemplateController.create);
 
-fieldJournalTemplatesRoute.get('/', (request, response) => {
-    return response.json({ message: 'List' });
-});
+fieldJournalTemplatesRoute.get('/', fieldJournalTemplateController.list);
 
-fieldJournalTemplatesRoute.delete('/', (request, response) => {
-    return response.json({ message: 'Delete' });
-});
+fieldJournalTemplatesRoute.get('/:id', fieldJournalTemplateController.show);
+
+fieldJournalTemplatesRoute.delete(
+    '/:id',
+    fieldJournalTemplateController.delete,
+);
 
 export default fieldJournalTemplatesRoute;

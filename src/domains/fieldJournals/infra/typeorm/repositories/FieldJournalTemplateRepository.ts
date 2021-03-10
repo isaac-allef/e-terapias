@@ -35,6 +35,18 @@ class FieldJournalTemplateRepository
 
         return fieldJournalTemplate;
     }
+
+    public async all(): Promise<FieldJournalTemplate[] | []> {
+        const fieldJournalTemplates = await this.ormRepository.find();
+
+        return fieldJournalTemplates;
+    }
+
+    public async delete(
+        fieldJournalTemplate: FieldJournalTemplate,
+    ): Promise<void> {
+        await this.ormRepository.remove(fieldJournalTemplate);
+    }
 }
 
 export default FieldJournalTemplateRepository;
