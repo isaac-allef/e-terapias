@@ -26,7 +26,14 @@ class ModeratorController {
 
     public async list(request: Request, response: Response): Promise<Response> {
         const moderatorRepository = new ModeratorRepository();
-        const { search, orderBy, orderMethod, page, limit } = request.query;
+        const {
+            search,
+            relations,
+            orderBy,
+            orderMethod,
+            page,
+            limit,
+        } = request.query;
 
         const moderators = await moderatorRepository.all(
             orderBy as 'email' | 'created_at' | 'updated_at',
@@ -34,6 +41,7 @@ class ModeratorController {
             (page as unknown) as number,
             (limit as unknown) as number,
             search as string,
+            relations as ['eterapias' | 'fieldJournals'],
         );
 
         return response.json(moderators);

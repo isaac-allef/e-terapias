@@ -11,6 +11,7 @@ export default interface IModeratorRepository {
         page: number,
         limit: number,
         search: string,
+        relations: ['eterapias' | 'fieldJournals'],
     ): Promise<IModerator[] | []>;
     save(moderator: IModerator): Promise<void>;
     delete(moderator: IModerator): Promise<void>;

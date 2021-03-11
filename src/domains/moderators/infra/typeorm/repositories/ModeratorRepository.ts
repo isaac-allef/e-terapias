@@ -47,6 +47,7 @@ class ModeratorRepository implements IModeratorRepository {
         page = 1,
         limit = 5,
         search = '',
+        relations: ['eterapias' | 'fieldJournals'],
     ): Promise<Moderator[] | []> {
         const orderObject = this.createOrderObject(orderBy, orderMethod);
 
@@ -55,6 +56,7 @@ class ModeratorRepository implements IModeratorRepository {
             take: limit,
             skip: (page - 1) * limit,
             where: [{ email: Like(`%${search}%`) }],
+            relations,
         });
 
         return moderators;
