@@ -35,10 +35,37 @@ class EterapiaRepository implements IEterapiaRepository {
         return eterapia;
     }
 
-    public async all(): Promise<Eterapia[] | []> {
-        const eterapias = await this.ormRepository.find();
+    public async all(
+        orderBy: 'name' | 'created_at' | 'updated_at' = 'name',
+        orderMethod: 'ASC' | 'DESC' = 'ASC',
+        page = 1,
+        limit = 5,
+    ): Promise<Eterapia[] | []> {
+        const orderObject = this.createOrderObject(orderBy, orderMethod);
+
+        const eterapias = await this.ormRepository.find({
+            order: orderObject,
+            take: limit,
+            skip: (page - 1) * limit,
+        });
 
         return eterapias;
+    }
+
+    private createOrderObject(
+        orderBy: 'name' | 'created_at' | 'updated_at',
+        orderMethod: 'ASC' | 'DESC',
+    ) {
+        if (orderBy === 'name') {
+            return { name: orderMethod };
+        }
+        if (orderBy === 'created_at') {
+            return { created_at: orderMethod };
+        }
+        if (orderBy === 'updated_at') {
+            return { created_at: orderMethod };
+        }
+        return undefined;
     }
 
     public async save(eterapia: Eterapia): Promise<void> {
