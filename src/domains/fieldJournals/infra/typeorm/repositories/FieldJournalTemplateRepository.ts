@@ -1,4 +1,4 @@
-import { EntityRepository, getRepository, Repository } from 'typeorm';
+import { EntityRepository, getRepository, Like, Repository } from 'typeorm';
 import FieldJournalTemplate from '../entities/FieldJournalTemplate';
 import ICreateFieldJournalTemplate from '../../../dtos/ICreateFieldJournalTemplate';
 import IFieldJournalTemplateRepository from '../../../repositories/IFieldJournalTemplateRepository';
@@ -36,10 +36,39 @@ class FieldJournalTemplateRepository
         return fieldJournalTemplate;
     }
 
-    public async all(): Promise<FieldJournalTemplate[] | []> {
-        const fieldJournalTemplates = await this.ormRepository.find();
+    public async all(
+        orderBy: 'name' | 'created_at' | 'updated_at' = 'name',
+        orderMethod: 'ASC' | 'DESC' = 'ASC',
+        page = 1,
+        limit = 5,
+        search = '',
+    ): Promise<FieldJournalTemplate[] | []> {
+        const orderObject = this.createOrderObject(orderBy, orderMethod);
+
+        const fieldJournalTemplates = await this.ormRepository.find({
+            order: orderObject,
+            take: limit,
+            skip: (page - 1) * limit,
+            where: [{ name: Like(`%${search}%`) }],
+        });
 
         return fieldJournalTemplates;
+    }
+
+    private createOrderObject(
+        orderBy: 'name' | 'created_at' | 'updated_at',
+        orderMethod: 'ASC' | 'DESC',
+    ) {
+        if (orderBy === 'name') {
+            return { name: orderMethod };
+        }
+        if (orderBy === 'created_at') {
+            return { created_at: orderMethod };
+        }
+        if (orderBy === 'updated_at') {
+            return { created_at: orderMethod };
+        }
+        return undefined;
     }
 
     public async delete(
