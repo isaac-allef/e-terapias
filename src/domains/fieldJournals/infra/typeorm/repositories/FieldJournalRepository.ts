@@ -1,4 +1,4 @@
-import { EntityRepository, getRepository, Repository } from 'typeorm';
+import { EntityRepository, getRepository, Like, Repository } from 'typeorm';
 import IFieldJournalRepository from '../../../repositories/IFieldJournalRepository';
 import FieldJournal from '../entities/FieldJournal';
 import ICreateFieldJournal from '../../../dtos/ICreateFieldJournal';
@@ -37,10 +37,39 @@ class FieldJournalRepository implements IFieldJournalRepository {
         return fieldJournal;
     }
 
-    public async all(): Promise<FieldJournal[] | []> {
-        const fieldJournal = await this.ormRepository.find();
+    public async all(
+        orderBy: 'title' | 'created_at' | 'updated_at' = 'title',
+        orderMethod: 'ASC' | 'DESC' = 'ASC',
+        page = 1,
+        limit = 5,
+        search = '',
+    ): Promise<FieldJournal[] | []> {
+        const orderObject = this.createOrderObject(orderBy, orderMethod);
+
+        const fieldJournal = await this.ormRepository.find({
+            order: orderObject,
+            take: limit,
+            skip: (page - 1) * limit,
+            where: [{ title: Like(`%${search}%`) }],
+        });
 
         return fieldJournal;
+    }
+
+    private createOrderObject(
+        orderBy: 'title' | 'created_at' | 'updated_at',
+        orderMethod: 'ASC' | 'DESC',
+    ) {
+        if (orderBy === 'title') {
+            return { title: orderMethod };
+        }
+        if (orderBy === 'created_at') {
+            return { created_at: orderMethod };
+        }
+        if (orderBy === 'updated_at') {
+            return { created_at: orderMethod };
+        }
+        return undefined;
     }
 
     public async delete(fieldJournal: FieldJournal): Promise<void> {

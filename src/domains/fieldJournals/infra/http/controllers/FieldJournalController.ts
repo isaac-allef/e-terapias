@@ -35,8 +35,15 @@ class FieldJournalController {
 
     public async list(request: Request, response: Response): Promise<Response> {
         const fieldJournalRepository = new FieldJournalRepository();
+        const { search, orderBy, orderMethod, page, limit } = request.query;
 
-        const fieldJournals = await fieldJournalRepository.all();
+        const fieldJournals = await fieldJournalRepository.all(
+            orderBy as 'title' | 'created_at' | 'updated_at',
+            orderMethod as 'ASC' | 'DESC',
+            (page as unknown) as number,
+            (limit as unknown) as number,
+            search as string,
+        );
 
         return response.json(fieldJournals);
     }

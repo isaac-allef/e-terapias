@@ -5,6 +5,12 @@ export default interface IFieldJournalRepository {
     createWithoutSave(data: ICreateFieldJournal): IFieldJournal;
     save(fieldJournal: IFieldJournal): Promise<void>;
     findById(id: string): Promise<IFieldJournal | undefined>;
-    all(): Promise<IFieldJournal[] | []>;
+    all(
+        orderBy: 'title' | 'created_at' | 'updated_at',
+        orderMethod: 'ASC' | 'DESC',
+        page: number,
+        limit: number,
+        search: string,
+    ): Promise<IFieldJournal[] | []>;
     delete(fieldJournal: IFieldJournal): Promise<void>;
 }
