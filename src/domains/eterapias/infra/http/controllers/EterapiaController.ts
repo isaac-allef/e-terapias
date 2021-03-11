@@ -21,14 +21,15 @@ class EterapiaController {
 
     public async list(request: Request, response: Response): Promise<Response> {
         const eterapiaRepository = new EterapiaRepository();
-        const { search } = request.query;
+        const { search, orderBy, orderMethod, page, limit } = request.query;
 
-        if (search) {
-            const eterapias = await eterapiaRepository.search(search as string);
-            return response.json(eterapias);
-        }
-
-        const eterapias = await eterapiaRepository.all();
+        const eterapias = await eterapiaRepository.all(
+            orderBy as 'name' | 'created_at' | 'updated_at',
+            orderMethod as 'ASC' | 'DESC',
+            (page as unknown) as number,
+            (limit as unknown) as number,
+            search as string,
+        );
         return response.json(eterapias);
     }
 

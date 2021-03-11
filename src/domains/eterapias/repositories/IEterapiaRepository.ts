@@ -10,8 +10,8 @@ export default interface IEterapiaRepository {
         orderMethod: 'ASC' | 'DESC',
         page: number,
         limit: number,
+        search: string,
     ): Promise<IEterapia[] | []>;
     save(eterapia: IEterapia): Promise<void>;
     delete(eterapia: IEterapia): Promise<void>;
-    search(name: string): Promise<IEterapia[] | []>;
 }

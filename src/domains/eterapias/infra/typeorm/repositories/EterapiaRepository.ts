@@ -40,6 +40,7 @@ class EterapiaRepository implements IEterapiaRepository {
         orderMethod: 'ASC' | 'DESC' = 'ASC',
         page = 1,
         limit = 5,
+        search = '',
     ): Promise<Eterapia[] | []> {
         const orderObject = this.createOrderObject(orderBy, orderMethod);
 
@@ -47,6 +48,7 @@ class EterapiaRepository implements IEterapiaRepository {
             order: orderObject,
             take: limit,
             skip: (page - 1) * limit,
+            where: [{ name: Like(`%${search}%`) }],
         });
 
         return eterapias;
@@ -74,14 +76,6 @@ class EterapiaRepository implements IEterapiaRepository {
 
     public async delete(eterapia: Eterapia): Promise<void> {
         await this.ormRepository.remove(eterapia);
-    }
-
-    public async search(name: string): Promise<Eterapia[] | []> {
-        const eterapias = await this.ormRepository.find({
-            name: Like(`%${name}%`),
-        });
-
-        return eterapias;
     }
 }
 
