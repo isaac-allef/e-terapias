@@ -32,6 +32,7 @@ class Eterapia implements IEterapia {
         fieldJournalTemplate => fieldJournalTemplate.eterapias,
         {
             eager: true,
+            onDelete: 'SET NULL',
         },
     )
     fieldJournalTemplate: FieldJournalTemplate;
