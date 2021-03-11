@@ -1,4 +1,4 @@
-import Eterapia from '../../eterapias/infra/typeorm/entities/Eterapia';
+import IEterapia from '../../eterapias/models/IEterapia';
 
 interface FieldTemplates {
     name: string;
@@ -15,7 +15,7 @@ interface IFieldJournalTemplate {
         fieldTemplates: FieldTemplates[];
     };
 
-    eterapias: Eterapia[];
+    eterapias: IEterapia[];
 
     created_at: Date;
 

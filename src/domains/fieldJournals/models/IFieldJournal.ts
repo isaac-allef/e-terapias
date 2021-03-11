@@ -1,15 +1,15 @@
 import Field from './IField';
-import Eterapia from '../../eterapias/infra/typeorm/entities/Eterapia';
-import Moderator from '../../moderators/infra/typeorm/entities/Moderator';
+import IEterapia from '../../eterapias/models/IEterapia';
+import IModerator from '../../moderators/models/IModerator';
 
 interface IFieldJournal {
     id: string;
 
     title: string;
 
-    moderator: Moderator;
+    moderator: IModerator;
 
-    eterapia: Eterapia;
+    eterapia: IEterapia;
 
     fields: Field[];
 

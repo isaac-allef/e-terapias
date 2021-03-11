@@ -1,18 +1,18 @@
-import FieldJournal from '../../../models/IFieldJournal';
-import FieldJournalTemplate from '../../../models/IFieldJournalTemplate';
+import IFieldJournal from '../../fieldJournals/models/IFieldJournal';
+import IFieldJournalTemplate from '../../fieldJournals/models/IFieldJournalTemplate';
 
-import Moderator from '../../moderators/models/IModerator';
+import IModerator from '../../moderators/models/IModerator';
 
 interface IEterapia {
     id: string;
 
     name: string;
 
-    fieldJournals: FieldJournal[];
+    fieldJournals: IFieldJournal[];
 
-    fieldJournalTemplate: FieldJournalTemplate;
+    fieldJournalTemplate: IFieldJournalTemplate;
 
-    moderators: Moderator[];
+    moderators: IModerator[];
 }
 
 export default IEterapia;

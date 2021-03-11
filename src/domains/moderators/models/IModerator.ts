@@ -1,5 +1,5 @@
 import Eterapia from '../../eterapias/models/IEterapia';
-import FieldJournal from '../../../models/IFieldJournal';
+import IFieldJournal from '../../fieldJournals/models/IFieldJournal';
 
 interface IModerator {
     id: string;
@@ -8,7 +8,7 @@ interface IModerator {
 
     password: string;
 
-    fieldJournals: FieldJournal[];
+    fieldJournals: IFieldJournal[];
 
     eterapias: Eterapia[];
 
