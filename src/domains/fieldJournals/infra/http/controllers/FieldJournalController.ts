@@ -4,6 +4,7 @@ import FieldJournalRepository from '../../typeorm/repositories/FieldJournalRepos
 import FieldRepository from '../../typeorm/repositories/FieldRepository';
 import ModeratorRepository from '../../../../moderators/infra/typeorm/repositories/ModeratorRepository';
 import AppError from '../../../../../shared/errors/AppError';
+import UpdateFieldsService from '../../../services/UpdateFieldsService';
 
 class FieldJournalController {
     public async create(
@@ -55,7 +56,7 @@ class FieldJournalController {
         response: Response,
     ): Promise<Response> {
         const { id } = request.params;
-        const { title } = request.body;
+        const { title, updateFields } = request.body;
 
         const fieldJournalRepository = new FieldJournalRepository();
 
@@ -67,7 +68,11 @@ class FieldJournalController {
 
         fieldJournal.title = title;
 
-        fieldJournalRepository.save(fieldJournal);
+        const updateFieldsService = new UpdateFieldsService(fieldJournal);
+
+        updateFieldsService.execute({ updateFields });
+
+        await fieldJournalRepository.save(fieldJournal);
 
         return response.json(fieldJournal);
     }
