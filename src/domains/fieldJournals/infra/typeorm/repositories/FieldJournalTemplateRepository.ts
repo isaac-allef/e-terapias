@@ -42,6 +42,7 @@ class FieldJournalTemplateRepository
         page = 1,
         limit = 5,
         search = '',
+        relations: ['eterapias'],
     ): Promise<FieldJournalTemplate[] | []> {
         const orderObject = this.createOrderObject(orderBy, orderMethod);
 
@@ -50,6 +51,7 @@ class FieldJournalTemplateRepository
             take: limit,
             skip: (page - 1) * limit,
             where: [{ name: Like(`%${search}%`) }],
+            relations,
         });
 
         return fieldJournalTemplates;

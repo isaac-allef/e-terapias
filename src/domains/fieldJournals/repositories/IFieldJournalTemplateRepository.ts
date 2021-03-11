@@ -10,6 +10,7 @@ export default interface IFieldJournalTemplateRepository {
         page: number,
         limit: number,
         search: string,
+        relations: ['eterapias'],
     ): Promise<IFieldJournalTemplate[] | []>;
     delete(fieldJournalTemplate: IFieldJournalTemplate): Promise<void>;
 }
