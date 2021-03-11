@@ -44,11 +44,21 @@ class CreateFieldJournalService {
             moderator,
         });
 
+        const { fieldJournalTemplate } = fieldJournal.eterapia;
+
+        if (!fieldJournalTemplate) {
+            throw new AppError(
+                "This eterapia doesn't have a field journal template",
+            );
+        }
+
+        const { fieldTemplates } = fieldJournalTemplate.description;
+
         const createFieldsService = new CreateFieldsWithoutSaveService(
             this.fieldRepository,
         );
         const fieldArray = await createFieldsService.execute({
-            fieldJournal,
+            fieldTemplates,
             fields,
         });
 

@@ -1,17 +1,9 @@
-interface Field_request {
-    name: string;
-    type: string;
-    value: string | number | Date | boolean;
-}
-
-interface FieldTemplates {
-    name: string;
-    type: string;
-}
+import IRequestField from '../dtos/IRequestField';
+import ITemplateField from '../dtos/ITemplateField';
 
 interface Request {
-    fields: Field_request[];
-    fieldTemplates: FieldTemplates[];
+    fields: IRequestField[];
+    fieldTemplates: ITemplateField[];
 }
 
 class FieldsMatchWithFieldTemplatesService {

@@ -1,23 +1,22 @@
 import AppError from '../../../shared/errors/AppError';
 import FieldsMatchWithFieldsTemplateService from './FieldsMatchWithFieldTemplatesService';
 import IFieldRepository from '../repositories/IFieldRepository';
-import IFieldJournal from '../models/IFieldJournal';
 import IField from '../models/IField';
 import IRequestField from '../dtos/IRequestField';
+import ITemplateField from '../dtos/ITemplateField';
 
 interface Request {
-    fieldJournal: IFieldJournal;
+    fieldTemplates: ITemplateField[];
     fields: IRequestField[];
 }
 
 class CreateFieldsWithoutSaveService {
     constructor(private fieldRepository: IFieldRepository) {}
 
-    public async execute({ fieldJournal, fields }: Request): Promise<IField[]> {
-        const {
-            fieldTemplates,
-        } = fieldJournal.eterapia.fieldJournalTemplate.description;
-
+    public async execute({
+        fieldTemplates,
+        fields,
+    }: Request): Promise<IField[]> {
         const fieldsMatchWithFieldsTemplate = new FieldsMatchWithFieldsTemplateService();
         const matching = fieldsMatchWithFieldsTemplate.execute({
             fields,
