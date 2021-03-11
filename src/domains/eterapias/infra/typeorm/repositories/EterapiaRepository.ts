@@ -41,6 +41,7 @@ class EterapiaRepository implements IEterapiaRepository {
         page = 1,
         limit = 5,
         search = '',
+        relations: ['moderators' | 'fieldJournalTemplate' | 'fieldJournals'],
     ): Promise<Eterapia[] | []> {
         const orderObject = this.createOrderObject(orderBy, orderMethod);
 
@@ -49,6 +50,7 @@ class EterapiaRepository implements IEterapiaRepository {
             take: limit,
             skip: (page - 1) * limit,
             where: [{ name: Like(`%${search}%`) }],
+            relations,
         });
 
         return eterapias;

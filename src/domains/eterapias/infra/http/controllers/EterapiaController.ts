@@ -21,7 +21,14 @@ class EterapiaController {
 
     public async list(request: Request, response: Response): Promise<Response> {
         const eterapiaRepository = new EterapiaRepository();
-        const { search, orderBy, orderMethod, page, limit } = request.query;
+        const {
+            search,
+            relations,
+            orderBy,
+            orderMethod,
+            page,
+            limit,
+        } = request.query;
 
         const eterapias = await eterapiaRepository.all(
             orderBy as 'name' | 'created_at' | 'updated_at',
@@ -29,6 +36,9 @@ class EterapiaController {
             (page as unknown) as number,
             (limit as unknown) as number,
             search as string,
+            relations as [
+                'moderators' | 'fieldJournalTemplate' | 'fieldJournals',
+            ],
         );
         return response.json(eterapias);
     }

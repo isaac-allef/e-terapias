@@ -30,10 +30,7 @@ class Eterapia implements IEterapia {
     @ManyToOne(
         () => FieldJournalTemplate,
         fieldJournalTemplate => fieldJournalTemplate.eterapias,
-        {
-            eager: true,
-            onDelete: 'SET NULL',
-        },
+        { onDelete: 'SET NULL' },
     )
     fieldJournalTemplate: FieldJournalTemplate;
 

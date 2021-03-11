@@ -11,6 +11,7 @@ export default interface IEterapiaRepository {
         page: number,
         limit: number,
         search: string,
+        relations: ['moderators' | 'fieldJournalTemplate' | 'fieldJournals'],
     ): Promise<IEterapia[] | []>;
     save(eterapia: IEterapia): Promise<void>;
     delete(eterapia: IEterapia): Promise<void>;
