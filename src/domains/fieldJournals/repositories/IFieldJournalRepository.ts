@@ -11,6 +11,7 @@ export default interface IFieldJournalRepository {
         page: number,
         limit: number,
         search: string,
+        relations: ['moderator' | 'eterapia'],
     ): Promise<IFieldJournal[] | []>;
     delete(fieldJournal: IFieldJournal): Promise<void>;
 }

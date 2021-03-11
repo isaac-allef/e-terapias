@@ -43,6 +43,7 @@ class FieldJournalRepository implements IFieldJournalRepository {
         page = 1,
         limit = 5,
         search = '',
+        relations: ['moderator' | 'eterapia'],
     ): Promise<FieldJournal[] | []> {
         const orderObject = this.createOrderObject(orderBy, orderMethod);
 
@@ -51,6 +52,7 @@ class FieldJournalRepository implements IFieldJournalRepository {
             take: limit,
             skip: (page - 1) * limit,
             where: [{ title: Like(`%${search}%`) }],
+            relations,
         });
 
         return fieldJournal;
