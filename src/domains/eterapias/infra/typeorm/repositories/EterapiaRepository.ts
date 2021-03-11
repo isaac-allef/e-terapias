@@ -1,4 +1,4 @@
-import { EntityRepository, getRepository, Repository } from 'typeorm';
+import { EntityRepository, getRepository, Like, Repository } from 'typeorm';
 import ICreateEterapiaDTO from '../../../dtos/ICreateEterapiaDTO';
 import IEterapiaRepository from '../../../repositories/IEterapiaRepository';
 import Eterapia from '../entities/Eterapia';
@@ -74,6 +74,14 @@ class EterapiaRepository implements IEterapiaRepository {
 
     public async delete(eterapia: Eterapia): Promise<void> {
         await this.ormRepository.remove(eterapia);
+    }
+
+    public async search(name: string): Promise<Eterapia[] | []> {
+        const eterapias = await this.ormRepository.find({
+            name: Like(`%${name}%`),
+        });
+
+        return eterapias;
     }
 }
 

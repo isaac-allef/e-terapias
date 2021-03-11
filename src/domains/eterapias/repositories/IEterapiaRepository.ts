@@ -13,4 +13,5 @@ export default interface IEterapiaRepository {
     ): Promise<IEterapia[] | []>;
     save(eterapia: IEterapia): Promise<void>;
     delete(eterapia: IEterapia): Promise<void>;
+    search(name: string): Promise<IEterapia[] | []>;
 }
