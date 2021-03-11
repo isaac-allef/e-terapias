@@ -1,4 +1,4 @@
-import { EntityRepository, getRepository, Repository } from 'typeorm';
+import { EntityRepository, getRepository, Like, Repository } from 'typeorm';
 import ICreateAdministratorDTO from '../../../../administrators/dtos/ICreateAdministratorDTO';
 import IModeratorRepository from '../../../repositories/IModeratorRepository';
 import Moderator from '../entities/Moderator';
@@ -41,10 +41,39 @@ class ModeratorRepository implements IModeratorRepository {
         return moderator;
     }
 
-    public async all(): Promise<Moderator[] | []> {
-        const moderators = await this.ormRepository.find();
+    public async all(
+        orderBy: 'email' | 'created_at' | 'updated_at' = 'created_at',
+        orderMethod: 'ASC' | 'DESC' = 'ASC',
+        page = 1,
+        limit = 5,
+        search = '',
+    ): Promise<Moderator[] | []> {
+        const orderObject = this.createOrderObject(orderBy, orderMethod);
+
+        const moderators = await this.ormRepository.find({
+            order: orderObject,
+            take: limit,
+            skip: (page - 1) * limit,
+            where: [{ email: Like(`%${search}%`) }],
+        });
 
         return moderators;
+    }
+
+    private createOrderObject(
+        orderBy: 'email' | 'created_at' | 'updated_at',
+        orderMethod: 'ASC' | 'DESC',
+    ) {
+        if (orderBy === 'email') {
+            return { email: orderMethod };
+        }
+        if (orderBy === 'created_at') {
+            return { created_at: orderMethod };
+        }
+        if (orderBy === 'updated_at') {
+            return { created_at: orderMethod };
+        }
+        return undefined;
     }
 
     public async save(moderator: Moderator): Promise<void> {
