@@ -53,12 +53,24 @@ class ModeratorController {
 
     public async show(request: Request, response: Response): Promise<Response> {
         const { id } = request.params;
+        const { relations } = request.query;
 
         const moderatorRepository = new ModeratorRepository();
 
-        const moderators = await moderatorRepository.findById(id);
+        const moderator = await moderatorRepository.findById(
+            id,
+            relations as [
+                | 'eterapias'
+                | 'eterapias.fieldJournalTemplate'
+                | 'fieldJournals',
+            ],
+        );
 
-        return response.json(moderators);
+        if (!moderator) {
+            throw new AppError('Moderator not found.');
+        }
+
+        return response.json(moderator);
     }
 
     public async update(

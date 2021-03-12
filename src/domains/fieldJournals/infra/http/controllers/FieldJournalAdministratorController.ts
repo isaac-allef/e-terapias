@@ -28,10 +28,18 @@ class FieldJournalAdministratorController {
 
     public async show(request: Request, response: Response): Promise<Response> {
         const { id } = request.params;
+        const { relations } = request.query;
 
         const fieldJournalRepository = new FieldJournalRepository();
 
-        const fieldJournal = await fieldJournalRepository.findById(id);
+        const fieldJournal = await fieldJournalRepository.findById(
+            id,
+            relations as ['moderator' | 'eterapia'],
+        );
+
+        if (!fieldJournal) {
+            throw new AppError('Field journal not found.');
+        }
 
         return response.json(fieldJournal);
     }

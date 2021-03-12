@@ -49,12 +49,18 @@ class FieldJournalTemplateController {
 
     public async show(request: Request, response: Response): Promise<Response> {
         const { id } = request.params;
+        const { relations } = request.query;
 
         const fieldJournalTemplateRepository = new FieldJournalTemplateRepository();
 
         const fieldJournalTemplate = await fieldJournalTemplateRepository.findById(
             id,
+            relations as ['eterapias'],
         );
+
+        if (!fieldJournalTemplate) {
+            throw new AppError('Field journal template not found.');
+        }
 
         return response.json(fieldJournalTemplate);
     }

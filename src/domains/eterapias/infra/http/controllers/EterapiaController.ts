@@ -45,9 +45,20 @@ class EterapiaController {
 
     public async show(request: Request, response: Response): Promise<Response> {
         const { id } = request.params;
+        const { relations } = request.query;
+
         const eterapiaRepository = new EterapiaRepository();
 
-        const eterapia = await eterapiaRepository.findById(id);
+        const eterapia = await eterapiaRepository.findById(
+            id,
+            relations as [
+                'moderators' | 'fieldJournalTemplate' | 'fieldJournals',
+            ],
+        );
+
+        if (!eterapia) {
+            throw new AppError('Eterapia not found.');
+        }
 
         return response.json(eterapia);
     }
