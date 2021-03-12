@@ -1,4 +1,4 @@
-import { EntityRepository, getRepository, Like, Repository } from 'typeorm';
+import { EntityRepository, getRepository, ILike, Repository } from 'typeorm';
 import IFieldJournalRepository from '../../../repositories/IFieldJournalRepository';
 import FieldJournal from '../entities/FieldJournal';
 import ICreateFieldJournal from '../../../dtos/ICreateFieldJournal';
@@ -51,7 +51,7 @@ class FieldJournalRepository implements IFieldJournalRepository {
             order: orderObject,
             take: limit,
             skip: (page - 1) * limit,
-            where: [{ title: Like(`%${search}%`) }],
+            where: [{ title: ILike(`%${search}%`) }],
             relations,
         });
 

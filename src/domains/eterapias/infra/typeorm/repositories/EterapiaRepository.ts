@@ -1,4 +1,4 @@
-import { EntityRepository, getRepository, Like, Repository } from 'typeorm';
+import { EntityRepository, getRepository, ILike, Repository } from 'typeorm';
 import ICreateEterapiaDTO from '../../../dtos/ICreateEterapiaDTO';
 import IEterapiaRepository from '../../../repositories/IEterapiaRepository';
 import Eterapia from '../entities/Eterapia';
@@ -49,7 +49,7 @@ class EterapiaRepository implements IEterapiaRepository {
             order: orderObject,
             take: limit,
             skip: (page - 1) * limit,
-            where: [{ name: Like(`%${search}%`) }],
+            where: [{ name: ILike(`%${search}%`) }],
             relations,
         });
 

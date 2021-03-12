@@ -1,4 +1,4 @@
-import { EntityRepository, getRepository, Like, Repository } from 'typeorm';
+import { EntityRepository, getRepository, ILike, Repository } from 'typeorm';
 import ICreateAdministratorDTO from '../../../../administrators/dtos/ICreateAdministratorDTO';
 import IModeratorRepository from '../../../repositories/IModeratorRepository';
 import Moderator from '../entities/Moderator';
@@ -55,7 +55,7 @@ class ModeratorRepository implements IModeratorRepository {
             order: orderObject,
             take: limit,
             skip: (page - 1) * limit,
-            where: [{ email: Like(`%${search}%`) }],
+            where: [{ email: ILike(`%${search}%`) }],
             relations,
         });
 
