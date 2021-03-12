@@ -23,7 +23,6 @@ class FieldJournal implements IFieldJournal {
 
     @ManyToOne(() => Moderator, moderator => moderator.fieldJournals, {
         onDelete: 'CASCADE',
-        eager: true,
     })
     moderator: Moderator;
 

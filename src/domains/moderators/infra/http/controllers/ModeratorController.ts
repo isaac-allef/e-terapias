@@ -41,7 +41,11 @@ class ModeratorController {
             (page as unknown) as number,
             (limit as unknown) as number,
             search as string,
-            relations as ['eterapias' | 'fieldJournals'],
+            relations as [
+                | 'eterapias'
+                | 'eterapias.fieldJournalTemplate'
+                | 'fieldJournals',
+            ],
         );
 
         return response.json(moderators);

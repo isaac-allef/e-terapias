@@ -29,9 +29,13 @@ class FieldJournalRepository implements IFieldJournalRepository {
         await this.ormRepository.save(fieldJournal);
     }
 
-    public async findById(id: string): Promise<FieldJournal | undefined> {
+    public async findById(
+        id: string,
+        relations?: ['moderator' | 'eterapia'],
+    ): Promise<FieldJournal | undefined> {
         const fieldJournal = await this.ormRepository.findOne({
             where: { id },
+            relations,
         });
 
         return fieldJournal;

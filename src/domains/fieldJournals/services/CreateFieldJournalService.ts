@@ -26,7 +26,10 @@ class CreateFieldJournalService {
         eterapiaId,
         moderatorId,
     }: Request): Promise<IFieldJournal> {
-        const moderator = await this.moderatorRepository.findById(moderatorId);
+        const moderator = await this.moderatorRepository.findById(moderatorId, [
+            'eterapias',
+            'eterapias.fieldJournalTemplate',
+        ]);
 
         if (!moderator) {
             throw new AppError('Moderator not found.');
@@ -38,19 +41,19 @@ class CreateFieldJournalService {
             throw new AppError('Eterapia not found in this relationship.');
         }
 
-        const fieldJournal = this.fieldJournalRepository.createWithoutSave({
-            title,
-            eterapia,
-            moderator,
-        });
-
-        const { fieldJournalTemplate } = fieldJournal.eterapia;
+        const { fieldJournalTemplate } = eterapia;
 
         if (!fieldJournalTemplate) {
             throw new AppError(
                 "This eterapia doesn't have a field journal template",
             );
         }
+
+        const fieldJournal = this.fieldJournalRepository.createWithoutSave({
+            title,
+            eterapia,
+            moderator,
+        });
 
         const { fieldTemplates } = fieldJournalTemplate.description;
 

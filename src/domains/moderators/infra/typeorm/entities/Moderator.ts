@@ -26,9 +26,7 @@ class Moderator implements IModerator {
     @OneToMany(() => FieldJournal, fieldJournal => fieldJournal.moderator)
     fieldJournals: FieldJournal[];
 
-    @ManyToMany(() => Eterapia, eterapia => eterapia.moderators, {
-        eager: true,
-    })
+    @ManyToMany(() => Eterapia, eterapia => eterapia.moderators)
     eterapias: Eterapia[];
 
     @CreateDateColumn()

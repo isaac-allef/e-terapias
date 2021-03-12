@@ -4,7 +4,10 @@ import IFieldJournal from '../models/IFieldJournal';
 export default interface IFieldJournalRepository {
     createWithoutSave(data: ICreateFieldJournal): IFieldJournal;
     save(fieldJournal: IFieldJournal): Promise<void>;
-    findById(id: string): Promise<IFieldJournal | undefined>;
+    findById(
+        id: string,
+        relations?: ['moderator' | 'eterapia'],
+    ): Promise<IFieldJournal | undefined>;
     all(
         orderBy: 'title' | 'created_at' | 'updated_at',
         orderMethod: 'ASC' | 'DESC',

@@ -28,9 +28,11 @@ class FieldJournalTemplateRepository
 
     public async findById(
         id: string,
+        relations?: ['eterapias'],
     ): Promise<FieldJournalTemplate | undefined> {
         const fieldJournalTemplate = await this.ormRepository.findOne({
             where: { id },
+            relations,
         });
 
         return fieldJournalTemplate;

@@ -19,17 +19,25 @@ class EterapiaRepository implements IEterapiaRepository {
         return eterapia;
     }
 
-    public async findById(id: string): Promise<Eterapia | undefined> {
+    public async findById(
+        id: string,
+        relations?: ['moderators' | 'fieldJournalTemplate' | 'fieldJournals'],
+    ): Promise<Eterapia | undefined> {
         const eterapia = await this.ormRepository.findOne({
             where: { id },
+            relations,
         });
 
         return eterapia;
     }
 
-    public async findByName(name: string): Promise<Eterapia | undefined> {
+    public async findByName(
+        name: string,
+        relations?: ['moderators' | 'fieldJournalTemplate' | 'fieldJournals'],
+    ): Promise<Eterapia | undefined> {
         const eterapia = await this.ormRepository.findOne({
             where: { name },
+            relations,
         });
 
         return eterapia;

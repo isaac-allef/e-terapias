@@ -3,8 +3,14 @@ import IEterapia from '../models/IEterapia';
 
 export default interface IEterapiaRepository {
     create(data: ICreateEterapiaDTO): Promise<IEterapia>;
-    findById(id: string): Promise<IEterapia | undefined>;
-    findByName(name: string): Promise<IEterapia | undefined>;
+    findById(
+        id: string,
+        relations?: ['moderators' | 'fieldJournalTemplate' | 'fieldJournals'],
+    ): Promise<IEterapia | undefined>;
+    findByName(
+        name: string,
+        relations?: ['moderators' | 'fieldJournalTemplate' | 'fieldJournals'],
+    ): Promise<IEterapia | undefined>;
     all(
         orderBy: 'name' | 'created_at' | 'updated_at',
         orderMethod: 'ASC' | 'DESC',

@@ -25,17 +25,29 @@ class ModeratorRepository implements IModeratorRepository {
         return moderator;
     }
 
-    public async findByEmail(email: string): Promise<Moderator | undefined> {
+    public async findByEmail(
+        email: string,
+        relations?: [
+            'eterapias' | 'eterapias.fieldJournalTemplate' | 'fieldJournals',
+        ],
+    ): Promise<Moderator | undefined> {
         const moderator = await this.ormRepository.findOne({
             where: { email },
+            relations,
         });
 
         return moderator;
     }
 
-    public async findById(id: string): Promise<Moderator | undefined> {
+    public async findById(
+        id: string,
+        relations?: [
+            'eterapias' | 'eterapias.fieldJournalTemplate' | 'fieldJournals',
+        ],
+    ): Promise<Moderator | undefined> {
         const moderator = await this.ormRepository.findOne({
             where: { id },
+            relations,
         });
 
         return moderator;
@@ -47,7 +59,9 @@ class ModeratorRepository implements IModeratorRepository {
         page = 1,
         limit = 5,
         search = '',
-        relations: ['eterapias' | 'fieldJournals'],
+        relations: [
+            'eterapias' | 'eterapias.fieldJournalTemplate' | 'fieldJournals',
+        ],
     ): Promise<Moderator[] | []> {
         const orderObject = this.createOrderObject(orderBy, orderMethod);
 
