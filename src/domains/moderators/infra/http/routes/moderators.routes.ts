@@ -1,10 +1,13 @@
 import { Router } from 'express';
+import ensureAuthenticatedAdministrator from '../../../../administrators/infra/http/middlewares/ensureAuthenticatedAdministrator';
 import ModeratorController from '../controllers/ModeratorController';
 import RelationModeratorEterapiaController from '../controllers/RelationModeratorEterapiaController';
 
 const moderatorsRoute = Router();
 const moderatorController = new ModeratorController();
 const relationModeratorEterapiaController = new RelationModeratorEterapiaController();
+
+moderatorsRoute.use(ensureAuthenticatedAdministrator);
 
 moderatorsRoute.post('/', moderatorController.create);
 

@@ -1,8 +1,11 @@
 import { Router } from 'express';
+import ensureAuthenticatedAdministrator from '../../../../administrators/infra/http/middlewares/ensureAuthenticatedAdministrator';
 import EterapiaController from '../controllers/EterapiaController';
 
 const eterapiasRoute = Router();
 const eterapiaController = new EterapiaController();
+
+eterapiasRoute.use(ensureAuthenticatedAdministrator);
 
 eterapiasRoute.post('/', eterapiaController.create);
 
