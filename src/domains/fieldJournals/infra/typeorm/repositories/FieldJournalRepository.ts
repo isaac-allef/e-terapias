@@ -32,9 +32,10 @@ class FieldJournalRepository implements IFieldJournalRepository {
     public async findById(
         id: string,
         relations?: ['moderator' | 'eterapia'],
+        moderatorId?: string,
     ): Promise<FieldJournal | undefined> {
         const fieldJournal = await this.ormRepository.findOne({
-            where: { id },
+            where: { id, moderator: { id: moderatorId } },
             relations,
         });
 
@@ -48,6 +49,7 @@ class FieldJournalRepository implements IFieldJournalRepository {
         limit = 5,
         search = '',
         relations: ['moderator' | 'eterapia'],
+        moderatorId?: string,
     ): Promise<FieldJournal[] | []> {
         const orderObject = this.createOrderObject(orderBy, orderMethod);
 
@@ -55,7 +57,9 @@ class FieldJournalRepository implements IFieldJournalRepository {
             order: orderObject,
             take: limit,
             skip: (page - 1) * limit,
-            where: [{ title: ILike(`%${search}%`) }],
+            where: [
+                { title: ILike(`%${search}%`), moderator: { id: moderatorId } },
+            ],
             relations,
         });
 
@@ -81,6 +85,14 @@ class FieldJournalRepository implements IFieldJournalRepository {
     public async delete(fieldJournal: FieldJournal): Promise<void> {
         await this.ormRepository.remove(fieldJournal);
     }
+
+    // public async allByModerator(id: string): Promise<FieldJournal[] | []> {
+    //     const fieldJournals = await this.ormRepository.find({
+    //         where: { moderator: { id } },
+    //     });
+
+    //     return fieldJournals;
+    // }
 }
 
 export default FieldJournalRepository;

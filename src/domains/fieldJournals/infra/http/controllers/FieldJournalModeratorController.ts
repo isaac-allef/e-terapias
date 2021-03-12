@@ -89,6 +89,52 @@ class FieldJournalModeratorController {
 
         return response.json(fieldJournal);
     }
+
+    public async list(request: Request, response: Response): Promise<Response> {
+        const { id } = request.moderator;
+
+        const {
+            search,
+            relations,
+            orderBy,
+            orderMethod,
+            page,
+            limit,
+        } = request.query;
+
+        const fieldJournalRepository = new FieldJournalRepository();
+
+        const fieldJournals = await fieldJournalRepository.all(
+            orderBy as 'title' | 'created_at' | 'updated_at',
+            orderMethod as 'ASC' | 'DESC',
+            (page as unknown) as number,
+            (limit as unknown) as number,
+            search as string,
+            relations as ['moderator' | 'eterapia'],
+            id,
+        );
+
+        return response.json(fieldJournals);
+    }
+
+    public async show(request: Request, response: Response): Promise<Response> {
+        const { id } = request.params;
+        const { relations } = request.query;
+
+        const fieldJournalRepository = new FieldJournalRepository();
+
+        const fieldJournal = await fieldJournalRepository.findById(
+            id,
+            relations as ['moderator' | 'eterapia'],
+            request.moderator.id,
+        );
+
+        if (!fieldJournal) {
+            throw new AppError('Field journal not found.');
+        }
+
+        return response.json(fieldJournal);
+    }
 }
 
 export default FieldJournalModeratorController;

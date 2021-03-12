@@ -7,6 +7,7 @@ export default interface IFieldJournalRepository {
     findById(
         id: string,
         relations?: ['moderator' | 'eterapia'],
+        moderatorId?: string,
     ): Promise<IFieldJournal | undefined>;
     all(
         orderBy: 'title' | 'created_at' | 'updated_at',
@@ -15,6 +16,7 @@ export default interface IFieldJournalRepository {
         limit: number,
         search: string,
         relations: ['moderator' | 'eterapia'],
+        moderatorId?: string,
     ): Promise<IFieldJournal[] | []>;
     delete(fieldJournal: IFieldJournal): Promise<void>;
 }

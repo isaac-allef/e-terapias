@@ -35,9 +35,17 @@ fieldJournalsRoute.post(
     fieldJournalModeratorController.create,
 );
 
-// fieldJournalsRoute.get('/', fieldJournalModeratorController.list);
+fieldJournalsRoute.get(
+    '/moderator',
+    ensureAuthenticatedModerator,
+    fieldJournalModeratorController.list,
+);
 
-// fieldJournalsRoute.get('/:id', fieldJournalModeratorController.show);
+fieldJournalsRoute.get(
+    '/:id/moderator',
+    ensureAuthenticatedModerator,
+    fieldJournalModeratorController.show,
+);
 
 fieldJournalsRoute.put(
     '/:id/moderator',
