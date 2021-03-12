@@ -6,12 +6,13 @@ import ModeratorRepository from '../../../../moderators/infra/typeorm/repositori
 import AppError from '../../../../../shared/errors/AppError';
 import UpdateFieldsService from '../../../services/UpdateFieldsService';
 
-class FieldJournalController {
+class FieldJournalModeratorController {
     public async create(
         request: Request,
         response: Response,
     ): Promise<Response> {
-        const { title, fields, eterapiaId, moderatorId } = request.body;
+        const { id } = request.moderator;
+        const { title, fields, eterapiaId } = request.body;
 
         const fieldJournalRepository = new FieldJournalRepository();
         const fieldRepository = new FieldRepository();
@@ -27,41 +28,8 @@ class FieldJournalController {
             title,
             fields,
             eterapiaId,
-            moderatorId,
+            moderatorId: id,
         });
-
-        return response.json(fieldJournal);
-    }
-
-    public async list(request: Request, response: Response): Promise<Response> {
-        const fieldJournalRepository = new FieldJournalRepository();
-        const {
-            search,
-            relations,
-            orderBy,
-            orderMethod,
-            page,
-            limit,
-        } = request.query;
-
-        const fieldJournals = await fieldJournalRepository.all(
-            orderBy as 'title' | 'created_at' | 'updated_at',
-            orderMethod as 'ASC' | 'DESC',
-            (page as unknown) as number,
-            (limit as unknown) as number,
-            search as string,
-            relations as ['moderator' | 'eterapia'],
-        );
-
-        return response.json(fieldJournals);
-    }
-
-    public async show(request: Request, response: Response): Promise<Response> {
-        const { id } = request.params;
-
-        const fieldJournalRepository = new FieldJournalRepository();
-
-        const fieldJournal = await fieldJournalRepository.findById(id);
 
         return response.json(fieldJournal);
     }
@@ -79,6 +47,12 @@ class FieldJournalController {
 
         if (!fieldJournal) {
             throw new AppError('Field Journal not found.');
+        }
+
+        if (request.moderator.id !== fieldJournal.moderator.id) {
+            throw new AppError(
+                "You cannot change another moderator's field journal",
+            );
         }
 
         fieldJournal.title = title;
@@ -105,10 +79,16 @@ class FieldJournalController {
             throw new AppError('Field journal not found.');
         }
 
+        if (request.moderator.id !== fieldJournal.moderator.id) {
+            throw new AppError(
+                "You cannot delete another moderator's field journal",
+            );
+        }
+
         await fieldJournalRepository.delete(fieldJournal);
 
         return response.json(fieldJournal);
     }
 }
 
-export default FieldJournalController;
+export default FieldJournalModeratorController;

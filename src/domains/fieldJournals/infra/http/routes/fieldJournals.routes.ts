@@ -1,18 +1,54 @@
 import { Router } from 'express';
-import FieldJournalController from '../controllers/FieldJournalController';
+import ensureAuthenticatedAdministrator from '../../../../administrators/infra/http/middlewares/ensureAuthenticatedAdministrator';
+import ensureAuthenticatedModerator from '../../../../moderators/infra/http/middlewares/ensureAuthenticatedModerator';
+import FieldJournalAdministratorController from '../controllers/FieldJournalAdministratorController';
+import FieldJournalModeratorController from '../controllers/FieldJournalModeratorController';
 
-const fieldJournalController = new FieldJournalController();
+const fieldJournalAdministratorController = new FieldJournalAdministratorController();
+const fieldJournalModeratorController = new FieldJournalModeratorController();
 
 const fieldJournalsRoute = Router();
 
-fieldJournalsRoute.post('/', fieldJournalController.create);
+fieldJournalsRoute.get(
+    '/administrator',
+    ensureAuthenticatedAdministrator,
+    fieldJournalAdministratorController.list,
+);
 
-fieldJournalsRoute.get('/', fieldJournalController.list);
+fieldJournalsRoute.get(
+    '/:id/administrator',
+    ensureAuthenticatedAdministrator,
+    fieldJournalAdministratorController.show,
+);
 
-fieldJournalsRoute.get('/:id', fieldJournalController.show);
+fieldJournalsRoute.delete(
+    '/:id/administrator',
+    ensureAuthenticatedAdministrator,
+    fieldJournalAdministratorController.delete,
+);
 
-fieldJournalsRoute.put('/:id', fieldJournalController.update);
+///
 
-fieldJournalsRoute.delete('/:id', fieldJournalController.delete);
+fieldJournalsRoute.post(
+    '/moderator',
+    ensureAuthenticatedModerator,
+    fieldJournalModeratorController.create,
+);
+
+// fieldJournalsRoute.get('/', fieldJournalModeratorController.list);
+
+// fieldJournalsRoute.get('/:id', fieldJournalModeratorController.show);
+
+fieldJournalsRoute.put(
+    '/:id/moderator',
+    ensureAuthenticatedModerator,
+    fieldJournalModeratorController.update,
+);
+
+fieldJournalsRoute.delete(
+    '/:id/moderator',
+    ensureAuthenticatedModerator,
+    fieldJournalModeratorController.delete,
+);
 
 export default fieldJournalsRoute;

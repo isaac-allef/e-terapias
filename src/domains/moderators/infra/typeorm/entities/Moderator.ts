@@ -27,7 +27,7 @@ class Moderator implements IModerator {
     fieldJournals: FieldJournal[];
 
     @ManyToMany(() => Eterapia, eterapia => eterapia.moderators, {
-        // eager: true,
+        eager: true,
     })
     eterapias: Eterapia[];
 
