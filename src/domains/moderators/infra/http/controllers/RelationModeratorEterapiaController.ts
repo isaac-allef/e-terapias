@@ -12,7 +12,9 @@ class RelationModeratorEterapiaController {
 
         const moderatorRepository = new ModeratorRepository();
 
-        const moderator = await moderatorRepository.findById(moderatorId);
+        const moderator = await moderatorRepository.findById(moderatorId, [
+            'eterapias',
+        ]);
 
         if (!moderator) {
             throw new AppError('Moderator not found.');
@@ -41,7 +43,9 @@ class RelationModeratorEterapiaController {
 
         const moderatorRepository = new ModeratorRepository();
 
-        const moderator = await moderatorRepository.findById(moderatorId);
+        const moderator = await moderatorRepository.findById(moderatorId, [
+            'eterapias',
+        ]);
 
         if (!moderator) {
             throw new AppError('Moderator not found.');
