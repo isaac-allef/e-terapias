@@ -9,53 +9,39 @@ const fieldJournalModeratorController = new FieldJournalModeratorController();
 
 const fieldJournalsRoute = Router();
 
+fieldJournalsRoute.use('*/administrator', ensureAuthenticatedAdministrator);
+fieldJournalsRoute.use('*/moderator', ensureAuthenticatedModerator);
+
 fieldJournalsRoute.get(
     '/administrator',
-    ensureAuthenticatedAdministrator,
     fieldJournalAdministratorController.list,
 );
 
 fieldJournalsRoute.get(
     '/:id/administrator',
-    ensureAuthenticatedAdministrator,
     fieldJournalAdministratorController.show,
 );
 
 fieldJournalsRoute.delete(
     '/:id/administrator',
-    ensureAuthenticatedAdministrator,
     fieldJournalAdministratorController.delete,
 );
 
 ///
 
-fieldJournalsRoute.post(
-    '/moderator',
-    ensureAuthenticatedModerator,
-    fieldJournalModeratorController.create,
-);
+fieldJournalsRoute.post('/moderator', fieldJournalModeratorController.create);
 
-fieldJournalsRoute.get(
-    '/moderator',
-    ensureAuthenticatedModerator,
-    fieldJournalModeratorController.list,
-);
+fieldJournalsRoute.get('/moderator', fieldJournalModeratorController.list);
 
-fieldJournalsRoute.get(
-    '/:id/moderator',
-    ensureAuthenticatedModerator,
-    fieldJournalModeratorController.show,
-);
+fieldJournalsRoute.get('/:id/moderator', fieldJournalModeratorController.show);
 
 fieldJournalsRoute.put(
     '/:id/moderator',
-    ensureAuthenticatedModerator,
     fieldJournalModeratorController.update,
 );
 
 fieldJournalsRoute.delete(
     '/:id/moderator',
-    ensureAuthenticatedModerator,
     fieldJournalModeratorController.delete,
 );
 
