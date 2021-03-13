@@ -43,7 +43,9 @@ class FieldJournalModeratorController {
 
         const fieldJournalRepository = new FieldJournalRepository();
 
-        const fieldJournal = await fieldJournalRepository.findById(id);
+        const fieldJournal = await fieldJournalRepository.findById(id, [
+            'moderator',
+        ]);
 
         if (!fieldJournal) {
             throw new AppError('Field Journal not found.');
@@ -57,9 +59,10 @@ class FieldJournalModeratorController {
 
         fieldJournal.title = title;
 
-        const updateFieldsService = new UpdateFieldsService(fieldJournal);
-
-        updateFieldsService.execute({ updateFields });
+        if (updateFields) {
+            const updateFieldsService = new UpdateFieldsService(fieldJournal);
+            updateFieldsService.execute({ updateFields });
+        }
 
         await fieldJournalRepository.save(fieldJournal);
 
