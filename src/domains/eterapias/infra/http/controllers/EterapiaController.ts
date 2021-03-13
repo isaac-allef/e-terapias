@@ -81,17 +81,19 @@ class EterapiaController {
 
         eterapia.name = name;
 
-        const fieldJournalTemplateRepository = new FieldJournalTemplateRepository();
+        if (fieldJournalTemplateId) {
+            const fieldJournalTemplateRepository = new FieldJournalTemplateRepository();
 
-        const fieldJournalTemplate = await fieldJournalTemplateRepository.findById(
-            fieldJournalTemplateId,
-        );
+            const fieldJournalTemplate = await fieldJournalTemplateRepository.findById(
+                fieldJournalTemplateId,
+            );
 
-        if (!fieldJournalTemplate) {
-            throw new AppError('Field journal template not found.');
+            if (!fieldJournalTemplate) {
+                throw new AppError('Field journal template not found.');
+            }
+
+            eterapia.fieldJournalTemplate = fieldJournalTemplate;
         }
-
-        eterapia.fieldJournalTemplate = fieldJournalTemplate;
 
         eterapiaRepository.save(eterapia);
 
