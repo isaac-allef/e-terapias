@@ -1,8 +1,9 @@
 // import Head from 'next/head';
-import { Heading } from "@chakra-ui/react"
+
+import MyTitle from "../components/MyTitle";
 
 export default function Home() {
   return (
-    <Heading>Hello world</Heading>
+    <MyTitle>Olá</MyTitle>
   )
 }
