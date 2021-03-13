@@ -32,10 +32,9 @@ class FieldJournalRepository implements IFieldJournalRepository {
     public async findById(
         id: string,
         relations?: ['moderator' | 'eterapia'],
-        moderatorId?: string,
     ): Promise<FieldJournal | undefined> {
         const fieldJournal = await this.ormRepository.findOne({
-            where: { id, moderator: { id: moderatorId } },
+            where: { id },
             relations,
         });
 
@@ -49,7 +48,6 @@ class FieldJournalRepository implements IFieldJournalRepository {
         limit = 5,
         search = '',
         relations: ['moderator' | 'eterapia'],
-        moderatorId?: string,
     ): Promise<FieldJournal[] | []> {
         const orderObject = this.createOrderObject(orderBy, orderMethod);
 
@@ -57,9 +55,7 @@ class FieldJournalRepository implements IFieldJournalRepository {
             order: orderObject,
             take: limit,
             skip: (page - 1) * limit,
-            where: [
-                { title: ILike(`%${search}%`), moderator: { id: moderatorId } },
-            ],
+            where: [{ title: ILike(`%${search}%`) }],
             relations,
         });
 
@@ -86,13 +82,42 @@ class FieldJournalRepository implements IFieldJournalRepository {
         await this.ormRepository.remove(fieldJournal);
     }
 
-    // public async allByModerator(id: string): Promise<FieldJournal[] | []> {
-    //     const fieldJournals = await this.ormRepository.find({
-    //         where: { moderator: { id } },
-    //     });
+    public async allFilterByModerator(
+        orderBy: 'title' | 'created_at' | 'updated_at' = 'title',
+        orderMethod: 'ASC' | 'DESC' = 'ASC',
+        page = 1,
+        limit = 5,
+        search = '',
+        relations: ['moderator' | 'eterapia'],
+        moderatorId?: string,
+    ): Promise<FieldJournal[] | []> {
+        const orderObject = this.createOrderObject(orderBy, orderMethod);
 
-    //     return fieldJournals;
-    // }
+        const fieldJournal = await this.ormRepository.find({
+            order: orderObject,
+            take: limit,
+            skip: (page - 1) * limit,
+            where: [
+                { title: ILike(`%${search}%`), moderator: { id: moderatorId } },
+            ],
+            relations,
+        });
+
+        return fieldJournal;
+    }
+
+    public async findByIdFilterByModerator(
+        id: string,
+        relations?: ['moderator' | 'eterapia'],
+        moderatorId?: string,
+    ): Promise<FieldJournal | undefined> {
+        const fieldJournal = await this.ormRepository.findOne({
+            where: { id, moderator: { id: moderatorId } },
+            relations,
+        });
+
+        return fieldJournal;
+    }
 }
 
 export default FieldJournalRepository;

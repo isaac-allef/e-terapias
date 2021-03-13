@@ -104,7 +104,7 @@ class FieldJournalModeratorController {
 
         const fieldJournalRepository = new FieldJournalRepository();
 
-        const fieldJournals = await fieldJournalRepository.all(
+        const fieldJournals = await fieldJournalRepository.allFilterByModerator(
             orderBy as 'title' | 'created_at' | 'updated_at',
             orderMethod as 'ASC' | 'DESC',
             (page as unknown) as number,
@@ -123,7 +123,7 @@ class FieldJournalModeratorController {
 
         const fieldJournalRepository = new FieldJournalRepository();
 
-        const fieldJournal = await fieldJournalRepository.findById(
+        const fieldJournal = await fieldJournalRepository.findByIdFilterByModerator(
             id,
             relations as ['moderator' | 'eterapia'],
             request.moderator.id,
