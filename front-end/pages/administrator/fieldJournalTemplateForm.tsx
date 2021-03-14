@@ -5,6 +5,7 @@ import { Skeleton } from "@chakra-ui/skeleton";
 import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu";
 import { DeleteIcon, SmallAddIcon } from "@chakra-ui/icons";
 import { useState } from "react";
+import { Editable, EditableInput, EditablePreview } from "@chakra-ui/editable";
 
 interface Question {
     id: any;
@@ -18,13 +19,28 @@ export default function FieldJournalTemplateForm() {
     function questionShortAnswer (key: any, questionArray: any[], label: string) {
         return (
             <Box key={key}>
-                <Text>{ label }</Text>
+                <Editable defaultValue={ label } 
+                        onChange={(newValue) => handleChange(newValue, key, questionArray)}>
+                    <EditablePreview />
+                    <EditableInput />
+                </Editable>
                 <Skeleton height="30px" />
                 <Button onClick={() => handleRemove(key, questionArray)}>
                     <DeleteIcon />
                 </Button>
             </Box>
         )
+    }
+
+    function handleChange(newValue, key, questions) {
+        const newList = questions.map((quest) => {
+            if (quest.id === key) {
+                quest.name = newValue;
+                return quest;
+            }
+            return quest;
+        });
+        setQuestions(newList);
     }
     
     function questionLongAnswer(key: any, questionArray: any[], label: string) {
