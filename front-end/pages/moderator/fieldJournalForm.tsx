@@ -1,7 +1,6 @@
 import MyTitle from "../../components/MyTitle";
 import { Button } from "@chakra-ui/button";
-import { Box, Divider, Flex, Stack, Text, Wrap } from "@chakra-ui/layout";
-import { Skeleton } from "@chakra-ui/skeleton";
+import { Box, Divider, Flex, Text } from "@chakra-ui/layout";
 import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { useState } from "react";
@@ -25,13 +24,11 @@ export default function FieldJournalForm() {
     const [eterapias, _setEterapias] = useState([
         { id: 'aaaaaaaa', name: 'Como dormir cedo', 
             fieldTemplates: [
-                {  
-                    id: Math.random(),
+                {
                     name: "Qual o seu nome?",
                     type: "short"
                 },
                 {
-                    id: Math.random(),
                     name: "Faça uma redação",
                     type: "long"
                 },
@@ -39,8 +36,7 @@ export default function FieldJournalForm() {
         },
         { id: 'bbbbbbbb', name: 'Curtindo a vida', 
             fieldTemplates: [
-                {  
-                    id: Math.random(),
+                {
                     name: "Como você está?",
                     type: "short"
                 },
@@ -49,18 +45,18 @@ export default function FieldJournalForm() {
         { id: 'cccccccc', name: 'A vida é assim, bro', fieldTemplates: [] },
     ]);
     
-    function questionShortAnswer (key: any, label: string) {
+    function questionShortAnswer (label: string) {
         return (
-            <Box key={key}>
+            <Box key={Math.random()}>
                 <Text>{ label }</Text>
                 <Input />
             </Box>
         )
     }
     
-    function questionLongAnswer(key: any, label: string) {
+    function questionLongAnswer(label: string) {
         return (
-            <Box key={key}>
+            <Box key={Math.random()}>
                 <Text>{ label }</Text>
                 <Textarea />
             </Box>
@@ -99,10 +95,10 @@ export default function FieldJournalForm() {
 
         { questions.map(question => {
             if (question.type === 'short') {
-                return questionShortAnswer(question.id, question.name);
+                return questionShortAnswer(question.name);
             }
             if (question.type === 'long') {
-                return questionLongAnswer(question.id, question.name);
+                return questionLongAnswer(question.name);
             }
         }) }
 
