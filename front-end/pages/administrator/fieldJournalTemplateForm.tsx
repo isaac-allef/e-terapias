@@ -1,9 +1,9 @@
 import MyTitle from "../../components/MyTitle";
 import { Button } from "@chakra-ui/button";
-import { Box, Divider, Stack, Text } from "@chakra-ui/layout";
+import { Box, Divider, Flex, Stack, Text, Wrap } from "@chakra-ui/layout";
 import { Skeleton } from "@chakra-ui/skeleton";
 import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu";
-import { DeleteIcon, SmallAddIcon } from "@chakra-ui/icons";
+import { ChevronDownIcon, CloseIcon, DeleteIcon, SmallAddIcon } from "@chakra-ui/icons";
 import { useState } from "react";
 import { Editable, EditableInput, EditablePreview } from "@chakra-ui/editable";
 
@@ -13,8 +13,19 @@ interface Question {
     type: 'short' | 'long';
 }
 
+interface Eterapias {
+    id: string;
+    name: string;
+}
+
 export default function FieldJournalTemplateForm() {
     const [questions, setQuestions] = useState([]);
+    const [eterapias, _setEterapias] = useState([
+        { id: 'aaaaaaaa', name: 'Como dormir cedo' },
+        { id: 'bbbbbbbb', name: 'Curtindo a vida' },
+        { id: 'cccccccc', name: 'A vida é assim, bro' },
+    ]);
+    const [eterapiasToAdd, setEterapiasToAdd] = useState([]);
     
     function questionShortAnswer (key: any, questionArray: any[], label: string) {
         return (
@@ -66,6 +77,59 @@ export default function FieldJournalTemplateForm() {
 
     return (
       <>
+        <Flex>
+        <Wrap>
+            { 
+                eterapiasToAdd.map(ete => {
+                    return (
+                        <Flex key={ete.id}>
+                        <Text>{ ete.name }</Text>
+                        <Button onClick={() => {
+                                const newList = eterapiasToAdd.filter(e => e.id !== ete.id)
+                                setEterapiasToAdd(newList)
+                            }
+                        }>
+                            <CloseIcon />
+                        </Button>
+                        </Flex>
+                    )
+                })
+            }
+        </Wrap>
+        <Menu>
+            {({ isOpen }) => (
+                <>
+                <MenuButton isActive={isOpen} as={Button} rightIcon={<ChevronDownIcon />}>
+                    Add Eterapia
+                </MenuButton>
+                <MenuList>
+                    {
+                        eterapias.map(eterapia => {
+                            return <MenuItem 
+                                    key={eterapia.id} 
+                                    onClick={() => {
+                                            let exists = false;
+                                            eterapiasToAdd.forEach(ete => {
+                                                if (ete.id === eterapia.id) {
+                                                    exists = true;
+                                                    return;
+                                                }
+                                            })
+                                            if (!exists) {
+                                                setEterapiasToAdd([...eterapiasToAdd, eterapia])
+                                            }
+                                        }
+                                    }
+                                    >{ eterapia.name }
+                                </MenuItem>
+                        })
+                    }
+                </MenuList>
+                </>
+            )}
+        </Menu>
+        </Flex>
+
         <MyTitle>{'Create Moderator'}</MyTitle>
 
         { questions.map(question => {
