@@ -8,24 +8,30 @@ interface MyProps {
 }
 
 export default function ShowEterapiasEdded({ eterapiasToAdd, setEterapiasToAdd }: MyProps) {
+    function removeEterapiaFromTheList(eterapiasToAdd, setEterapiasToAdd, id) {
+        const newList = eterapiasToAdd.filter(eterapia => eterapia.id !== id);
+        setEterapiasToAdd(newList);
+    }
+
     return (
         <Wrap>
-            { 
-                eterapiasToAdd.map(ete => {
-                    return (
-                        <Flex key={ete.id}>
-                        <Text>{ ete.name }</Text>
-                        <Button onClick={() => {
-                                const newList = eterapiasToAdd.filter(e => e.id !== ete.id)
-                                setEterapiasToAdd(newList)
-                            }
-                        }>
-                            <CloseIcon />
-                        </Button>
-                        </Flex>
-                    )
-                })
-            }
+        { 
+            eterapiasToAdd.map(eterapia => {
+                return (
+                    <Flex key={eterapia.id}>
+                    <Text>{ eterapia.name }</Text>
+                    <Button onClick={() => {
+                            removeEterapiaFromTheList(eterapiasToAdd, 
+                                                    setEterapiasToAdd, 
+                                                    eterapia.id)
+                        }
+                    }>
+                        <CloseIcon />
+                    </Button>
+                    </Flex>
+                )
+            })
+        }
         </Wrap>
     )
 }
