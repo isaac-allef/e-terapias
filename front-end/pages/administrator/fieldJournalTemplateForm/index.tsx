@@ -2,9 +2,10 @@ import MyTitle from "../../../components/MyTitle";
 import { Button } from "@chakra-ui/button";
 import { Box, Divider, Flex, Text, Wrap } from "@chakra-ui/layout";
 import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu";
-import { ChevronDownIcon, CloseIcon, DeleteIcon, SmallAddIcon } from "@chakra-ui/icons";
+import { ChevronDownIcon, CloseIcon, DeleteIcon } from "@chakra-ui/icons";
 import { useState } from "react";
 import QuestionTemplate from "./components/QuestionTemplate";
+import MenuAddNewQuestionTemplate from "./components/MenuAddNewQuestionTemplate";
 
 interface Question {
     id: any;
@@ -18,7 +19,7 @@ interface Eterapias {
 }
 
 export default function FieldJournalTemplateForm() {
-    const [questions, setQuestions] = useState([]);
+    const [questionsTemplates, setQuestionsTemplates] = useState([]);
     const [eterapias, _setEterapias] = useState([
         { id: 'aaaaaaaa', name: 'Como dormir cedo' },
         { id: 'bbbbbbbb', name: 'Curtindo a vida' },
@@ -26,20 +27,25 @@ export default function FieldJournalTemplateForm() {
     ]);
     const [eterapiasToAdd, setEterapiasToAdd] = useState([]);
 
+    function setNewQuestionTemplate(type: 'short' | 'long') {
+        const question: Question = { id: Math.random(), name: 'Type your question here', type }
+        setQuestionsTemplates([...questionsTemplates, question])
+    }
+
     function handleChange(newValue, key) {
-        const newList = questions.map((quest) => {
+        const newList = questionsTemplates.map((quest) => {
             if (quest.id === key) {
                 quest.name = newValue;
                 return quest;
             }
             return quest;
         });
-        setQuestions(newList);
+        setQuestionsTemplates(newList);
     }
 
-    function handleRemove(key, questions) {
-        const newList = questions.filter((quest) => quest.id !== key);
-        setQuestions(newList);
+    function handleRemove(key) {
+        const newList = questionsTemplates.filter((quest) => quest.id !== key);
+        setQuestionsTemplates(newList);
     }
 
     return (
@@ -100,7 +106,7 @@ export default function FieldJournalTemplateForm() {
         <MyTitle>{'Create Field Journal Template'}</MyTitle>
 
         {
-        questions.map(question => {
+        questionsTemplates.map(question => {
             return (
                 <Box key={question.id}>
                     <QuestionTemplate 
@@ -109,7 +115,7 @@ export default function FieldJournalTemplateForm() {
                         label={question.name} 
                         handleChange={handleChange}
                     />
-                    <Button onClick={() => handleRemove(question.id, questions)}>
+                    <Button onClick={() => handleRemove(question.id)}>
                         <DeleteIcon />
                     </Button>
                 </Box>
@@ -117,25 +123,9 @@ export default function FieldJournalTemplateForm() {
         })
         }
         
-        <Menu>
-            {({ isOpen }) => (
-                <>
-                <MenuButton isActive={isOpen} as={Button}>
-                    <SmallAddIcon />
-                </MenuButton>
-                <MenuList>
-                    <MenuItem onClick={() => {
-                        const question: Question = { id: Math.random(), name: 'Type your question here', type: 'short' }
-                        setQuestions([...questions, question])
-                    }}>Add question short answer</MenuItem>
-                    <MenuItem onClick={() => {
-                        const question: Question = { id: Math.random(), name: 'Type your question here', type: 'long' }
-                        setQuestions([...questions, question])
-                    }}>Add question long answer</MenuItem>
-                </MenuList>
-                </>
-            )}
-        </Menu>
+        <MenuAddNewQuestionTemplate 
+            setNewQuestionTemplate={setNewQuestionTemplate}
+        />
 
         <Divider />
       </>
