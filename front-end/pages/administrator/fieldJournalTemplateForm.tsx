@@ -1,11 +1,11 @@
-import MyTitle from "../../../components/MyTitle";
 import { Button } from "@chakra-ui/button";
 import { Box, Divider } from "@chakra-ui/layout";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { useState } from "react";
-import QuestionTemplate from "./components/QuestionTemplate";
-import MenuAddNewQuestionTemplate from "./components/MenuAddNewQuestionTemplate";
-import AddEterapias from "./components/AddEterapias";
+import MyTitle from "../../components/shared/MyTitle";
+import AddEterapias from "../../components/fieldJournalTemplateForm/AddEterapias";
+import QuestionTemplate from "../../components/fieldJournalTemplateForm/QuestionTemplate";
+import MenuAddNewQuestionTemplate from "../../components/fieldJournalTemplateForm/MenuAddNewQuestionTemplate";
 
 interface Question {
     id: any;
@@ -52,7 +52,7 @@ export default function FieldJournalTemplateForm() {
       <>
         <MyTitle>{'Create Field Journal Template'}</MyTitle>
 
-        <AddEterapias 
+        <AddEterapias
             eterapias={eterapias}
             eterapiasToAdd={eterapiasToAdd}
             setEterapiasToAdd={setEterapiasToAdd}
@@ -76,7 +76,7 @@ export default function FieldJournalTemplateForm() {
         })
         }
         
-        <MenuAddNewQuestionTemplate 
+        <MenuAddNewQuestionTemplate
             setNewQuestionTemplate={setNewQuestionTemplate}
         />
 

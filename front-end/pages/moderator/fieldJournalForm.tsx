@@ -1,8 +1,8 @@
-import MyTitle from "../../../components/MyTitle";
+import MyTitle from "../../components/shared/MyTitle";
 import { Divider } from "@chakra-ui/layout";
 import { useState } from "react";
-import Question from "./components/Question";
-import MenuChangeEterapia from "./components/MenuChangeEterapia";
+import Question from "../../components/fieldJournalForm/Question";
+import MenuChangeEterapia from "../../components/fieldJournalForm/MenuChangeEterapia";
 
 interface QuestionDTO {
     id: any;

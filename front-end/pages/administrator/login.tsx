@@ -1,5 +1,5 @@
-import MyInput from "../../components/MyInput";
-import MyTitle from "../../components/MyTitle";
+import MyInput from "../../components/shared/MyInput";
+import MyTitle from "../../components/shared/MyTitle";
 import * as Yup from 'yup';
 import { FormControl, FormErrorMessage, FormLabel } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";

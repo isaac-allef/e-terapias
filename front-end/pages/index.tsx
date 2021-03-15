@@ -1,6 +1,6 @@
 // import Head from 'next/head';
 
-import MyTitle from "../components/MyTitle";
+import MyTitle from "../components/shared/MyTitle";
 
 export default function Home() {
   return (

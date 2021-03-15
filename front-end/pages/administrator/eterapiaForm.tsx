@@ -1,5 +1,5 @@
 import { Field, Form, Formik } from "formik";
-import MyTitle from "../../components/MyTitle";
+import MyTitle from "../../components/shared/MyTitle";
 import * as Yup from 'yup';
 import { FormControl, FormErrorMessage, FormLabel } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";

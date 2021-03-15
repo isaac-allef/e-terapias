@@ -1,8 +1,8 @@
 import { Divider } from "@chakra-ui/layout";
-import MyButton from "../../../components/MyButton";
-import MyInput from "../../../components/MyInput";
-import MyTable from "./components/MyTable";
-import MyTitle from "../../../components/MyTitle";
+import MyButton from "../../components/shared/MyButton";
+import MyInput from "../../components/shared/MyInput";
+import MyTable from "../../components/list/MyTable";
+import MyTitle from "../../components/shared/MyTitle";
 import { useState } from "react";
 
 export default function ListModerators() {
