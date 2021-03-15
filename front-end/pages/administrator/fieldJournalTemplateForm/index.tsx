@@ -1,11 +1,10 @@
-import MyTitle from "../../components/MyTitle";
+import MyTitle from "../../../components/MyTitle";
 import { Button } from "@chakra-ui/button";
-import { Box, Divider, Flex, Stack, Text, Wrap } from "@chakra-ui/layout";
-import { Skeleton } from "@chakra-ui/skeleton";
+import { Box, Divider, Flex, Text, Wrap } from "@chakra-ui/layout";
 import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu";
 import { ChevronDownIcon, CloseIcon, DeleteIcon, SmallAddIcon } from "@chakra-ui/icons";
 import { useState } from "react";
-import { Editable, EditableInput, EditablePreview } from "@chakra-ui/editable";
+import QuestionTemplate from "./components/QuestionTemplate";
 
 interface Question {
     id: any;
@@ -26,24 +25,8 @@ export default function FieldJournalTemplateForm() {
         { id: 'cccccccc', name: 'A vida é assim, bro' },
     ]);
     const [eterapiasToAdd, setEterapiasToAdd] = useState([]);
-    
-    function questionShortAnswer (key: any, questionArray: any[], label: string) {
-        return (
-            <Box key={key}>
-                <Editable defaultValue={ label } 
-                        onChange={(newValue) => handleChange(newValue, key, questionArray)}>
-                    <EditablePreview />
-                    <EditableInput />
-                </Editable>
-                <Skeleton height="30px" />
-                <Button onClick={() => handleRemove(key, questionArray)}>
-                    <DeleteIcon />
-                </Button>
-            </Box>
-        )
-    }
 
-    function handleChange(newValue, key, questions) {
+    function handleChange(newValue, key) {
         const newList = questions.map((quest) => {
             if (quest.id === key) {
                 quest.name = newValue;
@@ -52,22 +35,6 @@ export default function FieldJournalTemplateForm() {
             return quest;
         });
         setQuestions(newList);
-    }
-    
-    function questionLongAnswer(key: any, questionArray: any[], label: string) {
-        return (
-            <Box key={key}>
-                <Text>{ label }</Text>
-                <Stack>
-                    <Skeleton height="30px" />
-                    <Skeleton height="30px" />
-                    <Skeleton height="30px" />
-                </Stack>
-                <Button onClick={() => handleRemove(key, questionArray)}>
-                    <DeleteIcon />
-                </Button>
-            </Box>
-        )
     }
 
     function handleRemove(key, questions) {
@@ -130,16 +97,25 @@ export default function FieldJournalTemplateForm() {
         </Menu>
         </Flex>
 
-        <MyTitle>{'Create Moderator'}</MyTitle>
+        <MyTitle>{'Create Field Journal Template'}</MyTitle>
 
-        { questions.map(question => {
-            if (question.type === 'short') {
-                return questionShortAnswer(question.id, questions, question.name);
-            }
-            if (question.type === 'long') {
-                return questionLongAnswer(question.id, questions, question.name);
-            }
-        }) }
+        {
+        questions.map(question => {
+            return (
+                <Box key={question.id}>
+                    <QuestionTemplate 
+                        id={question.id}
+                        type={question.type}
+                        label={question.name} 
+                        handleChange={handleChange}
+                    />
+                    <Button onClick={() => handleRemove(question.id, questions)}>
+                        <DeleteIcon />
+                    </Button>
+                </Box>
+            )
+        })
+        }
         
         <Menu>
             {({ isOpen }) => (
