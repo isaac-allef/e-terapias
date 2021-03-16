@@ -12,13 +12,18 @@ import DeleteAlertDialog from "./DeleteAlertDialog";
 
 import Link from 'next/link';
 
-interface Content {
+interface Line {
+    elementMain: {id: string, link: string, name: string};
+    others: string[][];
+}
+
+interface MyProps {
     heads: string[];
-    matrix: any[][];
+    matrix: Line[];
     handleRemove: Function;
 }
 
-export default function MyTable({ heads, matrix, handleRemove }: Content) {
+export default function MyTable({ heads, matrix, handleRemove }: MyProps) {
     return (
         <Table variant="simple">
             <Thead>
@@ -33,13 +38,11 @@ export default function MyTable({ heads, matrix, handleRemove }: Content) {
             </Thead>
             <Tbody>{
                 React.Children.toArray(
-                    matrix.map(vector => {
-                        return <Tr>{
-                            React.Children.toArray(
-                                vector.map((value, index) => {
-                                    if (index === 0) {
-                                        return <Td><Link href={value.link}>{ value.name }</Link></Td>
-                                    }
+                    matrix.map(line => {
+                        return <Tr>
+                            <Td><Link href={line.elementMain.link}>{ line.elementMain.name }</Link></Td>
+                            {React.Children.toArray(
+                                line.others.map(value => {
                                     const valueFormated = value.map((v, index) => {
                                         if (index === value.length -1) {
                                             return v + '.'
@@ -51,8 +54,8 @@ export default function MyTable({ heads, matrix, handleRemove }: Content) {
                             )}
                             <Td>
                                 <DeleteAlertDialog 
-                                    nameObjectWillDeleted={vector[0].name} 
-                                    handleRemove={() => handleRemove(matrix, vector[0].id)}
+                                    nameObjectWillDeleted={line.elementMain.name} 
+                                    handleRemove={() => handleRemove(matrix, line.elementMain.id)}
                                 />
                             </Td>
                         </Tr>
