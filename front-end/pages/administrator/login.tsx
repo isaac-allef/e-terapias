@@ -46,7 +46,7 @@ export default function Login() {
 
     actions.setSubmitting(false);
 
-    router.push('/');
+    router.push('/administrator/dashboard');
   }
 
   async function authenticationJWT(email: string, password: string): Promise<string | null> {
