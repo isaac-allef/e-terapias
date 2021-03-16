@@ -8,9 +8,11 @@ import { Field, Form, Formik } from "formik";
 
 import api from '../../services/api';
 
+import MyToast from "../../components/shared/MyToast";
 import { useRouter } from 'next/router';
 
 export default function Login() {
+    const myToast = new MyToast();
     const router = useRouter();
     
   const SignupSchema = Yup.object().shape({
@@ -27,8 +29,14 @@ export default function Login() {
     const { email, password } = values;
     const token = await authenticationJWT(email, password);
     if (!token) {
-        alert('Incorrect email/password combination');
+        myToast.execute({
+            title: 'Test', 
+            status: 'error', 
+            description: 'Incorrect email/password combination',
+        })
+
         return;
+
     }
     
     localStorage.setItem(
