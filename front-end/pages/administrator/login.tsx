@@ -1,4 +1,3 @@
-import MyInput from "../../components/shared/MyInput";
 import MyTitle from "../../components/shared/MyTitle";
 import * as Yup from 'yup';
 import { FormControl, FormErrorMessage, FormLabel } from "@chakra-ui/form-control";
@@ -7,7 +6,13 @@ import { Button } from "@chakra-ui/button";
 import { Divider } from "@chakra-ui/layout";
 import { Field, Form, Formik } from "formik";
 
+import api from '../../services/api';
+
+import { useRouter } from 'next/router';
+
 export default function Login() {
+    const router = useRouter();
+    
   const SignupSchema = Yup.object().shape({
     email: Yup.string().email().required('Required'),
     password: Yup.string().required('Required'),
@@ -18,13 +23,38 @@ export default function Login() {
       password: '',
   }
 
-  const functionSubmitForm = (values, actions) => {
-      setTimeout(() => {
-          alert(JSON.stringify(values, null, 2))
-          actions.setSubmitting(false)
-        }, 1000)      
-      console.log(values);
+  const functionSubmitForm = async (values, actions) => {
+    const { email, password } = values;
+    const token = await authenticationJWT(email, password);
+    if (!token) {
+        alert('Incorrect email/password combination');
+        return;
+    }
+    
+    localStorage.setItem(
+        '@eterapias:token',
+        token,
+    );
+
+    actions.setSubmitting(false);
+
+    router.push('/');
   }
+
+  async function authenticationJWT(email: string, password: string): Promise<string | null> {
+    try {
+        const response = await api.post('/sessions/administrator', {
+            email,
+            password,
+        });
+        const { token } = response.data;
+        return token;
+    } catch(error) {
+        console.log(error);
+        return null;
+    }
+  }
+
   return (
       <>
         <MyTitle>Login</MyTitle>
