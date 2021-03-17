@@ -14,6 +14,7 @@ import { useRouter } from 'next/router';
 export default function Login() {
     const myToast = new MyToast();
     const router = useRouter();
+    const { entity } = router.query;
     
   const SignupSchema = Yup.object().shape({
     email: Yup.string().email().required('Required'),
@@ -30,7 +31,7 @@ export default function Login() {
     const token = await authenticationJWT(email, password);
     if (!token) {
         myToast.execute({
-            title: 'Test', 
+            title: 'Error', 
             status: 'error', 
             description: 'Incorrect email/password combination',
         })
@@ -46,12 +47,16 @@ export default function Login() {
 
     actions.setSubmitting(false);
 
-    router.push('/administrator/dashboard');
+    if (entity === 'administrator') {
+        router.push('/administrator/dashboard');
+    } else if (entity === 'moderator') {
+        router.push('/');
+    }
   }
 
   async function authenticationJWT(email: string, password: string): Promise<string | null> {
     try {
-        const response = await api.post('/sessions/administrator', {
+        const response = await api.post(`/sessions/${entity}`, {
             email,
             password,
         });
@@ -65,7 +70,7 @@ export default function Login() {
 
   return (
       <>
-        <MyTitle>Login</MyTitle>
+        <MyTitle>{`Login ${entity}`}</MyTitle>
         
         <Formik
         initialValues={initialValues}
