@@ -6,8 +6,15 @@ import { useState } from "react";
 interface MyProps {
     eterapias: any[];
     setQuestions: Function;
+    setFieldJournalTitle: Function;
+    setEterapiaSelectedId: Function
 }
-export default function MenuChangeEterapia({ eterapias, setQuestions }: MyProps) {
+export default function MenuChangeEterapia({ 
+    eterapias, 
+    setQuestions, 
+    setFieldJournalTitle,
+    setEterapiaSelectedId,
+    }: MyProps) {
     const [eterapiaSelectedName, setEterapiaSelectedName] = useState("");
 
     return (
@@ -25,6 +32,8 @@ export default function MenuChangeEterapia({ eterapias, setQuestions }: MyProps)
                                     onClick={() => {
                                         setEterapiaSelectedName(eterapia.name)
                                         setQuestions(eterapia.fieldTemplates)
+                                        setFieldJournalTitle(eterapia.fieldJournalTitle)
+                                        setEterapiaSelectedId(eterapia.id)
                                     }}
                                     >{ eterapia.name }
                                 </MenuItem>

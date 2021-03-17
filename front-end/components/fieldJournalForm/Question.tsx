@@ -5,17 +5,19 @@ import { Textarea } from "@chakra-ui/textarea";
 interface MyProps {
     label: string;
     type: 'short' | 'long';
+    index: number;
+    handleChange: Function;
 }
 
-export default function Question({ label, type }: MyProps) {
+export default function Question({ label, type, index, handleChange }: MyProps) {
     let inputType = null;
 
     if (type === 'short') {
-        inputType = <Input />
+        inputType = <Input onChange={(e) => handleChange(e.target.value, index)} />
     }
 
     else if (type === 'long') {
-        inputType = <Textarea />
+        inputType = <Textarea onChange={(e) => handleChange(e.target.value, index)} />
     }
 
     return (
