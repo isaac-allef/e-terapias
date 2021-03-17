@@ -28,7 +28,7 @@ export default function Login() {
 
   const functionSubmitForm = async (values, actions) => {
     const { email, password } = values;
-    const token = await authenticationJWT(email, password);
+    const { id, token } = await authenticationJWT(email, password);
     if (!token) {
         myToast.execute({
             title: 'Error', 
@@ -40,10 +40,8 @@ export default function Login() {
 
     }
     
-    localStorage.setItem(
-        '@eterapias:token',
-        token,
-    );
+    localStorage.setItem('@eterapias:token', token);
+    localStorage.setItem('@eterapias:myId', id);
 
     actions.setSubmitting(false);
 
@@ -54,14 +52,15 @@ export default function Login() {
     }
   }
 
-  async function authenticationJWT(email: string, password: string): Promise<string | null> {
+  async function authenticationJWT(email: string, password: string): Promise<{ id: string, token: string } | null> {
     try {
         const response = await api.post(`/sessions/${entity}`, {
             email,
             password,
         });
         const { token } = response.data;
-        return token;
+        const { id } = response.data[`${entity}`]
+        return { id, token };
     } catch(error) {
         console.log(error);
         return null;
