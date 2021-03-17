@@ -81,8 +81,14 @@ export default function FieldJournalTemplateForm() {
 
     function createfieldTemplates(): FiledTemplate[] {
         return questionsTemplates.map(questionTemplate => {
+            
+            let caractereToIdentifyShortorLongQuestion = '';
+            if (questionTemplate.type === 'short') {
+                caractereToIdentifyShortorLongQuestion = ':'
+            }
+            
             return {
-                name: questionTemplate.name,
+                name: caractereToIdentifyShortorLongQuestion + questionTemplate.name,
                 type: 'string',
             }
         });
