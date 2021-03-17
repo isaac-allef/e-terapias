@@ -2,9 +2,22 @@ import { Router } from 'express';
 import { celebrate, Segments, Joi } from 'celebrate';
 import ensureAuthenticatedAdministrator from '../../../../administrators/infra/http/middlewares/ensureAuthenticatedAdministrator';
 import EterapiaController from '../controllers/EterapiaController';
+import ensureAuthenticatedModerator from '../../../../moderators/infra/http/middlewares/ensureAuthenticatedModerator';
 
 const eterapiasRoute = Router();
 const eterapiaController = new EterapiaController();
+
+eterapiasRoute.get(
+    '/moderator',
+    ensureAuthenticatedModerator,
+    eterapiaController.list,
+);
+
+eterapiasRoute.get(
+    '/:id/moderator',
+    ensureAuthenticatedModerator,
+    eterapiaController.show,
+);
 
 eterapiasRoute.use(ensureAuthenticatedAdministrator);
 
