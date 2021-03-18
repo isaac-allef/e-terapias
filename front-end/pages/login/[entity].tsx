@@ -48,7 +48,7 @@ export default function Login() {
     if (entity === 'administrator') {
         router.push('/administrator/dashboard');
     } else if (entity === 'moderator') {
-        router.push('/');
+        router.push('/moderator/fieldJournalForm');
     }
   }
 
@@ -63,7 +63,7 @@ export default function Login() {
         return { id, token };
     } catch(error) {
         console.log(error);
-        return null;
+        return { id: null, token: null };
     }
   }
 
