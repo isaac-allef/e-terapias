@@ -5,6 +5,7 @@ import { FormControl, FormErrorMessage, FormLabel } from "@chakra-ui/form-contro
 import { Input } from "@chakra-ui/input";
 import { Button } from "@chakra-ui/button";
 import { Divider } from "@chakra-ui/layout";
+import Header from "../../components/shared/Header";
 
 export default function ModeratorForm() {
     const SignupSchema = Yup.object().shape({
@@ -27,6 +28,7 @@ export default function ModeratorForm() {
 
     return (
       <>
+        <Header />
         <MyTitle>{'Create Moderator'}</MyTitle>
         <Formik
         initialValues={initialValues}

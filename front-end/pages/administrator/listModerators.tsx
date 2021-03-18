@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import api from '../../services/api';
 import MyToast from "../../components/shared/MyToast";
 import Link from "next/link";
+import Header from "../../components/shared/Header";
 
 interface Line {
   elementMain: {id: string, link: string, name: string};
@@ -64,6 +65,7 @@ export default function ListModerators() {
 
   return (
       <>
+        <Header />
         <MyTitle>{'List Moderatos'}</MyTitle>
         <MyInput placeholder="Search the moderators" search={true} ></MyInput>
         <MyTable

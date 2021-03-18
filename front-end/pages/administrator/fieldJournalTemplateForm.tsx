@@ -14,6 +14,7 @@ import { FormControl, FormErrorMessage, FormLabel } from "@chakra-ui/form-contro
 
 import * as Yup from 'yup';
 import { useRouter } from 'next/router';
+import Header from "../../components/shared/Header";
 
 interface Question {
     id: any;
@@ -132,6 +133,7 @@ export default function FieldJournalTemplateForm() {
 
     return (
       <>
+        <Header />
         <MyTitle>{'Create Field Journal Template'}</MyTitle>
 
         <AddEterapias

@@ -5,10 +5,12 @@ import Icon from "@chakra-ui/icon";
 import { IoIosJournal, IoIosPeople } from "react-icons/io";
 import { RiPsychotherapyFill } from "react-icons/ri";
 import { AiFillCopy } from "react-icons/ai";
+import Header from "../../components/shared/Header";
 
 export default function Dashboard() {
     return (
         <>
+            <Header />
             <MyTitle>DASHBOARD</MyTitle>
             <Flex direction={'column'}>
                 <Flex>
