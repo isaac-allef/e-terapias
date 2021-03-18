@@ -46,8 +46,10 @@ export default function Login() {
     actions.setSubmitting(false);
 
     if (entity === 'administrator') {
+        localStorage.setItem('@eterapias:entity', 'administrator');
         router.push('/administrator/dashboard');
     } else if (entity === 'moderator') {
+        localStorage.setItem('@eterapias:entity', 'moderator');
         router.push('/moderator/fieldJournals/list');
     }
   }
