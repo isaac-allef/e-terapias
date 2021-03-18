@@ -1,14 +1,14 @@
 import { Divider } from "@chakra-ui/layout";
-import MyButton from "../../components/shared/MyButton";
-import MyInput from "../../components/shared/MyInput";
-import MyTable from "../../components/list/MyTable";
-import MyTitle from "../../components/shared/MyTitle";
+import MyButton from "../../../components/shared/MyButton";
+import MyInput from "../../../components/shared/MyInput";
+import MyTable from "../../../components/list/MyTable";
+import MyTitle from "../../../components/shared/MyTitle";
 import { useEffect, useState } from "react";
 
-import api from '../../services/api';
-import MyToast from "../../components/shared/MyToast";
+import api from '../../../services/api';
+import MyToast from "../../../components/shared/MyToast";
 import Link from "next/link";
-import Header from "../../components/shared/Header";
+import Header from "../../../components/shared/Header";
 
 interface Line {
   elementMain: {id: string, link: string, name: string};
@@ -47,7 +47,7 @@ export default function ListModerators() {
       }
 
       return { 
-              elementMain: { id: moderator.id, link: '/', name: moderator.email}, 
+              elementMain: { id: moderator.id, link: '/administrator/moderators/detail', name: moderator.email}, 
               others: [eterapiasNames]
             }
     })
@@ -76,7 +76,7 @@ export default function ListModerators() {
 
         <Divider />
         <MyButton hide={false}>
-          <Link href={'/administrator/moderatorForm'}>New moderator</Link>
+          <Link href={'/administrator/moderators/form'}>New moderator</Link>
         </MyButton>
       </>
   )

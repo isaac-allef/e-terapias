@@ -1,11 +1,11 @@
 import { Field, Form, Formik } from "formik";
-import MyTitle from "../../components/shared/MyTitle";
+import MyTitle from "../../../components/shared/MyTitle";
 import * as Yup from 'yup';
 import { FormControl, FormErrorMessage, FormLabel } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
 import { Button } from "@chakra-ui/button";
 import { Divider } from "@chakra-ui/layout";
-import Header from "../../components/shared/Header";
+import Header from "../../../components/shared/Header";
 
 export default function EterapiaForm() {
     const SignupSchema = Yup.object().shape({

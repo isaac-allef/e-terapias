@@ -2,19 +2,19 @@ import { Button } from "@chakra-ui/button";
 import { Box, Divider } from "@chakra-ui/layout";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
-import MyTitle from "../../components/shared/MyTitle";
-import AddEterapias from "../../components/fieldJournalTemplateForm/AddEterapias";
-import QuestionTemplate from "../../components/fieldJournalTemplateForm/QuestionTemplate";
-import MenuAddNewQuestionTemplate from "../../components/fieldJournalTemplateForm/MenuAddNewQuestionTemplate";
+import MyTitle from "../../../components/shared/MyTitle";
+import AddEterapias from "../../../components/fieldJournalTemplateForm/AddEterapias";
+import QuestionTemplate from "../../../components/fieldJournalTemplateForm/QuestionTemplate";
+import MenuAddNewQuestionTemplate from "../../../components/fieldJournalTemplateForm/MenuAddNewQuestionTemplate";
 
-import api from '../../services/api';
+import api from '../../../services/api';
 import { Input } from "@chakra-ui/input";
 import { Field, Form, Formik } from "formik";
 import { FormControl, FormErrorMessage, FormLabel } from "@chakra-ui/form-control";
 
 import * as Yup from 'yup';
 import { useRouter } from 'next/router';
-import Header from "../../components/shared/Header";
+import Header from "../../../components/shared/Header";
 
 interface Question {
     id: any;

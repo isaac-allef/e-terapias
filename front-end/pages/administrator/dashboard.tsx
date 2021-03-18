@@ -20,7 +20,7 @@ export default function Dashboard() {
                      description={"Catch up on what's been cookin' at \
                                     Smashing and explore some of the \
                                     mostpopular community resources."}
-                     link='/'
+                     link='/administrator/fieldJournals/list'
                     />
                     <Card
                      icon={<Icon as={RiPsychotherapyFill} />}
@@ -28,7 +28,7 @@ export default function Dashboard() {
                      description={"Catch up on what's been cookin' at \
                                     Smashing and explore some of the \
                                     mostpopular community resources."}
-                     link='/'
+                     link='/administrator/eterapias/list'
                     />
                 </Flex>
                 <Flex>
@@ -38,7 +38,7 @@ export default function Dashboard() {
                      description={"Catch up on what's been cookin' at \
                                     Smashing and explore some of the \
                                     mostpopular community resources."}
-                     link='/'
+                     link='/administrator/fieldJournalsTemplates/list'
                     />
                     <Card
                      icon={<Icon as={IoIosPeople} />}
@@ -46,7 +46,7 @@ export default function Dashboard() {
                      description={"Catch up on what's been cookin' at \
                                     Smashing and explore some of the \
                                     mostpopular community resources."}
-                     link='/administrator/listModerators'
+                     link='/administrator/moderators/list'
                     />
                 </Flex>
             </Flex>

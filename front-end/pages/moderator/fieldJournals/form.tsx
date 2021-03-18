@@ -1,12 +1,12 @@
-import MyTitle from "../../components/shared/MyTitle";
+import MyTitle from "../../../components/shared/MyTitle";
 import { Divider, Text } from "@chakra-ui/layout";
 import { useEffect, useState } from "react";
-import Question from "../../components/fieldJournalForm/Question";
-import MenuChangeEterapia from "../../components/fieldJournalForm/MenuChangeEterapia";
+import Question from "../../../components/fieldJournalForm/Question";
+import MenuChangeEterapia from "../../../components/fieldJournalForm/MenuChangeEterapia";
 
-import api from '../../services/api';
+import api from '../../../services/api';
 import { Button } from "@chakra-ui/button";
-import MyToast from "../../components/shared/MyToast";
+import MyToast from "../../../components/shared/MyToast";
 
 interface QuestionDTO {
     id: any;

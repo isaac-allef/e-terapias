@@ -48,7 +48,7 @@ export default function Login() {
     if (entity === 'administrator') {
         router.push('/administrator/dashboard');
     } else if (entity === 'moderator') {
-        router.push('/moderator/fieldJournalForm');
+        router.push('/moderator/fieldJournals/list');
     }
   }
 
