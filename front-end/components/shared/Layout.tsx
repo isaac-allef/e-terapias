@@ -5,7 +5,13 @@ export default function Layout({ children }) {
     return (
         <Box>
             <Header />
-            { children }
+            <Box
+                marginTop='2rem'
+                marginLeft='5rem'
+                marginRight='5rem'
+            >
+                { children }
+            </Box>
         </Box>
     )
 }

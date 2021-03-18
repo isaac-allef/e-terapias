@@ -3,6 +3,7 @@ import { IoLogOutSharp } from 'react-icons/io5';
 import Link from 'next/link';
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import Image from 'next/image';
 
 export default function Header() {
     const [headingLink, setHeadingLink] = useState('/');
@@ -22,15 +23,26 @@ export default function Header() {
         <Flex
             as='header'
             top={0}
-            position='sticky'
+            // position='sticky'
             justifyContent='space-between'
             py='1rem'
             bgColor='white'
-            borderBottom='1px solid'
+            borderBottom='3px solid'
             borderColor='gray.100'
-            marginBottom='3rem'
+            paddingLeft='1rem'
+            paddingRight='1rem'
+            // background='#252525'
+            // textColor='white'
         >
-            <Heading><Link href={headingLink}>E-Terapias</Link></Heading>
+            <Flex>
+            <Image
+                src="/logoEterapias.png"
+                alt="E-Terapias"
+                width={60}
+                height={30}
+            />
+            <Heading marginLeft='1rem'><Link href={headingLink}>E-Terapias</Link></Heading>
+            </Flex>
             <HStack spacing='6'>
                 <Button variant='link'>About</Button>
                 <Button variant='link' onClick={() => {

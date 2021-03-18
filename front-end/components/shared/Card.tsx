@@ -10,7 +10,14 @@ interface MyProps {
 
 export default function Card({ icon, title, description, link }: MyProps) {
     return (
-        <LinkBox as="article" maxW="sm" p="5" borderWidth="1px" rounded="md">
+        <LinkBox 
+            as="article" 
+            maxW="sm" p="5" 
+            borderWidth="1px" 
+            rounded="md" 
+            background='#6930c3'
+            textColor='white'
+        >
             <Heading size="md" my="2">
                 { icon }
                 <LinkOverlay href={link} marginLeft={'10px'}>
