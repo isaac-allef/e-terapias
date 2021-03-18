@@ -2,13 +2,20 @@ import { Flex } from "@chakra-ui/layout"
 import MenuAddEterapia from "./components/MenuAddEterapia"
 import ShowEterapiasEdded from "./components/ShowEterapiasAdded"
 
+// eterapias
+// [
+//     { id: 'aaaaaaaa', name: 'Como dormir cedo' },
+//     { id: 'bbbbbbbb', name: 'Curtindo a vida' },
+//     { id: 'cccccccc', name: 'A vida é assim, bro' },
+// ]
+
 interface MyProps {
     eterapias: any[];
     eterapiasToAdd: any[];
     setEterapiasToAdd: Function;
 }
 
-export default function AddEterapias({ eterapias, eterapiasToAdd, setEterapiasToAdd }: MyProps) {
+export default function MenuAddEterapias({ eterapias, eterapiasToAdd, setEterapiasToAdd }: MyProps) {
     return (
         <Flex>
             <ShowEterapiasEdded

@@ -3,7 +3,7 @@ import { Box, Divider } from "@chakra-ui/layout";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
 import MyTitle from "../../../components/shared/MyTitle";
-import AddEterapias from "../../../components/fieldJournalTemplateForm/AddEterapias";
+import MenuAddEterapias from "../../../components/fieldJournalTemplateForm/MenuAddEterapias";
 import QuestionTemplate from "../../../components/fieldJournalTemplateForm/QuestionTemplate";
 import MenuAddNewQuestionTemplate from "../../../components/fieldJournalTemplateForm/MenuAddNewQuestionTemplate";
 
@@ -17,14 +17,9 @@ import { useRouter } from 'next/router';
 import Header from "../../../components/shared/Header";
 
 interface Question {
-    id: any;
+    id: number;
     name: string;
     type: 'short' | 'long';
-}
-
-interface Eterapias {
-    id: string;
-    name: string;
 }
 
 interface FiledTemplate {
@@ -40,12 +35,6 @@ interface FieldJournalTemplate {
     }
 }
 
-// [
-//     { id: 'aaaaaaaa', name: 'Como dormir cedo' },
-//     { id: 'bbbbbbbb', name: 'Curtindo a vida' },
-//     { id: 'cccccccc', name: 'A vida é assim, bro' },
-// ]
-
 export default function FieldJournalTemplateForm() {
     const router = useRouter();
     const [questionsTemplates, setQuestionsTemplates] = useState([]);
@@ -59,28 +48,28 @@ export default function FieldJournalTemplateForm() {
         })
     }, []);
 
-    function setNewQuestionTemplate(type: 'short' | 'long') {
-        const question: Question = { id: Math.random(), name: 'Type your question here', type }
-        setQuestionsTemplates([...questionsTemplates, question])
+    const addNewQuestionTemplate = (type: 'short' | 'long'): void => {
+        const newQuestionTemplate: Question = { id: Math.random(), name: 'Type your question here', type }
+        setQuestionsTemplates([...questionsTemplates, newQuestionTemplate])
     }
 
-    function handleChange(newValue, key) {
-        const newList = questionsTemplates.map((quest) => {
-            if (quest.id === key) {
-                quest.name = newValue;
-                return quest;
+    const handleChangeQuestionTemplate = (newValue: string, id: number): void => {
+        const newQuestionsTemplates = questionsTemplates.map(questionTemplate => {
+            if (questionTemplate.id === id) {
+                questionTemplate.name = newValue;
+                return questionTemplate;
             }
-            return quest;
+            return questionTemplate;
         });
-        setQuestionsTemplates(newList);
+        setQuestionsTemplates(newQuestionsTemplates);
     }
 
-    function handleRemove(key) {
-        const newList = questionsTemplates.filter((quest) => quest.id !== key);
-        setQuestionsTemplates(newList);
+    const handleRemove = (id: number): void => {
+        const newQuestionsTemplates = questionsTemplates.filter(questionTemplate => questionTemplate.id !== id);
+        setQuestionsTemplates(newQuestionsTemplates);
     }
 
-    function createfieldTemplates(): FiledTemplate[] {
+    const questionsTemplatesTofieldTemplates = (): FiledTemplate[] => {
         return questionsTemplates.map(questionTemplate => {
             
             let caractereToIdentifyShortorLongQuestion = '';
@@ -95,8 +84,8 @@ export default function FieldJournalTemplateForm() {
         });
     }
 
-    function createFieldJournalTemplate(name: string, title: string): FieldJournalTemplate {
-        const fieldTemplates = createfieldTemplates();
+    const createFieldJournalTemplateJson = (name: string, title: string): FieldJournalTemplate => {
+        const fieldTemplates = questionsTemplatesTofieldTemplates();
         return {
             name,
             description: {
@@ -119,16 +108,16 @@ export default function FieldJournalTemplateForm() {
     const functionSubmitForm = async (values, actions) => {
         const { name, title } = values;
 
-        const fieldJournalTemplateJson = createFieldJournalTemplate(name, title);
+        const fieldJournalTemplateJson = createFieldJournalTemplateJson(name, title);
 
         const token = localStorage.getItem('@eterapias:token');
-        const fieldJournalTemplate = await createNewFieldJournalTemplate(token, fieldJournalTemplateJson);
+        const fieldJournalTemplate = await saveNewFieldJournalTemplate(token, fieldJournalTemplateJson);
     
         const fieldJournalTemplateId = fieldJournalTemplate.id;
-        await addFieldJournalTemplateWithEterapias(token, fieldJournalTemplateId, eterapiasToAdd)
+        await addFieldJournalTemplateToEterapias(token, fieldJournalTemplateId, eterapiasToAdd)
         actions.setSubmitting(false);
     
-        router.push('/');
+        router.push('/administrator/fieldJournalsTemplates/list');
     }
 
     return (
@@ -136,7 +125,7 @@ export default function FieldJournalTemplateForm() {
         <Header />
         <MyTitle>{'Create Field Journal Template'}</MyTitle>
 
-        <AddEterapias
+        <MenuAddEterapias
             eterapias={eterapias}
             eterapiasToAdd={eterapiasToAdd}
             setEterapiasToAdd={setEterapiasToAdd}
@@ -176,7 +165,7 @@ export default function FieldJournalTemplateForm() {
                                 id={question.id}
                                 type={question.type}
                                 label={question.name} 
-                                handleChange={handleChange}
+                                handleChange={handleChangeQuestionTemplate}
                             />
                             <Button onClick={() => handleRemove(question.id)}>
                                 <DeleteIcon />
@@ -187,7 +176,7 @@ export default function FieldJournalTemplateForm() {
                 }
                 
                 <MenuAddNewQuestionTemplate
-                    setNewQuestionTemplate={setNewQuestionTemplate}
+                    setNewQuestionTemplate={addNewQuestionTemplate}
                 />
 
                 <Divider />
@@ -207,22 +196,33 @@ export default function FieldJournalTemplateForm() {
   )
 }
 
-async function addFieldJournalTemplateWithEterapias(token: string, fieldJournalTemplateId: string, eterapiasToAdd: any[]) {
+const addFieldJournalTemplateToEterapias = async (
+    token: string, 
+    fieldJournalTemplateId: string, 
+    eterapiasToAdd: any[]
+    ): Promise<void> => {
     eterapiasToAdd.forEach(async eterapia => {
-        await addFieldJournalTemplateWithOneEterapia(token, fieldJournalTemplateId, eterapia.id)
+        await addFieldJournalTemplateToOneEterapia(token, fieldJournalTemplateId, eterapia.id)
     })
 }
 
-async function addFieldJournalTemplateWithOneEterapia(token: string, fieldJournalTemplateId: string, eterapiaId: string) {
+const addFieldJournalTemplateToOneEterapia = async (
+    token: string, 
+    fieldJournalTemplateId: string, 
+    eterapiaId: string
+    ): Promise<any> => {
     const response = await api.put(`/eterapias/${eterapiaId}`, { fieldJournalTemplateId }, {
         headers: {
           'Authorization': `token ${token}`,
           'Content-Type': 'application/json',
         }
     });
+
+    const eterapia = response.data;
+    return eterapia;
 }
 
-async function getEterapias(token: string) {
+const getEterapias = async (token: string): Promise<any[]> => {
     const response = await api.get('/eterapias', {
         headers: {
           'Authorization': `token ${token}`
@@ -233,13 +233,11 @@ async function getEterapias(token: string) {
     return eterapias;
 }
 
-async function createNewFieldJournalTemplate(token: string, 
-                                        fieldJournalTemplateJson: FieldJournalTemplate) {
-    
+const saveNewFieldJournalTemplate = async (
+    token: string, 
+    fieldJournalTemplateJson: FieldJournalTemplate
+    ): Promise<any> => {
     const response = await api.post('/fieldjournaltemplates', fieldJournalTemplateJson, {
-        params: {
-          relations: ['eterapias']
-        },
         headers: {
           'Authorization': `token ${token}`,
           'Content-Type': 'application/json',
@@ -249,17 +247,3 @@ async function createNewFieldJournalTemplate(token: string,
     const fieldjournaltemplate = response.data;
     return fieldjournaltemplate;
 }
-
-
-// const jsonData = {
-//     name: "testando front end",
-//     description: {
-//         title: "Não gosto do batman",
-//         fieldTemplates: [
-//             {name: "Qual o seu nome?", type: "string"},
-//             {name: "Quanto é 2 + 2?", type: "int"},
-//             {name: "Informe sua data de nascimento", type: "date"},
-//             {name: "Voçê é estudante?", type: "boolean"}
-//         ]
-//     }
-// }
