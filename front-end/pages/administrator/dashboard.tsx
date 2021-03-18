@@ -5,12 +5,11 @@ import Icon from "@chakra-ui/icon";
 import { IoIosJournal, IoIosPeople } from "react-icons/io";
 import { RiPsychotherapyFill } from "react-icons/ri";
 import { AiFillCopy } from "react-icons/ai";
-import Header from "../../components/shared/Header";
+import Layout from "../../components/shared/Layout";
 
 export default function Dashboard() {
     return (
-        <>
-            <Header />
+        <Layout>
             <MyTitle>DASHBOARD</MyTitle>
             <Flex direction={'column'}>
                 <Flex>
@@ -52,6 +51,6 @@ export default function Dashboard() {
             </Flex>
 
             <Divider />
-        </>
+        </Layout>
     )
 }

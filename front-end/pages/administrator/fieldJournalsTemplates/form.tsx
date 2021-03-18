@@ -14,7 +14,7 @@ import { FormControl, FormErrorMessage, FormLabel } from "@chakra-ui/form-contro
 
 import * as Yup from 'yup';
 import { useRouter } from 'next/router';
-import Header from "../../../components/shared/Header";
+import Layout from "../../../components/shared/Layout";
 
 interface Question {
     id: number;
@@ -121,8 +121,7 @@ export default function FieldJournalTemplateForm() {
     }
 
     return (
-      <>
-        <Header />
+      <Layout>
         <MyTitle>{'Create Field Journal Template'}</MyTitle>
 
         <MenuAddEterapias
@@ -192,7 +191,7 @@ export default function FieldJournalTemplateForm() {
             </Form>
             )}
         </Formik>
-      </>
+      </Layout>
   )
 }
 

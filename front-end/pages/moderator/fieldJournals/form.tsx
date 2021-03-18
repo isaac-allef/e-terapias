@@ -7,6 +7,7 @@ import MenuChangeEterapia from "../../../components/fieldJournalForm/MenuChangeE
 import api from '../../../services/api';
 import { Button } from "@chakra-ui/button";
 import MyToast from "../../../components/shared/MyToast";
+import Layout from "../../../components/shared/Layout";
 
 interface QuestionDTO {
     id: any;
@@ -84,7 +85,7 @@ export default function FieldJournalForm() {
     }
 
     return (
-      <>
+      <Layout>
         <MenuChangeEterapia
             eterapias={eterapias}
             setQuestions={setQuestions}
@@ -131,7 +132,7 @@ export default function FieldJournalForm() {
         </form>
 
         <Divider />
-      </>
+      </Layout>
   )
 }
 

@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import api from '../../../services/api';
 import MyToast from "../../../components/shared/MyToast";
 import Link from "next/link";
-import Header from "../../../components/shared/Header";
+import Layout from "../../../components/shared/Layout";
 
 interface Line {
   elementMain: {id: string, link: string, name: string};
@@ -64,8 +64,7 @@ export default function ListModerators() {
   }, []);
 
   return (
-      <>
-        <Header />
+      <Layout>
         <MyTitle>{'List Moderatos'}</MyTitle>
         <MyInput placeholder="Search the moderators" search={true} ></MyInput>
         <MyTable
@@ -78,7 +77,7 @@ export default function ListModerators() {
         <MyButton hide={false}>
           <Link href={'/administrator/moderators/form'}>New moderator</Link>
         </MyButton>
-      </>
+      </Layout>
   )
 }
 

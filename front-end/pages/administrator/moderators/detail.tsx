@@ -1,7 +1,10 @@
+import Layout from "../../../components/shared/Layout";
 import MyTitle from "../../../components/shared/MyTitle";
 
 export default function ModeratorDetail() {
     return (
-        <MyTitle>Moderator Detail</MyTitle>
+        <Layout>
+            <MyTitle>Moderator Detail</MyTitle>
+        </Layout>
     )
 }
