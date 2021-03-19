@@ -1,32 +1,27 @@
 import { Button } from "@chakra-ui/button";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu";
+import { useState } from "react";
 
 interface MyProps {
     eterapias: any[];
+    setEterapias: Function;
     eterapiasToAdd: any[];
     setEterapiasToAdd: Function;
 }
 
-export default function MenuAddEterapia({ eterapias, eterapiasToAdd, setEterapiasToAdd }: MyProps) {
-    function eterapiaExistsInTheList(eterapiasToAdd, id) {
-        let exists = false;
-        eterapiasToAdd.forEach(eterapia => {
-            if (eterapia.id === id) {
-                exists = true;
-                return;
-            }
+export default function MenuAddEterapia({ eterapias, setEterapias, eterapiasToAdd, setEterapiasToAdd }: MyProps) {
+    function removeElementFromEterapias(eterapias, id) {
+        const newEterapias = eterapias.filter(eterapia => {
+            return eterapia.id !== id
         })
 
-        return exists;
+        setEterapias(newEterapias);
     }
 
     function addEterapiaInTheList(eterapiasToAdd, setEterapiasToAdd, eterapia) {
-        const exists = eterapiaExistsInTheList(eterapiasToAdd, eterapia.id);
-
-        if (!exists) {
-            setEterapiasToAdd([...eterapiasToAdd, eterapia])
-        }
+        setEterapiasToAdd([...eterapiasToAdd, eterapia])
+        removeElementFromEterapias(eterapias, eterapia.id);
     }
 
     return (

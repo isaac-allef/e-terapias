@@ -126,6 +126,7 @@ export default function FieldJournalTemplateForm() {
 
         <MenuAddEterapias
             eterapias={eterapias}
+            setEterapias={setEterapias}
             eterapiasToAdd={eterapiasToAdd}
             setEterapiasToAdd={setEterapiasToAdd}
         />

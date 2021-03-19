@@ -11,20 +11,26 @@ import ShowEterapiasEdded from "./components/ShowEterapiasAdded"
 
 interface MyProps {
     eterapias: any[];
+    setEterapias: Function;
     eterapiasToAdd: any[];
     setEterapiasToAdd: Function;
 }
 
-export default function MenuAddEterapias({ eterapias, eterapiasToAdd, setEterapiasToAdd }: MyProps) {
+export default function MenuAddEterapias({ eterapias, setEterapias, eterapiasToAdd, setEterapiasToAdd }: MyProps) {
     return (
-        <Flex>
+        <Flex 
+            justifyContent='space-between'
+        >
             <ShowEterapiasEdded
+                eterapias={eterapias}
+                setEterapias={setEterapias}
                 eterapiasToAdd={eterapiasToAdd}
                 setEterapiasToAdd={setEterapiasToAdd}
             />
 
             <MenuAddEterapia
                 eterapias={eterapias}
+                setEterapias={setEterapias}
                 eterapiasToAdd={eterapiasToAdd}
                 setEterapiasToAdd={setEterapiasToAdd}
             />
