@@ -28,7 +28,7 @@ export default function MenuAddEterapia({ eterapias, setEterapias, eterapiasToAd
         <Menu>
             {({ isOpen }) => (
                 <>
-                <MenuButton isActive={isOpen} as={Button} rightIcon={<ChevronDownIcon />}>
+                <MenuButton variant='outline' isActive={isOpen} as={Button} rightIcon={<ChevronDownIcon />}>
                     Add Eterapia
                 </MenuButton>
                 <MenuList>

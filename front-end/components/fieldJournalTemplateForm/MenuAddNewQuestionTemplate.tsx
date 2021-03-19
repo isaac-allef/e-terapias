@@ -1,6 +1,7 @@
 import { Button } from "@chakra-ui/button";
-import { SmallAddIcon } from "@chakra-ui/icons";
+import { Icon, SmallAddIcon } from "@chakra-ui/icons";
 import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu";
+import { IoReorderTwoOutline, IoReorderFourOutline } from 'react-icons/io5'
 
 interface MyProps {
     setNewQuestionTemplate: Function;
@@ -11,16 +12,16 @@ export default function MenuAddNewQuestionTemplate({ setNewQuestionTemplate }: M
         <Menu>
             {({ isOpen }) => (
                 <>
-                <MenuButton isActive={isOpen} as={Button}>
-                    <SmallAddIcon />
+                <MenuButton marginTop='3vh' variant='outline' isActive={isOpen} as={Button} rightIcon={<SmallAddIcon />}>
+                    Add new question
                 </MenuButton>
                 <MenuList>
-                    <MenuItem onClick={() => {
+                    <MenuItem icon={<Icon as={IoReorderTwoOutline} />} onClick={() => {
                         setNewQuestionTemplate('short')
-                    }}>Add question short answer</MenuItem>
-                    <MenuItem onClick={() => {
+                    }}>Short answer</MenuItem>
+                    <MenuItem icon={<Icon as={IoReorderFourOutline} />} onClick={() => {
                         setNewQuestionTemplate('long')
-                    }}>Add question long answer</MenuItem>
+                    }}>Long answer</MenuItem>
                 </MenuList>
                 </>
             )}

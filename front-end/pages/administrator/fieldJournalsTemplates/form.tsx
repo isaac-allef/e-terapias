@@ -1,6 +1,6 @@
-import { Button } from "@chakra-ui/button";
-import { Box, Divider } from "@chakra-ui/layout";
-import { DeleteIcon } from "@chakra-ui/icons";
+import { Button, IconButton } from "@chakra-ui/button";
+import { Box, Container, Divider, Flex, Heading } from "@chakra-ui/layout";
+import { DeleteIcon, Icon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
 import MyTitle from "../../../components/shared/MyTitle";
 import MenuAddEterapias from "../../../components/fieldJournalTemplateForm/MenuAddEterapias";
@@ -15,6 +15,9 @@ import { FormControl, FormErrorMessage, FormLabel } from "@chakra-ui/form-contro
 import * as Yup from 'yup';
 import { useRouter } from 'next/router';
 import Layout from "../../../components/shared/Layout";
+
+import { IoMdCloseCircle } from 'react-icons/io';
+import MyDivider from "../../../components/shared/MyDivider";
 
 interface Question {
     id: number;
@@ -141,17 +144,20 @@ export default function FieldJournalTemplateForm() {
                 <Field name="name">
                     {({ field, form }) => (
                         <FormControl isInvalid={form.errors.name && form.touched.name}>
-                            <FormLabel htmlFor="name">Name</FormLabel>
-                                <Input {...field} id="name" placeholder="name" />
+                            <FormLabel htmlFor="name" margin='0px' >Name</FormLabel>
+                                <Input {...field} id="name" />
                             <FormErrorMessage>{form.errors.name}</FormErrorMessage>
                         </FormControl>
                     )}
                 </Field>
+
+                <Heading marginTop='3vh' marginBottom='3vh' size='md'>Description</Heading>
+
                 <Field name="title">
                     {({ field, form }) => (
                         <FormControl isInvalid={form.errors.title && form.touched.title}>
-                            <FormLabel htmlFor="title">Title</FormLabel>
-                                <Input {...field} id="title" placeholder="title" type="title" />
+                            <FormLabel htmlFor="title" margin='0px' >Title</FormLabel>
+                                <Input {...field} id="title" type="title" />
                             <FormErrorMessage>{form.errors.title}</FormErrorMessage>
                         </FormControl>
                     )}
@@ -160,27 +166,39 @@ export default function FieldJournalTemplateForm() {
                 {
                 questionsTemplates.map(question => {
                     return (
-                        <Box key={question.id}>
+                        <Box key={question.id} position='relative'>
                             <QuestionTemplate 
                                 id={question.id}
                                 type={question.type}
                                 label={question.name} 
                                 handleChange={handleChangeQuestionTemplate}
                             />
-                            <Button onClick={() => handleRemove(question.id)}>
-                                <DeleteIcon />
-                            </Button>
+                            <IconButton
+                                top='15px'
+                                right='-24px'
+                                position='absolute'
+                                variant='unstyled'
+                                isRound={true}
+                                size='lg'
+                                boxSize='30px'
+                                aria-label="close" 
+                                icon={<Icon as={IoMdCloseCircle} boxSize='30px' color='#ec4646' />} 
+                                onClick={() =>  handleRemove(question.id)}
+                            />
                         </Box>
                     )
                 })
                 }
-                
-                <MenuAddNewQuestionTemplate
-                    setNewQuestionTemplate={addNewQuestionTemplate}
-                />
 
-                <Divider />
+                <Flex justifyContent='flex-end'>
+                    <MenuAddNewQuestionTemplate
+                        setNewQuestionTemplate={addNewQuestionTemplate}
+                    />
+                </Flex>
 
+                <MyDivider />
+
+                <Flex justifyContent='flex-end' paddingBottom='3vh'>
                 <Button
                     mt={4}
                     colorScheme="teal"
@@ -189,6 +207,7 @@ export default function FieldJournalTemplateForm() {
                     >
                     Save
                 </Button>
+                </Flex>
             </Form>
             )}
         </Formik>

@@ -31,7 +31,7 @@ export default function ShowEterapiasEdded({ eterapias, setEterapias, eterapiasT
                     <Flex key={eterapia.id} alignItems='center'>
                     {
                         eterapia.fieldJournalTemplate ?
-                            <Tooltip label='This therapy already has a field journal template. This action will subscribe to it'>
+                            <Tooltip label='This eterapia already has a field journal template. This action will subscribe to it'>
                                 <Text color='#ffe227'><Link href='/administrator/eterapias/list' isExternal>{ eterapia.name }</Link></Text>
                             </Tooltip>
                             :
