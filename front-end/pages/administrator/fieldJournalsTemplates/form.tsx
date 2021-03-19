@@ -224,6 +224,10 @@ const addFieldJournalTemplateToOneEterapia = async (
 
 const getEterapias = async (token: string): Promise<any[]> => {
     const response = await api.get('/eterapias', {
+        params: {
+            relations: ['fieldJournalTemplate'],
+            limit: 100,
+          },
         headers: {
           'Authorization': `token ${token}`
         }

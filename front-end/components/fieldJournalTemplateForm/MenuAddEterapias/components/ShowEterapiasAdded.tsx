@@ -1,6 +1,8 @@
-import { Button } from "@chakra-ui/button"
-import { CloseIcon } from "@chakra-ui/icons"
-import { Flex, Wrap, Text } from "@chakra-ui/layout"
+import { Button, IconButton } from "@chakra-ui/button"
+import { CloseIcon, Icon, SearchIcon } from "@chakra-ui/icons"
+import { Flex, Wrap, Text, Link } from "@chakra-ui/layout"
+import { Tooltip } from "@chakra-ui/tooltip";
+import { IoMdCloseCircle } from 'react-icons/io';
 
 interface MyProps {
     eterapias: any[];
@@ -26,16 +28,28 @@ export default function ShowEterapiasEdded({ eterapias, setEterapias, eterapiasT
         { 
             eterapiasToAdd.map(eterapia => {
                 return (
-                    <Flex key={eterapia.id}>
-                    <Text>{ eterapia.name }</Text>
-                    <Button onClick={() => {
+                    <Flex key={eterapia.id} alignItems='center'>
+                    {
+                        eterapia.fieldJournalTemplate ?
+                            <Tooltip label='This therapy already has a field journal template. This action will subscribe to it'>
+                                <Text color='#ffe227'><Link href='/administrator/eterapias/list' isExternal>{ eterapia.name }</Link></Text>
+                            </Tooltip>
+                            :
+                            <Text color='#1a508b'><Link href='/administrator/eterapias/list' isExternal>{ eterapia.name }</Link></Text>
+                    }
+                    <IconButton 
+                        variant='unstyled'
+                        isRound={true}
+                        size='sm'
+                        aria-label="close" 
+                        icon={<Icon as={IoMdCloseCircle} />} 
+                        onClick={() => {
                             removeEterapiaFromTheList(eterapiasToAdd, 
                                                     setEterapiasToAdd, 
                                                     eterapia.id)
+                            }
                         }
-                    }>
-                        <CloseIcon />
-                    </Button>
+                    />
                     </Flex>
                 )
             })
