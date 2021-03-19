@@ -1,7 +1,7 @@
 import MyTitle from "../../components/shared/MyTitle";
 import * as Yup from 'yup';
 import { FormControl, FormErrorMessage, FormLabel } from "@chakra-ui/form-control";
-import { Input } from "@chakra-ui/input";
+import { Input, InputGroup, InputLeftElement } from "@chakra-ui/input";
 import { Button } from "@chakra-ui/button";
 import { Divider } from "@chakra-ui/layout";
 import { Field, Form, Formik } from "formik";
@@ -10,6 +10,9 @@ import api from '../../services/api';
 
 import MyToast from "../../components/shared/MyToast";
 import { useRouter } from 'next/router';
+import LayoutLogin from "../../components/shared/LayoutLogin";
+import Icon from "@chakra-ui/icon";
+import { AiTwotoneMail, AiOutlineLock } from 'react-icons/ai';
 
 export default function Login() {
     const myToast = new MyToast();
@@ -70,7 +73,7 @@ export default function Login() {
   }
 
   return (
-      <>
+      <LayoutLogin>
         <MyTitle>{`Login ${entity}`}</MyTitle>
         
         <Formik
@@ -83,17 +86,23 @@ export default function Login() {
             <Field name="email">
                 {({ field, form }) => (
                     <FormControl isInvalid={form.errors.email && form.touched.email}>
-                        <FormLabel htmlFor="email">Email</FormLabel>
-                            <Input {...field} id="email" placeholder="email" />
+                        {/* <FormLabel htmlFor="email">Email</FormLabel> */}
+                            <InputGroup>
+                            <InputLeftElement pointerEvents="none" children={<Icon as={AiTwotoneMail} color="gray.400" />} />
+                                <Input {...field} id="email" placeholder="email" />
+                            </InputGroup>
                         <FormErrorMessage>{form.errors.email}</FormErrorMessage>
                     </FormControl>
                 )}
             </Field>
             <Field name="password">
                 {({ field, form }) => (
-                    <FormControl isInvalid={form.errors.password && form.touched.password}>
-                        <FormLabel htmlFor="password">Password</FormLabel>
+                    <FormControl marginTop='1rem' isInvalid={form.errors.password && form.touched.password}>
+                        {/* <FormLabel htmlFor="password">Password</FormLabel> */}
+                        <InputGroup>
+                            <InputLeftElement pointerEvents="none" children={<Icon as={AiOutlineLock} color="gray.400" />} />
                             <Input {...field} id="password" placeholder="password" type="password" />
+                        </InputGroup>
                         <FormErrorMessage>{form.errors.password}</FormErrorMessage>
                     </FormControl>
                 )}
@@ -103,15 +112,16 @@ export default function Login() {
 
             <Button
                 mt={4}
-                colorScheme="teal"
+                colorScheme="green"
                 isLoading={props.isSubmitting}
                 type="submit"
+                width='100%'
                 >
-                Submit
+                Log in
             </Button>
         </Form>
         )}
         </Formik>
-      </>
+      </LayoutLogin>
   )
 }
