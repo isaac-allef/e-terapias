@@ -21,7 +21,7 @@ export default function Question({ label, type, index, handleChange }: MyProps) 
     }
 
     return (
-        <Box key={Math.random()}>
+        <Box key={Math.random()} marginTop='1.5vh' marginBottom='1.5vh'>
             <Text>{ label }</Text>
             { inputType }
         </Box>

@@ -1,6 +1,6 @@
 import { Button } from "@chakra-ui/button"
 import { ChevronDownIcon } from "@chakra-ui/icons"
-import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu"
+import { Menu, MenuButton, MenuItem, MenuItemOption, MenuList, MenuOptionGroup } from "@chakra-ui/menu"
 import { useState } from "react";
 
 interface MyProps {
@@ -21,13 +21,15 @@ export default function MenuChangeEterapia({
         <Menu>
             {({ isOpen }) => (
                 <>
-                <MenuButton isActive={isOpen} as={Button} rightIcon={<ChevronDownIcon />}>
-                    {eterapiaSelectedName === "" ? "Eterapia select" : eterapiaSelectedName}
+                <MenuButton variant='outline' isActive={isOpen} as={Button} rightIcon={<ChevronDownIcon />}>
+                    {eterapiaSelectedName === "" ? "Select" : eterapiaSelectedName}
                 </MenuButton>
                 <MenuList>
+                    <MenuOptionGroup type="radio">
                     {
                         eterapias.map(eterapia => {
-                            return <MenuItem 
+                            return <MenuItemOption 
+                                    value={eterapia.id}
                                     key={eterapia.id}
                                     onClick={() => {
                                         setEterapiaSelectedName(eterapia.name)
@@ -36,9 +38,10 @@ export default function MenuChangeEterapia({
                                         setEterapiaSelectedId(eterapia.id)
                                     }}
                                     >{ eterapia.name }
-                                </MenuItem>
+                                </MenuItemOption>
                         })
                     }
+                    </MenuOptionGroup>
                 </MenuList>
                 </>
             )}

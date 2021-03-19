@@ -1,5 +1,5 @@
 import MyTitle from "../../../components/shared/MyTitle";
-import { Divider, Text } from "@chakra-ui/layout";
+import { Divider, Flex, Heading, Text } from "@chakra-ui/layout";
 import { useEffect, useState } from "react";
 import Question from "../../../components/fieldJournalForm/Question";
 import MenuChangeEterapia from "../../../components/fieldJournalForm/MenuChangeEterapia";
@@ -8,6 +8,7 @@ import api from '../../../services/api';
 import { Button } from "@chakra-ui/button";
 import MyToast from "../../../components/shared/MyToast";
 import Layout from "../../../components/shared/Layout";
+import MyDivider from "../../../components/shared/MyDivider";
 
 interface QuestionDTO {
     id: any;
@@ -86,6 +87,9 @@ export default function FieldJournalForm() {
 
     return (
       <Layout>
+        <MyTitle>{'Create Field Journal'}</MyTitle>
+        
+        <Text fontSize='small' marginBottom='-1px'>Eterapia</Text>
         <MenuChangeEterapia
             eterapias={eterapias}
             setQuestions={setQuestions}
@@ -93,9 +97,7 @@ export default function FieldJournalForm() {
             setEterapiaSelectedId={setEterapiaSelectedId}
         />
 
-        <MyTitle>{'Create Field Journal'}</MyTitle>
-
-        <Text>{ fieldJournalTitle }</Text>
+        <Heading size='md' marginTop='3vh' marginBottom='3vh'>{ fieldJournalTitle }</Heading>
 
         <form onSubmit={async (event) => {
             event.preventDefault();
@@ -122,13 +124,18 @@ export default function FieldJournalForm() {
                     handleChange={handleChange}
                 />
             }) }
-            <Button
-                mt={4}
-                colorScheme="teal"
-                type="submit"
-                >
-                Submit
-            </Button>
+
+            <MyDivider />
+
+            <Flex justifyContent='flex-end'>
+                <Button
+                    mt={4}
+                    colorScheme="teal"
+                    type="submit"
+                    >
+                    Save
+                </Button>
+            </Flex>
         </form>
 
         <Divider />
