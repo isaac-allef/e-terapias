@@ -1,4 +1,4 @@
-import { Divider } from "@chakra-ui/layout";
+import { Center, Divider } from "@chakra-ui/layout";
 import Link from "next/link";
 import Layout from "../../../components/shared/Layout";
 import MyButton from "../../../components/shared/MyButton";
@@ -8,6 +8,7 @@ import MyTable from "../../../components/list/MyTable";
 import { useEffect, useState } from "react";
 import api from '../../../services/api';
 import MyToast from "../../../components/shared/MyToast";
+import MyPagination from "../../../components/list/MyPagination";
 
 interface Line {
   elementMain: {id: string, link: string, name: string};
@@ -18,10 +19,11 @@ export default function ListFieldJournalsTemplates() {
   const myToast = new MyToast();
   const [heads, setHeads] = useState<string[]>(['Name', 'Eterapias']);
   const [matrix, setMatrix] = useState<Line[]>([]);
+  const [page ,setPage] =useState(1);
 
   function removeElementFromMatrix(matrix: Line[], id: string) {
     const newMatrix = matrix.filter(elemente => elemente.elementMain.id !== id);
-      setMatrix(newMatrix);
+    setMatrix(newMatrix);
   }
 
   async function handleRemove(matrix: Line[], id: string) {
@@ -56,11 +58,11 @@ export default function ListFieldJournalsTemplates() {
 
   useEffect(() => {
     const token = localStorage.getItem('@eterapias:token');
-    getFieldJournalsTemplates(token).then(fieldJournalsTemplatesJson => {
+    getFieldJournalsTemplates(token, page).then(fieldJournalsTemplatesJson => {
       const fieldJournalsTemplatesMatrix = convertFieldJournalsTemplatesJsonToMatrixMyTable(fieldJournalsTemplatesJson);
       setMatrix(fieldJournalsTemplatesMatrix);
     })
-  }, []);
+  }, [page]);
 
     return (
         <Layout>
@@ -71,6 +73,12 @@ export default function ListFieldJournalsTemplates() {
               matrix={matrix}
               handleRemove={handleRemove}
           />
+          <Center>
+            <MyPagination
+              page={page}
+              setPage={setPage}
+            />
+          </Center>
           <Divider />
           <MyButton hide={false}>
             <Link href={'/administrator/fieldJournalsTemplates/form'}>New field journal template</Link>
@@ -88,11 +96,11 @@ async function removeFieldJournalTemplate(token: string, id: string) {
   return fieldJournalTemplate;
 }
 
-async function getFieldJournalsTemplates(token: string) {
+async function getFieldJournalsTemplates(token: string, page = 1) {
   const response = await api.get('/fieldjournaltemplates', {
     params: {
       relations: ['eterapias'],
-      limit: 100,
+      page: page,
     },
     headers: {
       'Authorization': `token ${token}`

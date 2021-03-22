@@ -1,4 +1,4 @@
-import { Divider } from "@chakra-ui/layout";
+import { Center, Divider } from "@chakra-ui/layout";
 import MyButton from "../../../components/shared/MyButton";
 import MyInput from "../../../components/shared/MyInput";
 import MyTable from "../../../components/list/MyTable";
@@ -9,6 +9,7 @@ import api from '../../../services/api';
 import MyToast from "../../../components/shared/MyToast";
 import Link from "next/link";
 import Layout from "../../../components/shared/Layout";
+import MyPagination from "../../../components/list/MyPagination";
 
 interface Line {
   elementMain: {id: string, link: string, name: string};
@@ -19,6 +20,7 @@ export default function ListModerators() {
   const myToast = new MyToast();
   const [heads, setHeads] = useState<string[]>(['Email', 'Eterapias']);
   const [matrix, setMatrix] = useState<Line[]>([]);
+  const [page ,setPage] =useState(1);
 
   function removeElementFromMatrix(matrix: Line[], id: string) {
     const newMatrix = matrix.filter(elemente => elemente.elementMain.id !== id);
@@ -57,11 +59,11 @@ export default function ListModerators() {
 
   useEffect(() => {
     const token = localStorage.getItem('@eterapias:token');
-    getModerators(token).then(moderatorsJson => {
+    getModerators(token, page).then(moderatorsJson => {
       const moderatorsMatrix = convertModeratorsJsonToMatrixMyTable(moderatorsJson);
       setMatrix(moderatorsMatrix);
     })
-  }, []);
+  }, [page]);
 
   return (
       <Layout>
@@ -72,6 +74,12 @@ export default function ListModerators() {
             matrix={matrix}
             handleRemove={handleRemove}
         />
+        <Center>
+          <MyPagination
+              page={page}
+              setPage={setPage}
+          />
+        </Center>
 
         <Divider />
         <MyButton hide={false}>
@@ -91,10 +99,11 @@ async function removeModerator(token: string, id: string) {
   return moderators;
 }
 
-async function getModerators(token: string) {
+async function getModerators(token: string, page = 1) {
   const response = await api.get('/moderators', {
     params: {
-      relations: ['eterapias']
+      relations: ['eterapias'],
+      page: page,
     },
     headers: {
       'Authorization': `token ${token}`
