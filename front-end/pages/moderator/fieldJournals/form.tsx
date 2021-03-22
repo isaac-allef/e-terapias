@@ -9,6 +9,9 @@ import { Button } from "@chakra-ui/button";
 import MyToast from "../../../components/shared/MyToast";
 import Layout from "../../../components/shared/Layout";
 import MyDivider from "../../../components/shared/MyDivider";
+import { Input } from "@chakra-ui/input";
+import { EditIcon } from "@chakra-ui/icons";
+import { useRouter } from "next/router";
 
 interface QuestionDTO {
     id: any;
@@ -59,9 +62,11 @@ interface FieldJournal {
 
 export default function FieldJournalForm() {
     const myToast = new MyToast();
+    const router = useRouter();
     const [questions, setQuestions] = useState([]);
     const [eterapias, setEterapias] = useState([]);
     const [fieldJournalTitle, setFieldJournalTitle] = useState('');
+    const [isEditingTitle, setIsEditingTitle] = useState(false);
     const [eterapiaSelectedId, setEterapiaSelectedId] = useState('');
 
     function cleanUp() {
@@ -85,6 +90,10 @@ export default function FieldJournalForm() {
         setQuestions(questions);
     }
 
+    useEffect(() => {
+        setIsEditingTitle(false)
+    }, [eterapiaSelectedId]);
+
     return (
       <Layout>
         <MyTitle>{'Create Field Journal'}</MyTitle>
@@ -97,7 +106,24 @@ export default function FieldJournalForm() {
             setEterapiaSelectedId={setEterapiaSelectedId}
         />
 
-        <Heading size='md' marginTop='3vh' marginBottom='3vh'>{ fieldJournalTitle }</Heading>
+        <Text marginTop='3vh' fontSize='small' marginBottom='-1px'>Title</Text>
+
+        {
+            isEditingTitle ?
+                <Input 
+                    defaultValue={fieldJournalTitle} 
+                    onChange={
+                        (value) => setFieldJournalTitle(value.target.value)
+                    }
+                    autoFocus={true}
+                    onBlur={() => setIsEditingTitle(false)}
+                />
+            :
+                <Heading 
+                    size='sm' 
+                    onClick={() => setIsEditingTitle(true)}
+                >{ fieldJournalTitle }</Heading>
+        }
 
         <form onSubmit={async (event) => {
             event.preventDefault();
@@ -111,6 +137,7 @@ export default function FieldJournalForm() {
 
                 myToast.execute({ status: 'success', title: 'Field Journal created.' });
                 cleanUp();
+                router.push('/moderator/fieldJournals/list');
             } catch (err) {
                 myToast.execute({ status: 'error', title: 'Error', description: err.message });
             }
