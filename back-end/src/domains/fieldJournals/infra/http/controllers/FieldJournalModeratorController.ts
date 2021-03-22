@@ -76,7 +76,9 @@ class FieldJournalModeratorController {
         const { id } = request.params;
         const fieldJournalRepository = new FieldJournalRepository();
 
-        const fieldJournal = await fieldJournalRepository.findById(id);
+        const fieldJournal = await fieldJournalRepository.findById(id, [
+            'moderator',
+        ]);
 
         if (!fieldJournal) {
             throw new AppError('Field journal not found.');
