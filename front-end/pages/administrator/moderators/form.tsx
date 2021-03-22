@@ -6,8 +6,19 @@ import { Input } from "@chakra-ui/input";
 import { Button } from "@chakra-ui/button";
 import { Divider } from "@chakra-ui/layout";
 import Layout from "../../../components/shared/Layout";
+import api from '../../../services/api';
+import { useRouter } from "next/router";
+import MyToast from "../../../components/shared/MyToast";
+
+interface Moderator {
+    email: string;
+    password: string;
+}
 
 export default function ModeratorForm() {
+    const myToast = new MyToast();
+    const router = useRouter();
+
     const SignupSchema = Yup.object().shape({
         email: Yup.string().email().required('Required'),
         password: Yup.string().required('Required'),
@@ -18,12 +29,22 @@ export default function ModeratorForm() {
         password: '',
     }
     
-    const functionSubmitForm = (values, actions) => {
-        setTimeout(() => {
-            alert(JSON.stringify(values, null, 2))
-            actions.setSubmitting(false)
-          }, 1000)      
-        console.log(values);
+    const functionSubmitForm = async (values, actions) => {
+        const { email, password } = values;
+
+        const token = localStorage.getItem('@eterapias:token');
+
+        try {
+            const moderator = await saveNewModerator(token, { email, password });
+            myToast.execute({ status: 'success', title: 'Moderator created.' });
+
+            actions.setSubmitting(false);
+
+            router.push('/administrator/moderators/list');
+        } catch(err) {
+            myToast.execute({ status: 'error', title: 'Error', description: err.message });
+            actions.setSubmitting(false);
+        }
     }
 
     return (
@@ -70,4 +91,16 @@ export default function ModeratorForm() {
         </Formik>
       </Layout>
   )
+}
+
+async function saveNewModerator(token: string, moderatorJson: Moderator) {
+    const response = await api.post('/moderators', moderatorJson, {
+        headers: {
+          'Authorization': `token ${token}`,
+          'Content-Type': 'application/json',
+        }
+    });
+
+    const eterapia = response.data;
+    return eterapia;
 }
