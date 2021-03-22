@@ -33,7 +33,7 @@ export default function ListFieldJournals() {
 
       removeElementFromMatrix(matrix, id);
       
-      myToast.execute({ status: 'success', title: `${fieldJournal.name} deleted.` });
+      myToast.execute({ status: 'success', title: `${fieldJournal.title} deleted.` });
     } catch (err) {
       myToast.execute({ status: 'error', title: 'Error', description: err.message });
     }
@@ -87,7 +87,7 @@ export default function ListFieldJournals() {
 }
 
 async function removeFieldJournal(token: string, id: string) {
-  const response = await api.delete(`/fieldjournal/${id}`, {
+  const response = await api.delete(`/fieldjournals/${id}/moderator`, {
     headers: {
       'Authorization': `token ${token}`
     }
