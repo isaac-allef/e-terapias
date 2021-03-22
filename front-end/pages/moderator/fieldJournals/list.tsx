@@ -48,7 +48,7 @@ export default function ListFieldJournals() {
       }
 
       return { 
-              elementMain: { id: fieldJournal.id, link: '/administrator/fieldJournals/detail', name: fieldJournal.title}, 
+              elementMain: { id: fieldJournal.id, link: '/moderator/fieldJournals/detail', name: fieldJournal.title}, 
               others: [eterapiaName]
             }
     })
