@@ -81,9 +81,6 @@ export default function ListFieldJournals() {
             />
           </Center>
         <Divider />
-        <MyButton hide={false}>
-          <Link href={'/moderator/fieldJournals/form'}>New field journal</Link>
-        </MyButton>
         </Layout>
     )
 }
