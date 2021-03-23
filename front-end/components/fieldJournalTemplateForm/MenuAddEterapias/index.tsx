@@ -14,9 +14,10 @@ interface MyProps {
     setEterapias: Function;
     eterapiasToAdd: any[];
     setEterapiasToAdd: Function;
+    warningEterapiaHasAFieldJournalTemplate?: boolean;
 }
 
-export default function MenuAddEterapias({ eterapias, setEterapias, eterapiasToAdd, setEterapiasToAdd }: MyProps) {
+export default function MenuAddEterapias({ eterapias, setEterapias, eterapiasToAdd, setEterapiasToAdd, warningEterapiaHasAFieldJournalTemplate = false }: MyProps) {
     return (
         <Flex 
             justifyContent='space-between'
@@ -26,6 +27,7 @@ export default function MenuAddEterapias({ eterapias, setEterapias, eterapiasToA
                 setEterapias={setEterapias}
                 eterapiasToAdd={eterapiasToAdd}
                 setEterapiasToAdd={setEterapiasToAdd}
+                warningEterapiaHasAFieldJournalTemplate={warningEterapiaHasAFieldJournalTemplate}
             />
 
             <MenuAddEterapia

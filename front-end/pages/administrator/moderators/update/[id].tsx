@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import MyToast from "../../../../components/shared/MyToast";
 import { useEffect, useState } from "react";
 import MenuAddEterapias from "../../../../components/fieldJournalTemplateForm/MenuAddEterapias";
+import { Text } from "@chakra-ui/layout";
 
 interface Moderator {
     email: string;
@@ -130,6 +131,8 @@ export default function ModeratorForm() {
     return (
       <Layout>
         <MyTitle>{'Update Moderator'}</MyTitle>
+
+        <Text>My Eterapias</Text>
         <MenuAddEterapias
             eterapias={eterapias}
             setEterapias={setEterapias}

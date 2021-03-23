@@ -132,6 +132,7 @@ export default function FieldJournalTemplateForm() {
             setEterapias={setEterapias}
             eterapiasToAdd={eterapiasToAdd}
             setEterapiasToAdd={setEterapiasToAdd}
+            warningEterapiaHasAFieldJournalTemplate={true}
         />
 
         <Formik

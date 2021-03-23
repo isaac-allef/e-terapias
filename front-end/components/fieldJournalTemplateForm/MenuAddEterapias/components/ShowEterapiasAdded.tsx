@@ -9,9 +9,10 @@ interface MyProps {
     setEterapias: Function;
     eterapiasToAdd: any[];
     setEterapiasToAdd: Function;
+    warningEterapiaHasAFieldJournalTemplate: boolean
 }
 
-export default function ShowEterapiasEdded({ eterapias, setEterapias, eterapiasToAdd, setEterapiasToAdd }: MyProps) {
+export default function ShowEterapiasEdded({ eterapias, setEterapias, eterapiasToAdd, setEterapiasToAdd, warningEterapiaHasAFieldJournalTemplate }: MyProps) {
     function addElementInEterapiasAgain(eterapiasToAdd, eterapias, id) {
         const eterapia = eterapiasToAdd.find(eterapia => eterapia.id === id);
         setEterapias([...eterapias, eterapia]);
@@ -30,6 +31,7 @@ export default function ShowEterapiasEdded({ eterapias, setEterapias, eterapiasT
                 return (
                     <Flex key={eterapia.id} alignItems='center'>
                     {
+                        warningEterapiaHasAFieldJournalTemplate &&
                         eterapia.fieldJournalTemplate ?
                             <Tooltip label='This eterapia already has a field journal template. This action will subscribe to it'>
                                 <Text color='#ffe227'><Link href='/administrator/eterapias/list' isExternal>{ eterapia.name }</Link></Text>
