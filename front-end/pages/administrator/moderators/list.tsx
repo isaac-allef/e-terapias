@@ -49,7 +49,7 @@ export default function ListModerators() {
       }
 
       return { 
-              elementMain: { id: moderator.id, link: '/administrator/moderators/detail', name: moderator.email}, 
+              elementMain: { id: moderator.id, link: `/administrator/moderators/detail/${moderator.id}`, name: moderator.email}, 
               others: [eterapiasNames]
             }
     })
