@@ -8,9 +8,10 @@ import Layout from "../../../../components/shared/Layout";
 import MyTitle from "../../../../components/shared/MyTitle";
 import { api } from '../../../../services/api';
 
-import ReactJson from 'react-json-view';
+import dynamic from "next/dynamic";
 
 export default function ModeratorDetail() {
+    const DynamicReactJson = dynamic(import('react-json-view'), { ssr: false });
     const router = useRouter();
     const { id } = router.query;
 
@@ -69,7 +70,7 @@ export default function ModeratorDetail() {
                 />
                 :
                 infoModeratorSheet ?
-                    <ReactJson src={infoModeratorSheet.data} />
+                    <DynamicReactJson src={infoModeratorSheet.data} />
                     :
                     <Alert status="error">
                         <AlertIcon />
