@@ -82,7 +82,7 @@ export default function ListModerators() {
         </Center>
 
         <Divider />
-        <MyButton hide={false}>
+        <MyButton>
           <Link href={'/administrator/moderators/form'}>New moderator</Link>
         </MyButton>
       </Layout>

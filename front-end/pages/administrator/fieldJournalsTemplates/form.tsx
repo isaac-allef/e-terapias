@@ -1,6 +1,6 @@
-import { Button, IconButton } from "@chakra-ui/button";
-import { Box, Container, Divider, Flex, Heading } from "@chakra-ui/layout";
-import { DeleteIcon, Icon } from "@chakra-ui/icons";
+import { IconButton } from "@chakra-ui/button";
+import { Box, Flex, Heading } from "@chakra-ui/layout";
+import { Icon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
 import MyTitle from "../../../components/shared/MyTitle";
 import MenuAddEterapias from "../../../components/fieldJournalTemplateForm/MenuAddEterapias";
@@ -18,6 +18,7 @@ import Layout from "../../../components/shared/Layout";
 
 import { IoMdCloseCircle } from 'react-icons/io';
 import MyDivider from "../../../components/shared/MyDivider";
+import MyButton from "../../../components/shared/MyButton";
 
 interface Question {
     id: number;
@@ -200,14 +201,13 @@ export default function FieldJournalTemplateForm() {
                 <MyDivider />
 
                 <Flex justifyContent='flex-end' paddingBottom='3vh'>
-                <Button
+                <MyButton
                     mt={4}
-                    colorScheme="teal"
                     isLoading={props.isSubmitting}
                     type="submit"
                     >
                     Save
-                </Button>
+                </MyButton>
                 </Flex>
             </Form>
             )}

@@ -3,12 +3,12 @@ import MyTitle from "../../../components/shared/MyTitle";
 import * as Yup from 'yup';
 import { FormControl, FormErrorMessage, FormLabel } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
-import { Button } from "@chakra-ui/button";
 import { Divider } from "@chakra-ui/layout";
 import Layout from "../../../components/shared/Layout";
 import api from '../../../services/api';
 import { useRouter } from "next/router";
 import MyToast from "../../../components/shared/MyToast";
+import MyButton from "../../../components/shared/MyButton";
 
 interface Moderator {
     email: string;
@@ -78,14 +78,13 @@ export default function ModeratorForm() {
 
             <Divider />
 
-            <Button
+            <MyButton
                 mt={4}
-                colorScheme="teal"
                 isLoading={props.isSubmitting}
                 type="submit"
                 >
                 Submit
-            </Button>
+            </MyButton>
         </Form>
         )}
         </Formik>

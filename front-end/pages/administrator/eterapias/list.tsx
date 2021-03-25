@@ -86,7 +86,7 @@ export default function ListEterapias() {
           />
         </Center>
         <Divider />
-        <MyButton hide={false}>
+        <MyButton>
           <Link href={'/administrator/eterapias/form'}>New eterapia</Link>
         </MyButton>
         </Layout>

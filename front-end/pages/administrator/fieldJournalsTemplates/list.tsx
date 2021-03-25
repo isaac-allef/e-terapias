@@ -80,7 +80,7 @@ export default function ListFieldJournalsTemplates() {
             />
           </Center>
           <Divider />
-          <MyButton hide={false}>
+          <MyButton>
             <Link href={'/administrator/fieldJournalsTemplates/form'}>New field journal template</Link>
           </MyButton>
         </Layout>

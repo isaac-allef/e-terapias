@@ -1,11 +1,10 @@
 import { Button } from "@chakra-ui/react"
 
-
-export default function MyButton({ hide=false, children }) {
+export default function MyButton({ children, ...moreProps }) {
     return (
-        <>{
-            hide? null :
-            <Button>{ children }</Button>
-        }</>
+        <Button 
+            colorScheme='blue'
+            { ...moreProps } 
+        >{ children }</Button>
     )
 }
