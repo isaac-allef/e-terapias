@@ -48,16 +48,16 @@ $ yarn install
 $ yarn dev:server
 ```
 
+Install and configurate microservice to read google sheets information
+- Create your own ".env.local" file based on ".env.local.example" in front-end root folder
+- Instale and run [cms-sheets](https://github.com/isaac-allef/cms-sheets)
+
 Install frontend dependencies and run it
 ```bash
 $ cd front-end
 $ yarn install
 $ yarn dev or yarn build && yarn start
 ```
-
-Install and configurate microservice to read google sheets information
-- Create your own ".env.local" file based on ".env.local.example" in front-end root folder
-- Instale and run [cms-sheets](https://github.com/isaac-allef/cms-sheets)
 
 # :briefcase: Business rules
 - [x] A aplicação só pode ser acessada pelos administrators ou pelos moderators
