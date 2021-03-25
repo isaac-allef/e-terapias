@@ -1,8 +1,6 @@
-# e-terapias
-
-<!-- <p align="center">
-   <img src="" width="350"/>
-</p> -->
+<p align="center">
+   <img src="/public/banner.png"/>
+</p>
 
 <br />
 
