@@ -1,5 +1,4 @@
 import { Alert, AlertDescription, AlertIcon, AlertTitle } from "@chakra-ui/alert";
-import { Spinner } from "@chakra-ui/spinner";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -9,6 +8,7 @@ import MyTitle from "../../../../components/shared/MyTitle";
 import { api } from '../../../../services/api';
 
 import dynamic from "next/dynamic";
+import MyLoading from "../../../../components/shared/MyLoading";
 
 export default function ModeratorDetail() {
     const DynamicReactJson = dynamic(import('react-json-view'), { ssr: false });
@@ -61,13 +61,7 @@ export default function ModeratorDetail() {
             </Flex>
             <Text fontWeight='bold'>Info: </Text>
             { infoModeratorSheetIsLoading ?
-                <Spinner
-                    thickness="4px"
-                    speed="0.65s"
-                    emptyColor="gray.200"
-                    color="blue.500"
-                    size="xl"
-                />
+                <MyLoading />
                 :
                 infoModeratorSheet ?
                     <DynamicReactJson src={infoModeratorSheet.data} />
