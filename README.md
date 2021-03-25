@@ -11,9 +11,9 @@
 # :pushpin: Table of Contents
 
 * [Installation](#construction_worker-installation)
-* [Business rules](#business-rules)
-* [Documentation - front-end](#rocket-features)
-* [Documentation - back-end](#rocket-features)
+* [Business rules](#briefcase-business-rules)
+* [Documentation - front-end](#clipboard-documentation-front-end)
+* [Documentation - back-end](#clipboard-documentation-back-end)
 
 
 # :construction_worker: Installation
@@ -59,7 +59,7 @@ Install and configurate microservice to read google sheets information
 - Create your own ".env.local" file based on ".env.local.example" in front-end root folder
 - Instale and run [cms-sheets](https://github.com/isaac-allef/cms-sheets)
 
-# Business rules
+# :briefcase: Business rules
 - [x] A aplicação só pode ser acessada pelos administrators ou pelos moderators
 - [X] O moderator tem os recursos de criação e manipulação de seus field journals
 - [X] O administrator não pode criar ou alterar field journals
@@ -74,13 +74,13 @@ Install and configurate microservice to read google sheets information
 - [X] Cada field journal é composto por fields podem ser do tipo string, int, date e boolean
 - [X] Cada eterapia deve ter apenas um field journal template, sendo livre para troca-lo
 
-# Documentation - front-end
+# :clipboard: Documentation front-end
 
 ### :rocket: User Journey
 <img src="/public/user-journey.png"/>
 
 
-# Documentation - back-end
+# :clipboard: Documentation back-end
 
 ### :rocket: Features
 - [x] Create, list, show, update and delete (administrators, moderators, eterapias and field journals)
@@ -92,6 +92,6 @@ Install and configurate microservice to read google sheets information
 - [X] Login to administrators and moderators
 - [X] Authentication and authorization with JWT (JSON WEB TOKEN)
 
-### :rocket: Database schema
+### :floppy_disk: Database schema
 <img src="/public/database-schema.png"/>
 
