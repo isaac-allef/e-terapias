@@ -9,6 +9,8 @@ import { api } from '../../../../services/api';
 
 import dynamic from "next/dynamic";
 import MyLoading from "../../../../components/shared/MyLoading";
+import MyButton from "../../../../components/shared/MyButton";
+import Link from "next/link";
 
 export default function ModeratorDetail() {
     const DynamicReactJson = dynamic(import('react-json-view'), { ssr: false });
@@ -18,6 +20,7 @@ export default function ModeratorDetail() {
     const [moderator, setModerator] = useState(null);
     const [infoModeratorSheet, setInfoModeratorSheet] = useState(null);
     const [infoModeratorSheetIsLoading, setInfoModeratorSheetIsLoading] = useState(true);
+    const [linkToUpdatePage, setLinkToUpdatePage] = useState('');
     
     const loadInfoModeratorSheet = async (email: string) => {
         try {
@@ -34,6 +37,7 @@ export default function ModeratorDetail() {
         if (id) {
             getModerator(token, id as string).then(async moderator => {
                 setModerator(moderator);
+                setLinkToUpdatePage(`/administrator/moderators/update/${moderator.id}`);
                 await loadInfoModeratorSheet(moderator.email);
             })
         }
@@ -41,7 +45,12 @@ export default function ModeratorDetail() {
 
     return (
         <Layout>
-            <MyTitle>Moderator Detail</MyTitle>
+            <Flex justifyContent='space-between'>
+                <MyTitle>Moderator Detail</MyTitle>
+                <MyButton>
+                    <Link href={linkToUpdatePage}>Update</Link>
+                </MyButton>
+            </Flex>
             <Flex justifyContent='space-between'>
                 <Box>
                     <Text fontWeight='bold'>Email: </Text>
