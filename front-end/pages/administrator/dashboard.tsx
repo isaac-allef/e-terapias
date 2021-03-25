@@ -21,9 +21,7 @@ export default function Dashboard() {
                     <Card
                      icon={<Icon as={IoIosJournal} />}
                      title={'Field journals'}
-                     description={"Catch up on what's been cookin' at \
-                                    Smashing and explore some of the \
-                                    mostpopular community resources."}
+                     description={"Here it is possible to view and delete all moderator field journals."}
                      link='/administrator/fieldJournals/list'
                     />
                     </Box>
@@ -35,9 +33,7 @@ export default function Dashboard() {
                     <Card
                      icon={<Icon as={RiPsychotherapyFill} />}
                      title={'E-terapias'}
-                     description={"Catch up on what's been cookin' at \
-                                    Smashing and explore some of the \
-                                    mostpopular community resources."}
+                     description={"Here it is possible to create and manage all eterapias."}
                      link='/administrator/eterapias/list'
                     />
                     </Box>
@@ -50,9 +46,7 @@ export default function Dashboard() {
                     <Card
                      icon={<Icon as={AiFillCopy} />}
                      title={'Field journals Templates'}
-                     description={"Catch up on what's been cookin' at \
-                                    Smashing and explore some of the \
-                                    mostpopular community resources."}
+                     description={"Here it is possible to create and manage all field journal templates."}
                      link='/administrator/fieldJournalsTemplates/list'
                     />
                     </Box>
@@ -63,9 +57,7 @@ export default function Dashboard() {
                     <Card
                      icon={<Icon as={IoIosPeople} />}
                      title={'Moderators'}
-                     description={"Catch up on what's been cookin' at \
-                                    Smashing and explore some of the \
-                                    mostpopular community resources."}
+                     description={"Here it is possible to create and manage all moderators."}
                      link='/administrator/moderators/list'
                     />
                     </Box>
