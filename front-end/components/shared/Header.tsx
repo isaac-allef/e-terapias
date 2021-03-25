@@ -3,7 +3,6 @@ import { IoLogOutSharp } from 'react-icons/io5';
 import Link from 'next/link';
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import Image from 'next/image';
 
 export default function Header() {
     const [headingLink, setHeadingLink] = useState('/');
@@ -26,26 +25,19 @@ export default function Header() {
             // position='sticky'
             justifyContent='space-between'
             py='1rem'
-            bgColor='white'
-            borderBottom='3px solid'
-            borderColor='gray.100'
+            bgColor='#151515'
+            borderBottom='1px solid'
+            borderColor='gray.500'
             paddingLeft='1rem'
             paddingRight='1rem'
-            // background='#252525'
-            // textColor='white'
+            textColor='white'
         >
             <Flex>
-            <Image
-                src="/logoEterapias.png"
-                alt="E-Terapias"
-                width={60}
-                height={30}
-            />
             <Heading marginLeft='1rem'><Link href={headingLink}>E-Terapias</Link></Heading>
             </Flex>
             <HStack spacing='6'>
-                <Button variant='link'>About</Button>
-                <Button variant='link' onClick={() => {
+                <Button variant='link' textColor='white'>About</Button>
+                <Button variant='link' textColor='white' onClick={() => {
                     localStorage.setItem('@eterapias:token', null);
                     localStorage.setItem('@eterapias:myId', null);
                     router.push('/');
