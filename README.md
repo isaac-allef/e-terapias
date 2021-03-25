@@ -77,7 +77,7 @@ Install and configurate microservice to read google sheets information
 # Documentation - front-end
 
 ### :rocket: User Journey
-<img src=""/>
+<img src="/public/user-journey.png"/>
 
 
 # Documentation - back-end
@@ -93,5 +93,5 @@ Install and configurate microservice to read google sheets information
 - [X] Authentication and authorization with JWT (JSON WEB TOKEN)
 
 ### :rocket: Database schema
-<img src=""/>
+<img src="/public/database-schema.png"/>
 
