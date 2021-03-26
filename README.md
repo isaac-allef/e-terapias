@@ -29,7 +29,6 @@ CREATE DATABASE "e-terapias";
 ```
 ***Feel free to create the database however you want, but remember to change the ormconfig.json file in the backend folder***
 
-
 Clone this repository
 ```bash
 $ git clone https://github.com/isaac-allef/e-terapias.git
@@ -39,10 +38,19 @@ Go into the repository
 $ cd e-terapias
 ```
 
-Install backend dependencies and run it
+Install backend dependencies
 ```bash
 $ cd back-end
 $ yarn install
+```
+
+Run migrations
+```bash
+$ yarn typeorm migration:run
+```
+
+Run backend
+```bash
 $ yarn dev:server
 ```
 
