@@ -9,6 +9,7 @@
 # :pushpin: Table of Contents
 
 * [Installation](#construction_worker-installation)
+* [Getting started](#runner-getting-started)
 * [Business rules](#briefcase-business-rules)
 * [Documentation - front-end](#clipboard-documentation-front-end)
 * [Documentation - back-end](#clipboard-documentation-back-end)
@@ -63,6 +64,20 @@ Install frontend dependencies and run it
 $ cd front-end
 $ yarn install
 $ yarn dev or yarn build && yarn start
+```
+
+# :runner: Getting started
+
+After starting the back-end create a administrator to access application through route described below
+
+- Method: `POST`
+- URL: `http://localhost:3333/administrators`
+- Data body:
+```json
+{
+	"email": "administrator@uesc.com",
+	"password": "123456"
+}
 ```
 
 # :briefcase: Business rules
