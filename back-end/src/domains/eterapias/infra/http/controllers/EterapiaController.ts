@@ -1,6 +1,9 @@
 import { Request, Response } from 'express';
-import AppError from '../../../../../shared/errors/AppError';
 import FieldJournalTemplateRepository from '../../../../fieldJournals/infra/typeorm/repositories/FieldJournalTemplateRepository';
+import CreateEterapiaService from '../../../services/CreateEterapiaService';
+import DeleteEterapiaService from '../../../services/DeleteEterapiaService';
+import ShowEterapiaService from '../../../services/ShowEterapiaService';
+import UpdateEterapiaService from '../../../services/UpdateEterapiaService';
 import EterapiaRepository from '../../typeorm/repositories/EterapiaRepository';
 
 class EterapiaController {
@@ -11,8 +14,11 @@ class EterapiaController {
         const { name } = request.body;
 
         const eterapiaRepository = new EterapiaRepository();
+        const createEterapiaService = new CreateEterapiaService(
+            eterapiaRepository,
+        );
 
-        const eterapia = await eterapiaRepository.create({
+        const eterapia = await createEterapiaService.execute({
             name,
         });
 
@@ -20,7 +26,6 @@ class EterapiaController {
     }
 
     public async list(request: Request, response: Response): Promise<Response> {
-        const eterapiaRepository = new EterapiaRepository();
         const {
             search,
             relations,
@@ -30,16 +35,19 @@ class EterapiaController {
             limit,
         } = request.query;
 
-        const eterapias = await eterapiaRepository.all(
-            orderBy as 'name' | 'created_at' | 'updated_at',
-            orderMethod as 'ASC' | 'DESC',
-            (page as unknown) as number,
-            (limit as unknown) as number,
-            search as string,
-            relations as [
+        const eterapiaRepository = new EterapiaRepository();
+
+        const eterapias = await eterapiaRepository.all({
+            orderBy: orderBy as 'name' | 'created_at' | 'updated_at',
+            orderMethod: orderMethod as 'ASC' | 'DESC',
+            page: (page as unknown) as number,
+            limit: (limit as unknown) as number,
+            search: search as string,
+            relations: relations as [
                 'moderators' | 'fieldJournalTemplate' | 'fieldJournals',
             ],
-        );
+        });
+
         return response.json(eterapias);
     }
 
@@ -48,17 +56,14 @@ class EterapiaController {
         const { relations } = request.query;
 
         const eterapiaRepository = new EterapiaRepository();
+        const findOneEterapia = new ShowEterapiaService(eterapiaRepository);
 
-        const eterapia = await eterapiaRepository.findById(
+        const eterapia = await findOneEterapia.execute({
             id,
-            relations as [
-                'moderators' | 'fieldJournalTemplate' | 'fieldJournals',
-            ],
-        );
-
-        if (!eterapia) {
-            throw new AppError('Eterapia not found.');
-        }
+            relations: relations as
+                | ['moderators' | 'fieldJournalTemplate' | 'fieldJournals']
+                | undefined,
+        });
 
         return response.json(eterapia);
     }
@@ -72,30 +77,18 @@ class EterapiaController {
         const { name, fieldJournalTemplateId } = request.body;
 
         const eterapiaRepository = new EterapiaRepository();
+        const fieldJournalTemplateRepository = new FieldJournalTemplateRepository();
 
-        const eterapia = await eterapiaRepository.findById(id);
+        const updateEterapia = new UpdateEterapiaService(
+            eterapiaRepository,
+            fieldJournalTemplateRepository,
+        );
 
-        if (!eterapia) {
-            throw new AppError('Eterapia not found.');
-        }
-
-        eterapia.name = name;
-
-        if (fieldJournalTemplateId) {
-            const fieldJournalTemplateRepository = new FieldJournalTemplateRepository();
-
-            const fieldJournalTemplate = await fieldJournalTemplateRepository.findById(
-                fieldJournalTemplateId,
-            );
-
-            if (!fieldJournalTemplate) {
-                throw new AppError('Field journal template not found.');
-            }
-
-            eterapia.fieldJournalTemplate = fieldJournalTemplate;
-        }
-
-        eterapiaRepository.save(eterapia);
+        const eterapia = await updateEterapia.execute({
+            id,
+            name,
+            fieldJournalTemplateId,
+        });
 
         return response.json(eterapia);
     }
@@ -105,15 +98,11 @@ class EterapiaController {
         response: Response,
     ): Promise<Response> {
         const { id } = request.params;
+
         const eterapiaRepository = new EterapiaRepository();
+        const deleteEterapia = new DeleteEterapiaService(eterapiaRepository);
 
-        const eterapia = await eterapiaRepository.findById(id);
-
-        if (!eterapia) {
-            throw new AppError('Eterapia not found.');
-        }
-
-        await eterapiaRepository.delete(eterapia);
+        const eterapia = await deleteEterapia.execute({ id });
 
         return response.json(eterapia);
     }
