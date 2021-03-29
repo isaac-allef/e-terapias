@@ -1,5 +1,8 @@
 import { EntityRepository, getRepository, ILike, Repository } from 'typeorm';
 import ICreateEterapiaDTO from '../../../dtos/ICreateEterapiaDTO';
+import IFindByIdEterapiaDTO from '../../../dtos/IFindByIdEterapiaDTO';
+import IFindByNameEterapiaDTO from '../../../dtos/IFindByNameEterapiaDTO';
+import IListEterapiasDTO from '../../../dtos/IListEterapiasDTO';
 import IEterapiaRepository from '../../../repositories/IEterapiaRepository';
 import Eterapia from '../entities/Eterapia';
 
@@ -19,10 +22,10 @@ class EterapiaRepository implements IEterapiaRepository {
         return eterapia;
     }
 
-    public async findById(
-        id: string,
-        relations?: ['moderators' | 'fieldJournalTemplate' | 'fieldJournals'],
-    ): Promise<Eterapia | undefined> {
+    public async findById({
+        id,
+        relations,
+    }: IFindByIdEterapiaDTO): Promise<Eterapia | undefined> {
         const eterapia = await this.ormRepository.findOne({
             where: { id },
             relations,
@@ -31,10 +34,10 @@ class EterapiaRepository implements IEterapiaRepository {
         return eterapia;
     }
 
-    public async findByName(
-        name: string,
-        relations?: ['moderators' | 'fieldJournalTemplate' | 'fieldJournals'],
-    ): Promise<Eterapia | undefined> {
+    public async findByName({
+        name,
+        relations,
+    }: IFindByNameEterapiaDTO): Promise<Eterapia | undefined> {
         const eterapia = await this.ormRepository.findOne({
             where: { name },
             relations,
@@ -43,14 +46,14 @@ class EterapiaRepository implements IEterapiaRepository {
         return eterapia;
     }
 
-    public async all(
-        orderBy: 'name' | 'created_at' | 'updated_at' = 'name',
-        orderMethod: 'ASC' | 'DESC' = 'ASC',
+    public async all({
+        orderBy,
+        orderMethod,
         page = 1,
         limit = 5,
         search = '',
-        relations: ['moderators' | 'fieldJournalTemplate' | 'fieldJournals'],
-    ): Promise<Eterapia[] | []> {
+        relations,
+    }: IListEterapiasDTO): Promise<Eterapia[] | []> {
         const orderObject = this.createOrderObject(orderBy, orderMethod);
 
         const eterapias = await this.ormRepository.find({
