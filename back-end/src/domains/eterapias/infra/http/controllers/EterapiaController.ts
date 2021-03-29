@@ -11,15 +11,18 @@ class EterapiaController {
         request: Request,
         response: Response,
     ): Promise<Response> {
-        const { name } = request.body;
+        const { name, fieldJournalTemplateId } = request.body;
 
         const eterapiaRepository = new EterapiaRepository();
+        const fieldJournalTemplateRepository = new FieldJournalTemplateRepository();
         const createEterapiaService = new CreateEterapiaService(
             eterapiaRepository,
+            fieldJournalTemplateRepository,
         );
 
         const eterapia = await createEterapiaService.execute({
             name,
+            fieldJournalTemplateId,
         });
 
         return response.json(eterapia);

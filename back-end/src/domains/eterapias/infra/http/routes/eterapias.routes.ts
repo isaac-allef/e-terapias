@@ -26,6 +26,7 @@ eterapiasRoute.post(
     celebrate({
         [Segments.BODY]: {
             name: Joi.string().required(),
+            fieldJournalTemplateId: Joi.string(),
         },
     }),
     eterapiaController.create,
