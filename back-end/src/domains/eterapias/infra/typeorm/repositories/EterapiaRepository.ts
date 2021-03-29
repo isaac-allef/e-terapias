@@ -22,6 +22,12 @@ class EterapiaRepository implements IEterapiaRepository {
         return eterapia;
     }
 
+    public createWithoutSave({ name }: ICreateEterapiaDTO): Eterapia {
+        const eterapia = this.ormRepository.create({ name });
+
+        return eterapia;
+    }
+
     public async findById({
         id,
         relations,

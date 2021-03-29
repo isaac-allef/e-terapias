@@ -6,6 +6,7 @@ import IEterapia from '../models/IEterapia';
 
 export default interface IEterapiaRepository {
     create(data: ICreateEterapiaDTO): Promise<IEterapia>;
+    createWithoutSave(data: ICreateEterapiaDTO): IEterapia;
     findById(data: IFindByIdEterapiaDTO): Promise<IEterapia | undefined>;
     findByName(data: IFindByNameEterapiaDTO): Promise<IEterapia | undefined>;
     all(data: IListEterapiasDTO): Promise<IEterapia[] | []>;
