@@ -3,6 +3,7 @@ import IFieldJournalTemplateRepository from '../../fieldJournals/repositories/IF
 import ICreateEterapiaDTO from '../dtos/ICreateEterapiaDTO';
 import IEterapia from '../models/IEterapia';
 import IEterapiaRepository from '../repositories/IEterapiaRepository';
+import FindFieldJournalTemplateByIdService from './FindFieldJournalTemplateByIdService';
 
 interface Request extends ICreateEterapiaDTO {
     id: string;
@@ -31,13 +32,13 @@ class UpdateEterapiaService {
         }
 
         if (fieldJournalTemplateId) {
-            const fieldJournalTemplate = await this.fieldJournalTemplateRepository.findById(
-                fieldJournalTemplateId,
+            const findFieldJournalTemplateByIdService = new FindFieldJournalTemplateByIdService(
+                this.fieldJournalTemplateRepository,
             );
 
-            if (!fieldJournalTemplate) {
-                throw new AppError('Field journal template not found.');
-            }
+            const fieldJournalTemplate = await findFieldJournalTemplateByIdService.execute(
+                { fieldJournalTemplateId },
+            );
 
             eterapia.fieldJournalTemplate = fieldJournalTemplate;
         }
