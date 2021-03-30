@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import AppError from '../../../../../shared/errors/AppError';
 import CreateModeratorService from '../../../services/CreateModeratorService';
 import DeleteModeratorService from '../../../services/DeleteModeratorService';
+import ShowModeratorService from '../../../services/ShowModeratorService';
 import UpdateModeratorService from '../../../services/UpdateModeratorService';
 import ModeratorRepository from '../../typeorm/repositories/ModeratorRepository';
 
@@ -37,18 +37,18 @@ class ModeratorController {
             limit,
         } = request.query;
 
-        const moderators = await moderatorRepository.all(
-            orderBy as 'email' | 'created_at' | 'updated_at',
-            orderMethod as 'ASC' | 'DESC',
-            (page as unknown) as number,
-            (limit as unknown) as number,
-            search as string,
-            relations as [
+        const moderators = await moderatorRepository.all({
+            orderBy: orderBy as 'email' | 'created_at' | 'updated_at',
+            orderMethod: orderMethod as 'ASC' | 'DESC',
+            page: (page as unknown) as number,
+            limit: (limit as unknown) as number,
+            search: search as string,
+            relations: relations as [
                 | 'eterapias'
                 | 'eterapias.fieldJournalTemplate'
                 | 'fieldJournals',
             ],
-        );
+        });
 
         return response.json(moderators);
     }
@@ -59,18 +59,16 @@ class ModeratorController {
 
         const moderatorRepository = new ModeratorRepository();
 
-        const moderator = await moderatorRepository.findById(
+        const showModerator = new ShowModeratorService(moderatorRepository);
+
+        const moderator = await showModerator.execute({
             id,
-            relations as [
+            relations: relations as [
                 | 'eterapias'
                 | 'eterapias.fieldJournalTemplate'
                 | 'fieldJournals',
             ],
-        );
-
-        if (!moderator) {
-            throw new AppError('Moderator not found.');
-        }
+        });
 
         return response.json(moderator);
     }
