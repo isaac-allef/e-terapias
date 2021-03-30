@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import AppError from '../../../../../shared/errors/AppError';
 import CreateModeratorService from '../../../services/CreateModeratorService';
+import DeleteModeratorService from '../../../services/DeleteModeratorService';
 import UpdateModeratorService from '../../../services/UpdateModeratorService';
 import ModeratorRepository from '../../typeorm/repositories/ModeratorRepository';
 
@@ -101,13 +102,9 @@ class ModeratorController {
 
         const moderatorRepository = new ModeratorRepository();
 
-        const moderator = await moderatorRepository.findById(id);
+        const deleteModerator = new DeleteModeratorService(moderatorRepository);
 
-        if (!moderator) {
-            throw new AppError('Moderator not found.');
-        }
-
-        await moderatorRepository.delete(moderator);
+        const moderator = await deleteModerator.execute({ id });
 
         return response.json(moderator);
     }
