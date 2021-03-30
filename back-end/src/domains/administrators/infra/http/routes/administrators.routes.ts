@@ -30,7 +30,8 @@ administratorsRoute.put(
             id: Joi.string().uuid().required(),
         },
         [Segments.BODY]: {
-            email: Joi.string().email().required(),
+            email: Joi.string().email(),
+            password: Joi.string(),
         },
     }),
     administratorController.update,

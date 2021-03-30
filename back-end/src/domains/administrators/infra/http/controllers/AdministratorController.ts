@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
-import AppError from '../../../../../shared/errors/AppError';
 import CreateAdministratorService from '../../../services/CreateAdministratorService';
+import UpdateAdministratorService from '../../../services/UpdateAdministratorService';
+import DeleteAdministratorService from '../../../services/DeleteAdministratorService';
 import AdministratorRepository from '../../typeorm/repositories/AdministratorRepository';
 
 class AdministratorController {
@@ -53,16 +54,14 @@ class AdministratorController {
 
         const administratorRepository = new AdministratorRepository();
 
-        const administrator = await administratorRepository.findById(id);
-
-        if (!administrator) {
-            throw new AppError('Administrator not found.');
-        }
-
-        administrator.email = email;
-        administrator.password = password;
-
-        await administratorRepository.save(administrator);
+        const updateAdministrator = new UpdateAdministratorService(
+            administratorRepository,
+        );
+        const administrator = await updateAdministrator.execute({
+            id,
+            email,
+            password,
+        });
 
         return response.json(administrator);
     }
@@ -75,13 +74,11 @@ class AdministratorController {
 
         const administratorRepository = new AdministratorRepository();
 
-        const administrator = await administratorRepository.findById(id);
+        const deleteAdministrator = new DeleteAdministratorService(
+            administratorRepository,
+        );
 
-        if (!administrator) {
-            throw new AppError('Administrator not found.');
-        }
-
-        await administratorRepository.delete(administrator);
+        const administrator = await deleteAdministrator.execute({ id });
 
         return response.json(administrator);
     }
