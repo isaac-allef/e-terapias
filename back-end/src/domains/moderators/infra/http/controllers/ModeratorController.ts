@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import AppError from '../../../../../shared/errors/AppError';
 import CreateModeratorService from '../../../services/CreateModeratorService';
+import UpdateModeratorService from '../../../services/UpdateModeratorService';
 import ModeratorRepository from '../../typeorm/repositories/ModeratorRepository';
 
 class ModeratorController {
@@ -82,16 +83,12 @@ class ModeratorController {
         const { email, password } = request.body;
 
         const moderatorRepository = new ModeratorRepository();
-        const moderator = await moderatorRepository.findById(id);
-
-        if (!moderator) {
-            throw new AppError('Moderator not found.');
-        }
-
-        moderator.email = email;
-        moderator.password = password;
-
-        moderatorRepository.save(moderator);
+        const updateModerator = new UpdateModeratorService(moderatorRepository);
+        const moderator = await updateModerator.execute({
+            id,
+            email,
+            password,
+        });
 
         return response.json(moderator);
     }
