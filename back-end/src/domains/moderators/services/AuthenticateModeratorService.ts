@@ -20,7 +20,7 @@ class AuthenticateModeratorService {
     constructor(private moderatorRepository: IModeratorRepository) {}
 
     public async execute({ email, password }: Request): Promise<Response> {
-        const moderator = await this.moderatorRepository.findByEmail(email);
+        const moderator = await this.moderatorRepository.findByEmail({ email });
 
         if (!moderator) {
             throw new AppError('Incorrect email/password combination', 401);
