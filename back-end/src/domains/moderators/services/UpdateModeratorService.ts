@@ -16,7 +16,7 @@ class UpdateModeratorService {
         email,
         password,
     }: Request): Promise<IModerator> {
-        const moderator = await this.moderatorRepository.findById(id);
+        const moderator = await this.moderatorRepository.findById({ id });
 
         if (!moderator) {
             throw new AppError('Moderator not found.');

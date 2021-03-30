@@ -12,7 +12,7 @@ class CreateModeratorService {
         password,
     }: ICreateModeratorDTO): Promise<IModerator> {
         const checkModeratorExists = await this.moderatorRepository.findByEmail(
-            email,
+            { email },
         );
 
         if (checkModeratorExists) {
