@@ -1,5 +1,5 @@
 export default interface IRelationsModeratorsDTO {
-    relations?: [
-        'eterapias' | 'eterapias.fieldJournalTemplate' | 'fieldJournals',
-    ];
+    relations?: Array<
+        'eterapias' | 'eterapias.fieldJournalTemplate' | 'fieldJournals'
+    >;
 }
