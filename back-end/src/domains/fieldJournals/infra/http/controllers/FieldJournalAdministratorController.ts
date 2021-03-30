@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import FieldJournalRepository from '../../typeorm/repositories/FieldJournalRepository';
-import AppError from '../../../../../shared/errors/AppError';
+import AdministratorDeleteFieldJournalService from '../../../services/AdministratorDeleteFieldJournalService';
+import AdministratorShowFieldJournalService from '../../../services/AdministratorShowFieldJournalService';
 
 class FieldJournalAdministratorController {
     public async list(request: Request, response: Response): Promise<Response> {
@@ -14,14 +15,14 @@ class FieldJournalAdministratorController {
             limit,
         } = request.query;
 
-        const fieldJournals = await fieldJournalRepository.all(
-            orderBy as 'title' | 'created_at' | 'updated_at',
-            orderMethod as 'ASC' | 'DESC',
-            (page as unknown) as number,
-            (limit as unknown) as number,
-            search as string,
-            relations as ['moderator' | 'eterapia'],
-        );
+        const fieldJournals = await fieldJournalRepository.all({
+            orderBy: orderBy as 'title' | 'created_at' | 'updated_at',
+            orderMethod: orderMethod as 'ASC' | 'DESC',
+            page: (page as unknown) as number,
+            limit: (limit as unknown) as number,
+            search: search as string,
+            relations: relations as ['moderator' | 'eterapia'],
+        });
 
         return response.json(fieldJournals);
     }
@@ -32,14 +33,13 @@ class FieldJournalAdministratorController {
 
         const fieldJournalRepository = new FieldJournalRepository();
 
-        const fieldJournal = await fieldJournalRepository.findById(
-            id,
-            relations as ['moderator' | 'eterapia'],
+        const administratorShowFieldJournal = new AdministratorShowFieldJournalService(
+            fieldJournalRepository,
         );
-
-        if (!fieldJournal) {
-            throw new AppError('Field journal not found.');
-        }
+        const fieldJournal = await administratorShowFieldJournal.execute({
+            id,
+            relations: relations as ['moderator' | 'eterapia'],
+        });
 
         return response.json(fieldJournal);
     }
@@ -51,13 +51,13 @@ class FieldJournalAdministratorController {
         const { id } = request.params;
         const fieldJournalRepository = new FieldJournalRepository();
 
-        const fieldJournal = await fieldJournalRepository.findById(id);
+        const administratorDeleteFieldJournal = new AdministratorDeleteFieldJournalService(
+            fieldJournalRepository,
+        );
 
-        if (!fieldJournal) {
-            throw new AppError('Field journal not found.');
-        }
-
-        await fieldJournalRepository.delete(fieldJournal);
+        const fieldJournal = await administratorDeleteFieldJournal.execute({
+            id,
+        });
 
         return response.json(fieldJournal);
     }

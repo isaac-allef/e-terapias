@@ -26,10 +26,10 @@ class CreateFieldJournalService {
         eterapiaId,
         moderatorId,
     }: Request): Promise<IFieldJournal> {
-        const moderator = await this.moderatorRepository.findById(moderatorId, [
-            'eterapias',
-            'eterapias.fieldJournalTemplate',
-        ]);
+        const moderator = await this.moderatorRepository.findById({
+            id: moderatorId,
+            relations: ['eterapias', 'eterapias.fieldJournalTemplate'],
+        });
 
         if (!moderator) {
             throw new AppError('Moderator not found.');

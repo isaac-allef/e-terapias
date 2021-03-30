@@ -2,6 +2,10 @@ import { EntityRepository, getRepository, ILike, Repository } from 'typeorm';
 import IFieldJournalRepository from '../../../repositories/IFieldJournalRepository';
 import FieldJournal from '../entities/FieldJournal';
 import ICreateFieldJournal from '../../../dtos/ICreateFieldJournal';
+import IFindByIdFieldJournal from '../../../dtos/IFindByIdFieldJournal';
+import IListFieldJournals from '../../../dtos/IListFieldJournals';
+import IFindByIdFieldJournalFilterByModerator from '../../../dtos/IFindByIdFieldJournalFilterByModerator';
+import IListFieldJournalsFilterByModerator from '../../../dtos/IListFieldJournalsFilterByModerator';
 
 @EntityRepository()
 class FieldJournalRepository implements IFieldJournalRepository {
@@ -29,10 +33,10 @@ class FieldJournalRepository implements IFieldJournalRepository {
         await this.ormRepository.save(fieldJournal);
     }
 
-    public async findById(
-        id: string,
-        relations?: ['moderator' | 'eterapia'],
-    ): Promise<FieldJournal | undefined> {
+    public async findById({
+        id,
+        relations,
+    }: IFindByIdFieldJournal): Promise<FieldJournal | undefined> {
         const fieldJournal = await this.ormRepository.findOne({
             where: { id },
             relations,
@@ -41,14 +45,14 @@ class FieldJournalRepository implements IFieldJournalRepository {
         return fieldJournal;
     }
 
-    public async all(
-        orderBy: 'title' | 'created_at' | 'updated_at' = 'title',
-        orderMethod: 'ASC' | 'DESC' = 'ASC',
+    public async all({
+        orderBy,
+        orderMethod,
         page = 1,
         limit = 5,
         search = '',
-        relations: ['moderator' | 'eterapia'],
-    ): Promise<FieldJournal[] | []> {
+        relations,
+    }: IListFieldJournals): Promise<FieldJournal[] | []> {
         const orderObject = this.createOrderObject(orderBy, orderMethod);
 
         const fieldJournal = await this.ormRepository.find({
@@ -82,15 +86,15 @@ class FieldJournalRepository implements IFieldJournalRepository {
         await this.ormRepository.remove(fieldJournal);
     }
 
-    public async allFilterByModerator(
-        orderBy: 'title' | 'created_at' | 'updated_at' = 'title',
-        orderMethod: 'ASC' | 'DESC' = 'ASC',
+    public async allFilterByModerator({
+        orderBy,
+        orderMethod,
         page = 1,
         limit = 5,
         search = '',
-        relations: ['moderator' | 'eterapia'],
-        moderatorId?: string,
-    ): Promise<FieldJournal[] | []> {
+        relations,
+        moderatorId,
+    }: IListFieldJournalsFilterByModerator): Promise<FieldJournal[] | []> {
         const orderObject = this.createOrderObject(orderBy, orderMethod);
 
         const fieldJournal = await this.ormRepository.find({
@@ -106,11 +110,13 @@ class FieldJournalRepository implements IFieldJournalRepository {
         return fieldJournal;
     }
 
-    public async findByIdFilterByModerator(
-        id: string,
-        relations?: ['moderator' | 'eterapia'],
-        moderatorId?: string,
-    ): Promise<FieldJournal | undefined> {
+    public async findByIdFilterByModerator({
+        id,
+        relations,
+        moderatorId,
+    }: IFindByIdFieldJournalFilterByModerator): Promise<
+        FieldJournal | undefined
+    > {
         const fieldJournal = await this.ormRepository.findOne({
             where: { id, moderator: { id: moderatorId } },
             relations,

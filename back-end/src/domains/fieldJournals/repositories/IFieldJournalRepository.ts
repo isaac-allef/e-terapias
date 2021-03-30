@@ -1,34 +1,20 @@
 import ICreateFieldJournal from '../dtos/ICreateFieldJournal';
+import IFindByIdFieldJournal from '../dtos/IFindByIdFieldJournal';
+import IFindByIdFieldJournalFilterByModerator from '../dtos/IFindByIdFieldJournalFilterByModerator';
+import IListFieldJournals from '../dtos/IListFieldJournals';
+import IListFieldJournalsFilterByModerator from '../dtos/IListFieldJournalsFilterByModerator';
 import IFieldJournal from '../models/IFieldJournal';
 
 export default interface IFieldJournalRepository {
     createWithoutSave(data: ICreateFieldJournal): IFieldJournal;
     save(fieldJournal: IFieldJournal): Promise<void>;
-    findById(
-        id: string,
-        relations?: ['moderator' | 'eterapia'],
-    ): Promise<IFieldJournal | undefined>;
-    all(
-        orderBy: 'title' | 'created_at' | 'updated_at',
-        orderMethod: 'ASC' | 'DESC',
-        page: number,
-        limit: number,
-        search: string,
-        relations: ['moderator' | 'eterapia'],
-    ): Promise<IFieldJournal[] | []>;
+    findById(data: IFindByIdFieldJournal): Promise<IFieldJournal | undefined>;
+    all(data: IListFieldJournals): Promise<IFieldJournal[] | []>;
     delete(fieldJournal: IFieldJournal): Promise<void>;
     findByIdFilterByModerator(
-        id: string,
-        relations?: ['moderator' | 'eterapia'],
-        moderatorId?: string,
+        data: IFindByIdFieldJournalFilterByModerator,
     ): Promise<IFieldJournal | undefined>;
     allFilterByModerator(
-        orderBy: 'title' | 'created_at' | 'updated_at',
-        orderMethod: 'ASC' | 'DESC',
-        page: number,
-        limit: number,
-        search: string,
-        relations: ['moderator' | 'eterapia'],
-        moderatorId?: string,
+        data: IListFieldJournalsFilterByModerator,
     ): Promise<IFieldJournal[] | []>;
 }
