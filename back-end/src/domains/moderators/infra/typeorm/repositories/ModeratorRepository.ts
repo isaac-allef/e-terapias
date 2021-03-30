@@ -1,5 +1,8 @@
 import { EntityRepository, getRepository, ILike, Repository } from 'typeorm';
 import ICreateAdministratorDTO from '../../../../administrators/dtos/ICreateAdministratorDTO';
+import IFindByEmailModeratorDTO from '../../../dtos/IFindByEmailModeratorDTO';
+import IFindByIdModeratorDTO from '../../../dtos/IFindByIdModeratorDTO';
+import IListModeratorsDTO from '../../../dtos/IListModeratorsDTO';
 import IModeratorRepository from '../../../repositories/IModeratorRepository';
 import Moderator from '../entities/Moderator';
 
@@ -25,12 +28,10 @@ class ModeratorRepository implements IModeratorRepository {
         return moderator;
     }
 
-    public async findByEmail(
-        email: string,
-        relations?: [
-            'eterapias' | 'eterapias.fieldJournalTemplate' | 'fieldJournals',
-        ],
-    ): Promise<Moderator | undefined> {
+    public async findByEmail({
+        email,
+        relations,
+    }: IFindByEmailModeratorDTO): Promise<Moderator | undefined> {
         const moderator = await this.ormRepository.findOne({
             where: { email },
             relations,
@@ -39,12 +40,10 @@ class ModeratorRepository implements IModeratorRepository {
         return moderator;
     }
 
-    public async findById(
-        id: string,
-        relations?: [
-            'eterapias' | 'eterapias.fieldJournalTemplate' | 'fieldJournals',
-        ],
-    ): Promise<Moderator | undefined> {
+    public async findById({
+        id,
+        relations,
+    }: IFindByIdModeratorDTO): Promise<Moderator | undefined> {
         const moderator = await this.ormRepository.findOne({
             where: { id },
             relations,
@@ -53,16 +52,14 @@ class ModeratorRepository implements IModeratorRepository {
         return moderator;
     }
 
-    public async all(
-        orderBy: 'email' | 'created_at' | 'updated_at' = 'created_at',
-        orderMethod: 'ASC' | 'DESC' = 'ASC',
+    public async all({
+        orderBy,
+        orderMethod,
         page = 1,
         limit = 5,
         search = '',
-        relations: [
-            'eterapias' | 'eterapias.fieldJournalTemplate' | 'fieldJournals',
-        ],
-    ): Promise<Moderator[] | []> {
+        relations,
+    }: IListModeratorsDTO): Promise<Moderator[] | []> {
         const orderObject = this.createOrderObject(orderBy, orderMethod);
 
         const moderators = await this.ormRepository.find({
