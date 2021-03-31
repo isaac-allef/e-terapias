@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import BCryptHashProvider from '../../../../../shared/providers/HashProvider/implementations/BCryptHashProvider';
 import CreateModeratorService from '../../../services/CreateModeratorService';
 import DeleteModeratorService from '../../../services/DeleteModeratorService';
 import ShowModeratorService from '../../../services/ShowModeratorService';
@@ -13,8 +14,12 @@ class ModeratorController {
         const { email, password } = request.body;
 
         const moderatorRepository = new ModeratorRepository();
+        const hashProvider = new BCryptHashProvider();
 
-        const createModerator = new CreateModeratorService(moderatorRepository);
+        const createModerator = new CreateModeratorService(
+            moderatorRepository,
+            hashProvider,
+        );
 
         const administrator = await createModerator.execute({
             email,

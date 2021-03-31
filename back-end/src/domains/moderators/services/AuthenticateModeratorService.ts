@@ -1,8 +1,8 @@
-import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 import authConfig from '../../../config/auth';
 
 import AppError from '../../../shared/errors/AppError';
+import IHashProvider from '../../../shared/providers/HashProvider/models/IHashProvider';
 import IModerator from '../models/IModerator';
 import IModeratorRepository from '../repositories/IModeratorRepository';
 
@@ -17,7 +17,10 @@ interface Response {
 }
 
 class AuthenticateModeratorService {
-    constructor(private moderatorRepository: IModeratorRepository) {}
+    constructor(
+        private moderatorRepository: IModeratorRepository,
+        private hashProvider: IHashProvider,
+    ) {}
 
     public async execute({ email, password }: Request): Promise<Response> {
         const moderator = await this.moderatorRepository.findByEmail({ email });
@@ -26,7 +29,10 @@ class AuthenticateModeratorService {
             throw new AppError('Incorrect email/password combination', 401);
         }
 
-        const passwordMatched = await compare(password, moderator.password);
+        const passwordMatched = await this.hashProvider.compareHash(
+            password,
+            moderator.password,
+        );
 
         if (!passwordMatched) {
             throw new AppError('Incorrect email/password combination', 401);

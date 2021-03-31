@@ -1,11 +1,14 @@
-import { hash } from 'bcryptjs';
 import AppError from '../../../shared/errors/AppError';
+import IHashProvider from '../../../shared/providers/HashProvider/models/IHashProvider';
 import ICreateModeratorDTO from '../dtos/ICreateModeratorDTO';
 import IModerator from '../models/IModerator';
 import IModeratorRepository from '../repositories/IModeratorRepository';
 
 class CreateModeratorService {
-    constructor(private moderatorRepository: IModeratorRepository) {}
+    constructor(
+        private moderatorRepository: IModeratorRepository,
+        private hashProvider: IHashProvider,
+    ) {}
 
     public async execute({
         email,
@@ -19,7 +22,7 @@ class CreateModeratorService {
             throw new AppError('Email address already used.');
         }
 
-        const hashedPassword = await hash(password, 9);
+        const hashedPassword = await this.hashProvider.generateHash(password);
 
         const moderator = await this.moderatorRepository.create({
             email,
