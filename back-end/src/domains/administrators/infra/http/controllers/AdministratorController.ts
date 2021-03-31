@@ -3,6 +3,7 @@ import CreateAdministratorService from '../../../services/CreateAdministratorSer
 import UpdateAdministratorService from '../../../services/UpdateAdministratorService';
 import DeleteAdministratorService from '../../../services/DeleteAdministratorService';
 import AdministratorRepository from '../../typeorm/repositories/AdministratorRepository';
+import BCryptHashProvider from '../../../../../shared/providers/HashProvider/implementations/BCryptHashProvider';
 
 class AdministratorController {
     public async create(
@@ -12,9 +13,11 @@ class AdministratorController {
         const { email, password } = request.body;
 
         const administratorRepository = new AdministratorRepository();
+        const hashProvider = new BCryptHashProvider();
 
         const createAdministrator = new CreateAdministratorService(
             administratorRepository,
+            hashProvider,
         );
 
         const administrator = await createAdministrator.execute({

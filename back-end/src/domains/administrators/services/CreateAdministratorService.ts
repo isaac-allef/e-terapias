@@ -1,5 +1,5 @@
-import { hash } from 'bcryptjs';
 import AppError from '../../../shared/errors/AppError';
+import IHashProvider from '../../../shared/providers/HashProvider/models/IHashProvider';
 import IAdministrator from '../models/IAdministrator';
 import IAdministratorRepository from '../repositories/IAdministratorRepository';
 
@@ -9,7 +9,10 @@ interface Request {
 }
 
 class CreateAdministratorService {
-    constructor(private administratorRepository: IAdministratorRepository) {}
+    constructor(
+        private administratorRepository: IAdministratorRepository,
+        private hashProvider: IHashProvider,
+    ) {}
 
     public async execute({
         email,
@@ -23,7 +26,7 @@ class CreateAdministratorService {
             throw new AppError('Email address already used.');
         }
 
-        const hashedPassword = await hash(password, 9);
+        const hashedPassword = await this.hashProvider.generateHash(password);
 
         const administrator = await this.administratorRepository.create({
             email,

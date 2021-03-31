@@ -1,8 +1,8 @@
-import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 import authConfig from '../../../config/auth';
 
 import AppError from '../../../shared/errors/AppError';
+import IHashProvider from '../../../shared/providers/HashProvider/models/IHashProvider';
 import IAdministrator from '../models/IAdministrator';
 import IAdministratorRepository from '../repositories/IAdministratorRepository';
 
@@ -17,7 +17,10 @@ interface Response {
 }
 
 class AuthenticateAdministratorService {
-    constructor(private administratorRepository: IAdministratorRepository) {}
+    constructor(
+        private administratorRepository: IAdministratorRepository,
+        private hashProvider: IHashProvider,
+    ) {}
 
     public async execute({ email, password }: Request): Promise<Response> {
         const administrator = await this.administratorRepository.findByEmail(
@@ -28,7 +31,10 @@ class AuthenticateAdministratorService {
             throw new AppError('Incorrect email/password combination', 401);
         }
 
-        const passwordMatched = await compare(password, administrator.password);
+        const passwordMatched = await this.hashProvider.compareHash(
+            password,
+            administrator.password,
+        );
 
         if (!passwordMatched) {
             throw new AppError('Incorrect email/password combination', 401);
