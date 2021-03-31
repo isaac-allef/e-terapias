@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
-import AppError from '../../../../../shared/errors/AppError';
 import CreateFieldJournalTemplateService from '../../../services/CreateFieldJournalTemplateService';
+import DeleteFieldJournalTemplateService from '../../../services/DeleteFieldJournalTemplateService';
+import ShowFieldJournalTemplateService from '../../../services/ShowFieldJournalTemplateService';
 import FieldJournalTemplateRepository from '../../typeorm/repositories/FieldJournalTemplateRepository';
 
 class FieldJournalTemplateController {
@@ -35,14 +36,14 @@ class FieldJournalTemplateController {
             limit,
         } = request.query;
 
-        const fieldJournalTemplates = await fieldJournalTemplateRepository.all(
-            orderBy as 'name' | 'created_at' | 'updated_at',
-            orderMethod as 'ASC' | 'DESC',
-            (page as unknown) as number,
-            (limit as unknown) as number,
-            search as string,
-            relations as ['eterapias'],
-        );
+        const fieldJournalTemplates = await fieldJournalTemplateRepository.all({
+            orderBy: orderBy as 'name' | 'created_at' | 'updated_at',
+            orderMethod: orderMethod as 'ASC' | 'DESC',
+            page: (page as unknown) as number,
+            limit: (limit as unknown) as number,
+            search: search as string,
+            relations: relations as ['eterapias'],
+        });
 
         return response.json(fieldJournalTemplates);
     }
@@ -53,14 +54,16 @@ class FieldJournalTemplateController {
 
         const fieldJournalTemplateRepository = new FieldJournalTemplateRepository();
 
-        const fieldJournalTemplate = await fieldJournalTemplateRepository.findById(
-            id,
-            relations as ['eterapias'],
+        const showFieldJournalTemplateService = new ShowFieldJournalTemplateService(
+            fieldJournalTemplateRepository,
         );
 
-        if (!fieldJournalTemplate) {
-            throw new AppError('Field journal template not found.');
-        }
+        const fieldJournalTemplate = await showFieldJournalTemplateService.execute(
+            {
+                id,
+                relations: relations as ['eterapias'],
+            },
+        );
 
         return response.json(fieldJournalTemplate);
     }
@@ -73,15 +76,13 @@ class FieldJournalTemplateController {
 
         const fieldJournalTemplateRepository = new FieldJournalTemplateRepository();
 
-        const fieldJournalTemplate = await fieldJournalTemplateRepository.findById(
-            id,
+        const deleteFieldJournalTemplateService = new DeleteFieldJournalTemplateService(
+            fieldJournalTemplateRepository,
         );
 
-        if (!fieldJournalTemplate) {
-            throw new AppError('Field journal template not found.');
-        }
-
-        await fieldJournalTemplateRepository.delete(fieldJournalTemplate);
+        const fieldJournalTemplate = await deleteFieldJournalTemplateService.execute(
+            { id },
+        );
 
         return response.json(fieldJournalTemplate);
     }
