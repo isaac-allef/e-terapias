@@ -12,7 +12,7 @@ import {
 
 import IEterapia from '../../../models/IEterapia';
 import FieldJournal from '../../../../fieldJournals/infra/typeorm/entities/FieldJournal';
-import FieldJournalTemplate from '../../../../fieldJournals/infra/typeorm/entities/FieldJournalTemplate';
+import FieldJournalTemplate from '../../../../fieldJournalsTemplates/infra/typeorm/entities/FieldJournalTemplate';
 
 import Moderator from '../../../../moderators/infra/typeorm/entities/Moderator';
 

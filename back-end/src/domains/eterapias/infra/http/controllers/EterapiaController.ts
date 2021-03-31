@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import FieldJournalTemplateRepository from '../../../../fieldJournals/infra/typeorm/repositories/FieldJournalTemplateRepository';
+import FieldJournalTemplateRepository from '../../../../fieldJournalsTemplates/infra/typeorm/repositories/FieldJournalTemplateRepository';
 import CreateEterapiaService from '../../../services/CreateEterapiaService';
 import DeleteEterapiaService from '../../../services/DeleteEterapiaService';
 import ShowEterapiaService from '../../../services/ShowEterapiaService';
