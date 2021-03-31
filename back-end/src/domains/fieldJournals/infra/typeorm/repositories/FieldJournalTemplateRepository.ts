@@ -2,6 +2,8 @@ import { EntityRepository, getRepository, ILike, Repository } from 'typeorm';
 import FieldJournalTemplate from '../entities/FieldJournalTemplate';
 import ICreateFieldJournalTemplate from '../../../dtos/ICreateFieldJournalTemplate';
 import IFieldJournalTemplateRepository from '../../../repositories/IFieldJournalTemplateRepository';
+import IFindByIdFieldJournalTemplate from '../../../dtos/IFindByIdFieldJournalTemplate';
+import IListFieldJournalsTemplates from '../../../dtos/IListFieldJournalsTemplates';
 
 @EntityRepository()
 class FieldJournalTemplateRepository
@@ -26,10 +28,12 @@ class FieldJournalTemplateRepository
         return fieldJournalTemplate;
     }
 
-    public async findById(
-        id: string,
-        relations?: ['eterapias'],
-    ): Promise<FieldJournalTemplate | undefined> {
+    public async findById({
+        id,
+        relations,
+    }: IFindByIdFieldJournalTemplate): Promise<
+        FieldJournalTemplate | undefined
+    > {
         const fieldJournalTemplate = await this.ormRepository.findOne({
             where: { id },
             relations,
@@ -38,14 +42,14 @@ class FieldJournalTemplateRepository
         return fieldJournalTemplate;
     }
 
-    public async all(
-        orderBy: 'name' | 'created_at' | 'updated_at' = 'name',
-        orderMethod: 'ASC' | 'DESC' = 'ASC',
+    public async all({
+        orderBy,
+        orderMethod,
         page = 1,
         limit = 5,
         search = '',
-        relations: ['eterapias'],
-    ): Promise<FieldJournalTemplate[] | []> {
+        relations,
+    }: IListFieldJournalsTemplates): Promise<FieldJournalTemplate[] | []> {
         const orderObject = this.createOrderObject(orderBy, orderMethod);
 
         const fieldJournalTemplates = await this.ormRepository.find({

@@ -1,19 +1,15 @@
 import ICreateFieldJournalTemplate from '../dtos/ICreateFieldJournalTemplate';
+import IFindByIdFieldJournalTemplate from '../dtos/IFindByIdFieldJournalTemplate';
+import IListFieldJournalsTemplates from '../dtos/IListFieldJournalsTemplates';
 import IFieldJournalTemplate from '../models/IFieldJournalTemplate';
 
 export default interface IFieldJournalTemplateRepository {
     create(data: ICreateFieldJournalTemplate): Promise<IFieldJournalTemplate>;
     findById(
-        id: string,
-        relations?: ['eterapias'],
+        data: IFindByIdFieldJournalTemplate,
     ): Promise<IFieldJournalTemplate | undefined>;
     all(
-        orderBy: 'name' | 'created_at' | 'updated_at',
-        orderMethod: 'ASC' | 'DESC',
-        page: number,
-        limit: number,
-        search: string,
-        relations: ['eterapias'],
+        data: IListFieldJournalsTemplates,
     ): Promise<IFieldJournalTemplate[] | []>;
     delete(fieldJournalTemplate: IFieldJournalTemplate): Promise<void>;
 }
