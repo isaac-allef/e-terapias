@@ -1,14 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
-import { verify } from 'jsonwebtoken';
-
 import authConfig from '../../../../../config/auth';
 import AppError from '../../../../../shared/errors/AppError';
-
-interface TokenPayload {
-    iat: number;
-    exp: number;
-    sub: string;
-}
+import JsonWebTokenProvider from '../../../../../shared/providers/TokenProvider/implementations/JsonWebTokenProvider';
 
 export default function ensureAuthenticatedModerator(
     request: Request,
@@ -23,17 +16,21 @@ export default function ensureAuthenticatedModerator(
 
     const [, token] = authHeader.split(' ');
 
-    try {
-        const decoded = verify(token, authConfig.jwtModerator.secret);
+    const tokenProvider = new JsonWebTokenProvider();
+    const decoded = tokenProvider.verifyToken({
+        token,
+        secret: authConfig.jwtModerator.secret,
+    });
 
-        const { sub } = decoded as TokenPayload;
-
-        request.moderator = {
-            id: sub,
-        };
-
-        return next();
-    } catch {
+    if (!decoded) {
         throw new AppError('Invalid JWT token', 401);
     }
+
+    const { sub } = decoded;
+
+    request.moderator = {
+        id: sub,
+    };
+
+    return next();
 }

@@ -1,8 +1,7 @@
-import { sign } from 'jsonwebtoken';
 import authConfig from '../../../config/auth';
-
 import AppError from '../../../shared/errors/AppError';
 import IHashProvider from '../../../shared/providers/HashProvider/models/IHashProvider';
+import ITokenProvider from '../../../shared/providers/TokenProvider/models/ITokenProvider';
 import IModerator from '../models/IModerator';
 import IModeratorRepository from '../repositories/IModeratorRepository';
 
@@ -20,6 +19,7 @@ class AuthenticateModeratorService {
     constructor(
         private moderatorRepository: IModeratorRepository,
         private hashProvider: IHashProvider,
+        private tokenProvider: ITokenProvider,
     ) {}
 
     public async execute({ email, password }: Request): Promise<Response> {
@@ -40,7 +40,8 @@ class AuthenticateModeratorService {
 
         const { secret, expiresIn } = authConfig.jwtModerator;
 
-        const token = sign({}, secret, {
+        const token = this.tokenProvider.generateToken({
+            secret,
             subject: moderator.id,
             expiresIn,
         });
