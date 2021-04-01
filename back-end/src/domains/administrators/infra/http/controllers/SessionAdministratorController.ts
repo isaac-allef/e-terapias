@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import BCryptHashProvider from '../../../../../shared/providers/HashProvider/implementations/BCryptHashProvider';
+import JsonWebTokenProvider from '../../../../../shared/providers/TokenProvider/implementations/JsonWebTokenProvider';
 import AuthenticateAdministratorService from '../../../services/AuthenticateAdministratorService';
 import AdministratorRepository from '../../typeorm/repositories/AdministratorRepository';
 
@@ -12,10 +13,12 @@ class SessionAdministratorController {
 
         const administratorRepository = new AdministratorRepository();
         const hashProvider = new BCryptHashProvider();
+        const tokenProvider = new JsonWebTokenProvider();
 
         const authenticateAdministrator = new AuthenticateAdministratorService(
             administratorRepository,
             hashProvider,
+            tokenProvider,
         );
 
         const {

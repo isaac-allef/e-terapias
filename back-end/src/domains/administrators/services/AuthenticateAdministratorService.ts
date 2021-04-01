@@ -1,8 +1,7 @@
-import { sign } from 'jsonwebtoken';
 import authConfig from '../../../config/auth';
-
 import AppError from '../../../shared/errors/AppError';
 import IHashProvider from '../../../shared/providers/HashProvider/models/IHashProvider';
+import ITokenProvider from '../../../shared/providers/TokenProvider/models/ITokenProvider';
 import IAdministrator from '../models/IAdministrator';
 import IAdministratorRepository from '../repositories/IAdministratorRepository';
 
@@ -20,6 +19,7 @@ class AuthenticateAdministratorService {
     constructor(
         private administratorRepository: IAdministratorRepository,
         private hashProvider: IHashProvider,
+        private tokenProvider: ITokenProvider,
     ) {}
 
     public async execute({ email, password }: Request): Promise<Response> {
@@ -42,7 +42,8 @@ class AuthenticateAdministratorService {
 
         const { secret, expiresIn } = authConfig.jwt;
 
-        const token = sign({}, secret, {
+        const token = this.tokenProvider.generateToken({
+            secret,
             subject: administrator.id,
             expiresIn,
         });
