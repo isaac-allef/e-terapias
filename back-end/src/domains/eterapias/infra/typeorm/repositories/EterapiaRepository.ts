@@ -1,4 +1,4 @@
-import { EntityRepository, getRepository, ILike, Repository } from 'typeorm';
+import { EntityRepository, getRepository, Repository } from 'typeorm';
 import ICreateEterapiaDTO from '../../../dtos/ICreateEterapiaDTO';
 import IFindByIdEterapiaDTO from '../../../dtos/IFindByIdEterapiaDTO';
 import IFindByNameEterapiaDTO from '../../../dtos/IFindByNameEterapiaDTO';
@@ -57,7 +57,6 @@ class EterapiaRepository implements IEterapiaRepository {
         orderMethod = 'ASC',
         page = 1,
         limit = 5,
-        search = '',
         relations,
     }: IListEterapiasDTO): Promise<Eterapia[] | []> {
         const orderObject = orderBy ? { [orderBy]: orderMethod } : undefined;
@@ -66,7 +65,6 @@ class EterapiaRepository implements IEterapiaRepository {
             order: orderObject,
             take: limit,
             skip: (page - 1) * limit,
-            where: [{ name: ILike(`%${search}%`) }],
             relations,
         });
 
