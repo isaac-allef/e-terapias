@@ -1,4 +1,4 @@
-import { EntityRepository, getRepository, ILike, Repository } from 'typeorm';
+import { EntityRepository, getRepository, Repository } from 'typeorm';
 import FieldJournalTemplate from '../entities/FieldJournalTemplate';
 import ICreateFieldJournalTemplate from '../../../dtos/ICreateFieldJournalTemplate';
 import IFieldJournalTemplateRepository from '../../../repositories/IFieldJournalTemplateRepository';
@@ -47,7 +47,6 @@ class FieldJournalTemplateRepository
         orderMethod = 'ASC',
         page = 1,
         limit = 5,
-        search = '',
         relations,
     }: IListFieldJournalsTemplates): Promise<FieldJournalTemplate[] | []> {
         const orderObject = orderBy ? { [orderBy]: orderMethod } : undefined;
@@ -56,7 +55,6 @@ class FieldJournalTemplateRepository
             order: orderObject,
             take: limit,
             skip: (page - 1) * limit,
-            where: [{ name: ILike(`%${search}%`) }],
             relations,
         });
 
