@@ -54,14 +54,16 @@ class ModeratorRepository implements IModeratorRepository {
 
     public async all({
         orderBy,
-        orderMethod,
+        orderMethod = 'ASC',
         page = 1,
         limit = 5,
         search = '',
         relations,
     }: IListModeratorsDTO): Promise<Moderator[] | []> {
+        const orderObject = orderBy ? { [orderBy]: orderMethod } : undefined;
+
         const moderators = await this.ormRepository.find({
-            order: { [orderBy]: orderMethod },
+            order: orderObject,
             take: limit,
             skip: (page - 1) * limit,
             where: [{ email: ILike(`%${search}%`) }],

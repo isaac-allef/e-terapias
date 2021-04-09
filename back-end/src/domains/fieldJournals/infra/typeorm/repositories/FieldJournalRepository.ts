@@ -47,14 +47,16 @@ class FieldJournalRepository implements IFieldJournalRepository {
 
     public async all({
         orderBy,
-        orderMethod,
+        orderMethod = 'ASC',
         page = 1,
         limit = 5,
         search = '',
         relations,
     }: IListFieldJournals): Promise<FieldJournal[] | []> {
+        const orderObject = orderBy ? { [orderBy]: orderMethod } : undefined;
+
         const fieldJournal = await this.ormRepository.find({
-            order: { [orderBy]: orderMethod },
+            order: orderObject,
             take: limit,
             skip: (page - 1) * limit,
             where: [{ title: ILike(`%${search}%`) }],
@@ -70,15 +72,17 @@ class FieldJournalRepository implements IFieldJournalRepository {
 
     public async allFilterByModerator({
         orderBy,
-        orderMethod,
+        orderMethod = 'ASC',
         page = 1,
         limit = 5,
         search = '',
         relations,
         moderatorId,
     }: IListFieldJournalsFilterByModerator): Promise<FieldJournal[] | []> {
+        const orderObject = orderBy ? { [orderBy]: orderMethod } : undefined;
+
         const fieldJournal = await this.ormRepository.find({
-            order: { [orderBy]: orderMethod },
+            order: orderObject,
             take: limit,
             skip: (page - 1) * limit,
             where: [

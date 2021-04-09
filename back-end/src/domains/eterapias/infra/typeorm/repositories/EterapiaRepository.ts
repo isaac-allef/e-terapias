@@ -54,14 +54,16 @@ class EterapiaRepository implements IEterapiaRepository {
 
     public async all({
         orderBy,
-        orderMethod,
+        orderMethod = 'ASC',
         page = 1,
         limit = 5,
         search = '',
         relations,
     }: IListEterapiasDTO): Promise<Eterapia[] | []> {
+        const orderObject = orderBy ? { [orderBy]: orderMethod } : undefined;
+
         const eterapias = await this.ormRepository.find({
-            order: { [orderBy]: orderMethod },
+            order: orderObject,
             take: limit,
             skip: (page - 1) * limit,
             where: [{ name: ILike(`%${search}%`) }],

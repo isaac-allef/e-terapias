@@ -44,14 +44,16 @@ class FieldJournalTemplateRepository
 
     public async all({
         orderBy,
-        orderMethod,
+        orderMethod = 'ASC',
         page = 1,
         limit = 5,
         search = '',
         relations,
     }: IListFieldJournalsTemplates): Promise<FieldJournalTemplate[] | []> {
+        const orderObject = orderBy ? { [orderBy]: orderMethod } : undefined;
+
         const fieldJournalTemplates = await this.ormRepository.find({
-            order: { [orderBy]: orderMethod },
+            order: orderObject,
             take: limit,
             skip: (page - 1) * limit,
             where: [{ name: ILike(`%${search}%`) }],
