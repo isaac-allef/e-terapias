@@ -60,10 +60,8 @@ class ModeratorRepository implements IModeratorRepository {
         search = '',
         relations,
     }: IListModeratorsDTO): Promise<Moderator[] | []> {
-        const orderObject = this.createOrderObject(orderBy, orderMethod);
-
         const moderators = await this.ormRepository.find({
-            order: orderObject,
+            order: { [orderBy]: orderMethod },
             take: limit,
             skip: (page - 1) * limit,
             where: [{ email: ILike(`%${search}%`) }],
@@ -71,22 +69,6 @@ class ModeratorRepository implements IModeratorRepository {
         });
 
         return moderators;
-    }
-
-    private createOrderObject(
-        orderBy: 'email' | 'created_at' | 'updated_at',
-        orderMethod: 'ASC' | 'DESC',
-    ) {
-        if (orderBy === 'email') {
-            return { email: orderMethod };
-        }
-        if (orderBy === 'created_at') {
-            return { created_at: orderMethod };
-        }
-        if (orderBy === 'updated_at') {
-            return { created_at: orderMethod };
-        }
-        return undefined;
     }
 
     public async save(moderator: Moderator): Promise<void> {

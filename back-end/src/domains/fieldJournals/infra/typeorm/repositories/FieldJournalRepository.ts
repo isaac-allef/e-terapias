@@ -53,10 +53,8 @@ class FieldJournalRepository implements IFieldJournalRepository {
         search = '',
         relations,
     }: IListFieldJournals): Promise<FieldJournal[] | []> {
-        const orderObject = this.createOrderObject(orderBy, orderMethod);
-
         const fieldJournal = await this.ormRepository.find({
-            order: orderObject,
+            order: { [orderBy]: orderMethod },
             take: limit,
             skip: (page - 1) * limit,
             where: [{ title: ILike(`%${search}%`) }],
@@ -64,22 +62,6 @@ class FieldJournalRepository implements IFieldJournalRepository {
         });
 
         return fieldJournal;
-    }
-
-    private createOrderObject(
-        orderBy: 'title' | 'created_at' | 'updated_at',
-        orderMethod: 'ASC' | 'DESC',
-    ) {
-        if (orderBy === 'title') {
-            return { title: orderMethod };
-        }
-        if (orderBy === 'created_at') {
-            return { created_at: orderMethod };
-        }
-        if (orderBy === 'updated_at') {
-            return { created_at: orderMethod };
-        }
-        return undefined;
     }
 
     public async delete(fieldJournal: FieldJournal): Promise<void> {
@@ -95,10 +77,8 @@ class FieldJournalRepository implements IFieldJournalRepository {
         relations,
         moderatorId,
     }: IListFieldJournalsFilterByModerator): Promise<FieldJournal[] | []> {
-        const orderObject = this.createOrderObject(orderBy, orderMethod);
-
         const fieldJournal = await this.ormRepository.find({
-            order: orderObject,
+            order: { [orderBy]: orderMethod },
             take: limit,
             skip: (page - 1) * limit,
             where: [

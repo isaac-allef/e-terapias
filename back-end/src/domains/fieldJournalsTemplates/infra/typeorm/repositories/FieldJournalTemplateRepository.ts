@@ -50,10 +50,8 @@ class FieldJournalTemplateRepository
         search = '',
         relations,
     }: IListFieldJournalsTemplates): Promise<FieldJournalTemplate[] | []> {
-        const orderObject = this.createOrderObject(orderBy, orderMethod);
-
         const fieldJournalTemplates = await this.ormRepository.find({
-            order: orderObject,
+            order: { [orderBy]: orderMethod },
             take: limit,
             skip: (page - 1) * limit,
             where: [{ name: ILike(`%${search}%`) }],
@@ -61,22 +59,6 @@ class FieldJournalTemplateRepository
         });
 
         return fieldJournalTemplates;
-    }
-
-    private createOrderObject(
-        orderBy: 'name' | 'created_at' | 'updated_at',
-        orderMethod: 'ASC' | 'DESC',
-    ) {
-        if (orderBy === 'name') {
-            return { name: orderMethod };
-        }
-        if (orderBy === 'created_at') {
-            return { created_at: orderMethod };
-        }
-        if (orderBy === 'updated_at') {
-            return { created_at: orderMethod };
-        }
-        return undefined;
     }
 
     public async delete(
