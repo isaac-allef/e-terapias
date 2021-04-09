@@ -79,14 +79,7 @@ class FieldJournalModeratorController {
     }
 
     public async list(request: Request, response: Response): Promise<Response> {
-        const {
-            search,
-            relations,
-            orderBy,
-            orderMethod,
-            page,
-            limit,
-        } = request.query;
+        const { relations, orderBy, orderMethod, page, limit } = request.query;
 
         const fieldJournalRepository = new FieldJournalRepository();
 
@@ -96,7 +89,6 @@ class FieldJournalModeratorController {
                 orderMethod: orderMethod as 'ASC' | 'DESC',
                 page: (page as unknown) as number,
                 limit: (limit as unknown) as number,
-                search: search as string,
                 relations: relations as ['moderator' | 'eterapia'],
                 moderatorId: request.moderator.id,
             },
