@@ -1,4 +1,4 @@
-import { EntityRepository, getRepository, ILike, Repository } from 'typeorm';
+import { EntityRepository, getRepository, Repository } from 'typeorm';
 import ICreateAdministratorDTO from '../../../../administrators/dtos/ICreateAdministratorDTO';
 import IFindByEmailModeratorDTO from '../../../dtos/IFindByEmailModeratorDTO';
 import IFindByIdModeratorDTO from '../../../dtos/IFindByIdModeratorDTO';
@@ -57,7 +57,6 @@ class ModeratorRepository implements IModeratorRepository {
         orderMethod = 'ASC',
         page = 1,
         limit = 5,
-        search = '',
         relations,
     }: IListModeratorsDTO): Promise<Moderator[] | []> {
         const orderObject = orderBy ? { [orderBy]: orderMethod } : undefined;
@@ -66,7 +65,6 @@ class ModeratorRepository implements IModeratorRepository {
             order: orderObject,
             take: limit,
             skip: (page - 1) * limit,
-            where: [{ email: ILike(`%${search}%`) }],
             relations,
         });
 

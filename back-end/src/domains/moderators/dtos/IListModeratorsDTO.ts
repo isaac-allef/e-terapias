@@ -5,5 +5,4 @@ export default interface IListModeratorsDTO extends IRelationsModeratorsDTO {
     orderMethod: 'ASC' | 'DESC';
     page: number;
     limit: number;
-    search: string;
 }
