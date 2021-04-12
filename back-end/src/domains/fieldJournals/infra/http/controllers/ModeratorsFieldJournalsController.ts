@@ -7,7 +7,7 @@ import ModeratorDeleteFieldJournalService from '../../../services/ModeratorDelet
 import ModeratorShowFieldJournalService from '../../../services/ModeratorShowFieldJournalService';
 import UpdateFieldJournalService from '../../../services/UpdateFieldJournalService';
 
-class FieldJournalModeratorController {
+class ModeratorsFieldJournalsController {
     public async create(
         request: Request,
         response: Response,
@@ -117,4 +117,4 @@ class FieldJournalModeratorController {
     }
 }
 
-export default FieldJournalModeratorController;
+export default ModeratorsFieldJournalsController;

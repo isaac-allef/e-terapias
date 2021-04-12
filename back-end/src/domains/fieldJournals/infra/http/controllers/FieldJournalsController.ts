@@ -3,7 +3,7 @@ import FieldJournalRepository from '../../typeorm/repositories/FieldJournalRepos
 import AdministratorDeleteFieldJournalService from '../../../services/AdministratorDeleteFieldJournalService';
 import AdministratorShowFieldJournalService from '../../../services/AdministratorShowFieldJournalService';
 
-class FieldJournalAdministratorController {
+class FieldJournalsController {
     public async list(request: Request, response: Response): Promise<Response> {
         const fieldJournalRepository = new FieldJournalRepository();
         const { relations, orderBy, orderMethod, page, limit } = request.query;
@@ -55,4 +55,4 @@ class FieldJournalAdministratorController {
     }
 }
 
-export default FieldJournalAdministratorController;
+export default FieldJournalsController;
