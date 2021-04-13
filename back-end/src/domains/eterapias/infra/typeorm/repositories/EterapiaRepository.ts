@@ -1,8 +1,10 @@
 import { EntityRepository, getRepository, Repository } from 'typeorm';
 import ICreateEterapiaDTO from '../../../dtos/ICreateEterapiaDTO';
 import IFindByIdEterapiaDTO from '../../../dtos/IFindByIdEterapiaDTO';
+import IFindByIdEterapiaFilterByModeratorDTO from '../../../dtos/IFindByIdEterapiaFilterByModeratorDTO';
 import IFindByNameEterapiaDTO from '../../../dtos/IFindByNameEterapiaDTO';
 import IListEterapiasDTO from '../../../dtos/IListEterapiasDTO';
+import IListEterapiasFilterByModeratorDTO from '../../../dtos/IListEterapiasFilterByModeratorDTO';
 import IEterapiaRepository from '../../../repositories/IEterapiaRepository';
 import Eterapia from '../entities/Eterapia';
 
@@ -69,6 +71,63 @@ class EterapiaRepository implements IEterapiaRepository {
         });
 
         return eterapias;
+    }
+
+    public async allFilterByModerator({
+        orderBy = 'name',
+        orderMethod = 'ASC',
+        page = 1,
+        limit = 5,
+        moderatorId,
+        relations,
+    }: IListEterapiasFilterByModeratorDTO): Promise<Eterapia[] | []> {
+        const query = this.ormRepository.createQueryBuilder('eterapias');
+
+        relations?.forEach(relation => {
+            query.leftJoinAndSelect(`eterapias.${relation}`, relation);
+        });
+
+        if (!relations) {
+            query.leftJoin('eterapias.moderators', 'moderators');
+        } else if (relations.indexOf('moderators') < 0) {
+            query.leftJoin('eterapias.moderators', 'moderators');
+        }
+
+        query
+            .where('moderators.id = :id', { id: moderatorId })
+            .orderBy(`eterapias.${orderBy}`, orderMethod)
+            .take(limit)
+            .skip((page - 1) * limit);
+
+        const eterapias = await query.getMany();
+
+        return eterapias;
+    }
+
+    public async findByIdFilterByModerator({
+        id,
+        relations,
+        moderatorId,
+    }: IFindByIdEterapiaFilterByModeratorDTO): Promise<Eterapia | undefined> {
+        const query = this.ormRepository.createQueryBuilder('eterapias');
+
+        relations?.forEach(relation => {
+            query.leftJoinAndSelect(`eterapias.${relation}`, relation);
+        });
+
+        if (!relations) {
+            query.leftJoin('eterapias.moderators', 'moderators');
+        } else if (relations.indexOf('moderators') < 0) {
+            query.leftJoin('eterapias.moderators', 'moderators');
+        }
+
+        query
+            .where('moderators.id = :moderatorId', { moderatorId })
+            .andWhere('eterapias.id = :id', { id });
+
+        const eterapia = await query.getOne();
+
+        return eterapia;
     }
 
     public async save(eterapia: Eterapia): Promise<void> {

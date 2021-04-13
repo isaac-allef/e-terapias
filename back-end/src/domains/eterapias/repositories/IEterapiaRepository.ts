@@ -1,7 +1,9 @@
 import ICreateEterapiaDTO from '../dtos/ICreateEterapiaDTO';
 import IFindByIdEterapiaDTO from '../dtos/IFindByIdEterapiaDTO';
+import IFindByIdEterapiaFilterByModeratorDTO from '../dtos/IFindByIdEterapiaFilterByModeratorDTO';
 import IFindByNameEterapiaDTO from '../dtos/IFindByNameEterapiaDTO';
 import IListEterapiasDTO from '../dtos/IListEterapiasDTO';
+import IListEterapiasFilterByModeratorDTO from '../dtos/IListEterapiasFilterByModeratorDTO';
 import IEterapia from '../models/IEterapia';
 
 export default interface IEterapiaRepository {
@@ -12,4 +14,10 @@ export default interface IEterapiaRepository {
     all(data: IListEterapiasDTO): Promise<IEterapia[] | []>;
     save(eterapia: IEterapia): Promise<void>;
     delete(eterapia: IEterapia): Promise<void>;
+    allFilterByModerator(
+        data: IListEterapiasFilterByModeratorDTO,
+    ): Promise<IEterapia[] | []>;
+    findByIdFilterByModerator(
+        data: IFindByIdEterapiaFilterByModeratorDTO,
+    ): Promise<IEterapia | undefined>;
 }
