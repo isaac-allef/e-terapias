@@ -3,10 +3,15 @@ import { celebrate, Segments, Joi } from 'celebrate';
 import ensureAuthenticatedAdministrator from '../../../../administrators/infra/http/middlewares/ensureAuthenticatedAdministrator';
 import ModeratorController from '../controllers/ModeratorController';
 import RelationModeratorEterapiaController from '../controllers/RelationModeratorEterapiaController';
+import MeController from '../controllers/MeController';
+import ensureAuthenticatedModerator from '../middlewares/ensureAuthenticatedModerator';
 
 const moderatorsRoute = Router();
 const moderatorController = new ModeratorController();
 const relationModeratorEterapiaController = new RelationModeratorEterapiaController();
+const meController = new MeController();
+
+moderatorsRoute.get('/me', ensureAuthenticatedModerator, meController.show);
 
 moderatorsRoute.use(ensureAuthenticatedAdministrator);
 
