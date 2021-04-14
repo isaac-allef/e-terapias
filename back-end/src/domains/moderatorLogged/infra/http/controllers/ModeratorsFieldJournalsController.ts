@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
-import CreateFieldJournalService from '../../../services/CreateFieldJournalService';
-import FieldJournalRepository from '../../typeorm/repositories/FieldJournalRepository';
-import FieldRepository from '../../typeorm/repositories/FieldRepository';
+import CreateFieldJournalService from '../../../../fieldJournals/services/CreateFieldJournalService';
+import FieldJournalRepository from '../../../../fieldJournals/infra/typeorm/repositories/FieldJournalRepository';
+import FieldRepository from '../../../../fieldJournals/infra/typeorm/repositories/FieldRepository';
 import ModeratorRepository from '../../../../moderators/infra/typeorm/repositories/ModeratorRepository';
-import ModeratorDeleteFieldJournalService from '../../../services/ModeratorDeleteFieldJournalService';
-import ModeratorShowFieldJournalService from '../../../services/ModeratorShowFieldJournalService';
-import UpdateFieldJournalService from '../../../services/UpdateFieldJournalService';
+import ModeratorDeleteFieldJournalService from '../../../../fieldJournals/services/ModeratorDeleteFieldJournalService';
+import ModeratorShowFieldJournalService from '../../../../fieldJournals/services/ModeratorShowFieldJournalService';
+import UpdateFieldJournalService from '../../../../fieldJournals/services/UpdateFieldJournalService';
 
 class ModeratorsFieldJournalsController {
     public async create(

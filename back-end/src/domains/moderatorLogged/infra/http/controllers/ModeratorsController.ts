@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
-import ShowModeratorService from '../../../services/ShowModeratorService';
-import ModeratorRepository from '../../typeorm/repositories/ModeratorRepository';
+import ShowModeratorService from '../../../../moderators/services/ShowModeratorService';
+import ModeratorRepository from '../../../../moderators/infra/typeorm/repositories/ModeratorRepository';
 
-class MeController {
+class ModeratorsController {
     public async show(request: Request, response: Response): Promise<Response> {
         const { relations } = request.query;
 
@@ -23,4 +23,4 @@ class MeController {
     }
 }
 
-export default MeController;
+export default ModeratorsController;

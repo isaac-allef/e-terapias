@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import ShowEterapiaFilterByModeratorService from '../../../services/ShowEterapiaFilterByModeratorService';
-import EterapiaRepository from '../../typeorm/repositories/EterapiaRepository';
+import ShowEterapiaFilterByModeratorService from '../../../../eterapias/services/ShowEterapiaFilterByModeratorService';
+import EterapiaRepository from '../../../../eterapias/infra/typeorm/repositories/EterapiaRepository';
 
 class ModeratorsEterapiasController {
     public async list(request: Request, response: Response): Promise<Response> {
