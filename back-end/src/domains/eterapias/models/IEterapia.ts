@@ -1,5 +1,5 @@
 import IFieldJournal from '../../fieldJournals/models/IFieldJournal';
-import IFieldJournalTemplate from '../../fieldJournals/models/IFieldJournalTemplate';
+import IFieldJournalTemplate from '../../fieldJournalsTemplates/models/IFieldJournalTemplate';
 
 import IModerator from '../../moderators/models/IModerator';
 
