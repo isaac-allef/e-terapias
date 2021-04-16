@@ -1,4 +1,9 @@
-import { EntityRepository, getRepository, Repository } from 'typeorm';
+import {
+    EntityRepository,
+    getRepository,
+    Repository,
+    SelectQueryBuilder,
+} from 'typeorm';
 import ICreateEterapiaDTO from '../../../dtos/ICreateEterapiaDTO';
 import IFindByIdEterapiaDTO from '../../../dtos/IFindByIdEterapiaDTO';
 import IFindByIdEterapiaFilterByModeratorDTO from '../../../dtos/IFindByIdEterapiaFilterByModeratorDTO';
@@ -55,20 +60,29 @@ class EterapiaRepository implements IEterapiaRepository {
     }
 
     public async all({
-        orderBy,
+        orderBy = 'name',
         orderMethod = 'ASC',
         page = 1,
         limit = 5,
         relations,
+        search,
     }: IListEterapiasDTO): Promise<Eterapia[] | []> {
-        const orderObject = orderBy ? { [orderBy]: orderMethod } : undefined;
+        const query = this.ormRepository.createQueryBuilder('eterapias');
 
-        const eterapias = await this.ormRepository.find({
-            order: orderObject,
-            take: limit,
-            skip: (page - 1) * limit,
-            relations,
+        relations?.forEach(relation => {
+            query.leftJoinAndSelect(`eterapias.${relation}`, relation);
         });
+
+        if (search) {
+            this.searchQuery(query, search, relations);
+        }
+
+        query
+            .orderBy(`eterapias.${orderBy}`, orderMethod)
+            .take(limit)
+            .skip((page - 1) * limit);
+
+        const eterapias = await query.getMany();
 
         return eterapias;
     }
@@ -136,6 +150,33 @@ class EterapiaRepository implements IEterapiaRepository {
 
     public async delete(eterapia: Eterapia): Promise<void> {
         await this.ormRepository.remove(eterapia);
+    }
+
+    private searchQuery(
+        query: SelectQueryBuilder<Eterapia>,
+        search: string,
+        relations: string[] | undefined,
+    ): void {
+        query.where('eterapias.name ILIKE :searchQuery', {
+            searchQuery: `%${search}%`,
+        });
+        if (relations) {
+            if (relations.indexOf('moderators') >= 0) {
+                query.orWhere('moderators.email ILIKE :searchQuery', {
+                    searchQuery: `%${search}%`,
+                });
+            }
+            if (relations.indexOf('fieldJournals') >= 0) {
+                query.orWhere('fieldJournals.title ILIKE :searchQuery', {
+                    searchQuery: `%${search}%`,
+                });
+            }
+            if (relations.indexOf('fieldJournalTemplate') >= 0) {
+                query.orWhere('fieldJournalTemplate.name ILIKE :searchQuery', {
+                    searchQuery: `%${search}%`,
+                });
+            }
+        }
     }
 }
 
