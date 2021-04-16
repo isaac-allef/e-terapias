@@ -3,10 +3,13 @@ import express from 'express';
 import cors from 'cors';
 import 'express-async-errors';
 import { errors } from 'celebrate';
+import * as dotenv from 'dotenv';
 import routes from './routes';
 import globalExceptionHandler from './middlewares/globalExceptionHandler';
 
 import '../typeorm/index';
+
+dotenv.config();
 
 const app = express();
 

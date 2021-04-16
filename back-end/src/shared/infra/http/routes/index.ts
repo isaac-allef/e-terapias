@@ -6,6 +6,7 @@ import fieldJournalTemplatesRoute from '../../../../domains/fieldJournalsTemplat
 import moderatorsRoute from '../../../../domains/moderators/infra/http/routes/moderators.routes';
 import sessionsRouter from './sessions.routes';
 import moderatorLoggedRoute from '../../../../domains/moderatorLogged/infra/http/routes';
+import participantsSheetInformationRoute from '../../../../domains/participantsSheetInformation/infra/http/routes/participantsSheetInformation.routes';
 
 const routes = Router();
 
@@ -16,5 +17,6 @@ routes.use('/fieldjournaltemplates', fieldJournalTemplatesRoute);
 routes.use('/fieldjournals', fieldJournalsRoute);
 routes.use('/moderators/me', moderatorLoggedRoute);
 routes.use('/moderators', moderatorsRoute);
+routes.use('/participants', participantsSheetInformationRoute);
 
 export default routes;
