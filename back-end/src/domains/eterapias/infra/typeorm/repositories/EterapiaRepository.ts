@@ -59,34 +59,6 @@ class EterapiaRepository implements IEterapiaRepository {
         return eterapia;
     }
 
-    public async all({
-        orderBy = 'name',
-        orderMethod = 'ASC',
-        page = 1,
-        limit = 5,
-        relations,
-        search,
-    }: IListEterapiasDTO): Promise<Eterapia[] | []> {
-        const query = this.ormRepository.createQueryBuilder('eterapias');
-
-        relations?.forEach(relation => {
-            query.leftJoinAndSelect(`eterapias.${relation}`, relation);
-        });
-
-        if (search) {
-            this.searchQuery(query, search, relations);
-        }
-
-        query
-            .orderBy(`eterapias.${orderBy}`, orderMethod)
-            .take(limit)
-            .skip((page - 1) * limit);
-
-        const eterapias = await query.getMany();
-
-        return eterapias;
-    }
-
     public async allFilterByModerator({
         orderBy = 'name',
         orderMethod = 'ASC',
@@ -152,31 +124,98 @@ class EterapiaRepository implements IEterapiaRepository {
         await this.ormRepository.remove(eterapia);
     }
 
+    public async all({
+        orderBy = 'name',
+        orderMethod = 'ASC',
+        page = 1,
+        limit = 5,
+        relations,
+        search,
+    }: IListEterapiasDTO): Promise<Eterapia[] | []> {
+        const query = this.ormRepository.createQueryBuilder('eterapias');
+
+        relations?.forEach(relation => {
+            query.leftJoinAndSelect(`eterapias.${relation}`, relation);
+        });
+
+        if (search) {
+            this.searchQuery(query, search, relations);
+        }
+
+        query
+            .orderBy(`eterapias.${orderBy}`, orderMethod)
+            .take(limit)
+            .skip((page - 1) * limit);
+
+        const eterapias = await query.getMany();
+
+        return eterapias;
+    }
+
     private searchQuery(
         query: SelectQueryBuilder<Eterapia>,
         search: string,
         relations: string[] | undefined,
     ): void {
+        this.searchByEterapiasName(query, search);
+
+        if (relations) {
+            if (this.existsInRelations('moderators', relations)) {
+                this.searchByModeratorsEmail(query, search);
+            }
+            if (this.existsInRelations('fieldJournals', relations)) {
+                this.searchByFieldJournalsTitle(query, search);
+            }
+            if (this.existsInRelations('fieldJournalTemplate', relations)) {
+                this.searchByFieldJournalTemplateName(query, search);
+            }
+        }
+    }
+
+    private searchByEterapiasName(
+        query: SelectQueryBuilder<Eterapia>,
+        search: string,
+    ): void {
         query.where('eterapias.name ILIKE :searchQuery', {
             searchQuery: `%${search}%`,
         });
-        if (relations) {
-            if (relations.indexOf('moderators') >= 0) {
-                query.orWhere('moderators.email ILIKE :searchQuery', {
-                    searchQuery: `%${search}%`,
-                });
-            }
-            if (relations.indexOf('fieldJournals') >= 0) {
-                query.orWhere('fieldJournals.title ILIKE :searchQuery', {
-                    searchQuery: `%${search}%`,
-                });
-            }
-            if (relations.indexOf('fieldJournalTemplate') >= 0) {
-                query.orWhere('fieldJournalTemplate.name ILIKE :searchQuery', {
-                    searchQuery: `%${search}%`,
-                });
-            }
+    }
+
+    private existsInRelations(
+        relationName: string,
+        relations: string[],
+    ): boolean {
+        if (relations.indexOf(relationName) >= 0) {
+            return true;
         }
+        return false;
+    }
+
+    private searchByModeratorsEmail(
+        query: SelectQueryBuilder<Eterapia>,
+        search: string,
+    ): void {
+        query.orWhere('moderators.email ILIKE :searchQuery', {
+            searchQuery: `%${search}%`,
+        });
+    }
+
+    private searchByFieldJournalsTitle(
+        query: SelectQueryBuilder<Eterapia>,
+        search: string,
+    ): void {
+        query.orWhere('fieldJournals.title ILIKE :searchQuery', {
+            searchQuery: `%${search}%`,
+        });
+    }
+
+    private searchByFieldJournalTemplateName(
+        query: SelectQueryBuilder<Eterapia>,
+        search: string,
+    ): void {
+        query.orWhere('fieldJournalTemplate.name ILIKE :searchQuery', {
+            searchQuery: `%${search}%`,
+        });
     }
 }
 
