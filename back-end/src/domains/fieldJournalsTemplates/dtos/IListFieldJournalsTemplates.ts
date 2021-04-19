@@ -6,4 +6,5 @@ export default interface IListFieldJournalsTemplates
     orderMethod: 'ASC' | 'DESC';
     page: number;
     limit: number;
+    search: string;
 }

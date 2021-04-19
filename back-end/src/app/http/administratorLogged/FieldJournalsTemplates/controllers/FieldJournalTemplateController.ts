@@ -27,7 +27,14 @@ class FieldJournalTemplateController {
 
     public async list(request: Request, response: Response): Promise<Response> {
         const fieldJournalTemplateRepository = new FieldJournalTemplateRepository();
-        const { relations, orderBy, orderMethod, page, limit } = request.query;
+        const {
+            relations,
+            orderBy,
+            orderMethod,
+            page,
+            limit,
+            search,
+        } = request.query;
 
         const fieldJournalTemplates = await fieldJournalTemplateRepository.all({
             orderBy: orderBy as 'name' | 'created_at' | 'updated_at',
@@ -35,6 +42,7 @@ class FieldJournalTemplateController {
             page: (page as unknown) as number,
             limit: (limit as unknown) as number,
             relations: relations as ['eterapias'],
+            search: search as string,
         });
 
         return response.json(fieldJournalTemplates);
