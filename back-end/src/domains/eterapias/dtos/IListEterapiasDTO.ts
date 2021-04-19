@@ -5,5 +5,5 @@ export default interface IListEterapiasDTO extends IRelationsEterapias {
     orderMethod: 'ASC' | 'DESC';
     page: number;
     limit: number;
-    search?: string;
+    search: string;
 }

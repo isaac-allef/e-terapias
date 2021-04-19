@@ -4,7 +4,14 @@ import EterapiaRepository from '../../../../domains/eterapias/infra/typeorm/repo
 
 class ModeratorsEterapiasController {
     public async list(request: Request, response: Response): Promise<Response> {
-        const { relations, orderBy, orderMethod, page, limit } = request.query;
+        const {
+            relations,
+            orderBy,
+            orderMethod,
+            page,
+            limit,
+            search,
+        } = request.query;
 
         const eterapiaRepository = new EterapiaRepository();
 
@@ -17,6 +24,7 @@ class ModeratorsEterapiasController {
                 'moderators' | 'fieldJournalTemplate' | 'fieldJournals',
             ],
             moderatorId: request.moderator.id,
+            search: search as string,
         });
 
         return response.json(eterapias);
