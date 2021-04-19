@@ -5,4 +5,5 @@ export default interface IListFieldJournals extends IRelationsFieldJournal {
     orderMethod: 'ASC' | 'DESC';
     page: number;
     limit: number;
+    search: string;
 }
