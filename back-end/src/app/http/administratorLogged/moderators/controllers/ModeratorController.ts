@@ -33,7 +33,14 @@ class ModeratorController {
 
     public async list(request: Request, response: Response): Promise<Response> {
         const moderatorRepository = new ModeratorRepository();
-        const { relations, orderBy, orderMethod, page, limit } = request.query;
+        const {
+            relations,
+            orderBy,
+            orderMethod,
+            page,
+            limit,
+            search,
+        } = request.query;
 
         const moderators = await moderatorRepository.all({
             orderBy: orderBy as 'email' | 'created_at' | 'updated_at',
@@ -45,6 +52,7 @@ class ModeratorController {
                 | 'eterapias.fieldJournalTemplate'
                 | 'fieldJournals',
             ],
+            search: search as string,
         });
 
         return response.json(moderators);
