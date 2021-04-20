@@ -35,7 +35,7 @@ class SpreadsheetsRepository implements ISpreadsheetsRepository {
     }
 
     async getPageRowsByColumn(
-        columnName: string,
+        columnNameSearch: string,
         like: (column: string, value: string) => boolean,
         verify: (value: string) => boolean,
     ): Promise<unknown[] | undefined> {
@@ -54,20 +54,30 @@ class SpreadsheetsRepository implements ISpreadsheetsRepository {
 
         const { columnsNames } = result.data.sheet;
 
-        const columnNameComplete = columnsNames.find((column: string) => {
-            return like(column, columnName);
+        const columnsNamesFinded = columnsNames.filter((column: string) => {
+            return like(column, columnNameSearch);
         });
 
-        if (!columnNameComplete) {
+        if (!columnsNamesFinded) {
             return undefined;
         }
 
         const rowsFiltered = rows.filter(
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             (row: any) => {
-                const value = row[columnNameComplete];
+                let verification;
+                for (let i = 0; i < columnsNamesFinded.length; i += 1) {
+                    const columnName = columnsNamesFinded[i];
 
-                return verify(value);
+                    const value = row[columnName];
+
+                    verification = verify(value);
+
+                    if (verification) {
+                        break;
+                    }
+                }
+                return verification;
             },
         );
 

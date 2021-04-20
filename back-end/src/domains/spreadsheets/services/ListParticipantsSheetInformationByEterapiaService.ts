@@ -6,7 +6,7 @@ class ListParticipantsSheetInformationByEterapiaService {
 
     public async execute(eterapiaColumnName: string): Promise<unknown[]> {
         const verify = (value: string) => {
-            if (value === '') {
+            if (value === '' || !value) {
                 return false;
             }
             return true;
