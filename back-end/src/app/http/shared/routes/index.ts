@@ -6,7 +6,7 @@ import fieldJournalTemplatesRoute from '../../administratorLogged/FieldJournalsT
 import moderatorsRoute from '../../administratorLogged/moderators/routes/moderators.routes';
 import sessionsRouter from './sessions.routes';
 import moderatorLoggedRoute from '../../moderatorLogged/routes';
-import participantsSheetInformationRoute from '../../../../domains/participantsSheetInformation/infra/http/routes/participantsSheetInformation.routes';
+import participantsSheetInformationRoute from '../../../../domains/spreadsheets/infra/http/routes/participantsSheetInformation.routes';
 
 const routes = Router();
 

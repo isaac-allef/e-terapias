@@ -6,12 +6,12 @@ const participantsSheetInformationController = new ParticipantsSheetInformationC
 
 participantsSheetInformationRoute.get(
     '/',
-    participantsSheetInformationController.show,
+    participantsSheetInformationController.list,
 );
 
 participantsSheetInformationRoute.get(
     '/:eterapiaColumnName',
-    participantsSheetInformationController.showByEterapia,
+    participantsSheetInformationController.listByEterapia,
 );
 
 export default participantsSheetInformationRoute;

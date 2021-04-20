@@ -1,4 +1,4 @@
-import IParticipantsSheetInformationRepository from '../repositories/IParticipantsSheetInformationRepository';
+import ISpreadsheetsRepository from '../repositories/ISpreadsheetsRepository';
 
 class CountNumberOfParticipantsTotalByEterapiaAndByModality {
     private columnEterapiasNamesModality1 = [
@@ -28,12 +28,10 @@ class CountNumberOfParticipantsTotalByEterapiaAndByModality {
         'e-terapia 15 - horário disponível:',
     ];
 
-    constructor(
-        private participantsSheetInformationRepository: IParticipantsSheetInformationRepository,
-    ) {}
+    constructor(private spreadsheetsRepository: ISpreadsheetsRepository) {}
 
     public async execute(): Promise<number> {
-        const sheet = await this.participantsSheetInformationRepository.getJSON();
+        const sheet = await this.spreadsheetsRepository.getJSON();
 
         const obj = JSON.parse(JSON.stringify(sheet));
 
