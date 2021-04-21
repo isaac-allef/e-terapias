@@ -1,11 +1,11 @@
-type likeFunction = (column: string, value: string) => boolean;
-type verifyFunction = (value: string) => boolean;
+type verifyColumnNameFunction = (column: string, value: string) => boolean;
+type verifyColumnValueFunction = (value: string) => boolean;
 
 export default interface ISpreadsheetsRepository {
     getPageRows(): Promise<unknown[]>;
     getPageRowsByColumn(
         columnName: string,
-        like: likeFunction,
-        verify: verifyFunction,
+        verifyColumnName: verifyColumnNameFunction,
+        verifyColumnValue: verifyColumnValueFunction,
     ): Promise<unknown[] | undefined>;
 }

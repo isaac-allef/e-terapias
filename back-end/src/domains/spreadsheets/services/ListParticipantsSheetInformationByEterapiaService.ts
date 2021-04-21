@@ -5,14 +5,14 @@ class ListParticipantsSheetInformationByEterapiaService {
     constructor(private spreadsheetsRepository: ISpreadsheetsRepository) {}
 
     public async execute(eterapiaColumnName: string): Promise<unknown[]> {
-        const verify = (value: string) => {
+        const verifyColumnValue = (value: string) => {
             if (value === '' || !value) {
                 return false;
             }
             return true;
         };
 
-        const like = (column: string, value: string) => {
+        const verifyColumnName = (column: string, value: string) => {
             if (column.includes(value)) {
                 return true;
             }
@@ -21,8 +21,8 @@ class ListParticipantsSheetInformationByEterapiaService {
 
         const participants = await this.spreadsheetsRepository.getPageRowsByColumn(
             eterapiaColumnName,
-            like,
-            verify,
+            verifyColumnName,
+            verifyColumnValue,
         );
 
         if (!participants) {

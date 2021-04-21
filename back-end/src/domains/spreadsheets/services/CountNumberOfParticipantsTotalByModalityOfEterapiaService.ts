@@ -28,14 +28,14 @@ class CountNumberOfParticipantsTotalByModalityOfEterapiaService {
     constructor(private spreadsheetsRepository: ISpreadsheetsRepository) {}
 
     public async execute(): Promise<number> {
-        const verify = (value: string) => {
+        const verifyColumnValue = (value: string) => {
             if (value === '' || !value) {
                 return false;
             }
             return true;
         };
 
-        const like = (column: string, value: string) => {
+        const verifyColumnName = (column: string, value: string) => {
             const a = value.split(';');
             for (let i = 0; i < a.length; i += 1) {
                 if (column.includes(a[i])) {
@@ -47,8 +47,8 @@ class CountNumberOfParticipantsTotalByModalityOfEterapiaService {
 
         const participants = await this.spreadsheetsRepository.getPageRowsByColumn(
             'e-terapia 04;e-terapia 05;e-terapia 06;e-terapia 07;e-terapia 08;e-terapia 09',
-            like,
-            verify,
+            verifyColumnName,
+            verifyColumnValue,
         );
 
         return participants?.length || 0;

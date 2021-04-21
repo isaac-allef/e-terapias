@@ -36,8 +36,8 @@ class SpreadsheetsRepository implements ISpreadsheetsRepository {
 
     async getPageRowsByColumn(
         columnNameSearch: string,
-        like: (column: string, value: string) => boolean,
-        verify: (value: string) => boolean,
+        verifyColumnName: (column: string, value: string) => boolean,
+        verifyColumnValue: (value: string) => boolean,
     ): Promise<unknown[] | undefined> {
         const result = await axios.get(this.link, {
             headers: {
@@ -55,7 +55,7 @@ class SpreadsheetsRepository implements ISpreadsheetsRepository {
         const { columnsNames } = result.data.sheet;
 
         const columnsNamesFinded = columnsNames.filter((column: string) => {
-            return like(column, columnNameSearch);
+            return verifyColumnName(column, columnNameSearch);
         });
 
         if (!columnsNamesFinded) {
@@ -71,7 +71,7 @@ class SpreadsheetsRepository implements ISpreadsheetsRepository {
 
                     const value = row[columnName];
 
-                    verification = verify(value);
+                    verification = verifyColumnValue(value);
 
                     if (verification) {
                         break;
