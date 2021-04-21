@@ -14,4 +14,9 @@ moderatorsSheetInformationRoute.post(
     moderatorsSheetInformationController.create,
 );
 
+moderatorsSheetInformationRoute.get(
+    '/:email',
+    moderatorsSheetInformationController.show,
+);
+
 export default moderatorsSheetInformationRoute;

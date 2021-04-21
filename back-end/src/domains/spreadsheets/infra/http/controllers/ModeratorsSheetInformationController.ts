@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import BCryptHashProvider from '../../../../../shared/providers/HashProvider/implementations/BCryptHashProvider';
 import ModeratorRepository from '../../../../moderators/infra/typeorm/repositories/ModeratorRepository';
 import CreateModeratorsFromSpreadsheetsService from '../../../services/CreateModeratorsFromSpreadsheetsService';
+import GetModeratorSheetInformationByEmailService from '../../../services/GetModeratorSheetInformationByEmailService';
 import ListModeratorsSheetInformationService from '../../../services/ListModeratorsSheetInformationService';
 import SpreadsheetsRepository from '../cms-sheets/SpreadsheetsRepository';
 
@@ -15,6 +16,7 @@ class ModeratorsSheetInformationController {
             clientEmail: process.env.CLIENT_EMAIL || '',
             privateKey: process.env.PRIVATE_KEY || '',
         });
+
         const listModeratorsSheetInformationService = new ListModeratorsSheetInformationService(
             spreadsheetsRepository,
         );
@@ -47,6 +49,26 @@ class ModeratorsSheetInformationController {
         const numberOfNewModeratorsCreated = await createModeratorsFromSpreadsheets.execute();
 
         return response.json({ numberOfNewModeratorsCreated });
+    }
+
+    public async show(request: Request, response: Response): Promise<Response> {
+        const { email } = request.params;
+
+        const spreadsheetsRepository = new SpreadsheetsRepository({
+            link: process.env.LINK_SHEET_MODERATORS || '',
+            clientEmail: process.env.CLIENT_EMAIL || '',
+            privateKey: process.env.PRIVATE_KEY || '',
+        });
+
+        const getModeratorSheetInformationByEmailService = new GetModeratorSheetInformationByEmailService(
+            spreadsheetsRepository,
+        );
+
+        const participants = await getModeratorSheetInformationByEmailService.execute(
+            email,
+        );
+
+        return response.json(participants);
     }
 }
 
