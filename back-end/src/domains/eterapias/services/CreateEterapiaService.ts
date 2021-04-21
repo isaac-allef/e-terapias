@@ -1,3 +1,4 @@
+import AppError from '../../../shared/errors/AppError';
 import IFieldJournalTemplateRepository from '../../fieldJournalsTemplates/repositories/IFieldJournalTemplateRepository';
 import ICreateEterapiaDTO from '../dtos/ICreateEterapiaDTO';
 import IEterapia from '../models/IEterapia';
@@ -14,6 +15,14 @@ class CreateEterapiaService {
         name,
         fieldJournalTemplateId,
     }: ICreateEterapiaDTO): Promise<IEterapia> {
+        const checkEterapiasExists = await this.eterapiaRepository.findByName({
+            name,
+        });
+
+        if (checkEterapiasExists) {
+            throw new AppError('Name already used.');
+        }
+
         const eterapia = this.eterapiaRepository.createWithoutSave({
             name,
         });
