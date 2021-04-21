@@ -1,6 +1,6 @@
 import AppError from '../../../shared/errors/AppError';
-import IFieldJournalTemplate from '../../fieldJournals/models/IFieldJournalTemplate';
-import IFieldJournalTemplateRepository from '../../fieldJournals/repositories/IFieldJournalTemplateRepository';
+import IFieldJournalTemplate from '../../fieldJournalsTemplates/models/IFieldJournalTemplate';
+import IFieldJournalTemplateRepository from '../../fieldJournalsTemplates/repositories/IFieldJournalTemplateRepository';
 
 interface Request {
     fieldJournalTemplateId: string;
@@ -15,7 +15,9 @@ class FindFieldJournalTemplateByIdService {
         fieldJournalTemplateId,
     }: Request): Promise<IFieldJournalTemplate> {
         const fieldJournalTemplate = await this.fieldJournalTemplateRepository.findById(
-            fieldJournalTemplateId,
+            {
+                id: fieldJournalTemplateId,
+            },
         );
 
         if (!fieldJournalTemplate) {

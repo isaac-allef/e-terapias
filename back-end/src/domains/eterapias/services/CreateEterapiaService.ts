@@ -1,4 +1,4 @@
-import IFieldJournalTemplateRepository from '../../fieldJournals/repositories/IFieldJournalTemplateRepository';
+import IFieldJournalTemplateRepository from '../../fieldJournalsTemplates/repositories/IFieldJournalTemplateRepository';
 import ICreateEterapiaDTO from '../dtos/ICreateEterapiaDTO';
 import IEterapia from '../models/IEterapia';
 import IEterapiaRepository from '../repositories/IEterapiaRepository';
