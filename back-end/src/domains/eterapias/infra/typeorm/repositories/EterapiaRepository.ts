@@ -93,7 +93,7 @@ class EterapiaRepository implements IEterapiaRepository {
 
         this.orderBy(query, orderBy, orderMethod);
 
-        this.pagination(query, limit, page);
+        this.pagination(query, page, limit);
 
         const eterapias = await query.getMany();
 
@@ -119,7 +119,7 @@ class EterapiaRepository implements IEterapiaRepository {
 
         this.orderBy(query, orderBy, orderMethod);
 
-        this.pagination(query, limit, page);
+        this.pagination(query, page, limit);
 
         const eterapias = await query.getMany();
 

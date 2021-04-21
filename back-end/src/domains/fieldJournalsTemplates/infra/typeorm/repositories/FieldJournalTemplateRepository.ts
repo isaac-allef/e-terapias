@@ -65,7 +65,7 @@ class FieldJournalTemplateRepository
 
         this.orderBy(query, orderBy, orderMethod);
 
-        this.pagination(query, limit, page);
+        this.pagination(query, page, limit);
 
         const fieldJournalTemplates = await query.getMany();
 

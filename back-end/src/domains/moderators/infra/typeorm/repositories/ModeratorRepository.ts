@@ -73,7 +73,7 @@ class ModeratorRepository implements IModeratorRepository {
 
         this.orderBy(query, orderBy, orderMethod);
 
-        this.pagination(query, limit, page);
+        this.pagination(query, page, limit);
 
         const moderators = await query.getMany();
 

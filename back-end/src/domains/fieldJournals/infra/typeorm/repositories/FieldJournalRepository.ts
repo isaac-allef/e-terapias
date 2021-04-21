@@ -66,7 +66,7 @@ class FieldJournalRepository implements IFieldJournalRepository {
 
         this.orderBy(query, orderBy, orderMethod);
 
-        this.pagination(query, limit, page);
+        this.pagination(query, page, limit);
 
         const fieldJournals = await query.getMany();
 
