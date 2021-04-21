@@ -21,6 +21,7 @@ class ModeratorsSheetInformationController {
 
         const participants = await listModeratorsSheetInformationService.execute();
 
+        response.set('X-Total-Count', participants.length.toString());
         return response.json(participants);
     }
 

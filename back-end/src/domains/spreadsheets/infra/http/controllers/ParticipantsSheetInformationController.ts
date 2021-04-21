@@ -19,6 +19,7 @@ class ParticipantsSheetInformationController {
 
         const participants = await listParticipantsSheetInformation.execute();
 
+        response.set('X-Total-Count', participants.length.toString());
         return response.json(participants);
     }
 
@@ -41,6 +42,7 @@ class ParticipantsSheetInformationController {
             eterapiaColumnName,
         );
 
+        response.set('X-Total-Count', participants.length.toString());
         return response.json(participants);
     }
 }
