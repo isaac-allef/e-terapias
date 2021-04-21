@@ -9,7 +9,7 @@ class ParticipantsSheetInformationController {
         response: Response,
     ): Promise<Response> {
         const spreadsheetsRepository = new SpreadsheetsRepository({
-            link: process.env.LINK || '',
+            link: process.env.LINK_SHEET_PARTICIPANTS || '',
             clientEmail: process.env.CLIENT_EMAIL || '',
             privateKey: process.env.PRIVATE_KEY || '',
         });
@@ -29,7 +29,7 @@ class ParticipantsSheetInformationController {
         const { eterapiaColumnName } = request.params;
 
         const spreadsheetsRepository = new SpreadsheetsRepository({
-            link: process.env.LINK || '',
+            link: process.env.LINK_SHEET_PARTICIPANTS || '',
             clientEmail: process.env.CLIENT_EMAIL || '',
             privateKey: process.env.PRIVATE_KEY || '',
         });
