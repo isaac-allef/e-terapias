@@ -9,4 +9,9 @@ moderatorsSheetInformationRoute.get(
     moderatorsSheetInformationController.list,
 );
 
+moderatorsSheetInformationRoute.post(
+    '/',
+    moderatorsSheetInformationController.create,
+);
+
 export default moderatorsSheetInformationRoute;
