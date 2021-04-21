@@ -44,9 +44,9 @@ class ModeratorsSheetInformationController {
             hashProvider,
         );
 
-        const moderators = await createModeratorsFromSpreadsheets.execute();
+        const numberOfNewModeratorsCreated = await createModeratorsFromSpreadsheets.execute();
 
-        return response.json(moderators);
+        return response.json({ numberOfNewModeratorsCreated });
     }
 }
 
