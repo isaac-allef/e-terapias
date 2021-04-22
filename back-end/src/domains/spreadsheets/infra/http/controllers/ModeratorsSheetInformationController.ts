@@ -1,7 +1,9 @@
 import { Request, Response } from 'express';
 import BCryptHashProvider from '../../../../../shared/providers/HashProvider/implementations/BCryptHashProvider';
+import EterapiaRepository from '../../../../eterapias/infra/typeorm/repositories/EterapiaRepository';
 import ModeratorRepository from '../../../../moderators/infra/typeorm/repositories/ModeratorRepository';
 import CreateModeratorsFromSpreadsheetsService from '../../../services/CreateModeratorsFromSpreadsheetsService';
+import CreateRelationsBetweenModeratorsAndEterapiasFromSpreadsheetsService from '../../../services/CreateRelationsBetweenModeratorsAndEterapiasFromSpreadsheetsService';
 import GetModeratorSheetInformationByEmailService from '../../../services/GetModeratorSheetInformationByEmailService';
 import ListModeratorsSheetInformationService from '../../../services/ListModeratorsSheetInformationService';
 import SpreadsheetsRepository from '../cms-sheets/SpreadsheetsRepository';
@@ -69,6 +71,30 @@ class ModeratorsSheetInformationController {
         );
 
         return response.json(participants);
+    }
+
+    public async createRelationsWithEterapias(
+        _request: Request,
+        response: Response,
+    ): Promise<Response> {
+        const spreadsheetsRepository = new SpreadsheetsRepository({
+            link: process.env.LINK_SHEET_MODERATORS || '',
+            clientEmail: process.env.CLIENT_EMAIL || '',
+            privateKey: process.env.PRIVATE_KEY || '',
+        });
+
+        const moderatorRepository = new ModeratorRepository();
+        const eterapiaRepository = new EterapiaRepository();
+
+        const createModeratorsFromSpreadsheets = new CreateRelationsBetweenModeratorsAndEterapiasFromSpreadsheetsService(
+            spreadsheetsRepository,
+            moderatorRepository,
+            eterapiaRepository,
+        );
+
+        const numberOfNewModeratorsUpdated = await createModeratorsFromSpreadsheets.execute();
+
+        return response.json({ numberOfNewModeratorsUpdated });
     }
 }
 

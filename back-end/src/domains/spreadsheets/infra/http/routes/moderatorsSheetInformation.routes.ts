@@ -19,4 +19,9 @@ moderatorsSheetInformationRoute.get(
     moderatorsSheetInformationController.show,
 );
 
+moderatorsSheetInformationRoute.patch(
+    '/',
+    moderatorsSheetInformationController.createRelationsWithEterapias,
+);
+
 export default moderatorsSheetInformationRoute;
