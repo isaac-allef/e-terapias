@@ -23,7 +23,7 @@ class CreateEterapiasFromSpreadsheetsService {
             async (count: any, eterapia: any) => {
                 try {
                     await createEterapia.execute({
-                        name: eterapia.Nome,
+                        name: eterapia.Nome.replace(/\s+/g, ''),
                     });
 
                     return (await count) + 1;
