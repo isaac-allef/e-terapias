@@ -1,4 +1,4 @@
-import FieldJournal from '../entities/FieldJournal';
+import FieldJournal, { field } from '../entities/FieldJournal';
 import CreateFieldJournalRepository from '../protocols/db/repositories/CreateFieldJournalRepository';
 
 class CreateFieldJournalService {
@@ -6,7 +6,7 @@ class CreateFieldJournalService {
         private createFieldJournalRepository: CreateFieldJournalRepository,
     ) {}
 
-    public async execute(name: string, fields: JSON): Promise<FieldJournal> {
+    public async execute(name: string, fields: field[]): Promise<FieldJournal> {
         const fieldJournal = await this.createFieldJournalRepository.create(
             name,
             fields,

@@ -1,6 +1,11 @@
 import Etherapy from './Etherapy';
 import Moderator from './Moderator';
 
+export type field = {
+    name: string;
+    value: string;
+};
+
 interface FieldJournal {
     id: string;
 
@@ -10,7 +15,7 @@ interface FieldJournal {
 
     Etherapy: Etherapy;
 
-    fields: JSON;
+    fields: field[];
 }
 
 export default FieldJournal;

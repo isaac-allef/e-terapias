@@ -43,11 +43,11 @@ testRouter.get('/', async (_request: Request, response: Response) => {
             name: 'Informe sua data de nascimento',
             value: "{% now 'iso-8601', '' %}",
         },
-        { name: 'Voçê é estudante?', value: true },
+        { name: 'Voçê é estudante?', value: 'sim' },
     ];
     const fieldJournal = await makeCreateFieldJournalService().execute(
         fieldJournalName,
-        JSON.parse(JSON.stringify(fields)),
+        fields,
     );
 
     if (!fieldJournal.id) {

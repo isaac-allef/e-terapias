@@ -1,10 +1,10 @@
-import FieldJournal from '../../../../../core/entities/FieldJournal';
+import FieldJournal, { field } from '../../../../../core/entities/FieldJournal';
 import Etherapy from '../../../../../core/entities/Etherapy';
 import generateFakeId from './generateFakeId';
 import Moderator from '../../../../../core/entities/Moderator';
 
 class FieldJournalFake implements FieldJournal {
-    constructor(name: string, fields: JSON) {
+    constructor(name: string, fields: field[]) {
         this.id = generateFakeId();
         this.name = name;
         this.fields = fields;
@@ -18,7 +18,7 @@ class FieldJournalFake implements FieldJournal {
 
     Etherapy: Etherapy;
 
-    fields: JSON;
+    fields: field[];
 }
 
 export default FieldJournalFake;
