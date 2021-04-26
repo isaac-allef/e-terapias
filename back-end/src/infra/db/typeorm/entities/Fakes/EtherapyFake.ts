@@ -2,12 +2,11 @@ import Etherapy from '../../../../../core/entities/Etherapy';
 import FieldJournal from '../../../../../core/entities/FieldJournal';
 import FieldJournalTemplate from '../../../../../core/entities/FieldJournalTemplate';
 import Moderator from '../../../../../core/entities/Moderator';
+import generateFakeId from './generateFakeId';
 
 class EtherapyFake implements Etherapy {
     constructor(name: string) {
-        this.id =
-            Math.random().toString(36).substring(2, 15) +
-            Math.random().toString(36).substring(2, 15);
+        this.id = generateFakeId();
         this.name = name;
     }
 

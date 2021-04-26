@@ -1,12 +1,11 @@
 import Moderator from '../../../../../core/entities/Moderator';
 import FieldJournal from '../../../../../core/entities/FieldJournal';
 import Etherapy from '../../../../../core/entities/Etherapy';
+import generateFakeId from './generateFakeId';
 
 class ModeratorFake implements Moderator {
     constructor(name: string) {
-        this.id =
-            Math.random().toString(36).substring(2, 15) +
-            Math.random().toString(36).substring(2, 15);
+        this.id = generateFakeId();
         this.name = name;
     }
 
