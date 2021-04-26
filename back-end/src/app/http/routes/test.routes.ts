@@ -1,9 +1,24 @@
 import { Router, Request, Response } from 'express';
 
-const sessionsRouter = Router();
+import makeCreateEtherapyService from '../../factories/makeCreateEtherapyService';
 
-sessionsRouter.post('/test', (_request: Request, response: Response) => {
-    return response;
+const testRouter = Router();
+
+testRouter.get('/', async (_request: Request, response: Response) => {
+    const etherapyName = 'viver é bom';
+    const etherapy = await makeCreateEtherapyService().execute(etherapyName);
+
+    if (!etherapy.id) {
+        return response.status(500).json({ message: 'etherapy id not found.' });
+    }
+
+    if (etherapy.name !== etherapyName) {
+        return response
+            .status(500)
+            .json({ message: 'incorrect etherapyName.' });
+    }
+
+    return response.json({ etherapy });
 });
 
-export default sessionsRouter;
+export default testRouter;
