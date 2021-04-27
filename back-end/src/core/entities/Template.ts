@@ -4,7 +4,7 @@ export type templateField = {
     name: string;
 };
 
-interface FieldJournalTemplate {
+interface Template {
     id: string;
 
     name: string;
@@ -14,4 +14,4 @@ interface FieldJournalTemplate {
     etherapies: Etherapy[];
 }
 
-export default FieldJournalTemplate;
+export default Template;
