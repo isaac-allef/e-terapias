@@ -8,6 +8,7 @@ import makeCreateTemplateService from '../../factories/makeCreateTemplateService
 import makeLoadEtherapyByIdService from '../../factories/makeLoadEtherapyByIdService';
 import makeLoadTemplateByIdService from '../../factories/makeLoadTemplateByIdService';
 import makeLinkTemplateToEtherapiesService from '../../factories/makeLinkTemplateToEtherapiesService';
+import makeLinkModeratorToEtherapyService from '../../factories/makeLinkModeratorToEtherapyService';
 
 const testRouter = Router();
 
@@ -72,6 +73,11 @@ testRouter.get('/', async (_request: Request, response: Response) => {
         [etherapyId],
     );
 
+    const linkModeratorToEtherapy = await makeLinkModeratorToEtherapyService().execute(
+        moderatorId,
+        etherapyId,
+    );
+
     return response.json({
         etherapy,
         moderator,
@@ -81,6 +87,7 @@ testRouter.get('/', async (_request: Request, response: Response) => {
         loadetherapy,
         loadtemplate,
         linkTemplatesToEtherapies,
+        linkModeratorToEtherapy,
     });
 });
 
