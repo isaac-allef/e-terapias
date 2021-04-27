@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 
 import makeCreateEtherapyService from '../../factories/makeCreateEtherapyService';
 import makeCreateFieldJournalService from '../../factories/makeCreateFieldJournalService';
+import makeLoadModeratorByIdService from '../../factories/makeLoadModeratorByIdService';
 import makeCreateModeratorService from '../../factories/makeCreateModeratorService';
 import makeCreateTemplateService from '../../factories/makeCreateTemplateService';
 
@@ -48,7 +49,18 @@ testRouter.get('/', async (_request: Request, response: Response) => {
         etherapy,
     );
 
-    return response.json({ etherapy, moderator, template, fieldJournal });
+    const moderatorId = 'hahahaha';
+    const loadmoderator = await makeLoadModeratorByIdService().execute(
+        moderatorId,
+    );
+
+    return response.json({
+        etherapy,
+        moderator,
+        template,
+        fieldJournal,
+        loadmoderator,
+    });
 });
 
 export default testRouter;
