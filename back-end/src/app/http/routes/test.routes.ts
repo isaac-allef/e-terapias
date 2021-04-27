@@ -5,6 +5,7 @@ import makeCreateFieldJournalService from '../../factories/makeCreateFieldJourna
 import makeLoadModeratorByIdService from '../../factories/makeLoadModeratorByIdService';
 import makeCreateModeratorService from '../../factories/makeCreateModeratorService';
 import makeCreateTemplateService from '../../factories/makeCreateTemplateService';
+import makeLoadEtherapyByIdService from '../../factories/makeLoadEtherapyByIdService';
 
 const testRouter = Router();
 
@@ -54,12 +55,18 @@ testRouter.get('/', async (_request: Request, response: Response) => {
         moderatorId,
     );
 
+    const etherapyId = 'hahahaha';
+    const loadetherapy = await makeLoadEtherapyByIdService().execute(
+        etherapyId,
+    );
+
     return response.json({
         etherapy,
         moderator,
         template,
         fieldJournal,
         loadmoderator,
+        loadetherapy,
     });
 });
 
