@@ -6,8 +6,8 @@ import LoadTemplateByIdRepository from '../protocols/db/repositories/LoadTemplat
 class LinkTemplateToEtherapiesService {
     constructor(
         private linkTemplateToEtherapiesRepository: LinkTemplateToEtherapiesRepository,
-        private loadEtherapyByIdRepository: LoadEtherapyByIdRepository,
         private loadTemplateByIdRepository: LoadTemplateByIdRepository,
+        private loadEtherapyByIdRepository: LoadEtherapyByIdRepository,
     ) {}
 
     public async execute(

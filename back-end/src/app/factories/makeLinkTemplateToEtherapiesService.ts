@@ -10,8 +10,8 @@ const makeLinkTemplateToEtherapiesService = (): LinkTemplateToEtherapiesService 
 
     const LinkTemplateToEtherapies = new LinkTemplateToEtherapiesService(
         LinkTemplateToEtherapiesRepository,
-        loadEtherapyByIdRepository,
         loadTemplateByIdRepository,
+        loadEtherapyByIdRepository,
     );
 
     return LinkTemplateToEtherapies;
