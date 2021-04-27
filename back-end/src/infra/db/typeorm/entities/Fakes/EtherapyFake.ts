@@ -1,6 +1,6 @@
 import Etherapy from '../../../../../core/entities/Etherapy';
 import FieldJournal from '../../../../../core/entities/FieldJournal';
-import FieldJournalTemplate from '../../../../../core/entities/FieldJournalTemplate';
+import Template from '../../../../../core/entities/Template';
 import Moderator from '../../../../../core/entities/Moderator';
 import generateFakeId from './generateFakeId';
 
@@ -16,7 +16,7 @@ class EtherapyFake implements Etherapy {
 
     fieldJournals: FieldJournal[];
 
-    fieldJournalTemplate: FieldJournalTemplate;
+    template: Template;
 
     moderators: Moderator[];
 }

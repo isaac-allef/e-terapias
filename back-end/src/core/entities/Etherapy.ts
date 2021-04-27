@@ -1,5 +1,5 @@
 import FieldJournal from './FieldJournal';
-import FieldJournalTemplate from './FieldJournalTemplate';
+import Template from './Template';
 
 import Moderator from './Moderator';
 
@@ -10,7 +10,7 @@ interface Etherapy {
 
     fieldJournals: FieldJournal[];
 
-    fieldJournalTemplate: FieldJournalTemplate;
+    template: Template;
 
     moderators: Moderator[];
 }

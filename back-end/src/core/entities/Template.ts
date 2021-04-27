@@ -1,19 +1,15 @@
 import Etherapy from './Etherapy';
 
-interface FieldTemplates {
+export type templateField = {
     name: string;
-    type: string;
-}
+};
 
 interface FieldJournalTemplate {
     id: string;
 
     name: string;
 
-    description: {
-        title: string;
-        fieldTemplates: FieldTemplates[];
-    };
+    templateFields: templateField[];
 
     Etherapies: Etherapy[];
 }

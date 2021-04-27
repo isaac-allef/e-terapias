@@ -3,6 +3,7 @@ import { Router, Request, Response } from 'express';
 import makeCreateEtherapyService from '../../factories/makeCreateEtherapyService';
 import makeCreateFieldJournalService from '../../factories/makeCreateFieldJournalService';
 import makeCreateModeratorService from '../../factories/makeCreateModeratorService';
+import makeCreateTemplateService from '../../factories/makeCreateTemplateService';
 
 const testRouter = Router();
 
@@ -10,30 +11,22 @@ testRouter.get('/', async (_request: Request, response: Response) => {
     const etherapyName = 'viver é bom';
     const etherapy = await makeCreateEtherapyService().execute(etherapyName);
 
-    if (!etherapy.id) {
-        return response.status(500).json({ message: 'etherapy id not found.' });
-    }
-
-    if (etherapy.name !== etherapyName) {
-        return response
-            .status(500)
-            .json({ message: 'incorrect etherapyName.' });
-    }
-
     const moderatorName = 'Isaac';
     const moderator = await makeCreateModeratorService().execute(moderatorName);
 
-    if (!moderator.id) {
-        return response
-            .status(500)
-            .json({ message: 'moderator id not found.' });
-    }
-
-    if (moderator.name !== moderatorName) {
-        return response
-            .status(500)
-            .json({ message: 'incorrect moderatorName.' });
-    }
+    const templateName = 'Padrão';
+    const templateFields = [
+        { name: 'Qual o seu nome?' },
+        { name: 'Quanto é 2 + 2?' },
+        {
+            name: 'Informe sua data de nascimento',
+        },
+        { name: 'Voçê é estudante?' },
+    ];
+    const template = await makeCreateTemplateService().execute(
+        templateName,
+        templateFields,
+    );
 
     const fieldJournalName = 'Primeiro dia';
     const fields = [
@@ -50,19 +43,7 @@ testRouter.get('/', async (_request: Request, response: Response) => {
         fields,
     );
 
-    if (!fieldJournal.id) {
-        return response
-            .status(500)
-            .json({ message: 'fieldJournal id not found.' });
-    }
-
-    if (fieldJournal.name !== fieldJournalName) {
-        return response
-            .status(500)
-            .json({ message: 'incorrect fieldJournalName.' });
-    }
-
-    return response.json({ etherapy, moderator, fieldJournal });
+    return response.json({ etherapy, moderator, template, fieldJournal });
 });
 
 export default testRouter;
