@@ -15,7 +15,7 @@ class TemplateFake implements Template {
 
     templateFields: templateField[];
 
-    Etherapies: Etherapy[];
+    etherapies: Etherapy[];
 }
 
 export default TemplateFake;

@@ -8,6 +8,8 @@ class EtherapyFake implements Etherapy {
     constructor(name: string) {
         this.id = generateFakeId();
         this.name = name;
+        this.fieldJournals = [];
+        this.moderators = [];
     }
 
     id: string;

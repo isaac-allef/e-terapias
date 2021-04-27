@@ -4,10 +4,17 @@ import generateFakeId from './generateFakeId';
 import Moderator from '../../../../../core/entities/Moderator';
 
 class FieldJournalFake implements FieldJournal {
-    constructor(name: string, fields: field[]) {
+    constructor(
+        name: string,
+        fields: field[],
+        moderator: Moderator,
+        etherapy: Etherapy,
+    ) {
         this.id = generateFakeId();
         this.name = name;
         this.fields = fields;
+        this.moderator = moderator;
+        this.etherapy = etherapy;
     }
 
     id: string;
@@ -16,7 +23,7 @@ class FieldJournalFake implements FieldJournal {
 
     moderator: Moderator;
 
-    Etherapy: Etherapy;
+    etherapy: Etherapy;
 
     fields: field[];
 }

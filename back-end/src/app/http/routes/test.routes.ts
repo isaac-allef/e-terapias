@@ -28,6 +28,9 @@ testRouter.get('/', async (_request: Request, response: Response) => {
         templateFields,
     );
 
+    moderator.etherapies.push(etherapy);
+    etherapy.template = template;
+
     const fieldJournalName = 'Primeiro dia';
     const fields = [
         { name: 'Qual o seu nome?', value: 'Isaac' },
@@ -41,6 +44,8 @@ testRouter.get('/', async (_request: Request, response: Response) => {
     const fieldJournal = await makeCreateFieldJournalService().execute(
         fieldJournalName,
         fields,
+        moderator,
+        etherapy,
     );
 
     return response.json({ etherapy, moderator, template, fieldJournal });

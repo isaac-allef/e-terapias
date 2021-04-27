@@ -11,7 +11,7 @@ interface FieldJournalTemplate {
 
     templateFields: templateField[];
 
-    Etherapies: Etherapy[];
+    etherapies: Etherapy[];
 }
 
 export default FieldJournalTemplate;

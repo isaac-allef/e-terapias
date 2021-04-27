@@ -13,7 +13,7 @@ interface FieldJournal {
 
     moderator: Moderator;
 
-    Etherapy: Etherapy;
+    etherapy: Etherapy;
 
     fields: field[];
 }

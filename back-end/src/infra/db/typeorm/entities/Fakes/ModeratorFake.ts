@@ -7,6 +7,8 @@ class ModeratorFake implements Moderator {
     constructor(name: string) {
         this.id = generateFakeId();
         this.name = name;
+        this.fieldJournals = [];
+        this.etherapies = [];
     }
 
     id: string;
