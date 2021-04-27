@@ -8,7 +8,7 @@ interface Moderator {
 
     fieldJournals: FieldJournal[];
 
-    Etherapies: Etherapy[];
+    etherapies: Etherapy[];
 }
 
 export default Moderator;

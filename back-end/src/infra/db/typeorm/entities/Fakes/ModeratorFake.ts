@@ -15,7 +15,7 @@ class ModeratorFake implements Moderator {
 
     fieldJournals: FieldJournal[];
 
-    Etherapies: Etherapy[];
+    etherapies: Etherapy[];
 }
 
 export default ModeratorFake;
