@@ -1,21 +1,37 @@
-import Etherapy from '../entities/Etherapy';
 import FieldJournal, { field } from '../entities/FieldJournal';
-import Moderator from '../entities/Moderator';
 import { templateField } from '../entities/Template';
 import AppError from '../errors/AppError';
 import CreateFieldJournalRepository from '../protocols/db/repositories/CreateFieldJournalRepository';
+import LoadEtherapyByIdRepository from '../protocols/db/repositories/LoadEtherapyByIdRepository';
+import LoadModeratorByIdRepository from '../protocols/db/repositories/LoadModeratorByIdRepository';
 
 class CreateFieldJournalService {
     constructor(
         private createFieldJournalRepository: CreateFieldJournalRepository,
+        private loadModeratorByIdRepository: LoadModeratorByIdRepository,
+        private loadEtherapyByIdRepository: LoadEtherapyByIdRepository,
     ) {}
 
     public async execute(
         name: string,
         fields: field[],
-        moderator: Moderator,
-        etherapy: Etherapy,
+        moderatorId: string,
+        etherapyId: string,
     ): Promise<FieldJournal> {
+        const moderator = await this.loadModeratorByIdRepository.load(
+            moderatorId,
+        );
+
+        if (!moderator) {
+            throw new AppError('Moderator not found.');
+        }
+
+        const etherapy = await this.loadEtherapyByIdRepository.load(etherapyId);
+
+        if (!etherapy) {
+            throw new AppError('Etherapy not found.');
+        }
+
         if (!moderator.etherapies.find(e => e.id === etherapy.id)) {
             throw new AppError(
                 'This moderator is not related to this etherapy.',

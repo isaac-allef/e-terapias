@@ -46,8 +46,8 @@ testRouter.get('/', async (_request: Request, response: Response) => {
     const fieldJournal = await makeCreateFieldJournalService().execute(
         fieldJournalName,
         fields,
-        moderator,
-        etherapy,
+        'oioioioi',
+        'eieieiei',
     );
 
     const moderatorId = 'hahahaha';
