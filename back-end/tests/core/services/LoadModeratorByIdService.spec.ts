@@ -45,4 +45,11 @@ describe('load Moderator by id usecase', () => {
         await sut.execute('randomId');
         expect(executeSpy).toHaveBeenCalledWith('randomId');
     });
+
+    test('Should call LoadModeratorByIdRepository with correct values', async () => {
+        const { sut, loadModeratorByIdRepository } = makeSut();
+        const loadSpy = jest.spyOn(loadModeratorByIdRepository, 'load');
+        await sut.execute('randomId');
+        expect(loadSpy).toHaveBeenCalledWith('randomId');
+    });
 });
