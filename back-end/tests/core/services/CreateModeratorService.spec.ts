@@ -2,6 +2,17 @@
 import CreateModeratorService from '../../../src/core/services/CreateModeratorService';
 import CreateModeratorRepository from '../../../src/core/protocols/db/repositories/CreateModeratorRepository';
 import Moderator from '../../../src/core/entities/Moderator';
+import HashGenerater from '../../../src/core/protocols/cryptography/HashGenerater';
+
+const makeHashGenerater = (): HashGenerater => {
+    class HashGeneraterStub implements HashGenerater {
+        async generate(payload: string): Promise<string> {
+            return new Promise(resolve => resolve(payload));
+        }
+    }
+
+    return new HashGeneraterStub();
+};
 
 const makeCreateModeratorRepository = (): CreateModeratorRepository => {
     class CreateModeratorRepositoryStub implements CreateModeratorRepository {
@@ -25,14 +36,20 @@ const makeCreateModeratorRepository = (): CreateModeratorRepository => {
 
 interface SutTypes {
     sut: CreateModeratorService;
+    hashGenerater: HashGenerater;
     createModeratorRepository: CreateModeratorRepository;
 }
 
 const makeSut = (): SutTypes => {
+    const hashGenerater = makeHashGenerater();
     const createModeratorRepository = makeCreateModeratorRepository();
-    const sut = new CreateModeratorService(createModeratorRepository);
+    const sut = new CreateModeratorService(
+        hashGenerater,
+        createModeratorRepository,
+    );
     return {
         sut,
+        hashGenerater,
         createModeratorRepository,
     };
 };
@@ -55,6 +72,14 @@ describe('Create Moderator usecase', () => {
         expect(createSpy).toHaveBeenCalledWith({
             email: 'fulano@email.com',
             name: 'fulano',
+            password: expect.stringMatching('.'),
         });
+    });
+
+    test('Should call HashGenerater to create a password automatically', async () => {
+        const { sut, hashGenerater } = makeSut();
+        const generateSpy = jest.spyOn(hashGenerater, 'generate');
+        await sut.execute({ email: 'fulano@email.com', name: 'fulano' });
+        expect(generateSpy).toHaveBeenCalledWith(expect.stringMatching('.'));
     });
 });
