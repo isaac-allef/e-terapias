@@ -1,5 +1,10 @@
 import Moderator from '../../../entities/Moderator';
 
+export type params = {
+    email: string;
+    name: string;
+};
+
 export default interface CreateModeratorRepository {
-    create(email: string, name: string): Promise<Moderator>;
+    create({ email, name }: params): Promise<Moderator>;
 }

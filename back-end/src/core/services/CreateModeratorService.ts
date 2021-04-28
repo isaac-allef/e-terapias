@@ -10,10 +10,10 @@ class CreateModeratorService {
     constructor(private createModeratorRepository: CreateModeratorRepository) {}
 
     public async execute({ email, name }: params): Promise<Moderator> {
-        const moderator = await this.createModeratorRepository.create(
+        const moderator = await this.createModeratorRepository.create({
             email,
             name,
-        );
+        });
 
         return moderator;
     }
