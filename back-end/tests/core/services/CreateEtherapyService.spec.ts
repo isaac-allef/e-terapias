@@ -44,4 +44,11 @@ describe('Create Etherapy usecase', () => {
             name: 'viver é bom',
         });
     });
+
+    test('Should call CreateEtherapyRepository with correct values', async () => {
+        const { sut, createEtherapyRepository } = makeSut();
+        const createSpy = jest.spyOn(createEtherapyRepository, 'create');
+        await sut.execute({ name: 'viver é bom' });
+        expect(createSpy).toHaveBeenCalledWith({ name: 'viver é bom' });
+    });
 });
