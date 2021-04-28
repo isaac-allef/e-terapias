@@ -47,4 +47,14 @@ describe('Create Moderator usecase', () => {
             name: 'fulano',
         });
     });
+
+    test('Should call CreateModeratorRepository with correct values', async () => {
+        const { sut, createModeratorRepository } = makeSut();
+        const createSpy = jest.spyOn(createModeratorRepository, 'create');
+        await sut.execute({ email: 'fulano@email.com', name: 'fulano' });
+        expect(createSpy).toHaveBeenCalledWith({
+            email: 'fulano@email.com',
+            name: 'fulano',
+        });
+    });
 });
