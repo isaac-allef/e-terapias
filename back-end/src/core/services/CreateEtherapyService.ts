@@ -9,7 +9,7 @@ class CreateEtherapyService {
     constructor(private createEtherapyRepository: CreateEtherapyRepository) {}
 
     public async execute({ name }: params): Promise<Etherapy> {
-        const etherapy = await this.createEtherapyRepository.create(name);
+        const etherapy = await this.createEtherapyRepository.create({ name });
 
         return etherapy;
     }
