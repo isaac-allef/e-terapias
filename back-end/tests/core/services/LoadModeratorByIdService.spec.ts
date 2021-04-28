@@ -1,28 +1,7 @@
 /* eslint-disable max-classes-per-file */
 import LoadModeratorByIdService from '../../../src/core/services/LoadModeratorByIdService';
 import LoadModeratorByIdRepository from '../../../src/core/protocols/db/repositories/LoadModeratorByIdRepository';
-import Moderator from '../../../src/core/entities/Moderator';
-
-const makeLoadModeratorByIdRepository = (): LoadModeratorByIdRepository => {
-    class LoadModeratorByIdRepositoryStub
-        implements LoadModeratorByIdRepository {
-        async load(): Promise<Moderator> {
-            const moderator: Moderator = {
-                id: 'randomId',
-                email: 'fulano@email.com',
-                name: 'fulano',
-                etherapies: [],
-                fieldJournals: [],
-                password: '1234',
-                token: 'randomToken',
-            };
-
-            return new Promise(resolve => resolve(moderator));
-        }
-    }
-
-    return new LoadModeratorByIdRepositoryStub();
-};
+import { LoadModeratorByIdRepositoryStub } from '../mocks/mockModerator';
 
 interface SutTypes {
     sut: LoadModeratorByIdService;
@@ -30,7 +9,7 @@ interface SutTypes {
 }
 
 const makeSut = (): SutTypes => {
-    const loadModeratorByIdRepository = makeLoadModeratorByIdRepository();
+    const loadModeratorByIdRepository = new LoadModeratorByIdRepositoryStub();
     const sut = new LoadModeratorByIdService(loadModeratorByIdRepository);
     return {
         sut,
