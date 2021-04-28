@@ -10,7 +10,7 @@ interface Etherapy {
 
     fieldJournals: FieldJournal[];
 
-    template: Template;
+    template: Template | undefined;
 
     moderators: Moderator[];
 }
