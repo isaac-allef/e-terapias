@@ -3,16 +3,7 @@ import CreateModeratorService from '../../../src/core/services/CreateModeratorSe
 import CreateModeratorRepository from '../../../src/core/protocols/db/repositories/CreateModeratorRepository';
 import HashGenerater from '../../../src/core/protocols/cryptography/HashGenerater';
 import { CreateModeratorRepositoryStub } from '../mocks/mockModerator';
-
-const makeHashGenerater = (): HashGenerater => {
-    class HashGeneraterStub implements HashGenerater {
-        async generate(payload: string): Promise<string> {
-            return new Promise(resolve => resolve(payload));
-        }
-    }
-
-    return new HashGeneraterStub();
-};
+import { HashGeneraterStub } from '../mocks/mockCryptography';
 
 interface SutTypes {
     sut: CreateModeratorService;
@@ -21,7 +12,7 @@ interface SutTypes {
 }
 
 const makeSut = (): SutTypes => {
-    const hashGenerater = makeHashGenerater();
+    const hashGenerater = new HashGeneraterStub();
     const createModeratorRepository = new CreateModeratorRepositoryStub();
     const sut = new CreateModeratorService(
         hashGenerater,
