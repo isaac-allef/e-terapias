@@ -48,4 +48,11 @@ describe('load Template by id usecase', () => {
         await sut.execute('randomId');
         expect(executeSpy).toHaveBeenCalledWith('randomId');
     });
+
+    test('Should call LoadTemplateByIdRepository with correct values', async () => {
+        const { sut, loadTemplateByIdRepository } = makeSut();
+        const loadSpy = jest.spyOn(loadTemplateByIdRepository, 'load');
+        await sut.execute('randomId');
+        expect(loadSpy).toHaveBeenCalledWith('randomId');
+    });
 });
