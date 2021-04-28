@@ -9,6 +9,7 @@ import makeLoadEtherapyByIdService from '../../factories/makeLoadEtherapyByIdSer
 import makeLoadTemplateByIdService from '../../factories/makeLoadTemplateByIdService';
 import makeLinkTemplateToEtherapiesService from '../../factories/makeLinkTemplateToEtherapiesService';
 import makeLinkModeratorToEtherapyService from '../../factories/makeLinkModeratorToEtherapyService';
+import makeAuthenticationService from '../../factories/makeAuthenticationService';
 
 const testRouter = Router();
 
@@ -82,6 +83,11 @@ testRouter.get('/', async (_request: Request, response: Response) => {
         etherapyId,
     );
 
+    const moderatorUpdatedToken = await makeAuthenticationService().execute(
+        'isaac@gmail.com',
+        '1234',
+    );
+
     return response.json({
         etherapy,
         moderator,
@@ -92,6 +98,7 @@ testRouter.get('/', async (_request: Request, response: Response) => {
         loadtemplate,
         linkTemplatesToEtherapies,
         linkModeratorToEtherapy,
+        moderatorUpdatedToken,
     });
 });
 
