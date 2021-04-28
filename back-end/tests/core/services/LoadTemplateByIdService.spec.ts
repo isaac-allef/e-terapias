@@ -1,31 +1,7 @@
 /* eslint-disable max-classes-per-file */
 import LoadTemplateByIdService from '../../../src/core/services/LoadTemplateByIdService';
 import LoadTemplateByIdRepository from '../../../src/core/protocols/db/repositories/LoadTemplateByIdRepository';
-import Template from '../../../src/core/entities/Template';
-
-const makeLoadTemplateByIdRepository = (): LoadTemplateByIdRepository => {
-    class LoadTemplateByIdRepositoryStub implements LoadTemplateByIdRepository {
-        async load(): Promise<Template> {
-            const template: Template = {
-                id: 'randomId',
-                name: 'viver é bom',
-                etherapies: [],
-                templateFields: [
-                    { name: 'Qual o seu nome?' },
-                    { name: 'Quanto é 2 + 2?' },
-                    {
-                        name: 'Informe sua data de nascimento',
-                    },
-                    { name: 'Voçê é estudante?' },
-                ],
-            };
-
-            return new Promise(resolve => resolve(template));
-        }
-    }
-
-    return new LoadTemplateByIdRepositoryStub();
-};
+import { LoadTemplateByIdRepositoryStub } from '../mocks/mockTemplate';
 
 interface SutTypes {
     sut: LoadTemplateByIdService;
@@ -33,7 +9,7 @@ interface SutTypes {
 }
 
 const makeSut = (): SutTypes => {
-    const loadTemplateByIdRepository = makeLoadTemplateByIdRepository();
+    const loadTemplateByIdRepository = new LoadTemplateByIdRepositoryStub();
     const sut = new LoadTemplateByIdService(loadTemplateByIdRepository);
     return {
         sut,

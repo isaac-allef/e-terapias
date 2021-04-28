@@ -1,31 +1,7 @@
 /* eslint-disable max-classes-per-file */
 import CreateTemplateService from '../../../src/core/services/CreateTemplateService';
 import CreateTemplateRepository from '../../../src/core/protocols/db/repositories/CreateTemplateRepository';
-import Template from '../../../src/core/entities/Template';
-
-const makeCreateTemplateRepository = (): CreateTemplateRepository => {
-    class CreateTemplateRepositoryStub implements CreateTemplateRepository {
-        async create(): Promise<Template> {
-            const template: Template = {
-                id: 'randomId',
-                name: 'diário das eterapias de promoção ao bem-estar',
-                etherapies: [],
-                templateFields: [
-                    { name: 'Qual o seu nome?' },
-                    { name: 'Quanto é 2 + 2?' },
-                    {
-                        name: 'Informe sua data de nascimento',
-                    },
-                    { name: 'Voçê é estudante?' },
-                ],
-            };
-
-            return new Promise(resolve => resolve(template));
-        }
-    }
-
-    return new CreateTemplateRepositoryStub();
-};
+import { CreateTemplateRepositoryStub } from '../mocks/mockTemplate';
 
 interface SutTypes {
     sut: CreateTemplateService;
@@ -33,7 +9,7 @@ interface SutTypes {
 }
 
 const makeSut = (): SutTypes => {
-    const createTemplateRepository = makeCreateTemplateRepository();
+    const createTemplateRepository = new CreateTemplateRepositoryStub();
     const sut = new CreateTemplateService(createTemplateRepository);
     return {
         sut,
