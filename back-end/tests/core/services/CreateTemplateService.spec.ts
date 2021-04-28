@@ -68,4 +68,31 @@ describe('Create Template usecase', () => {
             ],
         });
     });
+
+    test('Should call CreateTemplateRepository with correct values', async () => {
+        const { sut, createTemplateRepository } = makeSut();
+        const createSpy = jest.spyOn(createTemplateRepository, 'create');
+        await sut.execute({
+            name: 'diário das eterapias de promoção ao bem-estar',
+            templateFields: [
+                { name: 'Qual o seu nome?' },
+                { name: 'Quanto é 2 + 2?' },
+                {
+                    name: 'Informe sua data de nascimento',
+                },
+                { name: 'Voçê é estudante?' },
+            ],
+        });
+        expect(createSpy).toHaveBeenCalledWith({
+            name: 'diário das eterapias de promoção ao bem-estar',
+            templateFields: [
+                { name: 'Qual o seu nome?' },
+                { name: 'Quanto é 2 + 2?' },
+                {
+                    name: 'Informe sua data de nascimento',
+                },
+                { name: 'Voçê é estudante?' },
+            ],
+        });
+    });
 });
