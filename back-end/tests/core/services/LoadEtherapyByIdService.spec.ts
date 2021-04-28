@@ -1,25 +1,7 @@
 /* eslint-disable max-classes-per-file */
 import LoadEtherapyByIdService from '../../../src/core/services/LoadEtherapyByIdService';
 import LoadEtherapyByIdRepository from '../../../src/core/protocols/db/repositories/LoadEtherapyByIdRepository';
-import Etherapy from '../../../src/core/entities/Etherapy';
-
-const makeLoadEtherapyByIdRepository = (): LoadEtherapyByIdRepository => {
-    class LoadEtherapyByIdRepositoryStub implements LoadEtherapyByIdRepository {
-        async load(): Promise<Etherapy> {
-            const etherapy: Etherapy = {
-                id: 'randomId',
-                name: 'viver é bom',
-                fieldJournals: [],
-                moderators: [],
-                template: undefined,
-            };
-
-            return new Promise(resolve => resolve(etherapy));
-        }
-    }
-
-    return new LoadEtherapyByIdRepositoryStub();
-};
+import { LoadEtherapyByIdRepositoryStub } from '../mocks/mockEtherapy';
 
 interface SutTypes {
     sut: LoadEtherapyByIdService;
@@ -27,7 +9,7 @@ interface SutTypes {
 }
 
 const makeSut = (): SutTypes => {
-    const loadEtherapyByIdRepository = makeLoadEtherapyByIdRepository();
+    const loadEtherapyByIdRepository = new LoadEtherapyByIdRepositoryStub();
     const sut = new LoadEtherapyByIdService(loadEtherapyByIdRepository);
     return {
         sut,
