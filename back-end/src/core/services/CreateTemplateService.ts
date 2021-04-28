@@ -10,10 +10,10 @@ class CreateTemplateService {
     constructor(private createTemplateRepository: CreateTemplateRepository) {}
 
     public async execute({ name, templateFields }: params): Promise<Template> {
-        const template = await this.createTemplateRepository.create(
+        const template = await this.createTemplateRepository.create({
             name,
             templateFields,
-        );
+        });
 
         return template;
     }

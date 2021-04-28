@@ -1,5 +1,10 @@
 import Template, { templateField } from '../../../entities/Template';
 
+export type params = {
+    name: string;
+    templateFields: templateField[];
+};
+
 export default interface CreateFieldJournalRepository {
-    create(name: string, templateFields: templateField[]): Promise<Template>;
+    create({ name, templateFields }: params): Promise<Template>;
 }
