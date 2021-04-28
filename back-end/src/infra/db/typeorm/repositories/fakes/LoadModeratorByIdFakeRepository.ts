@@ -6,7 +6,10 @@ import TemplateFake from '../../entities/Fakes/TemplateFake';
 
 class LoadModeratorByIdFakeRepository implements LoadModeratorByIdRepository {
     async load(id: string): Promise<Moderator> {
-        const moderator = new ModeratorFake('load moderator');
+        const moderator = new ModeratorFake(
+            'moderator@email.com',
+            'load moderator',
+        );
 
         moderator.id = id;
 

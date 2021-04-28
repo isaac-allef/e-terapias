@@ -4,8 +4,11 @@ import CreateModeratorRepository from '../protocols/db/repositories/CreateModera
 class CreateModeratorService {
     constructor(private createModeratorRepository: CreateModeratorRepository) {}
 
-    public async execute(name: string): Promise<Moderator> {
-        const moderator = await this.createModeratorRepository.create(name);
+    public async execute(email: string, name: string): Promise<Moderator> {
+        const moderator = await this.createModeratorRepository.create(
+            email,
+            name,
+        );
 
         return moderator;
     }

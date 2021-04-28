@@ -16,8 +16,12 @@ testRouter.get('/', async (_request: Request, response: Response) => {
     const etherapyName = 'viver é bom';
     const etherapy = await makeCreateEtherapyService().execute(etherapyName);
 
+    const moderatorEmail = 'isaac@gmail.com';
     const moderatorName = 'Isaac';
-    const moderator = await makeCreateModeratorService().execute(moderatorName);
+    const moderator = await makeCreateModeratorService().execute(
+        moderatorEmail,
+        moderatorName,
+    );
 
     const templateName = 'Padrão';
     const templateFields = [

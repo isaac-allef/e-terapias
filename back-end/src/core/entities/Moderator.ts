@@ -1,7 +1,8 @@
 import Etherapy from './Etherapy';
 import FieldJournal from './FieldJournal';
+import User from './User';
 
-interface Moderator {
+interface Moderator extends User {
     id: string;
 
     name: string;

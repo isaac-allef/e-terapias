@@ -1,11 +1,11 @@
 interface User {
     id: string;
 
-    nickName: string;
+    email: string;
 
     password: string;
 
-    levelAccess: 'admin' | 'moderator';
+    token: string;
 }
 
 export default User;
