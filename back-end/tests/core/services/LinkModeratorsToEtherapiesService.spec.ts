@@ -7,6 +7,7 @@ import LoadEtherapyByIdRepository from '../../../src/core/protocols/db/repositor
 import { LinkModeratorToEtherapyRepositoryStub } from '../mocks/mockLink';
 import { LoadModeratorByIdRepositoryStub } from '../mocks/mockModerator';
 import { LoadEtherapyByIdRepositoryStub } from '../mocks/mockEtherapy';
+import AppError from '../../../src/core/errors/AppError';
 
 interface SutTypes {
     sut: LinkModeratorsToEtherapiesService;
@@ -73,5 +74,28 @@ describe('Link moderators to etherapies usecase', () => {
         ]);
         expect(loadSpy).toHaveBeenCalledWith('randomIdModerator1');
         expect(loadSpy).toHaveBeenCalledWith('randomIdModerator2');
+    });
+
+    test('Should throw AppError if LoadModeratorByIdRepository return undefined', async () => {
+        const { sut, loadModeratorByIdRepository } = makeSut();
+        jest.spyOn(loadModeratorByIdRepository, 'load').mockReturnValue(
+            new Promise(resolve => resolve(undefined)),
+        );
+
+        try {
+            await sut.execute([
+                {
+                    moderatorId: 'randomIdModerator1',
+                    etherapyId: 'randomIdEtherapy1',
+                },
+                {
+                    moderatorId: 'randomIdModerator2',
+                    etherapyId: 'randomIdEtherapy2',
+                },
+            ]);
+            expect('biscoito').toBe('bolacha');
+        } catch (err) {
+            expect(err).toEqual(new AppError('Moderator not found.'));
+        }
     });
 });
