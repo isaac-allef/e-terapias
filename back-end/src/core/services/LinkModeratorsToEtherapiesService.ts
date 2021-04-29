@@ -3,17 +3,36 @@ import LinkModeratorToEtherapyRepository from '../protocols/db/repositories/Link
 import LoadModeratorByIdRepository from '../protocols/db/repositories/LoadModeratorByIdRepository';
 import LoadEtherapyByIdRepository from '../protocols/db/repositories/LoadEtherapyByIdRepository';
 
-class LinkModeratorToEtherapyService {
+type dto = {
+    moderatorId: string;
+    etherapyId: string;
+};
+
+export type params = dto[];
+
+class LinkModeratorsToEtherapiesService {
     constructor(
         private linkModeratorToEtherapiesRepository: LinkModeratorToEtherapyRepository,
         private loadModeratorByIdRepository: LoadModeratorByIdRepository,
         private loadEtherapyByIdRepository: LoadEtherapyByIdRepository,
     ) {}
 
-    public async execute(
-        moderatorId: string,
-        etherapyId: string,
-    ): Promise<boolean> {
+    public async execute(data: params): Promise<boolean[]> {
+        const isLinkedList = await Promise.all(
+            data.map(async d => {
+                const isLinked = await this.linkModeratorToEtherapy({
+                    moderatorId: d.moderatorId,
+                    etherapyId: d.etherapyId,
+                });
+
+                return isLinked;
+            }),
+        );
+
+        return isLinkedList;
+    }
+
+    private async linkModeratorToEtherapy({ moderatorId, etherapyId }: dto) {
         const moderator = await this.loadModeratorByIdRepository.load(
             moderatorId,
         );
@@ -37,4 +56,4 @@ class LinkModeratorToEtherapyService {
     }
 }
 
-export default LinkModeratorToEtherapyService;
+export default LinkModeratorsToEtherapiesService;
