@@ -2,6 +2,7 @@
 import LoadEtherapyByIdService from '../../../src/core/services/LoadEtherapyByIdService';
 import LoadEtherapyByIdRepository from '../../../src/core/protocols/db/repositories/LoadEtherapyByIdRepository';
 import { LoadEtherapyByIdRepositoryStub } from '../mocks/mockEtherapy';
+import AppError from '../../../src/core/errors/AppError';
 
 interface SutTypes {
     sut: LoadEtherapyByIdService;
@@ -30,5 +31,19 @@ describe('load Etherapy by id usecase', () => {
         const loadSpy = jest.spyOn(loadEtherapyByIdRepository, 'load');
         await sut.execute('randomId');
         expect(loadSpy).toHaveBeenCalledWith('randomId');
+    });
+
+    test('Should throw AppError if LoadEtherapyByIdRepository return undefined', async () => {
+        const { sut, loadEtherapyByIdRepository } = makeSut();
+        jest.spyOn(loadEtherapyByIdRepository, 'load').mockReturnValue(
+            new Promise(resolve => resolve(undefined)),
+        );
+
+        try {
+            await sut.execute('randomId');
+            expect('biscoito').toBe('bolacha');
+        } catch (err) {
+            expect(err).toEqual(new AppError('Moderator not found.'));
+        }
     });
 });
