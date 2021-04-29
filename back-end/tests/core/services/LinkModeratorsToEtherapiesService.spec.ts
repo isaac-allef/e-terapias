@@ -57,4 +57,21 @@ describe('Link moderators to etherapies usecase', () => {
             },
         ]);
     });
+
+    test('Should call LoadModeratorByIdRepository with correct moderator id', async () => {
+        const { sut, loadModeratorByIdRepository } = makeSut();
+        const loadSpy = jest.spyOn(loadModeratorByIdRepository, 'load');
+        await sut.execute([
+            {
+                moderatorId: 'randomIdModerator1',
+                etherapyId: 'randomIdEtherapy1',
+            },
+            {
+                moderatorId: 'randomIdModerator2',
+                etherapyId: 'randomIdEtherapy2',
+            },
+        ]);
+        expect(loadSpy).toHaveBeenCalledWith('randomIdModerator1');
+        expect(loadSpy).toHaveBeenCalledWith('randomIdModerator2');
+    });
 });
