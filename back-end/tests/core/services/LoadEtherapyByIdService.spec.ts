@@ -43,7 +43,7 @@ describe('load Etherapy by id usecase', () => {
             await sut.execute('randomId');
             expect('biscoito').toBe('bolacha');
         } catch (err) {
-            expect(err).toEqual(new AppError('Moderator not found.'));
+            expect(err).toEqual(new AppError('Etherapy not found.'));
         }
     });
 });

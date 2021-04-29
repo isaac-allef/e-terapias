@@ -11,7 +11,7 @@ class LoadEtherapyByIdService {
         const etherapy = await this.loadEtherapyByIdRepository.load(id);
 
         if (!etherapy) {
-            throw new AppError('Moderator not found.');
+            throw new AppError('Etherapy not found.');
         }
 
         return etherapy;
