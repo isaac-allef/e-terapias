@@ -1,5 +1,6 @@
 import Etherapy from '../entities/Etherapy';
-import CreateEtherapyRepository from '../protocols/db/repositories/CreateEtherapyRepository';
+import AppError from '../errors/AppError';
+import CreateEtherapiesRepository from '../protocols/db/repositories/CreateEtherapiesRepository';
 
 type dto = {
     name: string;
@@ -8,18 +9,16 @@ type dto = {
 export type params = dto[];
 
 class CreateEtherapiesService {
-    constructor(private createEtherapyRepository: CreateEtherapyRepository) {}
+    constructor(
+        private createEtherapiesRepository: CreateEtherapiesRepository,
+    ) {}
 
     public async execute(data: params): Promise<Etherapy[]> {
-        const etherapies = await Promise.all(
-            data.map(async d => {
-                const etherapy = await this.createEtherapyRepository.create({
-                    name: d.name,
-                });
+        const etherapies = await this.createEtherapiesRepository.create(data);
 
-                return etherapy;
-            }),
-        );
+        if (!etherapies) {
+            throw new AppError('Create etherapies fail.');
+        }
 
         return etherapies;
     }
