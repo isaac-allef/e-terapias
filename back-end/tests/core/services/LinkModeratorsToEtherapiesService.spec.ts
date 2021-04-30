@@ -1,33 +1,33 @@
 /* eslint-disable max-classes-per-file */
 
 import LinkModeratorsToEtherapiesService from '../../../src/core/services/LinkModeratorsToEtherapiesService';
-import LinkModeratorToEtherapyRepository from '../../../src/core/protocols/db/repositories/LinkModeratorToEtherapyRepository';
+import LinkModeratorsToEtherapiesRepository from '../../../src/core/protocols/db/repositories/LinkModeratorsToEtherapiesRepository';
 import LoadModeratorByIdRepository from '../../../src/core/protocols/db/repositories/LoadModeratorByIdRepository';
 import LoadEtherapyByIdRepository from '../../../src/core/protocols/db/repositories/LoadEtherapyByIdRepository';
-import { LinkModeratorToEtherapyRepositoryStub } from '../mocks/mockLink';
+import { LinkModeratorsToEtherapiesRepositoryStub } from '../mocks/mockLink';
 import { LoadModeratorByIdRepositoryStub } from '../mocks/mockModerator';
 import { LoadEtherapyByIdRepositoryStub } from '../mocks/mockEtherapy';
 import AppError from '../../../src/core/errors/AppError';
 
 interface SutTypes {
     sut: LinkModeratorsToEtherapiesService;
-    linkModeratorToEtherapyRepository: LinkModeratorToEtherapyRepository;
+    linkModeratorsToEtherapiesRepository: LinkModeratorsToEtherapiesRepository;
     loadModeratorByIdRepository: LoadModeratorByIdRepository;
     loadEtherapyByIdRepository: LoadEtherapyByIdRepository;
 }
 
 const makeSut = (): SutTypes => {
-    const linkModeratorToEtherapyRepository = new LinkModeratorToEtherapyRepositoryStub();
+    const linkModeratorsToEtherapiesRepository = new LinkModeratorsToEtherapiesRepositoryStub();
     const loadModeratorByIdRepository = new LoadModeratorByIdRepositoryStub();
     const loadEtherapyByIdRepository = new LoadEtherapyByIdRepositoryStub();
     const sut = new LinkModeratorsToEtherapiesService(
-        linkModeratorToEtherapyRepository,
+        linkModeratorsToEtherapiesRepository,
         loadModeratorByIdRepository,
         loadEtherapyByIdRepository,
     );
     return {
         sut,
-        linkModeratorToEtherapyRepository,
+        linkModeratorsToEtherapiesRepository,
         loadModeratorByIdRepository,
         loadEtherapyByIdRepository,
     };

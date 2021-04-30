@@ -1,13 +1,13 @@
 /* eslint-disable max-classes-per-file */
 /* eslint-disable import/prefer-default-export */
 
-import Moderator from '../../../src/core/entities/Moderator';
-import LinkModeratorToEtherapyRepository from '../../../src/core/protocols/db/repositories/LinkModeratorToEtherapyRepository';
-import Etherapy from '../../../src/core/entities/Etherapy';
+import LinkModeratorsToEtherapiesRepository, {
+    params,
+} from '../../../src/core/protocols/db/repositories/LinkModeratorsToEtherapiesRepository';
 
-export class LinkModeratorToEtherapyRepositoryStub
-    implements LinkModeratorToEtherapyRepository {
-    link(_moderator: Moderator, _etherapy: Etherapy): Promise<boolean> {
+export class LinkModeratorsToEtherapiesRepositoryStub
+    implements LinkModeratorsToEtherapiesRepository {
+    link(_data: params): Promise<boolean> {
         return new Promise(resolve => resolve(true));
     }
 }
