@@ -47,4 +47,14 @@ describe('Link Template to etherapies usecase', () => {
             'randomIdEtherapy2',
         ]);
     });
+
+    test('Should call LoadTemplateByIdRepository with correct values', async () => {
+        const { sut, loadTemplateByIdRepository } = makeSut();
+        const loadSpy = jest.spyOn(loadTemplateByIdRepository, 'load');
+        await sut.execute('randomIdTemplate', [
+            'randomIdEtherapy1',
+            'randomIdEtherapy2',
+        ]);
+        expect(loadSpy).toHaveBeenCalledWith('randomIdTemplate');
+    });
 });
