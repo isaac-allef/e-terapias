@@ -1,4 +1,3 @@
-import AppError from '../errors/AppError';
 import LinkModeratorsToEtherapiesRepository from '../protocols/db/repositories/LinkModeratorsToEtherapiesRepository';
 import LoadModeratorByIdRepository from '../protocols/db/repositories/LoadModeratorByIdRepository';
 import LoadEtherapyByIdRepository from '../protocols/db/repositories/LoadEtherapyByIdRepository';
@@ -52,10 +51,6 @@ class LinkModeratorsToEtherapiesService {
         );
 
         const etherapy = await this.loadEtherapyByIdRepository.load(etherapyId);
-
-        if (!etherapy) {
-            throw new AppError('Etherapy not found.');
-        }
 
         return {
             moderator,
