@@ -4,6 +4,8 @@
 import Template from '../../../src/core/entities/Template';
 import CreateTemplateRepository from '../../../src/core/protocols/db/repositories/CreateTemplateRepository';
 import LoadTemplateByIdRepository from '../../../src/core/protocols/db/repositories/LoadTemplateByIdRepository';
+import LinkTemplateToEtherapiesRepository from '../../../src/core/protocols/db/repositories/LinkTemplateToEtherapiesRepository';
+import Etherapy from '../../../src/core/entities/Etherapy';
 
 export class CreateTemplateRepositoryStub implements CreateTemplateRepository {
     async create(): Promise<Template> {
@@ -43,5 +45,12 @@ export class LoadTemplateByIdRepositoryStub
         };
 
         return new Promise(resolve => resolve(template));
+    }
+}
+
+export class LinkTemplateToEtherapiesRepositoryStub
+    implements LinkTemplateToEtherapiesRepository {
+    link(_template: Template, _etherapies: Etherapy[]): Promise<boolean> {
+        return new Promise(resolve => resolve(true));
     }
 }
