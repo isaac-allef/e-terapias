@@ -1,15 +1,15 @@
 /* eslint-disable max-classes-per-file */
 import CreateEtherapiesService from '../../../src/core/services/CreateEtherapiesService';
-import CreateEtherapyRepository from '../../../src/core/protocols/db/repositories/CreateEtherapyRepository';
-import { CreateEtherapyRepositoryStub } from '../mocks/mockEtherapy';
+import CreateEtherapiesRepository from '../../../src/core/protocols/db/repositories/CreateEtherapiesRepository';
+import { CreateEtherapiesRepositoryStub } from '../mocks/mockEtherapy';
 
 interface SutTypes {
     sut: CreateEtherapiesService;
-    createEtherapyRepository: CreateEtherapyRepository;
+    createEtherapyRepository: CreateEtherapiesRepository;
 }
 
 const makeSut = (): SutTypes => {
-    const createEtherapyRepository = new CreateEtherapyRepositoryStub();
+    const createEtherapyRepository = new CreateEtherapiesRepositoryStub();
     const sut = new CreateEtherapiesService(createEtherapyRepository);
     return {
         sut,
@@ -32,7 +32,9 @@ describe('Create Etherapy usecase', () => {
         const { sut, createEtherapyRepository } = makeSut();
         const createSpy = jest.spyOn(createEtherapyRepository, 'create');
         await sut.execute([{ name: 'viver é bom' }, { name: 'não desista' }]);
-        expect(createSpy).toHaveBeenCalledWith({ name: 'viver é bom' });
-        expect(createSpy).toHaveBeenCalledWith({ name: 'não desista' });
+        expect(createSpy).toHaveBeenCalledWith([
+            { name: 'viver é bom' },
+            { name: 'não desista' },
+        ]);
     });
 });
