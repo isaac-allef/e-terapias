@@ -84,4 +84,20 @@ describe('Link Template to etherapies usecase', () => {
             ]),
         ).rejects.toThrow();
     });
+
+    test('Should throw if LoadEtherapyByIdRepository throws', async () => {
+        const { sut, loadEtherapyByIdRepository } = makeSut();
+        jest.spyOn(loadEtherapyByIdRepository, 'load').mockImplementationOnce(
+            () => {
+                throw new Error('Random error');
+            },
+        );
+
+        expect(
+            sut.execute('randomIdTemplate', [
+                'randomIdEtherapy1',
+                'randomIdEtherapy2',
+            ]),
+        ).rejects.toThrow();
+    });
 });
