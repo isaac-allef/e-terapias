@@ -7,7 +7,6 @@ import LoadEtherapyByIdRepository from '../../../src/core/protocols/db/repositor
 import { LinkModeratorsToEtherapiesRepositoryStub } from '../mocks/mockLink';
 import { LoadModeratorByIdRepositoryStub } from '../mocks/mockModerator';
 import { LoadEtherapyByIdRepositoryStub } from '../mocks/mockEtherapy';
-import AppError from '../../../src/core/errors/AppError';
 
 interface SutTypes {
     sut: LinkModeratorsToEtherapiesService;
@@ -78,12 +77,14 @@ describe('Link moderators to etherapies usecase', () => {
 
     test('Should throw AppError if LoadModeratorByIdRepository return undefined', async () => {
         const { sut, loadModeratorByIdRepository } = makeSut();
-        jest.spyOn(loadModeratorByIdRepository, 'load').mockReturnValue(
-            new Promise(resolve => resolve(undefined)),
+        jest.spyOn(loadModeratorByIdRepository, 'load').mockImplementationOnce(
+            () => {
+                throw new Error('Random error');
+            },
         );
 
-        try {
-            await sut.execute([
+        expect(
+            sut.execute([
                 {
                     moderatorId: 'randomIdModerator1',
                     etherapyId: 'randomIdEtherapy1',
@@ -92,10 +93,7 @@ describe('Link moderators to etherapies usecase', () => {
                     moderatorId: 'randomIdModerator2',
                     etherapyId: 'randomIdEtherapy2',
                 },
-            ]);
-            expect('biscoito').toBe('bolacha');
-        } catch (err) {
-            expect(err).toEqual(new AppError('Moderator not found.'));
-        }
+            ]),
+        ).rejects.toThrow();
     });
 });
