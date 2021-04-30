@@ -18,6 +18,18 @@ class LinkModeratorsToEtherapiesService {
     ) {}
 
     public async execute(data: params): Promise<boolean> {
+        const moderatorsAndEtherapies = await this.loadModeratorsAndEtherapies(
+            data,
+        );
+
+        const isLinked = await this.linkModeratorsToEtherapiesRepository.link(
+            moderatorsAndEtherapies,
+        );
+
+        return isLinked;
+    }
+
+    private async loadModeratorsAndEtherapies(data: params) {
         const moderatorsAndEtherapies = await Promise.all(
             data.map(async d => {
                 const moderatorAndEtherapy = await this.loadModeratorAndEtherapy(
@@ -31,11 +43,7 @@ class LinkModeratorsToEtherapiesService {
             }),
         );
 
-        const isLinked = await this.linkModeratorsToEtherapiesRepository.link(
-            moderatorsAndEtherapies,
-        );
-
-        return isLinked;
+        return moderatorsAndEtherapies;
     }
 
     private async loadModeratorAndEtherapy({ moderatorId, etherapyId }: dto) {
