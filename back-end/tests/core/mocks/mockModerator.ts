@@ -2,23 +2,35 @@
 /* eslint-disable import/prefer-default-export */
 
 import Moderator from '../../../src/core/entities/Moderator';
-import CreateModeratorRepository from '../../../src/core/protocols/db/repositories/CreateModeratorRepository';
+import CreateModeratorsRepository from '../../../src/core/protocols/db/repositories/CreateModeratorsRepository';
 import LoadModeratorByIdRepository from '../../../src/core/protocols/db/repositories/LoadModeratorByIdRepository';
 
-export class CreateModeratorRepositoryStub
-    implements CreateModeratorRepository {
-    async create(): Promise<Moderator> {
-        const moderator: Moderator = {
-            id: 'randomId',
+export class CreateModeratorsRepositoryStub
+    implements CreateModeratorsRepository {
+    async create(): Promise<Moderator[] | undefined> {
+        const moderator1: Moderator = {
+            id: 'randomId1',
             email: 'fulano@email.com',
             name: 'fulano',
             etherapies: [],
             fieldJournals: [],
             password: '1234',
-            token: 'randomToken',
+            token: 'randomToken1',
         };
 
-        return new Promise(resolve => resolve(moderator));
+        const moderator2: Moderator = {
+            id: 'randomId2',
+            email: 'sicrano@email.com',
+            name: 'sicrano',
+            etherapies: [],
+            fieldJournals: [],
+            password: '1234',
+            token: 'randomToken2',
+        };
+
+        const moderators = [moderator1, moderator2];
+
+        return new Promise(resolve => resolve(moderators));
     }
 }
 

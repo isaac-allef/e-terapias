@@ -1,27 +1,27 @@
 /* eslint-disable max-classes-per-file */
 import CreateModeratorsService from '../../../src/core/services/CreateModeratorsService';
-import CreateModeratorRepository from '../../../src/core/protocols/db/repositories/CreateModeratorRepository';
+import CreateModeratorsRepository from '../../../src/core/protocols/db/repositories/CreateModeratorsRepository';
 import HashGenerater from '../../../src/core/protocols/cryptography/HashGenerater';
-import { CreateModeratorRepositoryStub } from '../mocks/mockModerator';
+import { CreateModeratorsRepositoryStub } from '../mocks/mockModerator';
 import { HashGeneraterStub } from '../mocks/mockCryptography';
 
 interface SutTypes {
     sut: CreateModeratorsService;
     hashGenerater: HashGenerater;
-    createModeratorRepository: CreateModeratorRepository;
+    createModeratorsRepository: CreateModeratorsRepository;
 }
 
 const makeSut = (): SutTypes => {
     const hashGenerater = new HashGeneraterStub();
-    const createModeratorRepository = new CreateModeratorRepositoryStub();
+    const createModeratorsRepository = new CreateModeratorsRepositoryStub();
     const sut = new CreateModeratorsService(
         hashGenerater,
-        createModeratorRepository,
+        createModeratorsRepository,
     );
     return {
         sut,
         hashGenerater,
-        createModeratorRepository,
+        createModeratorsRepository,
     };
 };
 
@@ -40,22 +40,24 @@ describe('Create Moderator usecase', () => {
     });
 
     test('Should call CreateModeratorRepository with correct values', async () => {
-        const { sut, createModeratorRepository } = makeSut();
-        const createSpy = jest.spyOn(createModeratorRepository, 'create');
+        const { sut, createModeratorsRepository } = makeSut();
+        const createSpy = jest.spyOn(createModeratorsRepository, 'create');
         await sut.execute([
             { email: 'fulano@email.com', name: 'fulano' },
             { email: 'sicrano@email.com', name: 'sicrano' },
         ]);
-        expect(createSpy).toHaveBeenCalledWith({
-            email: 'fulano@email.com',
-            name: 'fulano',
-            password: expect.stringMatching('.'),
-        });
-        expect(createSpy).toHaveBeenCalledWith({
-            email: 'sicrano@email.com',
-            name: 'sicrano',
-            password: expect.stringMatching('.'),
-        });
+        expect(createSpy).toHaveBeenCalledWith([
+            {
+                email: 'fulano@email.com',
+                name: 'fulano',
+                password: expect.stringMatching('.'),
+            },
+            {
+                email: 'sicrano@email.com',
+                name: 'sicrano',
+                password: expect.stringMatching('.'),
+            },
+        ]);
     });
 
     test('Should call HashGenerater to create a password automatically', async () => {
