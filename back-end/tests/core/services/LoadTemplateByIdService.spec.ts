@@ -2,7 +2,6 @@
 import LoadTemplateByIdService from '../../../src/core/services/LoadTemplateByIdService';
 import LoadTemplateByIdRepository from '../../../src/core/protocols/db/repositories/LoadTemplateByIdRepository';
 import { LoadTemplateByIdRepositoryStub } from '../mocks/mockTemplate';
-import AppError from '../../../src/core/errors/AppError';
 
 interface SutTypes {
     sut: LoadTemplateByIdService;
@@ -33,17 +32,13 @@ describe('load Template by id usecase', () => {
         expect(loadSpy).toHaveBeenCalledWith('randomId');
     });
 
-    test('Should throw AppError if LoadTemplateByIdRepository return undefined', async () => {
+    test('Should throw if LoadTemplateByIdRepository throws', async () => {
         const { sut, loadTemplateByIdRepository } = makeSut();
-        jest.spyOn(loadTemplateByIdRepository, 'load').mockReturnValue(
-            new Promise(resolve => resolve(undefined)),
+        jest.spyOn(loadTemplateByIdRepository, 'load').mockImplementationOnce(
+            () => {
+                throw new Error('Random error');
+            },
         );
-
-        try {
-            await sut.execute('randomId');
-            expect('biscoito').toBe('bolacha');
-        } catch (err) {
-            expect(err).toEqual(new AppError('Template not found.'));
-        }
+        expect(sut.execute('randomId')).rejects.toThrow();
     });
 });
