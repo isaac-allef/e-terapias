@@ -68,4 +68,20 @@ describe('Link Template to etherapies usecase', () => {
         expect(loadSpy).toHaveBeenCalledWith('randomIdEtherapy1');
         expect(loadSpy).toHaveBeenCalledWith('randomIdEtherapy2');
     });
+
+    test('Should throw if LoadTemplateByIdRepository throws', async () => {
+        const { sut, loadTemplateByIdRepository } = makeSut();
+        jest.spyOn(loadTemplateByIdRepository, 'load').mockImplementationOnce(
+            () => {
+                throw new Error('Random error');
+            },
+        );
+
+        expect(
+            sut.execute('randomIdTemplate', [
+                'randomIdEtherapy1',
+                'randomIdEtherapy2',
+            ]),
+        ).rejects.toThrow();
+    });
 });
