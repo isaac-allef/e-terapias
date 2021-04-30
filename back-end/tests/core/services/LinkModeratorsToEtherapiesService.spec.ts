@@ -75,9 +75,31 @@ describe('Link moderators to etherapies usecase', () => {
         expect(loadSpy).toHaveBeenCalledWith('randomIdModerator2');
     });
 
-    test('Should throw AppError if LoadModeratorByIdRepository return undefined', async () => {
+    test('Should throw if LoadModeratorByIdRepository throws', async () => {
         const { sut, loadModeratorByIdRepository } = makeSut();
         jest.spyOn(loadModeratorByIdRepository, 'load').mockImplementationOnce(
+            () => {
+                throw new Error('Random error');
+            },
+        );
+
+        expect(
+            sut.execute([
+                {
+                    moderatorId: 'randomIdModerator1',
+                    etherapyId: 'randomIdEtherapy1',
+                },
+                {
+                    moderatorId: 'randomIdModerator2',
+                    etherapyId: 'randomIdEtherapy2',
+                },
+            ]),
+        ).rejects.toThrow();
+    });
+
+    test('Should throw if LoadEtherapyByIdRepository throws', async () => {
+        const { sut, loadEtherapyByIdRepository } = makeSut();
+        jest.spyOn(loadEtherapyByIdRepository, 'load').mockImplementationOnce(
             () => {
                 throw new Error('Random error');
             },
