@@ -19,14 +19,10 @@ class CreateModeratorsService {
     public async execute(data: params): Promise<Moderator[]> {
         const moderatorsParams = await Promise.all(
             data.map(async (d: dto) => {
-                const randomPassword = '1234';
-                const passwordHashed = await this.hashGenerater.generate(
-                    randomPassword,
-                );
                 const moderatorParam = {
                     email: d.email,
                     name: d.name,
-                    password: passwordHashed,
+                    password: await this.generateRandomPassword(),
                 };
 
                 return moderatorParam;
@@ -42,6 +38,14 @@ class CreateModeratorsService {
         }
 
         return moderators;
+    }
+
+    private async generateRandomPassword(): Promise<string> {
+        const randomPassword = '1234';
+        const passwordHashed = await this.hashGenerater.generate(
+            randomPassword,
+        );
+        return passwordHashed;
     }
 }
 
