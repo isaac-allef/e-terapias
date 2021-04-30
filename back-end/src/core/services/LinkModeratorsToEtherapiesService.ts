@@ -51,10 +51,6 @@ class LinkModeratorsToEtherapiesService {
             moderatorId,
         );
 
-        if (!moderator) {
-            throw new AppError('Moderator not found.');
-        }
-
         const etherapy = await this.loadEtherapyByIdRepository.load(etherapyId);
 
         if (!etherapy) {
