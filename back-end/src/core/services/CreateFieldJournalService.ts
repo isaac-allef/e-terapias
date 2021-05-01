@@ -5,6 +5,13 @@ import CreateFieldJournalRepository from '../protocols/db/repositories/CreateFie
 import LoadEtherapyByIdRepository from '../protocols/db/repositories/LoadEtherapyByIdRepository';
 import LoadModeratorByIdRepository from '../protocols/db/repositories/LoadModeratorByIdRepository';
 
+export type params = {
+    name: string;
+    fields: field[];
+    moderatorId: string;
+    etherapyId: string;
+};
+
 class CreateFieldJournalService {
     constructor(
         private createFieldJournalRepository: CreateFieldJournalRepository,
@@ -12,25 +19,17 @@ class CreateFieldJournalService {
         private loadEtherapyByIdRepository: LoadEtherapyByIdRepository,
     ) {}
 
-    public async execute(
-        name: string,
-        fields: field[],
-        moderatorId: string,
-        etherapyId: string,
-    ): Promise<FieldJournal> {
+    public async execute({
+        name,
+        fields,
+        moderatorId,
+        etherapyId,
+    }: params): Promise<FieldJournal> {
         const moderator = await this.loadModeratorByIdRepository.load(
             moderatorId,
         );
 
-        if (!moderator) {
-            throw new AppError('Moderator not found.');
-        }
-
         const etherapy = await this.loadEtherapyByIdRepository.load(etherapyId);
-
-        if (!etherapy) {
-            throw new AppError('Etherapy not found.');
-        }
 
         if (!moderator.etherapies.find(e => e.id === etherapy.id)) {
             throw new AppError(
