@@ -6,7 +6,7 @@ import LoadEtherapyByIdRepository from '../../../src/core/protocols/db/repositor
 
 export class CreateEtherapiesRepositoryStub
     implements CreateEtherapiesRepository {
-    async create(): Promise<Etherapy[] | undefined> {
+    async create(): Promise<Etherapy[]> {
         const etherapy1: Etherapy = {
             id: 'randomId1',
             name: 'viver é bom',

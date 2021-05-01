@@ -8,5 +8,5 @@ type dto = {
 export type params = dto[];
 
 export default interface CreateModeratorsRepository {
-    create(data: params): Promise<Moderator[] | undefined>;
+    create(data: params): Promise<Moderator[]>;
 }

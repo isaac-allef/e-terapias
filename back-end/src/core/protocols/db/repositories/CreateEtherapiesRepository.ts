@@ -7,5 +7,5 @@ type dto = {
 export type params = dto[];
 
 export default interface CreateEtherapiesRepository {
-    create(data: params): Promise<Etherapy[] | undefined>;
+    create(data: params): Promise<Etherapy[]>;
 }

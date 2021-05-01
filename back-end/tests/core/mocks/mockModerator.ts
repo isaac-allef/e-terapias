@@ -7,7 +7,7 @@ import LoadModeratorByIdRepository from '../../../src/core/protocols/db/reposito
 
 export class CreateModeratorsRepositoryStub
     implements CreateModeratorsRepository {
-    async create(): Promise<Moderator[] | undefined> {
+    async create(): Promise<Moderator[]> {
         const moderator1: Moderator = {
             id: 'randomId1',
             email: 'fulano@email.com',

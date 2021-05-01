@@ -32,10 +32,6 @@ class CreateModeratorsService {
             moderatorsParams,
         );
 
-        if (!moderators) {
-            throw new Error('Create moderators fail.');
-        }
-
         return moderators;
     }
 

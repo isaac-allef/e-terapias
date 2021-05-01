@@ -15,10 +15,6 @@ class CreateEtherapiesService {
     public async execute(data: params): Promise<Etherapy[]> {
         const etherapies = await this.createEtherapiesRepository.create(data);
 
-        if (!etherapies) {
-            throw new Error('Create etherapies fail.');
-        }
-
         return etherapies;
     }
 }
