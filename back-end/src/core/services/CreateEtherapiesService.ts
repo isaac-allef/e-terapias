@@ -1,5 +1,4 @@
 import Etherapy from '../entities/Etherapy';
-import AppError from '../errors/AppError';
 import CreateEtherapiesRepository from '../protocols/db/repositories/CreateEtherapiesRepository';
 
 type dto = {
@@ -17,7 +16,7 @@ class CreateEtherapiesService {
         const etherapies = await this.createEtherapiesRepository.create(data);
 
         if (!etherapies) {
-            throw new AppError('Create etherapies fail.');
+            throw new Error('Create etherapies fail.');
         }
 
         return etherapies;

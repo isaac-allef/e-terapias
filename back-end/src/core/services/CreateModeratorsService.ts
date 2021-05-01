@@ -1,5 +1,4 @@
 import Moderator from '../entities/Moderator';
-import AppError from '../errors/AppError';
 import HashGenerater from '../protocols/cryptography/HashGenerater';
 import CreateModeratorsRepository from '../protocols/db/repositories/CreateModeratorsRepository';
 
@@ -34,7 +33,7 @@ class CreateModeratorsService {
         );
 
         if (!moderators) {
-            throw new AppError('Create moderators fail.');
+            throw new Error('Create moderators fail.');
         }
 
         return moderators;
