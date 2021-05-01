@@ -265,4 +265,79 @@ describe('Create field journal usecase', () => {
             }),
         ).rejects.toThrow();
     });
+
+    test('Should throw if etherapy does not have a template', async () => {
+        const {
+            sut,
+            loadModeratorByIdRepository,
+            loadEtherapyByIdRepository,
+        } = makeSut();
+
+        jest.spyOn(loadModeratorByIdRepository, 'load').mockImplementationOnce(
+            () => {
+                return new Promise(resolve =>
+                    resolve({
+                        id: 'randomIdModerator',
+                        email: 'fulano@email.com',
+                        name: 'fulano',
+                        etherapies: [
+                            {
+                                id: 'randomIdEtherapy',
+                                name: 'viver é bom',
+                                fieldJournals: [],
+                                moderators: [],
+                                template: {
+                                    id: 'randomIdTemplate',
+                                    name:
+                                        'diário das eterapias de promoção ao bem-estar',
+                                    etherapies: [],
+                                    templateFields: [
+                                        { name: 'Qual o seu nome?' },
+                                        { name: 'Quanto é 2 + 2?' },
+                                        {
+                                            name:
+                                                'Informe sua data de nascimento',
+                                        },
+                                        { name: 'Voçê é estudante?' },
+                                    ],
+                                },
+                            },
+                        ],
+                        fieldJournals: [],
+                        password: '1234',
+                        token: 'randomToken',
+                    }),
+                );
+            },
+        );
+        jest.spyOn(loadEtherapyByIdRepository, 'load').mockImplementationOnce(
+            () => {
+                return new Promise(resolve =>
+                    resolve({
+                        id: 'randomIdEtherapy',
+                        name: 'viver é bom',
+                        fieldJournals: [],
+                        moderators: [],
+                        template: undefined,
+                    }),
+                );
+            },
+        );
+        await expect(
+            sut.execute({
+                name: 'diário das eterapias de promoção ao bem-estar',
+                fields: [
+                    { name: 'Qual o seu nome?', value: 'Isaac' },
+                    { name: 'Quanto é 2 + 2?', value: '4' },
+                    {
+                        name: 'Informe sua data de nascimento',
+                        value: "{% now 'iso-8601', '' %}",
+                    },
+                    { name: 'Voçê é estudante?', value: 'sim' },
+                ],
+                moderatorId: 'randomIdModerator',
+                etherapyId: 'randomIdEtherapy',
+            }),
+        ).rejects.toThrow();
+    });
 });
