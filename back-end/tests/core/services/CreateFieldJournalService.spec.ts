@@ -104,4 +104,29 @@ describe('Create field journal usecase', () => {
             }),
         ).rejects.toThrow();
     });
+
+    test('Should throw if LoadEtherapyByIdRepository throws', async () => {
+        const { sut, loadEtherapyByIdRepository } = makeSut();
+        jest.spyOn(loadEtherapyByIdRepository, 'load').mockImplementationOnce(
+            () => {
+                throw new Error('Random error');
+            },
+        );
+        expect(
+            sut.execute({
+                name: 'diário das eterapias de promoção ao bem-estar',
+                fields: [
+                    { name: 'Qual o seu nome?', value: 'Isaac' },
+                    { name: 'Quanto é 2 + 2?', value: '4' },
+                    {
+                        name: 'Informe sua data de nascimento',
+                        value: "{% now 'iso-8601', '' %}",
+                    },
+                    { name: 'Voçê é estudante?', value: 'sim' },
+                ],
+                moderatorId: 'randomIdModerator',
+                etherapyId: 'randomIdEtherapy',
+            }),
+        ).rejects.toThrow();
+    });
 });
