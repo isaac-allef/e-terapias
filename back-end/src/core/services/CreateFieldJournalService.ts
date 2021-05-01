@@ -1,6 +1,5 @@
 import FieldJournal, { field } from '../entities/FieldJournal';
 import { templateField } from '../entities/Template';
-import AppError from '../errors/AppError';
 import CreateFieldJournalRepository from '../protocols/db/repositories/CreateFieldJournalRepository';
 import LoadEtherapyByIdRepository from '../protocols/db/repositories/LoadEtherapyByIdRepository';
 import LoadModeratorByIdRepository from '../protocols/db/repositories/LoadModeratorByIdRepository';
@@ -32,19 +31,17 @@ class CreateFieldJournalService {
         const etherapy = await this.loadEtherapyByIdRepository.load(etherapyId);
 
         if (!moderator.etherapies.find(e => e.id === etherapy.id)) {
-            throw new AppError(
-                'This moderator is not related to this etherapy.',
-            );
+            throw new Error('This moderator is not related to this etherapy.');
         }
 
         if (!etherapy.template) {
-            throw new AppError('This therapy does not have a template.');
+            throw new Error('This therapy does not have a template.');
         }
 
         const { templateFields } = etherapy.template;
 
         if (!this.matchFieldsWithtemplateFields(templateFields, fields)) {
-            throw new AppError("This field journal doesn't match the template");
+            throw new Error("This field journal doesn't match the template");
         }
 
         const fieldJournal = await this.createFieldJournalRepository.create(

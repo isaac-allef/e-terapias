@@ -5,10 +5,7 @@ import CreateFieldJournalService from '../../../src/core/services/CreateFieldJou
 import CreateFieldJournalRepository from '../../../src/core/protocols/db/repositories/CreateFieldJournalRepository';
 import LoadModeratorByIdRepository from '../../../src/core/protocols/db/repositories/LoadModeratorByIdRepository';
 import LoadEtherapyByIdRepository from '../../../src/core/protocols/db/repositories/LoadEtherapyByIdRepository';
-import {
-    CreateFieldJournalRepositoryStub,
-    mockCorrenctCase,
-} from '../mocks/mockFieldJournal';
+import { CreateFieldJournalRepositoryStub } from '../mocks/mockFieldJournal';
 import { LoadModeratorByIdRepositoryStub } from '../mocks/mockModerator';
 import { LoadEtherapyByIdRepositoryStub } from '../mocks/mockEtherapy';
 
@@ -43,11 +40,62 @@ describe('Create field journal usecase', () => {
             loadModeratorByIdRepository,
             loadEtherapyByIdRepository,
         } = makeSut();
-        jest.spyOn(loadModeratorByIdRepository, 'load').mockReturnValue(
-            new Promise(resolve => resolve(mockCorrenctCase.moderator)),
+        jest.spyOn(loadModeratorByIdRepository, 'load').mockReturnValueOnce(
+            new Promise(resolve =>
+                resolve({
+                    id: 'randomIdModerator',
+                    email: 'fulano@email.com',
+                    name: 'fulano',
+                    etherapies: [
+                        {
+                            id: 'randomIdEtherapy',
+                            name: 'viver é bom',
+                            fieldJournals: [],
+                            moderators: [],
+                            template: {
+                                id: 'randomIdTemplate',
+                                name:
+                                    'diário das eterapias de promoção ao bem-estar',
+                                etherapies: [],
+                                templateFields: [
+                                    { name: 'Qual o seu nome?' },
+                                    { name: 'Quanto é 2 + 2?' },
+                                    {
+                                        name: 'Informe sua data de nascimento',
+                                    },
+                                    { name: 'Voçê é estudante?' },
+                                ],
+                            },
+                        },
+                    ],
+                    fieldJournals: [],
+                    password: '1234',
+                    token: 'randomToken',
+                }),
+            ),
         );
-        jest.spyOn(loadEtherapyByIdRepository, 'load').mockReturnValue(
-            new Promise(resolve => resolve(mockCorrenctCase.etherapy)),
+        jest.spyOn(loadEtherapyByIdRepository, 'load').mockReturnValueOnce(
+            new Promise(resolve =>
+                resolve({
+                    id: 'randomIdEtherapy',
+                    name: 'viver é bom',
+                    fieldJournals: [],
+                    moderators: [],
+                    template: {
+                        id: 'randomIdTemplate',
+                        name: 'diário das eterapias de promoção ao bem-estar',
+                        etherapies: [],
+                        templateFields: [
+                            { name: 'Qual o seu nome?' },
+                            { name: 'Quanto é 2 + 2?' },
+                            {
+                                name: 'Informe sua data de nascimento',
+                            },
+                            { name: 'Voçê é estudante?' },
+                        ],
+                    },
+                }),
+            ),
         );
         const executeSpy = jest.spyOn(sut, 'execute');
         await sut.execute({
@@ -87,7 +135,7 @@ describe('Create field journal usecase', () => {
                 throw new Error('Random error');
             },
         );
-        expect(
+        await expect(
             sut.execute({
                 name: 'diário das eterapias de promoção ao bem-estar',
                 fields: [
@@ -112,7 +160,7 @@ describe('Create field journal usecase', () => {
                 throw new Error('Random error');
             },
         );
-        expect(
+        await expect(
             sut.execute({
                 name: 'diário das eterapias de promoção ao bem-estar',
                 fields: [

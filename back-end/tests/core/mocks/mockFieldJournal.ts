@@ -3,8 +3,6 @@
 
 import FieldJournal from '../../../src/core/entities/FieldJournal';
 import CreateFieldJournalRepository from '../../../src/core/protocols/db/repositories/CreateFieldJournalRepository';
-import Moderator from '../../../src/core/entities/Moderator';
-import Etherapy from '../../../src/core/entities/Etherapy';
 import { LoadModeratorByIdRepositoryStub } from './mockModerator';
 import { LoadEtherapyByIdRepositoryStub } from './mockEtherapy';
 
@@ -37,59 +35,3 @@ export class CreateFieldJournalRepositoryStub
         return new Promise(resolve => resolve(fieldJournal));
     }
 }
-
-type mockCorrectCase = {
-    moderator: Moderator;
-    etherapy: Etherapy;
-};
-
-export const mockCorrenctCase: mockCorrectCase = {
-    moderator: {
-        id: 'randomIdModerator',
-        email: 'fulano@email.com',
-        name: 'fulano',
-        etherapies: [
-            {
-                id: 'randomIdEtherapy',
-                name: 'viver é bom',
-                fieldJournals: [],
-                moderators: [],
-                template: {
-                    id: 'randomIdTemplate',
-                    name: 'diário das eterapias de promoção ao bem-estar',
-                    etherapies: [],
-                    templateFields: [
-                        { name: 'Qual o seu nome?' },
-                        { name: 'Quanto é 2 + 2?' },
-                        {
-                            name: 'Informe sua data de nascimento',
-                        },
-                        { name: 'Voçê é estudante?' },
-                    ],
-                },
-            },
-        ],
-        fieldJournals: [],
-        password: '1234',
-        token: 'randomToken',
-    },
-    etherapy: {
-        id: 'randomIdEtherapy',
-        name: 'viver é bom',
-        fieldJournals: [],
-        moderators: [],
-        template: {
-            id: 'randomIdTemplate',
-            name: 'diário das eterapias de promoção ao bem-estar',
-            etherapies: [],
-            templateFields: [
-                { name: 'Qual o seu nome?' },
-                { name: 'Quanto é 2 + 2?' },
-                {
-                    name: 'Informe sua data de nascimento',
-                },
-                { name: 'Voçê é estudante?' },
-            ],
-        },
-    },
-};
