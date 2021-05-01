@@ -36,9 +36,9 @@ export class CreateModeratorsRepositoryStub
 
 export class LoadModeratorByIdRepositoryStub
     implements LoadModeratorByIdRepository {
-    async load(): Promise<Moderator> {
+    async load(id: string): Promise<Moderator> {
         const moderator: Moderator = {
-            id: 'randomId',
+            id,
             email: 'fulano@email.com',
             name: 'fulano',
             etherapies: [],

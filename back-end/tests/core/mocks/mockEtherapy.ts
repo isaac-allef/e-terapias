@@ -31,9 +31,9 @@ export class CreateEtherapiesRepositoryStub
 
 export class LoadEtherapyByIdRepositoryStub
     implements LoadEtherapyByIdRepository {
-    async load(): Promise<Etherapy> {
+    async load(id: string): Promise<Etherapy> {
         const etherapy: Etherapy = {
-            id: 'randomId',
+            id,
             name: 'viver é bom',
             fieldJournals: [],
             moderators: [],

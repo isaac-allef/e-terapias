@@ -29,9 +29,9 @@ export class CreateTemplateRepositoryStub implements CreateTemplateRepository {
 
 export class LoadTemplateByIdRepositoryStub
     implements LoadTemplateByIdRepository {
-    async load(): Promise<Template> {
+    async load(id: string): Promise<Template> {
         const template: Template = {
-            id: 'randomId',
+            id,
             name: 'viver é bom',
             etherapies: [],
             templateFields: [
