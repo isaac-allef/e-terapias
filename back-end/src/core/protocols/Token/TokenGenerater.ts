@@ -5,5 +5,5 @@ export interface GenerateTokenDTO {
 }
 
 export default interface TokenGenerater {
-    generate(data: GenerateTokenDTO): string;
+    generate(data: GenerateTokenDTO): Promise<string>;
 }

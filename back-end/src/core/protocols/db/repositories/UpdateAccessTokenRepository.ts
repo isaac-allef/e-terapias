@@ -1,5 +1,5 @@
-import Moderator from '../../../entities/Moderator';
+import User from '../../../entities/User';
 
 export default interface UpdateAccessTokenRepository {
-    updateAccessToken(id: string, token: string): Promise<Moderator>;
+    updateAccessToken(id: string, token: string): Promise<User>;
 }

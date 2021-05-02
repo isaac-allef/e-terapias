@@ -1,38 +1,40 @@
-import Moderator from '../entities/Moderator';
-import AppError from '../errors/AppError';
-import LoadModeratorByEmailRepository from '../protocols/db/repositories/LoadModeratorByEmailRepository';
+import User from '../entities/User';
+import LoadUserByEmailRepository from '../protocols/db/repositories/LoadUserByEmailRepository';
 import UpdateAccessTokenRepository from '../protocols/db/repositories/UpdateAccessTokenRepository';
-// import TokenGenerater from '../protocols/Token/TokenGenerater';
+import TokenGenerater from '../protocols/Token/TokenGenerater';
+import HashComparer from '../protocols/cryptography/HashComparer';
 
 class AuthenticationService {
     constructor(
-        private loadModeratorByEmailRepository: LoadModeratorByEmailRepository,
-        private updateAccessTokenRepository: UpdateAccessTokenRepository, // private tokenGenerater: TokenGenerater,
+        private loadUserByEmailRepository: LoadUserByEmailRepository,
+        private hashComparer: HashComparer,
+        private tokenGenerater: TokenGenerater,
+        private updateAccessTokenRepository: UpdateAccessTokenRepository,
     ) {}
 
-    public async execute(email: string, password: string): Promise<Moderator> {
-        const moderator = await this.loadModeratorByEmailRepository.loadByEmail(
-            email,
-        );
+    public async execute(
+        email: string,
+        password: string,
+    ): Promise<User | null> {
+        const user = await this.loadUserByEmailRepository.loadByEmail(email);
 
-        if (!moderator || moderator.password !== password) {
-            throw new AppError('Incorrect email or password.');
+        if (!(await this.hashComparer.compare(user.password, password))) {
+            // throw new Error('Incorrect email or password.');
+            return null;
         }
 
-        // const token = this.tokenGenerater.generate({
-        //     secret: 'aaaa',
-        //     subject: 'bbbb',
-        //     expiresIn: '1d',
-        // });
+        const token = await this.tokenGenerater.generate({
+            secret: 'aaaa',
+            subject: 'bbbb',
+            expiresIn: '1d',
+        });
 
-        const token = 'aslkdfjldaskfjl';
-
-        const moderatorUpdatedToken = await this.updateAccessTokenRepository.updateAccessToken(
-            moderator.id,
+        const userUpdatedToken = await this.updateAccessTokenRepository.updateAccessToken(
+            user.id,
             token,
         );
 
-        return moderatorUpdatedToken;
+        return userUpdatedToken;
     }
 }
 
