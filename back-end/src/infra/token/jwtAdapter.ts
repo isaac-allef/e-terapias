@@ -5,7 +5,7 @@ export default class JwtAdapter implements TokenGenerater {
     constructor(private readonly secret: string) {}
 
     async generate(value: string): Promise<string> {
-        await jwt.sign({ id: value }, this.secret);
-        return '';
+        const accessToken = await jwt.sign({ id: value }, this.secret);
+        return accessToken;
     }
 }
