@@ -5,7 +5,7 @@ export default class BcryptAdapter implements HashGenerater {
     constructor(private readonly salt: number) {}
 
     async generate(payload: string): Promise<string> {
-        await bcrypt.hash(payload, this.salt);
-        return '';
+        const hash = await bcrypt.hash(payload, this.salt);
+        return hash;
     }
 }
