@@ -60,6 +60,22 @@ describe('Create Moderator usecase', () => {
         ]);
     });
 
+    test('Should throw if CreateModeratorsRepository throws', async () => {
+        const { sut, createModeratorsRepository } = makeSut();
+        jest.spyOn(createModeratorsRepository, 'create').mockImplementationOnce(
+            () => {
+                throw new Error('Random error');
+            },
+        );
+
+        await expect(
+            sut.execute([
+                { email: 'fulano@email.com', name: 'fulano' },
+                { email: 'sicrano@email.com', name: 'sicrano' },
+            ]),
+        ).rejects.toThrow();
+    });
+
     test('Should call HashGenerater to create a password automatically', async () => {
         const { sut, hashGenerater } = makeSut();
         const generateSpy = jest.spyOn(hashGenerater, 'generate');
