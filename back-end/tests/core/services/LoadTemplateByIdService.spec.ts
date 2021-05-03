@@ -39,6 +39,6 @@ describe('load Template by id usecase', () => {
                 throw new Error('Random error');
             },
         );
-        expect(sut.execute('randomId')).rejects.toThrow();
+        await expect(sut.execute('randomId')).rejects.toThrow();
     });
 });
