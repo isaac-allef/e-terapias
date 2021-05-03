@@ -55,4 +55,17 @@ describe('Authentication usecase', () => {
         await sut.execute('any_email@email.com', 'any_password');
         expect(loadSpy).toHaveBeenCalledWith('any_email@email.com');
     });
+
+    test('Should throw if LoadUserByEmailRepository throws', async () => {
+        const { sut, loadUserByEmailRepository } = makeSut();
+        jest.spyOn(
+            loadUserByEmailRepository,
+            'loadByEmail',
+        ).mockImplementationOnce(() => {
+            throw new Error('Random error');
+        });
+        await expect(
+            sut.execute('any_email@email.com', 'any_password'),
+        ).rejects.toThrow();
+    });
 });
