@@ -88,4 +88,15 @@ describe('Authentication usecase', () => {
         await sut.execute('any_email@email.com', 'any_password');
         expect(compareSpy).toHaveBeenCalledWith('any_password', 'any_password');
     });
+
+    test('Should throw if HashComparer throws', async () => {
+        const { sut, hashComparer } = makeSut();
+        jest.spyOn(hashComparer, 'compare').mockImplementationOnce(() => {
+            throw new Error('Random error');
+        });
+
+        await expect(
+            sut.execute('any_email@email.com', 'any_password'),
+        ).rejects.toThrow();
+    });
 });
