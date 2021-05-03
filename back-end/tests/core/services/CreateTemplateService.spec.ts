@@ -71,4 +71,27 @@ describe('Create Template usecase', () => {
             ],
         });
     });
+
+    test('Should throw if CreateTemplateRepository throws', async () => {
+        const { sut, createTemplateRepository } = makeSut();
+        jest.spyOn(createTemplateRepository, 'create').mockImplementationOnce(
+            () => {
+                throw new Error('Random error');
+            },
+        );
+
+        await expect(
+            sut.execute({
+                name: 'diário das eterapias de promoção ao bem-estar',
+                templateFields: [
+                    { name: 'Qual o seu nome?' },
+                    { name: 'Quanto é 2 + 2?' },
+                    {
+                        name: 'Informe sua data de nascimento',
+                    },
+                    { name: 'Voçê é estudante?' },
+                ],
+            }),
+        ).rejects.toThrow();
+    });
 });
