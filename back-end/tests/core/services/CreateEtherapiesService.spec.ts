@@ -37,4 +37,17 @@ describe('Create Etherapy usecase', () => {
             { name: 'não desista' },
         ]);
     });
+
+    test('Should throw if CreateEtherapyRepository throws', async () => {
+        const { sut, createEtherapyRepository } = makeSut();
+        jest.spyOn(createEtherapyRepository, 'create').mockImplementationOnce(
+            () => {
+                throw new Error('Random error');
+            },
+        );
+
+        await expect(
+            sut.execute([{ name: 'viver é bom' }, { name: 'não desista' }]),
+        ).rejects.toThrow();
+    });
 });
