@@ -5,15 +5,15 @@ import { CreateEtherapiesRepositoryStub } from '../mocks/mockEtherapy';
 
 interface SutTypes {
     sut: CreateEtherapiesService;
-    createEtherapyRepository: CreateEtherapiesRepository;
+    createEtherapiesRepository: CreateEtherapiesRepository;
 }
 
 const makeSut = (): SutTypes => {
-    const createEtherapyRepository = new CreateEtherapiesRepositoryStub();
-    const sut = new CreateEtherapiesService(createEtherapyRepository);
+    const createEtherapiesRepository = new CreateEtherapiesRepositoryStub();
+    const sut = new CreateEtherapiesService(createEtherapiesRepository);
     return {
         sut,
-        createEtherapyRepository,
+        createEtherapiesRepository,
     };
 };
 
@@ -28,9 +28,9 @@ describe('Create Etherapy usecase', () => {
         ]);
     });
 
-    test('Should call CreateEtherapyRepository with correct values', async () => {
-        const { sut, createEtherapyRepository } = makeSut();
-        const createSpy = jest.spyOn(createEtherapyRepository, 'create');
+    test('Should call CreateEtherapiesRepository with correct values', async () => {
+        const { sut, createEtherapiesRepository } = makeSut();
+        const createSpy = jest.spyOn(createEtherapiesRepository, 'create');
         await sut.execute([{ name: 'viver é bom' }, { name: 'não desista' }]);
         expect(createSpy).toHaveBeenCalledWith([
             { name: 'viver é bom' },
@@ -38,9 +38,9 @@ describe('Create Etherapy usecase', () => {
         ]);
     });
 
-    test('Should throw if CreateEtherapyRepository throws', async () => {
-        const { sut, createEtherapyRepository } = makeSut();
-        jest.spyOn(createEtherapyRepository, 'create').mockImplementationOnce(
+    test('Should throw if CreateEtherapiesRepository throws', async () => {
+        const { sut, createEtherapiesRepository } = makeSut();
+        jest.spyOn(createEtherapiesRepository, 'create').mockImplementationOnce(
             () => {
                 throw new Error('Random error');
             },
