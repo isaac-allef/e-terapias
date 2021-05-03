@@ -83,7 +83,7 @@ describe('Link moderators to etherapies usecase', () => {
             },
         );
 
-        expect(
+        await expect(
             sut.execute([
                 {
                     moderatorId: 'randomIdModerator1',
@@ -105,7 +105,7 @@ describe('Link moderators to etherapies usecase', () => {
             },
         );
 
-        expect(
+        await expect(
             sut.execute([
                 {
                     moderatorId: 'randomIdModerator1',
