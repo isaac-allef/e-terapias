@@ -86,4 +86,18 @@ describe('Create Moderator usecase', () => {
         expect(generateSpy).toHaveBeenCalledWith(expect.stringMatching('.'));
         expect(generateSpy).toHaveBeenCalledTimes(2);
     });
+
+    test('Should throw if HashGenerater throws', async () => {
+        const { sut, hashGenerater } = makeSut();
+        jest.spyOn(hashGenerater, 'generate').mockImplementationOnce(() => {
+            throw new Error('Random error');
+        });
+
+        await expect(
+            sut.execute([
+                { email: 'fulano@email.com', name: 'fulano' },
+                { email: 'sicrano@email.com', name: 'sicrano' },
+            ]),
+        ).rejects.toThrow();
+    });
 });
