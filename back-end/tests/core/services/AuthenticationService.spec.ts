@@ -48,4 +48,11 @@ describe('Authentication usecase', () => {
             'any_password',
         );
     });
+
+    test('Should call LoadUserByEmailRepository with correct values', async () => {
+        const { sut, loadUserByEmailRepository } = makeSut();
+        const loadSpy = jest.spyOn(loadUserByEmailRepository, 'loadByEmail');
+        await sut.execute('any_email@email.com', 'any_password');
+        expect(loadSpy).toHaveBeenCalledWith('any_email@email.com');
+    });
 });
