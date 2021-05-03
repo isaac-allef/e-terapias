@@ -1,9 +1,7 @@
-import { Router, Request, Response } from 'express';
+import { Router } from 'express';
+import adapterRouter from '../adapters/expressRouter';
+import makeTestContoller from '../../factories/makeTestContoller';
 
-const testRouter = Router();
-
-testRouter.get('/', async (_request: Request, response: Response) => {
-    return response.json({ message: 'test route' });
-});
-
-export default testRouter;
+export default (router: Router): void => {
+    router.get('/test/:id', adapterRouter(makeTestContoller()));
+};
