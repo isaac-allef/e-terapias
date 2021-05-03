@@ -77,7 +77,7 @@ describe('Link Template to etherapies usecase', () => {
             },
         );
 
-        expect(
+        await expect(
             sut.execute('randomIdTemplate', [
                 'randomIdEtherapy1',
                 'randomIdEtherapy2',
@@ -93,7 +93,7 @@ describe('Link Template to etherapies usecase', () => {
             },
         );
 
-        expect(
+        await expect(
             sut.execute('randomIdTemplate', [
                 'randomIdEtherapy1',
                 'randomIdEtherapy2',
