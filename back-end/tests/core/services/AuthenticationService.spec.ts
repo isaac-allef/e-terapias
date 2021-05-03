@@ -68,4 +68,24 @@ describe('Authentication usecase', () => {
             sut.execute('any_email@email.com', 'any_password'),
         ).rejects.toThrow();
     });
+
+    test('Should call HashComparer with correct values', async () => {
+        const { sut, hashComparer, loadUserByEmailRepository } = makeSut();
+        jest.spyOn(
+            loadUserByEmailRepository,
+            'loadByEmail',
+        ).mockReturnValueOnce(
+            new Promise(resolve =>
+                resolve({
+                    id: 'randomIdUser',
+                    email: 'any_email@email.com',
+                    password: 'any_password',
+                    token: 'randomToken',
+                }),
+            ),
+        );
+        const compareSpy = jest.spyOn(hashComparer, 'compare');
+        await sut.execute('any_email@email.com', 'any_password');
+        expect(compareSpy).toHaveBeenCalledWith('any_password', 'any_password');
+    });
 });

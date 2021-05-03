@@ -23,11 +23,7 @@ class AuthenticationService {
             return null;
         }
 
-        const token = await this.tokenGenerater.generate({
-            secret: 'aaaa',
-            subject: 'bbbb',
-            expiresIn: '1d',
-        });
+        const token = await this.tokenGenerater.generate(user.id);
 
         const userUpdatedToken = await this.updateAccessTokenRepository.updateAccessToken(
             user.id,
