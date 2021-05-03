@@ -11,7 +11,7 @@ export default class BcryptAdapter implements HashGenerater, HashComparer {
     }
 
     async compare(payload: string, hashed: string): Promise<boolean> {
-        await bcrypt.compare(payload, hashed);
-        return new Promise(resolve => resolve(true));
+        const isValid = await bcrypt.compare(payload, hashed);
+        return isValid;
     }
 }
