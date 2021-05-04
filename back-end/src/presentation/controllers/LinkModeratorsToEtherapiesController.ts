@@ -18,10 +18,10 @@ export class LinkModeratorsToEtherapiesController implements Controller {
                 return badRequest(new MissingParamError('ids'));
             }
 
-            const etherapies = await this.linkModeratorsToEtherapiesService.execute(
+            const isLinked = await this.linkModeratorsToEtherapiesService.execute(
                 ids,
             );
-            return ok(etherapies);
+            return ok(isLinked);
         } catch (err) {
             return serverError(err);
         }
