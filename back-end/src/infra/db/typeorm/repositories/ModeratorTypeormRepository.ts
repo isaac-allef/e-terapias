@@ -41,6 +41,11 @@ class ModeratorTypeormRepository
         try {
             const moderator = await this.ormRepository.findOne({
                 where: { id },
+                relations: [
+                    'fieldJournals',
+                    'etherapies',
+                    'etherapies.template',
+                ],
             });
 
             if (!moderator) {
