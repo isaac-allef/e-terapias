@@ -44,12 +44,12 @@ class CreateFieldJournalService {
             throw new Error("This field journal doesn't match the template");
         }
 
-        const fieldJournal = await this.createFieldJournalRepository.create(
+        const fieldJournal = await this.createFieldJournalRepository.create({
             name,
             fields,
             moderator,
             etherapy,
-        );
+        });
 
         return fieldJournal;
     }
