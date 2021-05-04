@@ -46,6 +46,7 @@ class EtherapyTypeormRepository
         try {
             const etherapy = await this.ormRepository.findOne({
                 where: { id },
+                relations: ['template', 'fieldJournals', 'moderators'],
             });
 
             if (!etherapy) {
