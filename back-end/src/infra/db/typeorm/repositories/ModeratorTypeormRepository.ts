@@ -4,10 +4,12 @@ import Moderator from '../../../../core/entities/Moderator';
 import CreateModeratorsRepository, {
     params,
 } from '../../../../core/protocols/db/repositories/CreateModeratorsRepository';
+import LoadModeratorByIdRepository from '../../../../core/protocols/db/repositories/LoadModeratorByIdRepository';
 import ModeratorTypeorm from '../entities/ModeratorTypeorm';
 
 @EntityRepository()
-class ModeratorTypeormRepository implements CreateModeratorsRepository {
+class ModeratorTypeormRepository
+    implements CreateModeratorsRepository, LoadModeratorByIdRepository {
     private ormRepository: Repository<ModeratorTypeorm>;
 
     constructor() {
@@ -32,6 +34,22 @@ class ModeratorTypeormRepository implements CreateModeratorsRepository {
             return moderators;
         } catch (err) {
             throw new Error('Create Moderators error');
+        }
+    }
+
+    async load(id: string): Promise<Moderator> {
+        try {
+            const moderator = await this.ormRepository.findOne({
+                where: { id },
+            });
+
+            if (!moderator) {
+                throw new Error('Moderator not found');
+            }
+
+            return moderator;
+        } catch {
+            throw new Error('Load moderator error');
         }
     }
 }
