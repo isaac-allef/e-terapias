@@ -2,6 +2,7 @@ import Etherapy from './Etherapy';
 
 export type templateField = {
     name: string;
+    type: 'short' | 'long';
 };
 
 interface Template {
