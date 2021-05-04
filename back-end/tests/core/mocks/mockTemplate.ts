@@ -41,7 +41,10 @@ export class LoadTemplateByIdRepositoryStub
 
 export class LinkTemplateToEtherapiesRepositoryStub
     implements LinkTemplateToEtherapiesRepository {
-    link(_template: Template, _etherapies: Etherapy[]): Promise<boolean> {
+    linkTemplate(
+        _template: Template,
+        _etherapies: Etherapy[],
+    ): Promise<boolean> {
         return new Promise(resolve => resolve(true));
     }
 }

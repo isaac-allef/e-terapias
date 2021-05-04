@@ -23,7 +23,7 @@ class LinkTemplateToEtherapiesService {
             }),
         );
 
-        const isLinked = await this.linkTemplateToEtherapiesRepository.link(
+        const isLinked = await this.linkTemplateToEtherapiesRepository.linkTemplate(
             template,
             etherapies,
         );
