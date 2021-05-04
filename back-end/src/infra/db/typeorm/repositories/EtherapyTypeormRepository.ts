@@ -2,21 +2,27 @@
 import { EntityRepository, getRepository, Repository } from 'typeorm';
 import Etherapy from '../../../../core/entities/Etherapy';
 import CreateEtherapiesRepository, {
-    params,
+    params as createParams,
 } from '../../../../core/protocols/db/repositories/CreateEtherapiesRepository';
+import LinkModeratorsToEtherapiesRepository, {
+    params as linkParams,
+} from '../../../../core/protocols/db/repositories/LinkModeratorsToEtherapiesRepository';
 import LoadEtherapyByIdRepository from '../../../../core/protocols/db/repositories/LoadEtherapyByIdRepository';
 import EtherapyTypeorm from '../entities/EtherapyTypeorm';
 
 @EntityRepository()
 class EtherapyTypeormRepository
-    implements CreateEtherapiesRepository, LoadEtherapyByIdRepository {
+    implements
+        CreateEtherapiesRepository,
+        LoadEtherapyByIdRepository,
+        LinkModeratorsToEtherapiesRepository {
     private ormRepository: Repository<EtherapyTypeorm>;
 
     constructor() {
         this.ormRepository = getRepository(EtherapyTypeorm);
     }
 
-    public async create(data: params): Promise<Etherapy[]> {
+    public async create(data: createParams): Promise<Etherapy[]> {
         try {
             const etherapies = [];
 
@@ -46,6 +52,27 @@ class EtherapyTypeormRepository
             return etherapy;
         } catch {
             throw new Error('Load etherapy error');
+        }
+    }
+
+    async link(data: linkParams): Promise<boolean> {
+        try {
+            const etherapies = await Promise.all(
+                data.map(async d => {
+                    if (!d.etherapy.moderators) {
+                        // eslint-disable-next-line no-param-reassign
+                        d.etherapy.moderators = [];
+                    }
+                    d.etherapy.moderators.push(d.moderator);
+                    return d.etherapy;
+                }),
+            );
+
+            await this.ormRepository.save(etherapies);
+
+            return true;
+        } catch (err) {
+            throw new Error('Link moderators to etherapies error');
         }
     }
 }
