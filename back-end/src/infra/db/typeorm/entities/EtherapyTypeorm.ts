@@ -13,7 +13,7 @@ import Etherapy from '../../../../core/entities/Etherapy';
 import FieldJournal from '../../../../core/entities/FieldJournal';
 import Moderator from '../../../../core/entities/Moderator';
 import Template from '../../../../core/entities/Template';
-import FieldJournalTypeorm from './FieldJournalsTypeorm';
+import FieldJournalTypeorm from './FieldJournalTypeorm';
 import ModeratorTypeorm from './ModeratorTypeorm';
 import TemplateTypeorm from './TemplateTypeorm';
 

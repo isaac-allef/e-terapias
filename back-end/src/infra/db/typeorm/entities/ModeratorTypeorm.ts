@@ -11,7 +11,7 @@ import Etherapy from '../../../../core/entities/Etherapy';
 import FieldJournal from '../../../../core/entities/FieldJournal';
 import Moderator from '../../../../core/entities/Moderator';
 import EtherapyTypeorm from './EtherapyTypeorm';
-import FieldJournalTypeorm from './FieldJournalsTypeorm';
+import FieldJournalTypeorm from './FieldJournalTypeorm';
 
 @Entity('Moderator')
 class ModeratorTypeorm implements Moderator {
