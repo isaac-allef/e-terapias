@@ -4,10 +4,12 @@ import Etherapy from '../../../../core/entities/Etherapy';
 import CreateEtherapiesRepository, {
     params,
 } from '../../../../core/protocols/db/repositories/CreateEtherapiesRepository';
+import LoadEtherapyByIdRepository from '../../../../core/protocols/db/repositories/LoadEtherapyByIdRepository';
 import EtherapyTypeorm from '../entities/EtherapyTypeorm';
 
 @EntityRepository()
-class EtherapyTypeormRepository implements CreateEtherapiesRepository {
+class EtherapyTypeormRepository
+    implements CreateEtherapiesRepository, LoadEtherapyByIdRepository {
     private ormRepository: Repository<EtherapyTypeorm>;
 
     constructor() {
@@ -28,6 +30,22 @@ class EtherapyTypeormRepository implements CreateEtherapiesRepository {
             return etherapies;
         } catch {
             throw new Error('Create etherapies error');
+        }
+    }
+
+    async load(id: string): Promise<Etherapy> {
+        try {
+            const etherapy = await this.ormRepository.findOne({
+                where: { id },
+            });
+
+            if (!etherapy) {
+                throw new Error('Etherapy not found');
+            }
+
+            return etherapy;
+        } catch {
+            throw new Error('Load etherapy error');
         }
     }
 }
