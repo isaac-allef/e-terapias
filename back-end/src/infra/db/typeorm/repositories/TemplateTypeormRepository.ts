@@ -35,6 +35,7 @@ class TemplateTypeormRepository
         try {
             const template = await this.ormRepository.findOne({
                 where: { id },
+                relations: ['etherapies'],
             });
 
             if (!template) {
