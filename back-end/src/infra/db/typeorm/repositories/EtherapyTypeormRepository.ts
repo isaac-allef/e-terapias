@@ -1,12 +1,14 @@
 /* eslint-disable no-restricted-syntax */
 import { EntityRepository, getRepository, Repository } from 'typeorm';
 import Etherapy from '../../../../core/entities/Etherapy';
+import Template from '../../../../core/entities/Template';
 import CreateEtherapiesRepository, {
     params as createParams,
 } from '../../../../core/protocols/db/repositories/CreateEtherapiesRepository';
 import LinkModeratorsToEtherapiesRepository, {
     params as linkParams,
 } from '../../../../core/protocols/db/repositories/LinkModeratorsToEtherapiesRepository';
+import LinkTemplateToEtherapiesRepository from '../../../../core/protocols/db/repositories/LinkTemplateToEtherapiesRepository';
 import LoadEtherapyByIdRepository from '../../../../core/protocols/db/repositories/LoadEtherapyByIdRepository';
 import EtherapyTypeorm from '../entities/EtherapyTypeorm';
 
@@ -15,7 +17,8 @@ class EtherapyTypeormRepository
     implements
         CreateEtherapiesRepository,
         LoadEtherapyByIdRepository,
-        LinkModeratorsToEtherapiesRepository {
+        LinkModeratorsToEtherapiesRepository,
+        LinkTemplateToEtherapiesRepository {
     private ormRepository: Repository<EtherapyTypeorm>;
 
     constructor() {
@@ -73,6 +76,24 @@ class EtherapyTypeormRepository
             return true;
         } catch (err) {
             throw new Error('Link moderators to etherapies error');
+        }
+    }
+
+    async linkTemplate(
+        template: Template,
+        etherapies: Etherapy[],
+    ): Promise<boolean> {
+        try {
+            etherapies.forEach(etherapy => {
+                // eslint-disable-next-line no-param-reassign
+                etherapy.template = template;
+            });
+
+            await this.ormRepository.save(etherapies);
+
+            return true;
+        } catch (err) {
+            throw new Error('Link template to etherapies error');
         }
     }
 }
