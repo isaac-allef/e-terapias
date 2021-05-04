@@ -1,3 +1,5 @@
 import { createConnection } from 'typeorm';
 
-createConnection();
+const connTypeorm = createConnection();
+
+export default connTypeorm;
