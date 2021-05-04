@@ -1,14 +1,12 @@
 /* eslint-disable max-classes-per-file */
 /* eslint-disable import/prefer-default-export */
-import TokenGenerater, {
-    GenerateTokenDTO,
-} from '../../../src/core/protocols/Token/TokenGenerater';
+import TokenGenerater from '../../../src/core/protocols/Token/TokenGenerater';
 import TokenVerifier, {
     VerifyTokenDTO,
 } from '../../../src/core/protocols/Token/TokenVerifier';
 
 export class TokenGeneraterStub implements TokenGenerater {
-    async generate(_data: GenerateTokenDTO): Promise<string> {
+    async generate(_value: string): Promise<string> {
         return new Promise(resolve => resolve('randomToken'));
     }
 }
