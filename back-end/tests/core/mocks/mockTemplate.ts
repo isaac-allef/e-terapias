@@ -1,11 +1,16 @@
 /* eslint-disable max-classes-per-file */
 /* eslint-disable import/prefer-default-export */
 
-import Template from '../../../src/core/entities/Template';
+import Template, { templateField } from '../../../src/core/entities/Template';
 import CreateTemplateRepository from '../../../src/core/protocols/db/repositories/CreateTemplateRepository';
 import LoadTemplateByIdRepository from '../../../src/core/protocols/db/repositories/LoadTemplateByIdRepository';
 import LinkTemplateToEtherapiesRepository from '../../../src/core/protocols/db/repositories/LinkTemplateToEtherapiesRepository';
 import Etherapy from '../../../src/core/entities/Etherapy';
+
+const fakeTemplateFields: templateField[] = [
+    { name: 'Qual o seu nome?', type: 'short' },
+    { name: 'Fale sobre você', type: 'long' },
+];
 
 export class CreateTemplateRepositoryStub implements CreateTemplateRepository {
     async create(): Promise<Template> {
@@ -13,14 +18,7 @@ export class CreateTemplateRepositoryStub implements CreateTemplateRepository {
             id: 'randomId',
             name: 'diário das eterapias de promoção ao bem-estar',
             etherapies: [],
-            templateFields: [
-                { name: 'Qual o seu nome?' },
-                { name: 'Quanto é 2 + 2?' },
-                {
-                    name: 'Informe sua data de nascimento',
-                },
-                { name: 'Voçê é estudante?' },
-            ],
+            templateFields: fakeTemplateFields,
         };
 
         return new Promise(resolve => resolve(template));
@@ -34,14 +32,7 @@ export class LoadTemplateByIdRepositoryStub
             id,
             name: 'viver é bom',
             etherapies: [],
-            templateFields: [
-                { name: 'Qual o seu nome?' },
-                { name: 'Quanto é 2 + 2?' },
-                {
-                    name: 'Informe sua data de nascimento',
-                },
-                { name: 'Voçê é estudante?' },
-            ],
+            templateFields: fakeTemplateFields,
         };
 
         return new Promise(resolve => resolve(template));

@@ -2,6 +2,7 @@
 import CreateTemplateService from '../../../src/core/services/CreateTemplateService';
 import CreateTemplateRepository from '../../../src/core/protocols/db/repositories/CreateTemplateRepository';
 import { CreateTemplateRepositoryStub } from '../mocks/mockTemplate';
+import { templateField } from '../../../src/core/entities/Template';
 
 interface SutTypes {
     sut: CreateTemplateService;
@@ -17,31 +18,22 @@ const makeSut = (): SutTypes => {
     };
 };
 
+const fakeTemplateFields: templateField[] = [
+    { name: 'Qual o seu nome?', type: 'short' },
+    { name: 'Fale sobre você', type: 'long' },
+];
+
 describe('Create Template usecase', () => {
     test('Should call with correct values', async () => {
         const { sut } = makeSut();
         const executeSpy = jest.spyOn(sut, 'execute');
         await sut.execute({
             name: 'diário das eterapias de promoção ao bem-estar',
-            templateFields: [
-                { name: 'Qual o seu nome?' },
-                { name: 'Quanto é 2 + 2?' },
-                {
-                    name: 'Informe sua data de nascimento',
-                },
-                { name: 'Voçê é estudante?' },
-            ],
+            templateFields: fakeTemplateFields,
         });
         expect(executeSpy).toHaveBeenCalledWith({
             name: 'diário das eterapias de promoção ao bem-estar',
-            templateFields: [
-                { name: 'Qual o seu nome?' },
-                { name: 'Quanto é 2 + 2?' },
-                {
-                    name: 'Informe sua data de nascimento',
-                },
-                { name: 'Voçê é estudante?' },
-            ],
+            templateFields: fakeTemplateFields,
         });
     });
 
@@ -50,25 +42,11 @@ describe('Create Template usecase', () => {
         const createSpy = jest.spyOn(createTemplateRepository, 'create');
         await sut.execute({
             name: 'diário das eterapias de promoção ao bem-estar',
-            templateFields: [
-                { name: 'Qual o seu nome?' },
-                { name: 'Quanto é 2 + 2?' },
-                {
-                    name: 'Informe sua data de nascimento',
-                },
-                { name: 'Voçê é estudante?' },
-            ],
+            templateFields: fakeTemplateFields,
         });
         expect(createSpy).toHaveBeenCalledWith({
             name: 'diário das eterapias de promoção ao bem-estar',
-            templateFields: [
-                { name: 'Qual o seu nome?' },
-                { name: 'Quanto é 2 + 2?' },
-                {
-                    name: 'Informe sua data de nascimento',
-                },
-                { name: 'Voçê é estudante?' },
-            ],
+            templateFields: fakeTemplateFields,
         });
     });
 
@@ -83,14 +61,7 @@ describe('Create Template usecase', () => {
         await expect(
             sut.execute({
                 name: 'diário das eterapias de promoção ao bem-estar',
-                templateFields: [
-                    { name: 'Qual o seu nome?' },
-                    { name: 'Quanto é 2 + 2?' },
-                    {
-                        name: 'Informe sua data de nascimento',
-                    },
-                    { name: 'Voçê é estudante?' },
-                ],
+                templateFields: fakeTemplateFields,
             }),
         ).rejects.toThrow();
     });

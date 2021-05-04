@@ -8,6 +8,8 @@ import LoadEtherapyByIdRepository from '../../../src/core/protocols/db/repositor
 import { CreateFieldJournalRepositoryStub } from '../mocks/mockFieldJournal';
 import { LoadModeratorByIdRepositoryStub } from '../mocks/mockModerator';
 import { LoadEtherapyByIdRepositoryStub } from '../mocks/mockEtherapy';
+import { templateField } from '../../../src/core/entities/Template';
+import { field } from '../../../src/core/entities/FieldJournal';
 
 interface SutTypes {
     sut: CreateFieldJournalService;
@@ -33,6 +35,16 @@ const makeSut = (): SutTypes => {
     };
 };
 
+const fakeTemplateFields: templateField[] = [
+    { name: 'Qual o seu nome?', type: 'short' },
+    { name: 'Fale sobre você', type: 'long' },
+];
+
+const fakeFields: field[] = [
+    { name: 'Qual o seu nome?', value: 'isaac' },
+    { name: 'Fale sobre você', value: 'eu sou um cara legal' },
+];
+
 describe('Create field journal usecase', () => {
     test('Should call with correct values', async () => {
         const {
@@ -57,14 +69,7 @@ describe('Create field journal usecase', () => {
                                 name:
                                     'diário das eterapias de promoção ao bem-estar',
                                 etherapies: [],
-                                templateFields: [
-                                    { name: 'Qual o seu nome?' },
-                                    { name: 'Quanto é 2 + 2?' },
-                                    {
-                                        name: 'Informe sua data de nascimento',
-                                    },
-                                    { name: 'Voçê é estudante?' },
-                                ],
+                                templateFields: fakeTemplateFields,
                             },
                         },
                     ],
@@ -85,14 +90,7 @@ describe('Create field journal usecase', () => {
                         id: 'randomIdTemplate',
                         name: 'diário das eterapias de promoção ao bem-estar',
                         etherapies: [],
-                        templateFields: [
-                            { name: 'Qual o seu nome?' },
-                            { name: 'Quanto é 2 + 2?' },
-                            {
-                                name: 'Informe sua data de nascimento',
-                            },
-                            { name: 'Voçê é estudante?' },
-                        ],
+                        templateFields: fakeTemplateFields,
                     },
                 }),
             ),
@@ -100,29 +98,13 @@ describe('Create field journal usecase', () => {
         const executeSpy = jest.spyOn(sut, 'execute');
         await sut.execute({
             name: 'diário das eterapias de promoção ao bem-estar',
-            fields: [
-                { name: 'Qual o seu nome?', value: 'Isaac' },
-                { name: 'Quanto é 2 + 2?', value: '4' },
-                {
-                    name: 'Informe sua data de nascimento',
-                    value: "{% now 'iso-8601', '' %}",
-                },
-                { name: 'Voçê é estudante?', value: 'sim' },
-            ],
+            fields: fakeFields,
             moderatorId: 'randomIdModerator',
             etherapyId: 'randomIdEtherapy',
         });
         expect(executeSpy).toHaveBeenCalledWith({
             name: 'diário das eterapias de promoção ao bem-estar',
-            fields: [
-                { name: 'Qual o seu nome?', value: 'Isaac' },
-                { name: 'Quanto é 2 + 2?', value: '4' },
-                {
-                    name: 'Informe sua data de nascimento',
-                    value: "{% now 'iso-8601', '' %}",
-                },
-                { name: 'Voçê é estudante?', value: 'sim' },
-            ],
+            fields: fakeFields,
             moderatorId: 'randomIdModerator',
             etherapyId: 'randomIdEtherapy',
         });
@@ -138,15 +120,7 @@ describe('Create field journal usecase', () => {
         await expect(
             sut.execute({
                 name: 'diário das eterapias de promoção ao bem-estar',
-                fields: [
-                    { name: 'Qual o seu nome?', value: 'Isaac' },
-                    { name: 'Quanto é 2 + 2?', value: '4' },
-                    {
-                        name: 'Informe sua data de nascimento',
-                        value: "{% now 'iso-8601', '' %}",
-                    },
-                    { name: 'Voçê é estudante?', value: 'sim' },
-                ],
+                fields: fakeFields,
                 moderatorId: 'randomIdModerator',
                 etherapyId: 'randomIdEtherapy',
             }),
@@ -163,15 +137,7 @@ describe('Create field journal usecase', () => {
         await expect(
             sut.execute({
                 name: 'diário das eterapias de promoção ao bem-estar',
-                fields: [
-                    { name: 'Qual o seu nome?', value: 'Isaac' },
-                    { name: 'Quanto é 2 + 2?', value: '4' },
-                    {
-                        name: 'Informe sua data de nascimento',
-                        value: "{% now 'iso-8601', '' %}",
-                    },
-                    { name: 'Voçê é estudante?', value: 'sim' },
-                ],
+                fields: fakeFields,
                 moderatorId: 'randomIdModerator',
                 etherapyId: 'randomIdEtherapy',
             }),
@@ -203,15 +169,7 @@ describe('Create field journal usecase', () => {
                                     name:
                                         'diário das eterapias de promoção ao bem-estar',
                                     etherapies: [],
-                                    templateFields: [
-                                        { name: 'Qual o seu nome?' },
-                                        { name: 'Quanto é 2 + 2?' },
-                                        {
-                                            name:
-                                                'Informe sua data de nascimento',
-                                        },
-                                        { name: 'Voçê é estudante?' },
-                                    ],
+                                    templateFields: fakeTemplateFields,
                                 },
                             },
                         ],
@@ -235,14 +193,7 @@ describe('Create field journal usecase', () => {
                             name:
                                 'diário das eterapias de promoção ao bem-estar',
                             etherapies: [],
-                            templateFields: [
-                                { name: 'Qual o seu nome?' },
-                                { name: 'Quanto é 2 + 2?' },
-                                {
-                                    name: 'Informe sua data de nascimento',
-                                },
-                                { name: 'Voçê é estudante?' },
-                            ],
+                            templateFields: fakeTemplateFields,
                         },
                     }),
                 );
@@ -251,15 +202,7 @@ describe('Create field journal usecase', () => {
         await expect(
             sut.execute({
                 name: 'diário das eterapias de promoção ao bem-estar',
-                fields: [
-                    { name: 'Qual o seu nome?', value: 'Isaac' },
-                    { name: 'Quanto é 2 + 2?', value: '4' },
-                    {
-                        name: 'Informe sua data de nascimento',
-                        value: "{% now 'iso-8601', '' %}",
-                    },
-                    { name: 'Voçê é estudante?', value: 'sim' },
-                ],
+                fields: fakeFields,
                 moderatorId: 'randomIdModerator',
                 etherapyId: 'randomIdEtherapy',
             }),
@@ -291,15 +234,7 @@ describe('Create field journal usecase', () => {
                                     name:
                                         'diário das eterapias de promoção ao bem-estar',
                                     etherapies: [],
-                                    templateFields: [
-                                        { name: 'Qual o seu nome?' },
-                                        { name: 'Quanto é 2 + 2?' },
-                                        {
-                                            name:
-                                                'Informe sua data de nascimento',
-                                        },
-                                        { name: 'Voçê é estudante?' },
-                                    ],
+                                    templateFields: fakeTemplateFields,
                                 },
                             },
                         ],
@@ -326,15 +261,7 @@ describe('Create field journal usecase', () => {
         await expect(
             sut.execute({
                 name: 'diário das eterapias de promoção ao bem-estar',
-                fields: [
-                    { name: 'Qual o seu nome?', value: 'Isaac' },
-                    { name: 'Quanto é 2 + 2?', value: '4' },
-                    {
-                        name: 'Informe sua data de nascimento',
-                        value: "{% now 'iso-8601', '' %}",
-                    },
-                    { name: 'Voçê é estudante?', value: 'sim' },
-                ],
+                fields: fakeFields,
                 moderatorId: 'randomIdModerator',
                 etherapyId: 'randomIdEtherapy',
             }),
@@ -366,15 +293,7 @@ describe('Create field journal usecase', () => {
                                     name:
                                         'diário das eterapias de promoção ao bem-estar',
                                     etherapies: [],
-                                    templateFields: [
-                                        { name: 'Qual o seu nome?' },
-                                        { name: 'Quanto é 2 + 2?' },
-                                        {
-                                            name:
-                                                'Informe sua data de nascimento',
-                                        },
-                                        { name: 'Voçê é estudante?' },
-                                    ],
+                                    templateFields: fakeTemplateFields,
                                 },
                             },
                         ],
@@ -399,7 +318,10 @@ describe('Create field journal usecase', () => {
                                 'diário das eterapias de promoção ao bem-estar',
                             etherapies: [],
                             templateFields: [
-                                { name: 'Question of diferent template' },
+                                {
+                                    name: 'Question of diferent template',
+                                    type: 'long',
+                                },
                             ],
                         },
                     }),
@@ -409,15 +331,7 @@ describe('Create field journal usecase', () => {
         await expect(
             sut.execute({
                 name: 'diário das eterapias de promoção ao bem-estar',
-                fields: [
-                    { name: 'Qual o seu nome?', value: 'Isaac' },
-                    { name: 'Quanto é 2 + 2?', value: '4' },
-                    {
-                        name: 'Informe sua data de nascimento',
-                        value: "{% now 'iso-8601', '' %}",
-                    },
-                    { name: 'Voçê é estudante?', value: 'sim' },
-                ],
+                fields: fakeFields,
                 moderatorId: 'randomIdModerator',
                 etherapyId: 'randomIdEtherapy',
             }),
