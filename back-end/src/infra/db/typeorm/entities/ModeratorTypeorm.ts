@@ -43,7 +43,7 @@ class ModeratorTypeorm implements Moderator {
     created_at: Date;
 
     @UpdateDateColumn()
-    update_at: Date;
+    updated_at: Date;
 }
 
 export default ModeratorTypeorm;
