@@ -51,4 +51,22 @@ describe('load all Etherapies usecase', () => {
             page: 1,
         });
     });
+
+    test('Should throw if LoadAllEtherapiesRepository throws', async () => {
+        const { sut, loadAllEtherapiesRepository } = makeSut();
+        jest.spyOn(
+            loadAllEtherapiesRepository,
+            'loadAll',
+        ).mockImplementationOnce(() => {
+            throw new Error('Random error');
+        });
+        await expect(
+            sut.execute({
+                sort: 'updated_at',
+                direction: 'asc',
+                per_page: 10,
+                page: 1,
+            }),
+        ).rejects.toThrow();
+    });
 });
