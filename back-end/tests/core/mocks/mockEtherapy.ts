@@ -3,6 +3,7 @@
 import Etherapy from '../../../src/core/entities/Etherapy';
 import CreateEtherapiesRepository from '../../../src/core/protocols/db/repositories/CreateEtherapiesRepository';
 import LoadEtherapyByIdRepository from '../../../src/core/protocols/db/repositories/LoadEtherapyByIdRepository';
+import LoadAllEtherapiesRepository from '../../../src/core/protocols/db/repositories/LoadAllEtherapiesRepository';
 
 export class CreateEtherapiesRepositoryStub
     implements CreateEtherapiesRepository {
@@ -41,5 +42,29 @@ export class LoadEtherapyByIdRepositoryStub
         };
 
         return new Promise(resolve => resolve(etherapy));
+    }
+}
+
+export class LoadAllEtherapiesRepositoryStub
+    implements LoadAllEtherapiesRepository {
+    loadAll(): Promise<Etherapy[]> {
+        const etherapies: Etherapy[] = [
+            {
+                id: 'randomId1',
+                name: 'viver é bom',
+                fieldJournals: [],
+                moderators: [],
+                template: undefined,
+            },
+            {
+                id: 'randomId2',
+                name: 'não desista',
+                fieldJournals: [],
+                moderators: [],
+                template: undefined,
+            },
+        ];
+
+        return new Promise(resolve => resolve(etherapies));
     }
 }
