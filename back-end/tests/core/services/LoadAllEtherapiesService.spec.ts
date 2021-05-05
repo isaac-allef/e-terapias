@@ -34,4 +34,21 @@ describe('load all Etherapies usecase', () => {
             page: 1,
         });
     });
+
+    test('Should call LoadAllEtherapiesRepository with correct values', async () => {
+        const { sut, loadAllEtherapiesRepository } = makeSut();
+        const loadAllSpy = jest.spyOn(loadAllEtherapiesRepository, 'loadAll');
+        await sut.execute({
+            sort: 'updated_at',
+            direction: 'asc',
+            per_page: 10,
+            page: 1,
+        });
+        expect(loadAllSpy).toHaveBeenCalledWith({
+            sort: 'updated_at',
+            direction: 'asc',
+            per_page: 10,
+            page: 1,
+        });
+    });
 });
