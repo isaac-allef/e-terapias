@@ -31,4 +31,14 @@ describe('load all Etherapies usecase', () => {
         await sut.execute('viver é bom');
         expect(searchSpy).toHaveBeenCalledWith('viver é bom');
     });
+
+    test('Should throw if SearchEtherapiesRepository throws', async () => {
+        const { sut, searchEtherapiesRepository } = makeSut();
+        jest.spyOn(searchEtherapiesRepository, 'search').mockImplementationOnce(
+            () => {
+                throw new Error('Random error');
+            },
+        );
+        await expect(sut.execute('viver é bom')).rejects.toThrow();
+    });
 });
