@@ -24,4 +24,11 @@ describe('load all Etherapies usecase', () => {
         await sut.execute('viver é bom');
         expect(executeSpy).toHaveBeenCalledWith('viver é bom');
     });
+
+    test('Should call SearchEtherapiesRepository with correct values', async () => {
+        const { sut, searchEtherapiesRepository } = makeSut();
+        const searchSpy = jest.spyOn(searchEtherapiesRepository, 'search');
+        await sut.execute('viver é bom');
+        expect(searchSpy).toHaveBeenCalledWith('viver é bom');
+    });
 });
