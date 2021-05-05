@@ -4,10 +4,12 @@ import FieldJournal from '../../../../core/entities/FieldJournal';
 import CreateFieldJournalRepository, {
     params,
 } from '../../../../core/protocols/db/repositories/CreateFieldJournalRepository';
+import LoadFieldJournalByIdRepository from '../../../../core/protocols/db/repositories/LoadFieldJournalByIdRepository';
 import FieldJournalTypeorm from '../entities/FieldJournalTypeorm';
 
 @EntityRepository()
-class FieldJournalTypeormRepository implements CreateFieldJournalRepository {
+class FieldJournalTypeormRepository
+    implements CreateFieldJournalRepository, LoadFieldJournalByIdRepository {
     private ormRepository: Repository<FieldJournalTypeorm>;
 
     constructor() {
@@ -29,6 +31,23 @@ class FieldJournalTypeormRepository implements CreateFieldJournalRepository {
             return fieldJournal;
         } catch {
             throw new Error('Create FieldJournal error');
+        }
+    }
+
+    async load(id: string): Promise<FieldJournal> {
+        try {
+            const fieldJournal = await this.ormRepository.findOne({
+                where: { id },
+                relations: ['moderator', 'etherapy'],
+            });
+
+            if (!fieldJournal) {
+                throw new Error('Field Journal not found');
+            }
+
+            return fieldJournal;
+        } catch {
+            throw new Error('Load fieldJournal error');
         }
     }
 }
