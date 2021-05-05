@@ -9,6 +9,9 @@ import LinkModeratorsToEtherapiesRepository, {
     params as linkParams,
 } from '../../../../core/protocols/db/repositories/LinkModeratorsToEtherapiesRepository';
 import LinkTemplateToEtherapiesRepository from '../../../../core/protocols/db/repositories/LinkTemplateToEtherapiesRepository';
+import LoadAllEtherapiesRepository, {
+    params,
+} from '../../../../core/protocols/db/repositories/LoadAllEtherapiesRepository';
 import LoadEtherapyByIdRepository from '../../../../core/protocols/db/repositories/LoadEtherapyByIdRepository';
 import EtherapyTypeorm from '../entities/EtherapyTypeorm';
 
@@ -18,7 +21,8 @@ class EtherapyTypeormRepository
         CreateEtherapiesRepository,
         LoadEtherapyByIdRepository,
         LinkModeratorsToEtherapiesRepository,
-        LinkTemplateToEtherapiesRepository {
+        LinkTemplateToEtherapiesRepository,
+        LoadAllEtherapiesRepository {
     private ormRepository: Repository<EtherapyTypeorm>;
 
     constructor() {
@@ -95,6 +99,26 @@ class EtherapyTypeormRepository
             return true;
         } catch (err) {
             throw new Error('Link template to etherapies error');
+        }
+    }
+
+    async loadAll({
+        sort,
+        direction,
+        per_page,
+        page,
+    }: params): Promise<Etherapy[]> {
+        try {
+            const etherapies = await this.ormRepository.find({
+                order: { [sort]: direction.toUpperCase() },
+                take: per_page,
+                skip: (page - 1) * per_page,
+                relations: ['template', 'fieldJournals', 'moderators'],
+            });
+
+            return etherapies;
+        } catch (err) {
+            throw new Error('Load all etherapies error');
         }
     }
 }
