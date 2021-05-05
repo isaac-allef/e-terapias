@@ -13,6 +13,7 @@ import LoadAllEtherapiesRepository, {
     params,
 } from '../../../../core/protocols/db/repositories/LoadAllEtherapiesRepository';
 import LoadEtherapyByIdRepository from '../../../../core/protocols/db/repositories/LoadEtherapyByIdRepository';
+import SearchEtherapiesRepository from '../../../../core/protocols/db/repositories/SearchEtherapiesRepository';
 import EtherapyTypeorm from '../entities/EtherapyTypeorm';
 
 @EntityRepository()
@@ -22,7 +23,8 @@ class EtherapyTypeormRepository
         LoadEtherapyByIdRepository,
         LinkModeratorsToEtherapiesRepository,
         LinkTemplateToEtherapiesRepository,
-        LoadAllEtherapiesRepository {
+        LoadAllEtherapiesRepository,
+        SearchEtherapiesRepository {
     private ormRepository: Repository<EtherapyTypeorm>;
 
     constructor() {
@@ -119,6 +121,39 @@ class EtherapyTypeormRepository
             return etherapies;
         } catch (err) {
             throw new Error('Load all etherapies error');
+        }
+    }
+
+    async search(keywords: string): Promise<Etherapy[]> {
+        try {
+            const queryBuilder = this.ormRepository.createQueryBuilder(
+                'Etherapy',
+            );
+
+            const finded = queryBuilder
+                .leftJoinAndSelect('Etherapy.moderators', 'moderators')
+                .leftJoinAndSelect('Etherapy.template', 'template')
+                .leftJoinAndSelect('Etherapy.fieldJournals', 'fieldJournals')
+                .where('Etherapy.name ILIKE :name', {
+                    name: `%${keywords}%`,
+                })
+                .orWhere('moderators.name ILIKE :name', {
+                    name: `%${keywords}%`,
+                })
+                .orWhere('moderators.email ILIKE :email', {
+                    email: `%${keywords}%`,
+                })
+                .orWhere('template.name ILIKE :name', {
+                    name: `%${keywords}%`,
+                })
+                .orWhere('fieldJournals.name ILIKE :name', {
+                    name: `%${keywords}%`,
+                })
+                .getMany();
+
+            return finded;
+        } catch {
+            throw new Error('Search etherapies error');
         }
     }
 }
