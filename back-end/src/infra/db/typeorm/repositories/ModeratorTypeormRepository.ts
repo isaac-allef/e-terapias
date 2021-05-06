@@ -1,15 +1,22 @@
 /* eslint-disable no-restricted-syntax */
 import { EntityRepository, getRepository, Repository } from 'typeorm';
 import Moderator from '../../../../core/entities/Moderator';
+import User from '../../../../core/entities/User';
 import CreateModeratorsRepository, {
     params,
 } from '../../../../core/protocols/db/repositories/CreateModeratorsRepository';
 import LoadModeratorByIdRepository from '../../../../core/protocols/db/repositories/LoadModeratorByIdRepository';
+import LoadUserByEmailRepository from '../../../../core/protocols/db/repositories/LoadUserByEmailRepository';
+import UpdateAccessTokenRepository from '../../../../core/protocols/db/repositories/UpdateAccessTokenRepository';
 import ModeratorTypeorm from '../entities/ModeratorTypeorm';
 
 @EntityRepository()
 class ModeratorTypeormRepository
-    implements CreateModeratorsRepository, LoadModeratorByIdRepository {
+    implements
+        CreateModeratorsRepository,
+        LoadModeratorByIdRepository,
+        LoadUserByEmailRepository,
+        UpdateAccessTokenRepository {
     private ormRepository: Repository<ModeratorTypeorm>;
 
     constructor() {
@@ -55,6 +62,42 @@ class ModeratorTypeormRepository
             return moderator;
         } catch {
             throw new Error('Load moderator error');
+        }
+    }
+
+    async loadByEmail(email: string): Promise<User> {
+        try {
+            const user = await this.ormRepository.findOne({
+                where: { email },
+            });
+
+            if (!user) {
+                throw new Error('User not found');
+            }
+
+            return user;
+        } catch {
+            throw new Error('Load user error');
+        }
+    }
+
+    async updateAccessToken(id: string, token: string): Promise<User> {
+        try {
+            const user = await this.ormRepository.findOne({
+                where: { id },
+            });
+
+            if (!user) {
+                throw new Error('User not found');
+            }
+
+            user.token = token;
+
+            await this.ormRepository.save(user);
+
+            return user;
+        } catch {
+            throw new Error('Load user error');
         }
     }
 }
