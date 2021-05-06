@@ -18,8 +18,7 @@ class AuthenticationService {
     ): Promise<User | null> {
         const user = await this.loadUserByEmailRepository.loadByEmail(email);
 
-        if (!(await this.hashComparer.compare(user.password, password))) {
-            // throw new Error('Incorrect email or password.');
+        if (!(await this.hashComparer.compare(password, user.password))) {
             return null;
         }
 
