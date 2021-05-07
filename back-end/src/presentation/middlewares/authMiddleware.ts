@@ -1,7 +1,8 @@
 /* eslint-disable import/prefer-default-export */
+import AppError from '../../core/errors/AppError';
 import LoadUserByTokenService from '../../core/services/LoadUserByTokenService';
 import { AccessDeniedError } from '../erros/AccessDeniedError';
-import { forbidden, ok } from '../helpers/httpHelder';
+import { forbidden, ok, serverError } from '../helpers/httpHelder';
 import { HttpRequest, HttpResponse } from '../protocols/http';
 import { Middelware } from '../protocols/middleware';
 
@@ -16,7 +17,7 @@ export class AuthMiddleware implements Middelware {
             const accessToken = httpRequest.headers?.['x-access-token'];
 
             if (!accessToken) {
-                throw new Error('Token no provided');
+                return forbidden(new AccessDeniedError());
             }
 
             const user = await this.loadUserByTokenService.execute(
@@ -25,8 +26,11 @@ export class AuthMiddleware implements Middelware {
             );
 
             return ok({ userId: user.id });
-        } catch {
-            return forbidden(new AccessDeniedError());
+        } catch (err) {
+            if (err instanceof AppError) {
+                return forbidden(new AccessDeniedError());
+            }
+            return serverError(err);
         }
     }
 }

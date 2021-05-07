@@ -1,10 +1,15 @@
-import { forbidden, ok } from '../../../src/presentation/helpers/httpHelder';
+import {
+    forbidden,
+    ok,
+    serverError,
+} from '../../../src/presentation/helpers/httpHelder';
 import { AccessDeniedError } from '../../../src/presentation/erros/AccessDeniedError';
 import { AuthMiddleware } from '../../../src/presentation/middlewares/authMiddleware';
 import LoadUserByTokenService from '../../../src/core/services/LoadUserByTokenService';
 import { TokenDecodederStub } from '../../core/mocks/mockToken';
 import { LoadUserByTokenRepositoryStub } from '../../core/mocks/mockUser';
 import { HttpRequest } from '../../../src/presentation/protocols/http';
+import AppError from '../../../src/core/errors/AppError';
 
 const makeLoadUserByTokenService = (): LoadUserByTokenService => {
     const tokenDecodederStub = new TokenDecodederStub();
@@ -50,13 +55,25 @@ describe('Auth Middleware', () => {
         expect(executeSpy).toHaveBeenCalledWith('any_token', role);
     });
 
-    test('Should return 403 if LoadUserByTokenService throws', async () => {
+    test('Should return 500 if LoadUserByTokenService throws', async () => {
         const { sut, loadUserByTokenServiceStub } = makeSut();
         jest.spyOn(
             loadUserByTokenServiceStub,
             'execute',
         ).mockImplementationOnce(() => {
             throw new Error('random error');
+        });
+        const httpResponse = await sut.handle(makeFakeRequest());
+        expect(httpResponse).toEqual(serverError(new Error('random error')));
+    });
+
+    test('Should return 403 if LoadUserByTokenService throws an AppError instance', async () => {
+        const { sut, loadUserByTokenServiceStub } = makeSut();
+        jest.spyOn(
+            loadUserByTokenServiceStub,
+            'execute',
+        ).mockImplementationOnce(() => {
+            throw new AppError('random error');
         });
         const httpResponse = await sut.handle(makeFakeRequest());
         expect(httpResponse).toEqual(forbidden(new AccessDeniedError()));
