@@ -61,4 +61,15 @@ describe('LoadUserByIdToken usecase', () => {
         });
         await expect(sut.execute('any_token', 'any_role')).rejects.toThrow();
     });
+
+    test('Should return an user on success', async () => {
+        const { sut } = makeSut();
+        const user = await sut.execute('any_token', 'any_role');
+        expect(user).toEqual({
+            id: 'randomIdUser',
+            email: 'any_email@email.com',
+            password: 'any_password',
+            token: 'any_token',
+        });
+    });
 });
