@@ -32,4 +32,12 @@ describe('LoadUserByIdToken usecase', () => {
         await sut.execute('any_token');
         expect(decodeSpy).toHaveBeenCalledWith('any_token');
     });
+
+    test('Should throw if TokenDecodeder throws', async () => {
+        const { sut, tokenDecodederStub } = makeSut();
+        jest.spyOn(tokenDecodederStub, 'decode').mockImplementationOnce(() => {
+            throw new Error('Random error');
+        });
+        await expect(sut.execute('any_token', 'any_role')).rejects.toThrow();
+    });
 });
