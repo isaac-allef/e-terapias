@@ -4,6 +4,7 @@
 import User from '../../../src/core/entities/User';
 import LoadUserByEmailRepository from '../../../src/core/protocols/db/repositories/LoadUserByEmailRepository';
 import UpdateAccessTokenRepository from '../../../src/core/protocols/db/repositories/UpdateAccessTokenRepository';
+import LoadUserByTokenRepository from '../../../src/core/protocols/db/repositories/LoadUserByTokenRepository';
 
 export class LoadUserByEmailRepositoryStub
     implements LoadUserByEmailRepository {
@@ -27,6 +28,20 @@ export class UpdateAccessTokenRepositoryStub
             email: 'any_email@email.com',
             password: 'any_password',
             token,
+        };
+
+        return new Promise(resolve => resolve(user));
+    }
+}
+
+export class LoadUserByTokenRepositoryStub
+    implements LoadUserByTokenRepository {
+    async loadByToken(accessToken: string, _role?: string): Promise<User> {
+        const user: User = {
+            id: 'randomIdUser',
+            email: 'any_email@email.com',
+            password: 'any_password',
+            token: accessToken,
         };
 
         return new Promise(resolve => resolve(user));
