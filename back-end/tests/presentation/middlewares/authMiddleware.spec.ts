@@ -1,4 +1,4 @@
-import { forbidden } from '../../../src/presentation/helpers/httpHelder';
+import { forbidden, ok } from '../../../src/presentation/helpers/httpHelder';
 import { AccessDeniedError } from '../../../src/presentation/erros/AccessDeniedError';
 import { AuthMiddleware } from '../../../src/presentation/middlewares/authMiddleware';
 import LoadUserByTokenService from '../../../src/core/services/LoadUserByTokenService';
@@ -42,14 +42,14 @@ describe('Auth Middleware', () => {
         expect(httpResponse).toEqual(forbidden(new AccessDeniedError()));
     });
 
-    test('Should call LoadUserByToken with correct accessToken', async () => {
+    test('Should call LoadUserByTokenService with correct accessToken', async () => {
         const { sut, loadUserByTokenServiceStub } = makeSut();
         const executeSpy = jest.spyOn(loadUserByTokenServiceStub, 'execute');
         await sut.handle(makeFakeRequest());
         expect(executeSpy).toHaveBeenCalledWith('any_token');
     });
 
-    test('Should return 403 if LoadUserByToken throws', async () => {
+    test('Should return 403 if LoadUserByTokenService throws', async () => {
         const { sut, loadUserByTokenServiceStub } = makeSut();
         jest.spyOn(
             loadUserByTokenServiceStub,
@@ -59,5 +59,11 @@ describe('Auth Middleware', () => {
         });
         const httpResponse = await sut.handle(makeFakeRequest());
         expect(httpResponse).toEqual(forbidden(new AccessDeniedError()));
+    });
+
+    test('Should return 200 if LoadUserByTokenService returns an user', async () => {
+        const { sut } = makeSut();
+        const httpResponse = await sut.handle(makeFakeRequest());
+        expect(httpResponse).toEqual(ok({ userId: 'randomIdUser' }));
     });
 });
