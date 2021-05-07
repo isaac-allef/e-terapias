@@ -26,9 +26,9 @@ interface SutTypes {
     loadUserByTokenServiceStub: LoadUserByTokenService;
 }
 
-const makeSut = (): SutTypes => {
+const makeSut = (role?: string): SutTypes => {
     const loadUserByTokenServiceStub = makeLoadUserByTokenService();
-    const sut = new AuthMiddleware(loadUserByTokenServiceStub);
+    const sut = new AuthMiddleware(loadUserByTokenServiceStub, role);
     return {
         sut,
         loadUserByTokenServiceStub,
@@ -43,10 +43,11 @@ describe('Auth Middleware', () => {
     });
 
     test('Should call LoadUserByTokenService with correct accessToken', async () => {
-        const { sut, loadUserByTokenServiceStub } = makeSut();
+        const role = 'any_role';
+        const { sut, loadUserByTokenServiceStub } = makeSut(role);
         const executeSpy = jest.spyOn(loadUserByTokenServiceStub, 'execute');
         await sut.handle(makeFakeRequest());
-        expect(executeSpy).toHaveBeenCalledWith('any_token');
+        expect(executeSpy).toHaveBeenCalledWith('any_token', role);
     });
 
     test('Should return 403 if LoadUserByTokenService throws', async () => {
