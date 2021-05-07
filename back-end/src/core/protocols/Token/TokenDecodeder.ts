@@ -1,3 +1,3 @@
 export default interface TokenDecodeder {
-    decode(value: string): Promise<string>;
+    decode(token: string): Promise<string>;
 }
