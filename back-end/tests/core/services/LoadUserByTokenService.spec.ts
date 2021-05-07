@@ -50,4 +50,15 @@ describe('LoadUserByIdToken usecase', () => {
         await sut.execute('any_token', 'any_role');
         expect(loadByTokenSpy).toHaveBeenCalledWith('any_token', 'any_role');
     });
+
+    test('Should throw if LoadUserByTokenRepository throws', async () => {
+        const { sut, loadUserByTokenRepositoryStub } = makeSut();
+        jest.spyOn(
+            loadUserByTokenRepositoryStub,
+            'loadByToken',
+        ).mockImplementationOnce(() => {
+            throw new Error('Random error');
+        });
+        await expect(sut.execute('any_token', 'any_role')).rejects.toThrow();
+    });
 });
