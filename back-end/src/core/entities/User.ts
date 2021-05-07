@@ -6,6 +6,8 @@ interface User {
     password: string;
 
     token: string;
+
+    role: string;
 }
 
 export default User;

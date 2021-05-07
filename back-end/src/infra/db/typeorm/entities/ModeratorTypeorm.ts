@@ -27,6 +27,9 @@ class ModeratorTypeorm implements Moderator {
     @Column({ nullable: true })
     token: string;
 
+    @Column({ nullable: true })
+    role: string;
+
     @Column()
     name: string;
 
