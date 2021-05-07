@@ -1,7 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 import LoadUserByTokenService from '../../core/services/LoadUserByTokenService';
 import { AccessDeniedError } from '../erros/AccessDeniedError';
-import { forbidden } from '../helpers/httpHelder';
+import { forbidden, ok } from '../helpers/httpHelder';
 import { HttpRequest, HttpResponse } from '../protocols/http';
 import { Middelware } from '../protocols/middleware';
 
@@ -20,13 +20,9 @@ export class AuthMiddleware implements Middelware {
 
             const user = await this.loadUserByTokenService.execute(accessToken);
 
-            return {
-                statusCode: 200,
-                body: user,
-            };
+            return ok({ userId: user.id });
         } catch {
-            const error = forbidden(new AccessDeniedError());
-            return new Promise(resolve => resolve(error));
+            return forbidden(new AccessDeniedError());
         }
     }
 }
