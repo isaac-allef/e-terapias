@@ -40,4 +40,14 @@ describe('LoadUserByIdToken usecase', () => {
         });
         await expect(sut.execute('any_token', 'any_role')).rejects.toThrow();
     });
+
+    test('Should call LoadUserByTokenRepository with correct values', async () => {
+        const { sut, loadUserByTokenRepositoryStub } = makeSut();
+        const loadByTokenSpy = jest.spyOn(
+            loadUserByTokenRepositoryStub,
+            'loadByToken',
+        );
+        await sut.execute('any_token', 'any_role');
+        expect(loadByTokenSpy).toHaveBeenCalledWith('any_token', 'any_role');
+    });
 });
