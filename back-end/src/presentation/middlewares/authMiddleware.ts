@@ -4,9 +4,9 @@ import LoadUserByTokenService from '../../core/services/LoadUserByTokenService';
 import { AccessDeniedError } from '../erros/AccessDeniedError';
 import { forbidden, ok, serverError } from '../helpers/httpHelder';
 import { HttpRequest, HttpResponse } from '../protocols/http';
-import { Middelware } from '../protocols/middleware';
+import { Middleware } from '../protocols/middleware';
 
-export class AuthMiddleware implements Middelware {
+export class AuthMiddleware implements Middleware {
     constructor(
         private readonly loadUserByTokenService: LoadUserByTokenService,
         private readonly role?: string,
