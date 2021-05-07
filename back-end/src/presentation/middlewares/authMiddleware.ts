@@ -8,6 +8,7 @@ import { Middelware } from '../protocols/middleware';
 export class AuthMiddleware implements Middelware {
     constructor(
         private readonly loadUserByTokenService: LoadUserByTokenService,
+        private readonly role?: string,
     ) {}
 
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -18,7 +19,10 @@ export class AuthMiddleware implements Middelware {
                 throw new Error('Token no provided');
             }
 
-            const user = await this.loadUserByTokenService.execute(accessToken);
+            const user = await this.loadUserByTokenService.execute(
+                accessToken,
+                this.role,
+            );
 
             return ok({ userId: user.id });
         } catch {
