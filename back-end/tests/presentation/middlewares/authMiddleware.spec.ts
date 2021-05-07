@@ -4,6 +4,7 @@ import { AuthMiddleware } from '../../../src/presentation/middlewares/authMiddle
 import LoadUserByTokenService from '../../../src/core/services/LoadUserByTokenService';
 import { TokenDecodederStub } from '../../core/mocks/mockToken';
 import { LoadUserByTokenRepositoryStub } from '../../core/mocks/mockUser';
+import { HttpRequest } from '../../../src/presentation/protocols/http';
 
 const makeLoadUserByTokenService = (): LoadUserByTokenService => {
     const tokenDecodederStub = new TokenDecodederStub();
@@ -13,6 +14,12 @@ const makeLoadUserByTokenService = (): LoadUserByTokenService => {
         loadUserByTokenRepositoryStub,
     );
 };
+
+const makeFakeRequest = (): HttpRequest => ({
+    headers: {
+        'x-access-token': 'any_token',
+    },
+});
 
 interface SutTypes {
     sut: AuthMiddleware;
@@ -38,11 +45,7 @@ describe('Auth Middleware', () => {
     test('Should call LoadUserByToken with correct accessToken', async () => {
         const { sut, loadUserByTokenServiceStub } = makeSut();
         const executeSpy = jest.spyOn(loadUserByTokenServiceStub, 'execute');
-        await sut.handle({
-            headers: {
-                'x-access-token': 'any_token',
-            },
-        });
+        await sut.handle(makeFakeRequest());
         expect(executeSpy).toHaveBeenCalledWith('any_token');
     });
 
@@ -54,7 +57,7 @@ describe('Auth Middleware', () => {
         ).mockImplementationOnce(() => {
             throw new Error('random error');
         });
-        const httpResponse = await sut.handle({});
+        const httpResponse = await sut.handle(makeFakeRequest());
         expect(httpResponse).toEqual(forbidden(new AccessDeniedError()));
     });
 });

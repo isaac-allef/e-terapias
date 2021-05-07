@@ -11,11 +11,22 @@ export class AuthMiddleware implements Middelware {
     ) {}
 
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
-        const accessToken = httpRequest.headers?.['x-access-token'];
-        if (accessToken) {
-            await this.loadUserByTokenService.execute(accessToken);
+        try {
+            const accessToken = httpRequest.headers?.['x-access-token'];
+
+            if (!accessToken) {
+                throw new Error('Token no provided');
+            }
+
+            const user = await this.loadUserByTokenService.execute(accessToken);
+
+            return {
+                statusCode: 200,
+                body: user,
+            };
+        } catch {
+            const error = forbidden(new AccessDeniedError());
+            return new Promise(resolve => resolve(error));
         }
-        const error = forbidden(new AccessDeniedError());
-        return new Promise(resolve => resolve(error));
     }
 }
