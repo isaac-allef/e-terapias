@@ -7,6 +7,7 @@ import CreateModeratorsRepository, {
 } from '../../../../core/protocols/db/repositories/CreateModeratorsRepository';
 import LoadModeratorByIdRepository from '../../../../core/protocols/db/repositories/LoadModeratorByIdRepository';
 import LoadUserByEmailRepository from '../../../../core/protocols/db/repositories/LoadUserByEmailRepository';
+import LoadUserByTokenRepository from '../../../../core/protocols/db/repositories/LoadUserByTokenRepository';
 import UpdateAccessTokenRepository from '../../../../core/protocols/db/repositories/UpdateAccessTokenRepository';
 import ModeratorTypeorm from '../entities/ModeratorTypeorm';
 
@@ -16,7 +17,8 @@ class ModeratorTypeormRepository
         CreateModeratorsRepository,
         LoadModeratorByIdRepository,
         LoadUserByEmailRepository,
-        UpdateAccessTokenRepository {
+        UpdateAccessTokenRepository,
+        LoadUserByTokenRepository {
     private ormRepository: Repository<ModeratorTypeorm>;
 
     constructor() {
@@ -98,6 +100,30 @@ class ModeratorTypeormRepository
             return user;
         } catch {
             throw new Error('Load user error');
+        }
+    }
+
+    async loadByToken(accessToken: string, role?: string): Promise<User> {
+        try {
+            let user;
+
+            if (role) {
+                user = await this.ormRepository.findOne({
+                    where: { token: accessToken, role },
+                });
+            } else {
+                user = await this.ormRepository.findOne({
+                    where: { token: accessToken },
+                });
+            }
+
+            if (!user) {
+                throw new Error('User not found');
+            }
+
+            return user;
+        } catch {
+            throw new Error('Load by token user error');
         }
     }
 }
