@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import makeLoginContoller from '../../factories/controllers/makeLoginContoller';
+import makeLoginContoller from '../../factories/controllers/public/makeLoginContoller';
 import adapterRouter from '../adapters/expressRouter';
 
 const loginRouter = Router();

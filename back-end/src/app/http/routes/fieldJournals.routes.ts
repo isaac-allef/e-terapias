@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import adapterRouter from '../adapters/expressRouter';
-import makeCreateFieldJournalContoller from '../../factories/controllers/makeCreateFieldJournalContoller';
-import makeLoadFieldJournalContoller from '../../factories/controllers/makeLoadFieldJournalContoller';
+import makeCreateFieldJournalContoller from '../../factories/controllers/userModerator/makeCreateFieldJournalContoller';
+import makeLoadFieldJournalContoller from '../../factories/controllers/shared/makeLoadFieldJournalContoller';
 import adapterMiddleware from '../adapters/expressMiddleware';
 import { makeAuthModeratorMiddleware } from '../../factories/middlewares/makeAuthModeratorMiddleware';
 

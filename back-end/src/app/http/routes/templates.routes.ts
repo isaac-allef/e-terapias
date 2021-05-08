@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import adapterRouter from '../adapters/expressRouter';
-import makeCreateTemplateContoller from '../../factories/controllers/makeCreateTemplateContoller';
-import makeLoadTemplateContoller from '../../factories/controllers/makeLoadTemplateContoller';
+import makeCreateTemplateContoller from '../../factories/controllers/userManager/makeCreateTemplateContoller';
+import makeLoadTemplateContoller from '../../factories/controllers/shared/makeLoadTemplateContoller';
 
 const templatesRouter = Router();
 
