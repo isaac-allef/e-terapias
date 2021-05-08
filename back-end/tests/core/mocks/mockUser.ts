@@ -14,6 +14,7 @@ export class LoadUserByEmailRepositoryStub
             email,
             password: 'any_password',
             token: 'randomToken',
+            role: '',
         };
 
         return new Promise(resolve => resolve(user));
@@ -28,6 +29,7 @@ export class UpdateAccessTokenRepositoryStub
             email: 'any_email@email.com',
             password: 'any_password',
             token,
+            role: '',
         };
 
         return new Promise(resolve => resolve(user));
@@ -42,6 +44,7 @@ export class LoadUserByTokenRepositoryStub
             email: 'any_email@email.com',
             password: 'any_password',
             token: accessToken,
+            role: '',
         };
 
         return new Promise(resolve => resolve(user));

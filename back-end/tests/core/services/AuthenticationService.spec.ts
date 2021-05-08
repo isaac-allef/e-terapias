@@ -81,6 +81,7 @@ describe('Authentication usecase', () => {
                     email: 'any_email@email.com',
                     password: 'any_password',
                     token: 'randomToken',
+                    role: '',
                 }),
             ),
         );

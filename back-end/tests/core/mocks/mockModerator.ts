@@ -16,6 +16,7 @@ export class CreateModeratorsRepositoryStub
             fieldJournals: [],
             password: '1234',
             token: 'randomToken1',
+            role: '',
         };
 
         const moderator2: Moderator = {
@@ -26,6 +27,7 @@ export class CreateModeratorsRepositoryStub
             fieldJournals: [],
             password: '1234',
             token: 'randomToken2',
+            role: '',
         };
 
         const moderators = [moderator1, moderator2];
@@ -45,6 +47,7 @@ export class LoadModeratorByIdRepositoryStub
             fieldJournals: [],
             password: '1234',
             token: 'randomToken',
+            role: '',
         };
 
         return new Promise(resolve => resolve(moderator));

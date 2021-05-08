@@ -76,6 +76,7 @@ describe('Create field journal usecase', () => {
                     fieldJournals: [],
                     password: '1234',
                     token: 'randomToken',
+                    role: '',
                 }),
             ),
         );
@@ -176,6 +177,7 @@ describe('Create field journal usecase', () => {
                         fieldJournals: [],
                         password: '1234',
                         token: 'randomToken',
+                        role: '',
                     }),
                 );
             },
@@ -241,6 +243,7 @@ describe('Create field journal usecase', () => {
                         fieldJournals: [],
                         password: '1234',
                         token: 'randomToken',
+                        role: '',
                     }),
                 );
             },
@@ -300,6 +303,7 @@ describe('Create field journal usecase', () => {
                         fieldJournals: [],
                         password: '1234',
                         token: 'randomToken',
+                        role: '',
                     }),
                 );
             },

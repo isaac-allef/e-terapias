@@ -70,6 +70,7 @@ describe('LoadUserByIdToken usecase', () => {
             email: 'any_email@email.com',
             password: 'any_password',
             token: 'any_token',
+            role: '',
         });
     });
 });
