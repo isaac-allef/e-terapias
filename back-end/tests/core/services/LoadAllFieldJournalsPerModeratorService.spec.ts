@@ -38,4 +38,26 @@ describe('load all FieldJournalsPerModerator usecase', () => {
             page: 1,
         });
     });
+
+    test('Should call LoadAllFieldJournalsPerModeratorRepository with correct values', async () => {
+        const { sut, loadAllFieldJournalsPerModeratorRepository } = makeSut();
+        const loadAllSpy = jest.spyOn(
+            loadAllFieldJournalsPerModeratorRepository,
+            'loadAllPerModerator',
+        );
+        await sut.execute({
+            moderatorId: 'randomModeratorId',
+            sort: 'updated_at',
+            direction: 'asc',
+            per_page: 10,
+            page: 1,
+        });
+        expect(loadAllSpy).toHaveBeenCalledWith({
+            moderatorId: 'randomModeratorId',
+            sort: 'updated_at',
+            direction: 'asc',
+            per_page: 10,
+            page: 1,
+        });
+    });
 });
