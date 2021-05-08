@@ -5,6 +5,7 @@ import makeLoadModeratorContoller from '../../factories/controllers/shared/makeL
 import makeLoadMeModeratorContoller from '../../factories/controllers/userModerator/makeLoadMeModeratorContoller';
 import adapterMiddleware from '../adapters/expressMiddleware';
 import { makeAuthModeratorMiddleware } from '../../factories/middlewares/makeAuthModeratorMiddleware';
+import makeLoadAllFieldJournalsPerModeratorContoller from '../../factories/controllers/userModerator/makeLoadAllFieldJournalsPerModeratorContoller';
 
 const moderatorsRouter = Router();
 
@@ -13,6 +14,11 @@ moderatorsRouter.get(
     '/me',
     adapterMiddleware(makeAuthModeratorMiddleware()),
     adapterRouter(makeLoadMeModeratorContoller()),
+);
+moderatorsRouter.get(
+    '/me/fieldJournals',
+    adapterMiddleware(makeAuthModeratorMiddleware()),
+    adapterRouter(makeLoadAllFieldJournalsPerModeratorContoller()),
 );
 moderatorsRouter.get('/:id', adapterRouter(makeLoadModeratorContoller()));
 
