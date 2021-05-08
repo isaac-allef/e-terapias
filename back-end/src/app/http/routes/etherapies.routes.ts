@@ -1,9 +1,9 @@
 import { Router } from 'express';
 import adapterRouter from '../adapters/expressRouter';
-import makeCreateEtherapiesContoller from '../../factories/makeCreateEtherapiesContoller';
-import makeLoadEtherapyContoller from '../../factories/makeLoadEtherapyContoller';
-import makeLoadAllEtherapiesContoller from '../../factories/makeLoadAllEtherapiesContoller';
-import makeSearchEtherapiesContoller from '../../factories/makeSearchEtherapiesContoller';
+import makeCreateEtherapiesContoller from '../../factories/controllers/makeCreateEtherapiesContoller';
+import makeLoadEtherapyContoller from '../../factories/controllers/makeLoadEtherapyContoller';
+import makeLoadAllEtherapiesContoller from '../../factories/controllers/makeLoadAllEtherapiesContoller';
+import makeSearchEtherapiesContoller from '../../factories/controllers/makeSearchEtherapiesContoller';
 
 const etherapiesRouter = Router();
 

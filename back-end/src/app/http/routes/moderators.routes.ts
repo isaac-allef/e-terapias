@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import adapterRouter from '../adapters/expressRouter';
-import makeCreateModeratorsContoller from '../../factories/makeCreateModeratorsContoller';
-import makeLoadModeratorContoller from '../../factories/makeLoadModeratorContoller';
+import makeCreateModeratorsContoller from '../../factories/controllers/makeCreateModeratorsContoller';
+import makeLoadModeratorContoller from '../../factories/controllers/makeLoadModeratorContoller';
 
 const moderatorsRouter = Router();
 

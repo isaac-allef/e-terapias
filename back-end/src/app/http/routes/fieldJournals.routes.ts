@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import adapterRouter from '../adapters/expressRouter';
-import makeCreateFieldJournalContoller from '../../factories/makeCreateFieldJournalContoller';
-import makeLoadFieldJournalContoller from '../../factories/makeLoadFieldJournalContoller';
+import makeCreateFieldJournalContoller from '../../factories/controllers/makeCreateFieldJournalContoller';
+import makeLoadFieldJournalContoller from '../../factories/controllers/makeLoadFieldJournalContoller';
 
 const fieldJournalsRouter = Router();
 

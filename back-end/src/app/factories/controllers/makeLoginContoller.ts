@@ -1,10 +1,10 @@
-import AuthenticationService from '../../core/services/AuthenticationService';
-import BcryptAdapter from '../../infra/cryptography/bcryptAdapter';
-import ModeratorTypeormRepository from '../../infra/db/typeorm/repositories/ModeratorTypeormRepository';
-import JwtAdapter from '../../infra/token/jwtAdapter';
-import { LoginController } from '../../presentation/controllers/LoginController';
-import { Controller } from '../../presentation/protocols/controller';
-import env from '../config/env';
+import AuthenticationService from '../../../core/services/AuthenticationService';
+import BcryptAdapter from '../../../infra/cryptography/bcryptAdapter';
+import ModeratorTypeormRepository from '../../../infra/db/typeorm/repositories/ModeratorTypeormRepository';
+import JwtAdapter from '../../../infra/token/jwtAdapter';
+import { LoginController } from '../../../presentation/controllers/LoginController';
+import { Controller } from '../../../presentation/protocols/controller';
+import env from '../../config/env';
 
 const makeLoginContoller = (): Controller => {
     const salt = 12;

@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import adapterRouter from '../adapters/expressRouter';
-import makeLinkModeratorsToEtherapiesContoller from '../../factories/makeLinkModeratorsToEtherapiesContoller';
-import makeLinkTemplateToEtherapiesContoller from '../../factories/makeLinkTemplateToEtherapiesContoller';
+import makeLinkModeratorsToEtherapiesContoller from '../../factories/controllers/makeLinkModeratorsToEtherapiesContoller';
+import makeLinkTemplateToEtherapiesContoller from '../../factories/controllers/makeLinkTemplateToEtherapiesContoller';
 
 const linksRouter = Router();
 
