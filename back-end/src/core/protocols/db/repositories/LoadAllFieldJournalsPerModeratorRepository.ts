@@ -1,0 +1,19 @@
+import FieldJournal from '../../../entities/FieldJournal';
+
+export type params = {
+    moderatorId: string;
+    sort: 'name' | 'created_at' | 'updated_at';
+    direction: 'asc' | 'desc';
+    per_page: number;
+    page: number;
+};
+
+export default interface LoadAllFieldJournalsPerModeratorRepository {
+    loadAllPerModerator({
+        moderatorId,
+        sort,
+        direction,
+        per_page,
+        page,
+    }: params): Promise<FieldJournal[]>;
+}
