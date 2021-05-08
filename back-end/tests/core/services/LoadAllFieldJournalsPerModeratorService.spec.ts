@@ -60,4 +60,23 @@ describe('load all FieldJournalsPerModerator usecase', () => {
             page: 1,
         });
     });
+
+    test('Should throw if LoadAllFieldJournalsPerModeratorRepository throws', async () => {
+        const { sut, loadAllFieldJournalsPerModeratorRepository } = makeSut();
+        jest.spyOn(
+            loadAllFieldJournalsPerModeratorRepository,
+            'loadAllPerModerator',
+        ).mockImplementationOnce(() => {
+            throw new Error('Random error');
+        });
+        await expect(
+            sut.execute({
+                moderatorId: 'randomModeratorId',
+                sort: 'updated_at',
+                direction: 'asc',
+                per_page: 10,
+                page: 1,
+            }),
+        ).rejects.toThrow();
+    });
 });
