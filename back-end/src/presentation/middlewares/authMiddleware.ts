@@ -14,7 +14,9 @@ export class AuthMiddleware implements Middleware {
 
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
         try {
-            const accessToken = httpRequest.headers?.['x-access-token'];
+            const accessToken = httpRequest.headers?.authorization.split(
+                ' ',
+            )[1];
 
             if (!accessToken) {
                 return forbidden(new AccessDeniedError());
