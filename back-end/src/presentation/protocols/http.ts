@@ -9,4 +9,5 @@ export interface HttpRequest {
     params?: any;
     body?: any;
     headers?: any;
+    userId?: string;
 }

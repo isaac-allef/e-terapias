@@ -9,6 +9,7 @@ const adapterRouter = (controller: Controller) => {
             query: request.query,
             params: request.params,
             body: request.body,
+            userId: request.userId,
         };
         const httpResponse = await controller.handle(httpRequest);
         response.status(httpResponse.statusCode).json(httpResponse.body);
