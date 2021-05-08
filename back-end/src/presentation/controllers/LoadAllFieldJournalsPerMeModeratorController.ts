@@ -5,7 +5,8 @@ import { badRequest, ok, serverError } from '../helpers/httpHelder';
 import { Controller } from '../protocols/controller';
 import { HttpRequest, HttpResponse } from '../protocols/http';
 
-export class LoadAllFieldJournalsPerModeratorController implements Controller {
+export class LoadAllFieldJournalsPerMeModeratorController
+    implements Controller {
     constructor(
         private readonly loadAllFieldJournalsPerModeratorService: LoadAllFieldJournalsPerModeratorService,
     ) {}
