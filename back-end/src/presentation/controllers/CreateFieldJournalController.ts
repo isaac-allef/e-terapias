@@ -12,7 +12,8 @@ export class CreateFieldJournalController implements Controller {
 
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
         try {
-            const { name, fields, moderatorId, etherapyId } = httpRequest.body;
+            const { name, fields, etherapyId } = httpRequest.body;
+            const moderatorId = httpRequest.userId;
 
             if (!name) {
                 return badRequest(new MissingParamError('name'));
