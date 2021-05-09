@@ -32,4 +32,20 @@ describe('load all Field journals per moderator usecase', () => {
             keywords: 'any_word',
         });
     });
+
+    test('Should call SearchFieldJournalsPerModeratorRepository with correct values', async () => {
+        const { sut, searchFieldJournalsPerModeratorRepository } = makeSut();
+        const searchSpy = jest.spyOn(
+            searchFieldJournalsPerModeratorRepository,
+            'searchPerModerator',
+        );
+        await sut.execute({
+            moderatorId: 'randomModeratorId',
+            keywords: 'any_word',
+        });
+        expect(searchSpy).toHaveBeenCalledWith({
+            moderatorId: 'randomModeratorId',
+            keywords: 'any_word',
+        });
+    });
 });
