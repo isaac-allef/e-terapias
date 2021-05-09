@@ -7,6 +7,7 @@ import adapterMiddleware from '../adapters/expressMiddleware';
 import { makeAuthModeratorMiddleware } from '../../factories/middlewares/makeAuthModeratorMiddleware';
 import makeLoadAllFieldJournalsPerMeModeratorContoller from '../../factories/controllers/userModerator/makeLoadAllFieldJournalsPerMeModeratorContoller';
 import makeLoadAllFieldJournalsPerModeratorContoller from '../../factories/controllers/userManager/makeLoadAllFieldJournalsPerModeratorContoller';
+import makeSearchFieldJournalsPerMeModeratorContoller from '../../factories/controllers/userModerator/makeSearchFieldJournalsPerMeModeratorContoller';
 
 const moderatorsRouter = Router();
 
@@ -26,4 +27,10 @@ moderatorsRouter.get(
     '/:id/fieldJournals',
     adapterRouter(makeLoadAllFieldJournalsPerModeratorContoller()),
 );
+moderatorsRouter.get(
+    '/me/fieldJournals/search/:keyword',
+    adapterMiddleware(makeAuthModeratorMiddleware()),
+    adapterRouter(makeSearchFieldJournalsPerMeModeratorContoller()),
+);
+
 export default moderatorsRouter;
