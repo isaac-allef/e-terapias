@@ -48,4 +48,20 @@ describe('load all Field journals per moderator usecase', () => {
             keywords: 'any_word',
         });
     });
+
+    test('Should throw if SearchFieldJournalsPerModeratorRepository throws', async () => {
+        const { sut, searchFieldJournalsPerModeratorRepository } = makeSut();
+        jest.spyOn(
+            searchFieldJournalsPerModeratorRepository,
+            'searchPerModerator',
+        ).mockImplementationOnce(() => {
+            throw new Error('Random error');
+        });
+        await expect(
+            sut.execute({
+                moderatorId: 'randomModeratorId',
+                keywords: 'any_word',
+            }),
+        ).rejects.toThrow();
+    });
 });
