@@ -14,7 +14,7 @@ export class AuthMiddleware implements Middleware {
 
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
         try {
-            const accessToken = httpRequest.headers?.authorization.split(
+            const accessToken = httpRequest.headers?.authorization?.split(
                 ' ',
             )[1];
 
