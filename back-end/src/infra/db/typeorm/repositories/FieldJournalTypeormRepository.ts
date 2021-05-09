@@ -8,6 +8,9 @@ import LoadAllFieldJournalsPerModeratorRepository, {
     params as loadAllPerModeratorParams,
 } from '../../../../core/protocols/db/repositories/LoadAllFieldJournalsPerModeratorRepository';
 import LoadFieldJournalByIdRepository from '../../../../core/protocols/db/repositories/LoadFieldJournalByIdRepository';
+import SearchFieldJournalsPerModeratorRepository, {
+    params,
+} from '../../../../core/protocols/db/repositories/SearchFieldJournalsPerModeratorRepository';
 import FieldJournalTypeorm from '../entities/FieldJournalTypeorm';
 
 @EntityRepository()
@@ -15,7 +18,8 @@ class FieldJournalTypeormRepository
     implements
         CreateFieldJournalRepository,
         LoadFieldJournalByIdRepository,
-        LoadAllFieldJournalsPerModeratorRepository {
+        LoadAllFieldJournalsPerModeratorRepository,
+        SearchFieldJournalsPerModeratorRepository {
     private ormRepository: Repository<FieldJournalTypeorm>;
 
     constructor() {
@@ -76,6 +80,34 @@ class FieldJournalTypeormRepository
             return etherapies;
         } catch (err) {
             throw new Error('Load all fieldJournals per moderator error');
+        }
+    }
+
+    async searchPerModerator({
+        moderatorId,
+        keywords,
+    }: params): Promise<FieldJournal[]> {
+        try {
+            const queryBuilder = this.ormRepository.createQueryBuilder(
+                'FieldJournal',
+            );
+
+            const finded = queryBuilder
+                .leftJoinAndSelect('FieldJournal.etherapy', 'etherapy')
+                .where('FieldJournal.name ILIKE :name', {
+                    name: `%${keywords}%`,
+                })
+                .orWhere('etherapy.name ILIKE :name', {
+                    name: `%${keywords}%`,
+                })
+                .andWhere('FieldJournal.id = :id', {
+                    id: moderatorId,
+                })
+                .getMany();
+
+            return finded;
+        } catch {
+            throw new Error('Search field journals per moderator error');
         }
     }
 }
