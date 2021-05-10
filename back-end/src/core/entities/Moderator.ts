@@ -5,6 +5,8 @@ import User from './User';
 interface Moderator extends User {
     id: string;
 
+    email: string;
+
     name: string;
 
     fieldJournals: FieldJournal[];

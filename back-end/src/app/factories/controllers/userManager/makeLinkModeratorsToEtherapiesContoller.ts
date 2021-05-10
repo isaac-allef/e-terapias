@@ -7,11 +7,9 @@ import { Controller } from '../../../../presentation/protocols/controller';
 const makeLinkModeratorsToEtherapiesContoller = (): Controller => {
     const linkModeratorsToEtherapiesRepository = new EtherapyTypeormRepository();
     const loadModeratorRepository = new ModeratorTypeormRepository();
-    const loadEtherapyRepository = new EtherapyTypeormRepository();
     const linkModeratorsToEtherapiesService = new LinkModeratorsToEtherapiesService(
         linkModeratorsToEtherapiesRepository,
         loadModeratorRepository,
-        loadEtherapyRepository,
     );
     return new LinkModeratorsToEtherapiesController(
         linkModeratorsToEtherapiesService,
