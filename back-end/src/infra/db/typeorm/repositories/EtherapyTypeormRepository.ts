@@ -142,6 +142,9 @@ class EtherapyTypeormRepository
                 .where('Etherapy.name ILIKE :name', {
                     name: `%${keywords}%`,
                 })
+                .orWhere('Etherapy.identifier ILIKE :identifier', {
+                    identifier: `%${keywords}%`,
+                })
                 .orWhere('moderators.name ILIKE :name', {
                     name: `%${keywords}%`,
                 })
