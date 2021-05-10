@@ -84,12 +84,18 @@ class EtherapyTypeormRepository
         try {
             const etherapies = await Promise.all(
                 data.map(async d => {
-                    if (!d.etherapy.moderators) {
-                        // eslint-disable-next-line no-param-reassign
-                        d.etherapy.moderators = [];
+                    const etherapy = await this.ormRepository.findOne({
+                        identifier: d.etherapyIdentifier,
+                    });
+                    if (!etherapy) {
+                        throw new Error('Etherapy not found');
                     }
-                    d.etherapy.moderators.push(d.moderator);
-                    return d.etherapy;
+                    if (!etherapy.moderators) {
+                        // eslint-disable-next-line no-param-reassign
+                        etherapy.moderators = [];
+                    }
+                    etherapy.moderators.push(d.moderator);
+                    return etherapy;
                 }),
             );
 

@@ -1,9 +1,8 @@
 import Moderator from '../../../entities/Moderator';
-import Etherapy from '../../../entities/Etherapy';
 
 type dto = {
     moderator: Moderator;
-    etherapy: Etherapy;
+    etherapyIdentifier: string;
 };
 
 export type params = dto[];
