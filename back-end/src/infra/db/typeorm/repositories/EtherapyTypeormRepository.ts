@@ -36,7 +36,10 @@ class EtherapyTypeormRepository
             const etherapies = [];
 
             for (const dto of data) {
-                const etherapy = this.ormRepository.create({ name: dto.name });
+                const etherapy = this.ormRepository.create({
+                    identifier: dto.identifier,
+                    name: dto.name,
+                });
                 etherapies.push(etherapy);
             }
 

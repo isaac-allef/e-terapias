@@ -12,14 +12,14 @@ export class CreateEtherapiesController implements Controller {
 
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
         try {
-            const { names } = httpRequest.body;
+            const { basicInformations } = httpRequest.body;
 
-            if (!names) {
-                return badRequest(new MissingParamError('names'));
+            if (!basicInformations) {
+                return badRequest(new MissingParamError('basicInformations'));
             }
 
             const etherapies = await this.createEtherapiesService.execute(
-                names,
+                basicInformations,
             );
             return ok(etherapies);
         } catch (err) {

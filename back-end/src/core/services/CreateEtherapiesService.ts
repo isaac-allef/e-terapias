@@ -2,6 +2,8 @@ import Etherapy from '../entities/Etherapy';
 import CreateEtherapiesRepository from '../protocols/db/repositories/CreateEtherapiesRepository';
 
 type dto = {
+    identifier: string;
+
     name: string;
 };
 

@@ -6,6 +6,8 @@ import Moderator from './Moderator';
 interface Etherapy {
     id: string;
 
+    identifier: string;
+
     name: string;
 
     fieldJournals: FieldJournal[];

@@ -1,6 +1,8 @@
 import Etherapy from '../../../entities/Etherapy';
 
 type dto = {
+    identifier: string;
+
     name: string;
 };
 

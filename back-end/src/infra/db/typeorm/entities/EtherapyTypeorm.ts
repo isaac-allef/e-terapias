@@ -22,6 +22,9 @@ class EtherapyTypeorm implements Etherapy {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
+    @Column({ unique: true })
+    identifier: string;
+
     @Column()
     name: string;
 
