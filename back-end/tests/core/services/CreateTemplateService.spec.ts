@@ -1,20 +1,30 @@
 /* eslint-disable max-classes-per-file */
 import CreateTemplateService from '../../../src/core/services/CreateTemplateService';
 import CreateTemplateRepository from '../../../src/core/protocols/db/repositories/CreateTemplateRepository';
-import { CreateTemplateRepositoryStub } from '../mocks/mockTemplate';
+import {
+    CreateTemplateRepositoryStub,
+    LinkTemplateToEtherapiesRepositoryStub,
+} from '../mocks/mockTemplate';
 import { templateField } from '../../../src/core/entities/Template';
+import LinkTemplateToEtherapiesRepository from '../../../src/core/protocols/db/repositories/LinkTemplateToEtherapiesRepository';
 
 interface SutTypes {
     sut: CreateTemplateService;
     createTemplateRepository: CreateTemplateRepository;
+    linkTemplateToEtherapiesRepository: LinkTemplateToEtherapiesRepository;
 }
 
 const makeSut = (): SutTypes => {
     const createTemplateRepository = new CreateTemplateRepositoryStub();
-    const sut = new CreateTemplateService(createTemplateRepository);
+    const linkTemplateToEtherapiesRepository = new LinkTemplateToEtherapiesRepositoryStub();
+    const sut = new CreateTemplateService(
+        createTemplateRepository,
+        linkTemplateToEtherapiesRepository,
+    );
     return {
         sut,
         createTemplateRepository,
+        linkTemplateToEtherapiesRepository,
     };
 };
 
@@ -30,10 +40,12 @@ describe('Create Template usecase', () => {
         await sut.execute({
             name: 'diário das eterapias de promoção ao bem-estar',
             templateFields: fakeTemplateFields,
+            etherapiesIds: ['randomIdEtherapy1', 'randomIdEtherapy2'],
         });
         expect(executeSpy).toHaveBeenCalledWith({
             name: 'diário das eterapias de promoção ao bem-estar',
             templateFields: fakeTemplateFields,
+            etherapiesIds: ['randomIdEtherapy1', 'randomIdEtherapy2'],
         });
     });
 
@@ -43,6 +55,7 @@ describe('Create Template usecase', () => {
         await sut.execute({
             name: 'diário das eterapias de promoção ao bem-estar',
             templateFields: fakeTemplateFields,
+            etherapiesIds: ['randomIdEtherapy1', 'randomIdEtherapy2'],
         });
         expect(createSpy).toHaveBeenCalledWith({
             name: 'diário das eterapias de promoção ao bem-estar',
@@ -62,6 +75,7 @@ describe('Create Template usecase', () => {
             sut.execute({
                 name: 'diário das eterapias de promoção ao bem-estar',
                 templateFields: fakeTemplateFields,
+                etherapiesIds: ['randomIdEtherapy1', 'randomIdEtherapy2'],
             }),
         ).rejects.toThrow();
     });
