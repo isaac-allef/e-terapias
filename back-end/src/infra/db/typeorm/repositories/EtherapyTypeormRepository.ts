@@ -38,11 +38,21 @@ class EtherapyTypeormRepository
             const etherapies = [];
 
             for (const dto of data) {
-                const etherapy = this.ormRepository.create({
+                // eslint-disable-next-line no-await-in-loop
+                const etherapyExists = await this.ormRepository.findOne({
                     identifier: dto.identifier,
-                    name: dto.name,
                 });
-                etherapies.push(etherapy);
+
+                if (etherapyExists) {
+                    etherapyExists.name = dto.name;
+                    etherapies.push(etherapyExists);
+                } else {
+                    const etherapy = this.ormRepository.create({
+                        identifier: dto.identifier,
+                        name: dto.name,
+                    });
+                    etherapies.push(etherapy);
+                }
             }
 
             await this.ormRepository.save(etherapies);
