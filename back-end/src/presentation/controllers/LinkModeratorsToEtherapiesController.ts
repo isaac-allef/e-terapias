@@ -12,14 +12,14 @@ export class LinkModeratorsToEtherapiesController implements Controller {
 
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
         try {
-            const { ids } = httpRequest.body;
+            const { links } = httpRequest.body;
 
-            if (!ids) {
+            if (!links) {
                 return badRequest(new MissingParamError('ids'));
             }
 
             const isLinked = await this.linkModeratorsToEtherapiesService.execute(
-                ids,
+                links,
             );
             return ok(isLinked);
         } catch (err) {

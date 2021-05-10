@@ -13,6 +13,7 @@ import LoadAllEtherapiesRepository, {
     params,
 } from '../../../../core/protocols/db/repositories/LoadAllEtherapiesRepository';
 import LoadEtherapyByIdRepository from '../../../../core/protocols/db/repositories/LoadEtherapyByIdRepository';
+import LoadEtherapyByIdentifierRepository from '../../../../core/protocols/db/repositories/LoadEtherapyByIdentifierRepository';
 import SearchEtherapiesRepository from '../../../../core/protocols/db/repositories/SearchEtherapiesRepository';
 import EtherapyTypeorm from '../entities/EtherapyTypeorm';
 
@@ -24,7 +25,8 @@ class EtherapyTypeormRepository
         LinkModeratorsToEtherapiesRepository,
         LinkTemplateToEtherapiesRepository,
         LoadAllEtherapiesRepository,
-        SearchEtherapiesRepository {
+        SearchEtherapiesRepository,
+        LoadEtherapyByIdentifierRepository {
     private ormRepository: Repository<EtherapyTypeorm>;
 
     constructor() {
@@ -157,6 +159,23 @@ class EtherapyTypeormRepository
             return finded;
         } catch {
             throw new Error('Search etherapies error');
+        }
+    }
+
+    async loadByIdentifier(identifier: string): Promise<Etherapy> {
+        try {
+            const etherapy = await this.ormRepository.findOne({
+                where: { identifier },
+                relations: ['template', 'fieldJournals', 'moderators'],
+            });
+
+            if (!etherapy) {
+                throw new Error('Etherapy not found');
+            }
+
+            return etherapy;
+        } catch {
+            throw new Error('Load etherapy error');
         }
     }
 }

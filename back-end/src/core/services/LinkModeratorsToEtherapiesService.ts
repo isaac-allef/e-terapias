@@ -1,10 +1,10 @@
 import LinkModeratorsToEtherapiesRepository from '../protocols/db/repositories/LinkModeratorsToEtherapiesRepository';
-import LoadModeratorByIdRepository from '../protocols/db/repositories/LoadModeratorByIdRepository';
-import LoadEtherapyByIdRepository from '../protocols/db/repositories/LoadEtherapyByIdRepository';
+import LoadModeratorByEmailRepository from '../protocols/db/repositories/LoadModeratorByEmailRepository';
+import LoadEtherapyByIdentifierRepository from '../protocols/db/repositories/LoadEtherapyByIdentifierRepository';
 
 type dto = {
-    moderatorId: string;
-    etherapyId: string;
+    moderatorEmail: string;
+    etherapyIdentifier: string;
 };
 
 export type params = dto[];
@@ -12,8 +12,8 @@ export type params = dto[];
 class LinkModeratorsToEtherapiesService {
     constructor(
         private linkModeratorsToEtherapiesRepository: LinkModeratorsToEtherapiesRepository,
-        private loadModeratorByIdRepository: LoadModeratorByIdRepository,
-        private loadEtherapyByIdRepository: LoadEtherapyByIdRepository,
+        private loadModeratorByEmailRepository: LoadModeratorByEmailRepository,
+        private loadEtherapyByIdentifierRepository: LoadEtherapyByIdentifierRepository,
     ) {}
 
     public async execute(data: params): Promise<boolean> {
@@ -33,8 +33,8 @@ class LinkModeratorsToEtherapiesService {
             data.map(async d => {
                 const moderatorAndEtherapy = await this.loadModeratorAndEtherapy(
                     {
-                        moderatorId: d.moderatorId,
-                        etherapyId: d.etherapyId,
+                        moderatorEmail: d.moderatorEmail,
+                        etherapyIdentifier: d.etherapyIdentifier,
                     },
                 );
 
@@ -45,12 +45,17 @@ class LinkModeratorsToEtherapiesService {
         return moderatorsAndEtherapies;
     }
 
-    private async loadModeratorAndEtherapy({ moderatorId, etherapyId }: dto) {
-        const moderator = await this.loadModeratorByIdRepository.load(
-            moderatorId,
+    private async loadModeratorAndEtherapy({
+        moderatorEmail,
+        etherapyIdentifier,
+    }: dto) {
+        const moderator = await this.loadModeratorByEmailRepository.loadByEmail(
+            moderatorEmail,
         );
 
-        const etherapy = await this.loadEtherapyByIdRepository.load(etherapyId);
+        const etherapy = await this.loadEtherapyByIdentifierRepository.loadByIdentifier(
+            etherapyIdentifier,
+        );
 
         return {
             moderator,
