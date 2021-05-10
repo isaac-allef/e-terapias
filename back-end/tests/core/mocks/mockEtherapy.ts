@@ -3,6 +3,7 @@
 import Etherapy from '../../../src/core/entities/Etherapy';
 import CreateEtherapiesRepository from '../../../src/core/protocols/db/repositories/CreateEtherapiesRepository';
 import LoadEtherapyByIdRepository from '../../../src/core/protocols/db/repositories/LoadEtherapyByIdRepository';
+import LoadEtherapyByIdentifierRepository from '../../../src/core/protocols/db/repositories/LoadEtherapyByIdentifierRepository';
 import LoadAllEtherapiesRepository from '../../../src/core/protocols/db/repositories/LoadAllEtherapiesRepository';
 import SearchEtherapiesRepository from '../../../src/core/protocols/db/repositories/SearchEtherapiesRepository';
 
@@ -98,5 +99,21 @@ export class SearchEtherapiesRepositoryStub
         ];
 
         return new Promise(resolve => resolve(etherapies));
+    }
+}
+
+export class LoadEtherapyByIdentifierRepositoryStub
+    implements LoadEtherapyByIdentifierRepository {
+    async loadByIdentifier(identifier: string): Promise<Etherapy> {
+        const etherapy: Etherapy = {
+            id: 'randomId',
+            identifier,
+            name: 'viver é bom',
+            fieldJournals: [],
+            moderators: [],
+            template: undefined,
+        };
+
+        return new Promise(resolve => resolve(etherapy));
     }
 }

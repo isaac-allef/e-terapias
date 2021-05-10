@@ -2,33 +2,33 @@
 
 import LinkModeratorsToEtherapiesService from '../../../src/core/services/LinkModeratorsToEtherapiesService';
 import LinkModeratorsToEtherapiesRepository from '../../../src/core/protocols/db/repositories/LinkModeratorsToEtherapiesRepository';
-import LoadModeratorByIdRepository from '../../../src/core/protocols/db/repositories/LoadModeratorByIdRepository';
-import LoadEtherapyByIdRepository from '../../../src/core/protocols/db/repositories/LoadEtherapyByIdRepository';
+import LoadModeratorByEmailRepository from '../../../src/core/protocols/db/repositories/LoadModeratorByEmailRepository';
+import LoadEtherapyByIdentifierRepository from '../../../src/core/protocols/db/repositories/LoadEtherapyByIdentifierRepository';
 import { LinkModeratorsToEtherapiesRepositoryStub } from '../mocks/mockLink';
-import { LoadModeratorByIdRepositoryStub } from '../mocks/mockModerator';
-import { LoadEtherapyByIdRepositoryStub } from '../mocks/mockEtherapy';
+import { LoadModeratorByEmailRepositoryStub } from '../mocks/mockModerator';
+import { LoadEtherapyByIdentifierRepositoryStub } from '../mocks/mockEtherapy';
 
 interface SutTypes {
     sut: LinkModeratorsToEtherapiesService;
     linkModeratorsToEtherapiesRepository: LinkModeratorsToEtherapiesRepository;
-    loadModeratorByIdRepository: LoadModeratorByIdRepository;
-    loadEtherapyByIdRepository: LoadEtherapyByIdRepository;
+    loadModeratorByEmailRepository: LoadModeratorByEmailRepository;
+    loadEtherapyByIdentifierRepository: LoadEtherapyByIdentifierRepository;
 }
 
 const makeSut = (): SutTypes => {
     const linkModeratorsToEtherapiesRepository = new LinkModeratorsToEtherapiesRepositoryStub();
-    const loadModeratorByIdRepository = new LoadModeratorByIdRepositoryStub();
-    const loadEtherapyByIdRepository = new LoadEtherapyByIdRepositoryStub();
+    const loadModeratorByEmailRepository = new LoadModeratorByEmailRepositoryStub();
+    const loadEtherapyByIdentifierRepository = new LoadEtherapyByIdentifierRepositoryStub();
     const sut = new LinkModeratorsToEtherapiesService(
         linkModeratorsToEtherapiesRepository,
-        loadModeratorByIdRepository,
-        loadEtherapyByIdRepository,
+        loadModeratorByEmailRepository,
+        loadEtherapyByIdentifierRepository,
     );
     return {
         sut,
         linkModeratorsToEtherapiesRepository,
-        loadModeratorByIdRepository,
-        loadEtherapyByIdRepository,
+        loadModeratorByEmailRepository,
+        loadEtherapyByIdentifierRepository,
     };
 };
 
@@ -38,82 +38,87 @@ describe('Link moderators to etherapies usecase', () => {
         const executeSpy = jest.spyOn(sut, 'execute');
         await sut.execute([
             {
-                moderatorId: 'randomIdModerator1',
-                etherapyId: 'randomIdEtherapy1',
+                moderatorEmail: 'randomIdModerator1',
+                etherapyIdentifier: 'randomIdEtherapy1',
             },
             {
-                moderatorId: 'randomIdModerator2',
-                etherapyId: 'randomIdEtherapy2',
+                moderatorEmail: 'randomIdModerator2',
+                etherapyIdentifier: 'randomIdEtherapy2',
             },
         ]);
         expect(executeSpy).toHaveBeenCalledWith([
             {
-                moderatorId: 'randomIdModerator1',
-                etherapyId: 'randomIdEtherapy1',
+                moderatorEmail: 'randomIdModerator1',
+                etherapyIdentifier: 'randomIdEtherapy1',
             },
             {
-                moderatorId: 'randomIdModerator2',
-                etherapyId: 'randomIdEtherapy2',
+                moderatorEmail: 'randomIdModerator2',
+                etherapyIdentifier: 'randomIdEtherapy2',
             },
         ]);
     });
 
-    test('Should call LoadModeratorByIdRepository with correct moderator id', async () => {
-        const { sut, loadModeratorByIdRepository } = makeSut();
-        const loadSpy = jest.spyOn(loadModeratorByIdRepository, 'load');
+    test('Should call LoadModeratorByEmailRepository with correct moderator id', async () => {
+        const { sut, loadModeratorByEmailRepository } = makeSut();
+        const loadSpy = jest.spyOn(
+            loadModeratorByEmailRepository,
+            'loadByEmail',
+        );
         await sut.execute([
             {
-                moderatorId: 'randomIdModerator1',
-                etherapyId: 'randomIdEtherapy1',
+                moderatorEmail: 'randomIdModerator1',
+                etherapyIdentifier: 'randomIdEtherapy1',
             },
             {
-                moderatorId: 'randomIdModerator2',
-                etherapyId: 'randomIdEtherapy2',
+                moderatorEmail: 'randomIdModerator2',
+                etherapyIdentifier: 'randomIdEtherapy2',
             },
         ]);
         expect(loadSpy).toHaveBeenCalledWith('randomIdModerator1');
         expect(loadSpy).toHaveBeenCalledWith('randomIdModerator2');
     });
 
-    test('Should throw if LoadModeratorByIdRepository throws', async () => {
-        const { sut, loadModeratorByIdRepository } = makeSut();
-        jest.spyOn(loadModeratorByIdRepository, 'load').mockImplementationOnce(
-            () => {
-                throw new Error('Random error');
-            },
-        );
+    test('Should throw if LoadModeratorByEmailRepository throws', async () => {
+        const { sut, loadModeratorByEmailRepository } = makeSut();
+        jest.spyOn(
+            loadModeratorByEmailRepository,
+            'loadByEmail',
+        ).mockImplementationOnce(() => {
+            throw new Error('Random error');
+        });
 
         await expect(
             sut.execute([
                 {
-                    moderatorId: 'randomIdModerator1',
-                    etherapyId: 'randomIdEtherapy1',
+                    moderatorEmail: 'randomIdModerator1',
+                    etherapyIdentifier: 'randomIdEtherapy1',
                 },
                 {
-                    moderatorId: 'randomIdModerator2',
-                    etherapyId: 'randomIdEtherapy2',
+                    moderatorEmail: 'randomIdModerator2',
+                    etherapyIdentifier: 'randomIdEtherapy2',
                 },
             ]),
         ).rejects.toThrow();
     });
 
-    test('Should throw if LoadEtherapyByIdRepository throws', async () => {
-        const { sut, loadEtherapyByIdRepository } = makeSut();
-        jest.spyOn(loadEtherapyByIdRepository, 'load').mockImplementationOnce(
-            () => {
-                throw new Error('Random error');
-            },
-        );
+    test('Should throw if LoadEtherapyByIdentifierRepository throws', async () => {
+        const { sut, loadEtherapyByIdentifierRepository } = makeSut();
+        jest.spyOn(
+            loadEtherapyByIdentifierRepository,
+            'loadByIdentifier',
+        ).mockImplementationOnce(() => {
+            throw new Error('Random error');
+        });
 
         await expect(
             sut.execute([
                 {
-                    moderatorId: 'randomIdModerator1',
-                    etherapyId: 'randomIdEtherapy1',
+                    moderatorEmail: 'randomIdModerator1',
+                    etherapyIdentifier: 'randomIdEtherapy1',
                 },
                 {
-                    moderatorId: 'randomIdModerator2',
-                    etherapyId: 'randomIdEtherapy2',
+                    moderatorEmail: 'randomIdModerator2',
+                    etherapyIdentifier: 'randomIdEtherapy2',
                 },
             ]),
         ).rejects.toThrow();
