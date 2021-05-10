@@ -21,20 +21,26 @@ describe('Create Etherapy usecase', () => {
     test('Should call with correct values', async () => {
         const { sut } = makeSut();
         const executeSpy = jest.spyOn(sut, 'execute');
-        await sut.execute([{ name: 'viver é bom' }, { name: 'não desista' }]);
+        await sut.execute([
+            { identifier: 'any_identifier', name: 'viver é bom' },
+            { identifier: 'any_identifier', name: 'não desista' },
+        ]);
         expect(executeSpy).toHaveBeenCalledWith([
-            { name: 'viver é bom' },
-            { name: 'não desista' },
+            { identifier: 'any_identifier', name: 'viver é bom' },
+            { identifier: 'any_identifier', name: 'não desista' },
         ]);
     });
 
     test('Should call CreateEtherapiesRepository with correct values', async () => {
         const { sut, createEtherapiesRepository } = makeSut();
         const createSpy = jest.spyOn(createEtherapiesRepository, 'create');
-        await sut.execute([{ name: 'viver é bom' }, { name: 'não desista' }]);
+        await sut.execute([
+            { identifier: 'any_identifier', name: 'viver é bom' },
+            { identifier: 'any_identifier', name: 'não desista' },
+        ]);
         expect(createSpy).toHaveBeenCalledWith([
-            { name: 'viver é bom' },
-            { name: 'não desista' },
+            { identifier: 'any_identifier', name: 'viver é bom' },
+            { identifier: 'any_identifier', name: 'não desista' },
         ]);
     });
 
@@ -47,7 +53,10 @@ describe('Create Etherapy usecase', () => {
         );
 
         await expect(
-            sut.execute([{ name: 'viver é bom' }, { name: 'não desista' }]),
+            sut.execute([
+                { identifier: 'any_identifier', name: 'viver é bom' },
+                { identifier: 'any_identifier', name: 'não desista' },
+            ]),
         ).rejects.toThrow();
     });
 });

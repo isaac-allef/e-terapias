@@ -61,6 +61,7 @@ describe('Create field journal usecase', () => {
                     etherapies: [
                         {
                             id: 'randomIdEtherapy',
+                            identifier: 'any_identifier',
                             name: 'viver é bom',
                             fieldJournals: [],
                             moderators: [],
@@ -84,6 +85,7 @@ describe('Create field journal usecase', () => {
             new Promise(resolve =>
                 resolve({
                     id: 'randomIdEtherapy',
+                    identifier: 'any_identifier',
                     name: 'viver é bom',
                     fieldJournals: [],
                     moderators: [],
@@ -162,6 +164,7 @@ describe('Create field journal usecase', () => {
                         etherapies: [
                             {
                                 id: 'diferentRandomIdEtherapy',
+                                identifier: 'any_identifier',
                                 name: 'diferent etherapy',
                                 fieldJournals: [],
                                 moderators: [],
@@ -187,6 +190,7 @@ describe('Create field journal usecase', () => {
                 return new Promise(resolve =>
                     resolve({
                         id: 'randomIdEtherapy',
+                        identifier: 'any_identifier',
                         name: 'viver é bom',
                         fieldJournals: [],
                         moderators: [],
@@ -228,6 +232,7 @@ describe('Create field journal usecase', () => {
                         etherapies: [
                             {
                                 id: 'randomIdEtherapy',
+                                identifier: 'any_identifier',
                                 name: 'viver é bom',
                                 fieldJournals: [],
                                 moderators: [],
@@ -253,6 +258,7 @@ describe('Create field journal usecase', () => {
                 return new Promise(resolve =>
                     resolve({
                         id: 'randomIdEtherapy',
+                        identifier: 'any_identifier',
                         name: 'viver é bom',
                         fieldJournals: [],
                         moderators: [],
@@ -288,6 +294,7 @@ describe('Create field journal usecase', () => {
                         etherapies: [
                             {
                                 id: 'randomIdEtherapy',
+                                identifier: 'any_identifier',
                                 name: 'viver é bom',
                                 fieldJournals: [],
                                 moderators: [],
@@ -313,6 +320,7 @@ describe('Create field journal usecase', () => {
                 return new Promise(resolve =>
                     resolve({
                         id: 'randomIdEtherapy',
+                        identifier: 'any_identifier',
                         name: 'viver é bom',
                         fieldJournals: [],
                         moderators: [],

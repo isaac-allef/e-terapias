@@ -11,6 +11,7 @@ export class CreateEtherapiesRepositoryStub
     async create(): Promise<Etherapy[]> {
         const etherapy1: Etherapy = {
             id: 'randomId1',
+            identifier: 'any_identifier',
             name: 'viver é bom',
             fieldJournals: [],
             moderators: [],
@@ -19,6 +20,7 @@ export class CreateEtherapiesRepositoryStub
 
         const etherapy2: Etherapy = {
             id: 'randomId2',
+            identifier: 'any_identifier',
             name: 'não desista',
             fieldJournals: [],
             moderators: [],
@@ -36,6 +38,7 @@ export class LoadEtherapyByIdRepositoryStub
     async load(id: string): Promise<Etherapy> {
         const etherapy: Etherapy = {
             id,
+            identifier: 'any_identifier',
             name: 'viver é bom',
             fieldJournals: [],
             moderators: [],
@@ -52,6 +55,7 @@ export class LoadAllEtherapiesRepositoryStub
         const etherapies: Etherapy[] = [
             {
                 id: 'randomId1',
+                identifier: 'any_identifier',
                 name: 'viver é bom',
                 fieldJournals: [],
                 moderators: [],
@@ -59,6 +63,7 @@ export class LoadAllEtherapiesRepositoryStub
             },
             {
                 id: 'randomId2',
+                identifier: 'any_identifier',
                 name: 'não desista',
                 fieldJournals: [],
                 moderators: [],
@@ -76,6 +81,7 @@ export class SearchEtherapiesRepositoryStub
         const etherapies: Etherapy[] = [
             {
                 id: 'randomId1',
+                identifier: 'any_identifier',
                 name: 'viver é bom',
                 fieldJournals: [],
                 moderators: [],
@@ -83,6 +89,7 @@ export class SearchEtherapiesRepositoryStub
             },
             {
                 id: 'randomId2',
+                identifier: 'any_identifier',
                 name: 'não desista',
                 fieldJournals: [],
                 moderators: [],
