@@ -5,7 +5,6 @@ import Template, { templateField } from '../../../src/core/entities/Template';
 import CreateTemplateRepository from '../../../src/core/protocols/db/repositories/CreateTemplateRepository';
 import LoadTemplateByIdRepository from '../../../src/core/protocols/db/repositories/LoadTemplateByIdRepository';
 import LinkTemplateToEtherapiesRepository from '../../../src/core/protocols/db/repositories/LinkTemplateToEtherapiesRepository';
-import Etherapy from '../../../src/core/entities/Etherapy';
 
 const fakeTemplateFields: templateField[] = [
     { name: 'Qual o seu nome?', type: 'short' },
@@ -41,10 +40,7 @@ export class LoadTemplateByIdRepositoryStub
 
 export class LinkTemplateToEtherapiesRepositoryStub
     implements LinkTemplateToEtherapiesRepository {
-    linkTemplate(
-        _template: Template,
-        _etherapies: Etherapy[],
-    ): Promise<boolean> {
+    linkTemplate(_template: Template, _etherapies: string[]): Promise<boolean> {
         return new Promise(resolve => resolve(true));
     }
 }

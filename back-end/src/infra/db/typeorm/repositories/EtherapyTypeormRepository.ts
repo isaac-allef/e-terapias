@@ -1,5 +1,5 @@
 /* eslint-disable no-restricted-syntax */
-import { EntityRepository, getRepository, Repository } from 'typeorm';
+import { EntityRepository, getRepository, In, Repository } from 'typeorm';
 import Etherapy from '../../../../core/entities/Etherapy';
 import Template from '../../../../core/entities/Template';
 import CreateEtherapiesRepository, {
@@ -103,9 +103,13 @@ class EtherapyTypeormRepository
 
     async linkTemplate(
         template: Template,
-        etherapies: Etherapy[],
+        etherapiesIds: string[],
     ): Promise<boolean> {
         try {
+            const etherapies = await this.ormRepository.find({
+                id: In([...etherapiesIds]),
+            });
+
             etherapies.forEach(etherapy => {
                 // eslint-disable-next-line no-param-reassign
                 etherapy.template = template;
