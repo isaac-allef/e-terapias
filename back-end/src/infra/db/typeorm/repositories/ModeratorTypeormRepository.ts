@@ -30,12 +30,22 @@ class ModeratorTypeormRepository
             const moderators = [];
 
             for (const dto of data) {
-                const moderator = this.ormRepository.create({
+                // eslint-disable-next-line no-await-in-loop
+                const moderatorExists = await this.ormRepository.findOne({
                     email: dto.email,
-                    name: dto.name,
-                    password: dto.password,
                 });
-                moderators.push(moderator);
+
+                if (moderatorExists) {
+                    moderatorExists.name = dto.name;
+                    moderators.push(moderatorExists);
+                } else {
+                    const moderator = this.ormRepository.create({
+                        email: dto.email,
+                        name: dto.name,
+                        password: dto.password,
+                    });
+                    moderators.push(moderator);
+                }
             }
 
             await this.ormRepository.save(moderators);
