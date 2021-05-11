@@ -5,9 +5,6 @@ import Template from '../../../../core/entities/Template';
 import CreateEtherapiesRepository, {
     params as createParams,
 } from '../../../../core/protocols/db/repositories/CreateEtherapiesRepository';
-import LinkModeratorsToEtherapiesRepository, {
-    params as linkParams,
-} from '../../../../core/protocols/db/repositories/LinkModeratorsToEtherapiesRepository';
 import LinkTemplateToEtherapiesRepository from '../../../../core/protocols/db/repositories/LinkTemplateToEtherapiesRepository';
 import LoadAllEtherapiesRepository, {
     params,
@@ -23,7 +20,6 @@ class EtherapyTypeormRepository
     implements
         CreateEtherapiesRepository,
         LoadEtherapyByIdRepository,
-        LinkModeratorsToEtherapiesRepository,
         LinkTemplateToEtherapiesRepository,
         LoadAllEtherapiesRepository,
         SearchEtherapiesRepository,
@@ -79,33 +75,6 @@ class EtherapyTypeormRepository
             return etherapy;
         } catch {
             throw new Error('Load etherapy error');
-        }
-    }
-
-    async link(data: linkParams): Promise<boolean> {
-        try {
-            const etherapies = await Promise.all(
-                data.map(async d => {
-                    const etherapy = await this.ormRepository.findOne({
-                        identifier: d.etherapyIdentifier,
-                    });
-                    if (!etherapy) {
-                        throw new Error('Etherapy not found');
-                    }
-                    if (!etherapy.moderators) {
-                        // eslint-disable-next-line no-param-reassign
-                        etherapy.moderators = [];
-                    }
-                    etherapy.moderators.push(d.moderator);
-                    return etherapy;
-                }),
-            );
-
-            await this.ormRepository.save(etherapies);
-
-            return true;
-        } catch (err) {
-            throw new Error('Link moderators to etherapies error');
         }
     }
 
