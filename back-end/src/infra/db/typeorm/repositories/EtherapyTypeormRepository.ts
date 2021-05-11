@@ -65,7 +65,7 @@ class EtherapyTypeormRepository
         try {
             const etherapy = await this.ormRepository.findOne({
                 where: { id },
-                relations: ['template', 'fieldJournals', 'moderators'],
+                relations: ['template', 'moderators'],
             });
 
             if (!etherapy) {
@@ -140,7 +140,7 @@ class EtherapyTypeormRepository
                 order: { [sort]: direction.toUpperCase() },
                 take: per_page,
                 skip: (page - 1) * per_page,
-                relations: ['template', 'fieldJournals', 'moderators'],
+                relations: ['template', 'moderators'],
             });
 
             return etherapies;
@@ -158,7 +158,6 @@ class EtherapyTypeormRepository
             const finded = queryBuilder
                 .leftJoinAndSelect('Etherapy.moderators', 'moderators')
                 .leftJoinAndSelect('Etherapy.template', 'template')
-                .leftJoinAndSelect('Etherapy.fieldJournals', 'fieldJournals')
                 .where('Etherapy.name ILIKE :name', {
                     name: `%${keywords}%`,
                 })
@@ -172,9 +171,6 @@ class EtherapyTypeormRepository
                     email: `%${keywords}%`,
                 })
                 .orWhere('template.name ILIKE :name', {
-                    name: `%${keywords}%`,
-                })
-                .orWhere('fieldJournals.name ILIKE :name', {
                     name: `%${keywords}%`,
                 })
                 .getMany();
