@@ -34,7 +34,7 @@ class EtherapyTypeorm implements Etherapy {
     @ManyToOne(() => TemplateTypeorm, template => template.etherapies, {
         onDelete: 'SET NULL',
     })
-    template: Template;
+    template: Template | null;
 
     @ManyToMany(() => ModeratorTypeorm, moderator => moderator.etherapies)
     @JoinTable()

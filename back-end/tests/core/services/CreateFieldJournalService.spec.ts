@@ -262,7 +262,7 @@ describe('Create field journal usecase', () => {
                         name: 'viver é bom',
                         fieldJournals: [],
                         moderators: [],
-                        template: undefined,
+                        template: null,
                     }),
                 );
             },

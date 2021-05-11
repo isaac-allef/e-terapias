@@ -17,7 +17,7 @@ export class CreateEtherapiesRepositoryStub
             name: 'viver é bom',
             fieldJournals: [],
             moderators: [],
-            template: undefined,
+            template: null,
         };
 
         const etherapy2: Etherapy = {
@@ -26,7 +26,7 @@ export class CreateEtherapiesRepositoryStub
             name: 'não desista',
             fieldJournals: [],
             moderators: [],
-            template: undefined,
+            template: null,
         };
 
         const etherapies = [etherapy1, etherapy2];
@@ -44,7 +44,7 @@ export class LoadEtherapyByIdRepositoryStub
             name: 'viver é bom',
             fieldJournals: [],
             moderators: [],
-            template: undefined,
+            template: null,
         };
 
         return new Promise(resolve => resolve(etherapy));
@@ -61,7 +61,7 @@ export class LoadAllEtherapiesRepositoryStub
                 name: 'viver é bom',
                 fieldJournals: [],
                 moderators: [],
-                template: undefined,
+                template: null,
             },
             {
                 id: 'randomId2',
@@ -69,7 +69,7 @@ export class LoadAllEtherapiesRepositoryStub
                 name: 'não desista',
                 fieldJournals: [],
                 moderators: [],
-                template: undefined,
+                template: null,
             },
         ];
 
@@ -87,7 +87,7 @@ export class SearchEtherapiesRepositoryStub
                 name: 'viver é bom',
                 fieldJournals: [],
                 moderators: [],
-                template: undefined,
+                template: null,
             },
             {
                 id: 'randomId2',
@@ -95,7 +95,7 @@ export class SearchEtherapiesRepositoryStub
                 name: 'não desista',
                 fieldJournals: [],
                 moderators: [],
-                template: undefined,
+                template: null,
             },
         ];
 
@@ -112,7 +112,7 @@ export class LoadEtherapyByIdentifierRepositoryStub
             name: 'viver é bom',
             fieldJournals: [],
             moderators: [],
-            template: undefined,
+            template: null,
         };
 
         return new Promise(resolve => resolve(etherapy));
