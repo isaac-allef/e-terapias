@@ -4,6 +4,7 @@ import makeCreateEtherapiesContoller from '../../factories/controllers/userManag
 import makeLoadEtherapyContoller from '../../factories/controllers/shared/makeLoadEtherapyContoller';
 import makeLoadAllEtherapiesContoller from '../../factories/controllers/userManager/makeLoadAllEtherapiesContoller';
 import makeSearchEtherapiesContoller from '../../factories/controllers/userManager/makeSearchEtherapiesContoller';
+import makeLoadAllFieldJournalsPerEtherapyContoller from '../../factories/controllers/userManager/makeLoadAllFieldJournalsPerEtherapyContoller';
 
 const etherapiesRouter = Router();
 
@@ -14,5 +15,9 @@ etherapiesRouter.get(
 );
 etherapiesRouter.get('/:id', adapterRouter(makeLoadEtherapyContoller()));
 etherapiesRouter.get('/', adapterRouter(makeLoadAllEtherapiesContoller()));
+etherapiesRouter.get(
+    '/:id/fieldJournals',
+    adapterRouter(makeLoadAllFieldJournalsPerEtherapyContoller()),
+);
 
 export default etherapiesRouter;
