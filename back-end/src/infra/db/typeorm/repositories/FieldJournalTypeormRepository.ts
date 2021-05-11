@@ -4,6 +4,9 @@ import FieldJournal from '../../../../core/entities/FieldJournal';
 import CreateFieldJournalRepository, {
     params as createParams,
 } from '../../../../core/protocols/db/repositories/CreateFieldJournalRepository';
+import LoadAllFieldJournalsPerEtherapyRepository, {
+    params as loadAllPerEtherapyParams,
+} from '../../../../core/protocols/db/repositories/LoadAllFieldJournalsPerEtherapyRepository';
 import LoadAllFieldJournalsPerModeratorRepository, {
     params as loadAllPerModeratorParams,
 } from '../../../../core/protocols/db/repositories/LoadAllFieldJournalsPerModeratorRepository';
@@ -19,7 +22,8 @@ class FieldJournalTypeormRepository
         CreateFieldJournalRepository,
         LoadFieldJournalByIdRepository,
         LoadAllFieldJournalsPerModeratorRepository,
-        SearchFieldJournalsPerModeratorRepository {
+        SearchFieldJournalsPerModeratorRepository,
+        LoadAllFieldJournalsPerEtherapyRepository {
     private ormRepository: Repository<FieldJournalTypeorm>;
 
     constructor() {
@@ -69,7 +73,7 @@ class FieldJournalTypeormRepository
         page,
     }: loadAllPerModeratorParams): Promise<FieldJournal[]> {
         try {
-            const etherapies = await this.ormRepository.find({
+            const fieldJournals = await this.ormRepository.find({
                 where: { moderator: { id: moderatorId } },
                 order: { [sort]: direction.toUpperCase() },
                 take: per_page,
@@ -77,7 +81,7 @@ class FieldJournalTypeormRepository
                 relations: ['etherapy'],
             });
 
-            return etherapies;
+            return fieldJournals;
         } catch (err) {
             throw new Error('Load all fieldJournals per moderator error');
         }
@@ -108,6 +112,28 @@ class FieldJournalTypeormRepository
             return finded;
         } catch {
             throw new Error('Search field journals per moderator error');
+        }
+    }
+
+    async loadAllPerEtherapy({
+        etherapyId,
+        sort,
+        direction,
+        per_page,
+        page,
+    }: loadAllPerEtherapyParams): Promise<FieldJournal[]> {
+        try {
+            const fieldJournals = await this.ormRepository.find({
+                where: { etherapy: { id: etherapyId } },
+                order: { [sort]: direction.toUpperCase() },
+                take: per_page,
+                skip: (page - 1) * per_page,
+                relations: ['moderator'],
+            });
+
+            return fieldJournals;
+        } catch (err) {
+            throw new Error('Load all fieldJournals per etherapy error');
         }
     }
 }
