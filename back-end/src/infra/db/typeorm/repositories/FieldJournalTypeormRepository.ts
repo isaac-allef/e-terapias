@@ -14,6 +14,9 @@ import LoadFieldJournalByIdRepository from '../../../../core/protocols/db/reposi
 import SearchFieldJournalsPerModeratorRepository, {
     params,
 } from '../../../../core/protocols/db/repositories/SearchFieldJournalsPerModeratorRepository';
+import UpdateFieldJournalRepository, {
+    params as updateParams,
+} from '../../../../core/protocols/db/repositories/UpdateFieldJournalRepository';
 import FieldJournalTypeorm from '../entities/FieldJournalTypeorm';
 
 @EntityRepository()
@@ -23,7 +26,8 @@ class FieldJournalTypeormRepository
         LoadFieldJournalByIdRepository,
         LoadAllFieldJournalsPerModeratorRepository,
         SearchFieldJournalsPerModeratorRepository,
-        LoadAllFieldJournalsPerEtherapyRepository {
+        LoadAllFieldJournalsPerEtherapyRepository,
+        UpdateFieldJournalRepository {
     private ormRepository: Repository<FieldJournalTypeorm>;
 
     constructor() {
@@ -134,6 +138,25 @@ class FieldJournalTypeormRepository
             return fieldJournals;
         } catch (err) {
             throw new Error('Load all fieldJournals per etherapy error');
+        }
+    }
+
+    async update({ id, name, fields }: updateParams): Promise<FieldJournal> {
+        try {
+            const fieldJournal = await this.ormRepository.findOne({
+                where: { id },
+            });
+
+            if (!fieldJournal) {
+                throw new Error('Field Journal not found');
+            }
+
+            fieldJournal.name = name;
+            fieldJournal.fields = fields;
+
+            return fieldJournal;
+        } catch {
+            throw new Error('Update fieldJournal error');
         }
     }
 }
