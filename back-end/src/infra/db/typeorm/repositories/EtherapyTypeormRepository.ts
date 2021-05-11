@@ -112,8 +112,13 @@ class EtherapyTypeormRepository
     async linkTemplate(
         template: Template,
         etherapiesIds: string[],
+        unlinkClean?: boolean,
     ): Promise<boolean> {
         try {
+            if (unlinkClean) {
+                await this.unlinkTemplate(template, etherapiesIds);
+            }
+
             const etherapies = await this.ormRepository.find({
                 id: In([...etherapiesIds]),
             });
@@ -129,6 +134,30 @@ class EtherapyTypeormRepository
         } catch (err) {
             throw new Error('Link template to etherapies error');
         }
+    }
+
+    private async unlinkTemplate(
+        template: Template,
+        etherapiesIdsKeepLinked: string[],
+    ) {
+        const etherapiesRelatedWithTheTemplate = await this.ormRepository.find({
+            where: { template: { id: template.id } },
+        });
+
+        const etherapies = etherapiesRelatedWithTheTemplate.map(etherapy => {
+            const templateMustBeUnlinkedFromEtherapy = !etherapiesIdsKeepLinked.includes(
+                etherapy.id,
+            );
+
+            if (templateMustBeUnlinkedFromEtherapy) {
+                // eslint-disable-next-line no-param-reassign
+                etherapy.template = null;
+            }
+
+            return etherapy;
+        });
+
+        await this.ormRepository.save(etherapies);
     }
 
     async loadAll({
