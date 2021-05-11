@@ -1,7 +1,7 @@
 import Template, { templateField } from '../entities/Template';
-import AppError from '../errors/AppError';
 import UpdateTemplateRepository from '../protocols/db/repositories/UpdateTemplateRepository';
 import LinkTemplateToEtherapiesRepository from '../protocols/db/repositories/LinkTemplateToEtherapiesRepository';
+import { validateTemplateFields } from './utils/ValidateTemplateFields';
 
 export type params = {
     id: string;
@@ -19,7 +19,7 @@ class UpdateTemplateService {
     ) {}
 
     public async execute({ id, description }: params): Promise<Template> {
-        this.validateTemplateFields(description.templateFields);
+        validateTemplateFields(description.templateFields);
 
         const template = await this.updateTemplateRepository.update({
             id,
@@ -35,31 +35,6 @@ class UpdateTemplateService {
         );
 
         return template;
-    }
-
-    private validateTemplateFields(templateFields: templateField[]) {
-        if (!Object.keys(templateFields).length) {
-            throw new AppError('TemplateFields void.');
-        }
-
-        templateFields.forEach(fieldTemplate => {
-            const LENGTH_FIELD = 2;
-            const lengthField = Object.keys(fieldTemplate).length;
-
-            if (!(lengthField === LENGTH_FIELD)) {
-                throw new AppError(
-                    'Each object in fieldTemplates must have exactly two properties only, name and type',
-                );
-            }
-
-            if (!('name' in fieldTemplate)) {
-                throw new AppError('Property name not found.');
-            }
-
-            if (!('type' in fieldTemplate)) {
-                throw new AppError('Property type not found.');
-            }
-        });
     }
 }
 
