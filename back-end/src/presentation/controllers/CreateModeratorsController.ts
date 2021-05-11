@@ -12,20 +12,15 @@ export class CreateModeratorsController implements Controller {
 
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
         try {
-            const { basicInformations, links } = httpRequest.body;
+            const { basicInformations } = httpRequest.body;
 
             if (!basicInformations) {
                 return badRequest(new MissingParamError('basicInformations'));
             }
 
-            if (!links) {
-                return badRequest(new MissingParamError('links'));
-            }
-
-            const moderators = await this.createModeratorsService.execute({
-                data: basicInformations,
-                links,
-            });
+            const moderators = await this.createModeratorsService.execute(
+                basicInformations,
+            );
             return ok(moderators);
         } catch (err) {
             return serverError(err);

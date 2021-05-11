@@ -37,12 +37,14 @@ class ModeratorTypeormRepository
 
                 if (moderatorExists) {
                     moderatorExists.name = dto.name;
+                    moderatorExists.etherapies = dto.etherapies;
                     moderators.push(moderatorExists);
                 } else {
                     const moderator = this.ormRepository.create({
                         email: dto.email,
                         name: dto.name,
                         password: dto.password,
+                        etherapies: dto.etherapies,
                     });
                     moderators.push(moderator);
                 }

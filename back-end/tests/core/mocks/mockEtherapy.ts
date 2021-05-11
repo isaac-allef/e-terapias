@@ -6,6 +6,7 @@ import LoadEtherapyByIdRepository from '../../../src/core/protocols/db/repositor
 import LoadEtherapyByIdentifierRepository from '../../../src/core/protocols/db/repositories/LoadEtherapyByIdentifierRepository';
 import LoadAllEtherapiesRepository from '../../../src/core/protocols/db/repositories/LoadAllEtherapiesRepository';
 import SearchEtherapiesRepository from '../../../src/core/protocols/db/repositories/SearchEtherapiesRepository';
+import LoadManyEtherapiesByIdentifierRepository from '../../../src/core/protocols/db/repositories/LoadManyEtherapiesByIdentifierRepository';
 
 export class CreateEtherapiesRepositoryStub
     implements CreateEtherapiesRepository {
@@ -115,5 +116,14 @@ export class LoadEtherapyByIdentifierRepositoryStub
         };
 
         return new Promise(resolve => resolve(etherapy));
+    }
+}
+
+export class LoadManyEtherapiesByIdentifiersRepositoryStub
+    implements LoadManyEtherapiesByIdentifierRepository {
+    loadManyByIdentifiers(_identifiers: string[]): Promise<Etherapy[]> {
+        const etherapies: Etherapy[] = [];
+
+        return new Promise(resolve => resolve(etherapies));
     }
 }

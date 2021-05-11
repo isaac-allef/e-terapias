@@ -8,11 +8,11 @@ import { Controller } from '../../../../presentation/protocols/controller';
 const makeCreateModeratorsContoller = (): Controller => {
     const hashGenerater = new BcryptAdapter(12);
     const createModeratorsRepository = new ModeratorTypeormRepository();
-    const linkModeratorsToEtherapiesRepository = new EtherapyTypeormRepository();
+    const loadManyEtherapiesByIdentifiersRepository = new EtherapyTypeormRepository();
     const createModeratorsService = new CreateModeratorsService(
         hashGenerater,
         createModeratorsRepository,
-        linkModeratorsToEtherapiesRepository,
+        loadManyEtherapiesByIdentifiersRepository,
     );
     return new CreateModeratorsController(createModeratorsService);
 };

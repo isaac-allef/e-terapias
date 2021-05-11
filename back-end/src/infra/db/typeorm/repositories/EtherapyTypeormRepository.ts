@@ -14,6 +14,7 @@ import LoadAllEtherapiesRepository, {
 } from '../../../../core/protocols/db/repositories/LoadAllEtherapiesRepository';
 import LoadEtherapyByIdRepository from '../../../../core/protocols/db/repositories/LoadEtherapyByIdRepository';
 import LoadEtherapyByIdentifierRepository from '../../../../core/protocols/db/repositories/LoadEtherapyByIdentifierRepository';
+import LoadManyEtherapiesByIdentifierRepository from '../../../../core/protocols/db/repositories/LoadManyEtherapiesByIdentifierRepository';
 import SearchEtherapiesRepository from '../../../../core/protocols/db/repositories/SearchEtherapiesRepository';
 import EtherapyTypeorm from '../entities/EtherapyTypeorm';
 
@@ -26,7 +27,8 @@ class EtherapyTypeormRepository
         LinkTemplateToEtherapiesRepository,
         LoadAllEtherapiesRepository,
         SearchEtherapiesRepository,
-        LoadEtherapyByIdentifierRepository {
+        LoadEtherapyByIdentifierRepository,
+        LoadManyEtherapiesByIdentifierRepository {
     private ormRepository: Repository<EtherapyTypeorm>;
 
     constructor() {
@@ -199,6 +201,18 @@ class EtherapyTypeormRepository
             return etherapy;
         } catch {
             throw new Error('Load etherapy error');
+        }
+    }
+
+    async loadManyByIdentifiers(identifiers: string[]): Promise<Etherapy[]> {
+        try {
+            const etherapies = await this.ormRepository.find({
+                identifier: In([...identifiers]),
+            });
+
+            return etherapies;
+        } catch {
+            throw new Error('Load many etherapies by identifiers error');
         }
     }
 }
