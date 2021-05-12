@@ -8,6 +8,9 @@ import ChangePasswordModeratorRepository, {
 import CreateModeratorsRepository, {
     params,
 } from '../../../../core/protocols/db/repositories/CreateModeratorsRepository';
+import LoadAllModeratorsRepository, {
+    params as loadAllParams,
+} from '../../../../core/protocols/db/repositories/LoadAllModeratorsRepository';
 import LoadModeratorByIdRepository from '../../../../core/protocols/db/repositories/LoadModeratorByIdRepository';
 import LoadUserByEmailRepository from '../../../../core/protocols/db/repositories/LoadUserByEmailRepository';
 import LoadUserByTokenRepository from '../../../../core/protocols/db/repositories/LoadUserByTokenRepository';
@@ -22,7 +25,8 @@ class ModeratorTypeormRepository
         LoadUserByEmailRepository,
         UpdateAccessTokenRepository,
         LoadUserByTokenRepository,
-        ChangePasswordModeratorRepository {
+        ChangePasswordModeratorRepository,
+        LoadAllModeratorsRepository {
     private ormRepository: Repository<ModeratorTypeorm>;
 
     constructor() {
@@ -159,6 +163,26 @@ class ModeratorTypeormRepository
             return true;
         } catch {
             throw new Error('Change password moderator error');
+        }
+    }
+
+    async loadAll({
+        sort,
+        direction,
+        per_page,
+        page,
+    }: loadAllParams): Promise<Moderator[]> {
+        try {
+            const moderators = await this.ormRepository.find({
+                order: { [sort]: direction.toUpperCase() },
+                take: per_page,
+                skip: (page - 1) * per_page,
+                relations: ['etherapies'],
+            });
+
+            return moderators;
+        } catch (err) {
+            throw new Error('Load all moderators error');
         }
     }
 }
