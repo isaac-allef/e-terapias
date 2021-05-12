@@ -82,6 +82,8 @@ describe('Auth Middleware', () => {
     test('Should return 200 if LoadUserByTokenService returns an user', async () => {
         const { sut } = makeSut();
         const httpResponse = await sut.handle(makeFakeRequest());
-        expect(httpResponse).toEqual(ok({ userId: 'randomIdUser' }));
+        expect(httpResponse).toEqual(
+            ok({ userId: 'randomIdUser', userToken: 'any_token' }),
+        );
     });
 });
