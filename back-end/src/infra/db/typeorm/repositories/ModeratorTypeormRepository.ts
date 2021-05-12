@@ -14,6 +14,7 @@ import LoadAllModeratorsRepository, {
 import LoadModeratorByIdRepository from '../../../../core/protocols/db/repositories/LoadModeratorByIdRepository';
 import LoadUserByEmailRepository from '../../../../core/protocols/db/repositories/LoadUserByEmailRepository';
 import LoadUserByTokenRepository from '../../../../core/protocols/db/repositories/LoadUserByTokenRepository';
+import SearchModeratorsRepository from '../../../../core/protocols/db/repositories/SearchModeratorsRepository';
 import UpdateAccessTokenRepository from '../../../../core/protocols/db/repositories/UpdateAccessTokenRepository';
 import ModeratorTypeorm from '../entities/ModeratorTypeorm';
 
@@ -26,7 +27,8 @@ class ModeratorTypeormRepository
         UpdateAccessTokenRepository,
         LoadUserByTokenRepository,
         ChangePasswordModeratorRepository,
-        LoadAllModeratorsRepository {
+        LoadAllModeratorsRepository,
+        SearchModeratorsRepository {
     private ormRepository: Repository<ModeratorTypeorm>;
 
     constructor() {
@@ -183,6 +185,34 @@ class ModeratorTypeormRepository
             return moderators;
         } catch (err) {
             throw new Error('Load all moderators error');
+        }
+    }
+
+    async search(keywords: string): Promise<Moderator[]> {
+        try {
+            const queryBuilder = this.ormRepository.createQueryBuilder(
+                'Moderator',
+            );
+
+            const finded = queryBuilder
+                .leftJoinAndSelect('Moderator.etherapies', 'etherapies')
+                .where('Moderator.name ILIKE :name', {
+                    name: `%${keywords}%`,
+                })
+                .orWhere('Moderator.email ILIKE :email', {
+                    email: `%${keywords}%`,
+                })
+                .orWhere('etherapies.name ILIKE :name', {
+                    name: `%${keywords}%`,
+                })
+                .orWhere('etherapies.identifier ILIKE :email', {
+                    email: `%${keywords}%`,
+                })
+                .getMany();
+
+            return finded;
+        } catch {
+            throw new Error('Search moderator error');
         }
     }
 }
