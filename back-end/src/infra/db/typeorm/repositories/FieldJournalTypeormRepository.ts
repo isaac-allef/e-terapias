@@ -214,7 +214,7 @@ class FieldJournalTypeormRepository
 
             return finded;
         } catch {
-            throw new Error('Search etherapies error');
+            throw new Error('Search filed journals error');
         }
     }
 }

@@ -6,6 +6,7 @@ import adapterMiddleware from '../adapters/expressMiddleware';
 import { makeAuthModeratorMiddleware } from '../../factories/middlewares/makeAuthModeratorMiddleware';
 import makeUpdateFieldJournalContoller from '../../factories/controllers/userModerator/makeUpdateFieldJournalContoller';
 import makeLoadAllFieldJournalsContoller from '../../factories/controllers/userManager/makeLoadAllFieldJournalsContoller';
+import makeSearchFieldJournalsContoller from '../../factories/controllers/userManager/makeSearchFieldJournalsContoller';
 
 const fieldJournalsRouter = Router();
 
@@ -23,6 +24,10 @@ fieldJournalsRouter.put(
     '/:id',
     adapterMiddleware(makeAuthModeratorMiddleware()),
     adapterRouter(makeUpdateFieldJournalContoller()),
+);
+fieldJournalsRouter.get(
+    '/search/:keyword',
+    adapterRouter(makeSearchFieldJournalsContoller()),
 );
 
 export default fieldJournalsRouter;
