@@ -5,6 +5,7 @@ import makeLoadFieldJournalContoller from '../../factories/controllers/shared/ma
 import adapterMiddleware from '../adapters/expressMiddleware';
 import { makeAuthModeratorMiddleware } from '../../factories/middlewares/makeAuthModeratorMiddleware';
 import makeUpdateFieldJournalContoller from '../../factories/controllers/userModerator/makeUpdateFieldJournalContoller';
+import makeLoadAllFieldJournalsContoller from '../../factories/controllers/userManager/makeLoadAllFieldJournalsContoller';
 
 const fieldJournalsRouter = Router();
 
@@ -12,6 +13,10 @@ fieldJournalsRouter.post(
     '/',
     adapterMiddleware(makeAuthModeratorMiddleware()),
     adapterRouter(makeCreateFieldJournalContoller()),
+);
+fieldJournalsRouter.get(
+    '/',
+    adapterRouter(makeLoadAllFieldJournalsContoller()),
 );
 fieldJournalsRouter.get('/:id', adapterRouter(makeLoadFieldJournalContoller()));
 fieldJournalsRouter.put(
