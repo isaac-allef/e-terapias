@@ -4,6 +4,9 @@ import Template from '../../../../core/entities/Template';
 import CreateTemplateRepository, {
     params as createParams,
 } from '../../../../core/protocols/db/repositories/CreateTemplateRepository';
+import LoadAllTemplatesRepository, {
+    params as loadAllParams,
+} from '../../../../core/protocols/db/repositories/LoadAllTemplatesRepository';
 import LoadTemplateByIdRepository from '../../../../core/protocols/db/repositories/LoadTemplateByIdRepository';
 import UpdateTemplateRepository, {
     params as updateParams,
@@ -15,7 +18,8 @@ class TemplateTypeormRepository
     implements
         CreateTemplateRepository,
         LoadTemplateByIdRepository,
-        UpdateTemplateRepository {
+        UpdateTemplateRepository,
+        LoadAllTemplatesRepository {
     private ormRepository: Repository<TemplateTypeorm>;
 
     constructor() {
@@ -74,6 +78,26 @@ class TemplateTypeormRepository
             return template;
         } catch (err) {
             throw new Error('Update template error');
+        }
+    }
+
+    async loadAll({
+        sort,
+        direction,
+        per_page,
+        page,
+    }: loadAllParams): Promise<Template[]> {
+        try {
+            const templates = await this.ormRepository.find({
+                order: { [sort]: direction.toUpperCase() },
+                take: per_page,
+                skip: (page - 1) * per_page,
+                relations: ['etherapies'],
+            });
+
+            return templates;
+        } catch (err) {
+            throw new Error('Load all templates error');
         }
     }
 }
