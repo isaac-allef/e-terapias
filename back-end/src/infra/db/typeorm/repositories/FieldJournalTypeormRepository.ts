@@ -10,6 +10,9 @@ import LoadAllFieldJournalsPerEtherapyRepository, {
 import LoadAllFieldJournalsPerModeratorRepository, {
     params as loadAllPerModeratorParams,
 } from '../../../../core/protocols/db/repositories/LoadAllFieldJournalsPerModeratorRepository';
+import LoadAllFieldJournalsRepository, {
+    params as loadAllParams,
+} from '../../../../core/protocols/db/repositories/LoadAllFieldJournalsRepository';
 import LoadFieldJournalByIdRepository from '../../../../core/protocols/db/repositories/LoadFieldJournalByIdRepository';
 import SearchFieldJournalsPerModeratorRepository, {
     params,
@@ -27,7 +30,8 @@ class FieldJournalTypeormRepository
         LoadAllFieldJournalsPerModeratorRepository,
         SearchFieldJournalsPerModeratorRepository,
         LoadAllFieldJournalsPerEtherapyRepository,
-        UpdateFieldJournalRepository {
+        UpdateFieldJournalRepository,
+        LoadAllFieldJournalsRepository {
     private ormRepository: Repository<FieldJournalTypeorm>;
 
     constructor() {
@@ -157,6 +161,26 @@ class FieldJournalTypeormRepository
             return fieldJournal;
         } catch {
             throw new Error('Update fieldJournal error');
+        }
+    }
+
+    async loadAll({
+        sort,
+        direction,
+        per_page,
+        page,
+    }: loadAllParams): Promise<FieldJournal[]> {
+        try {
+            const fieldJournals = await this.ormRepository.find({
+                order: { [sort]: direction.toUpperCase() },
+                take: per_page,
+                skip: (page - 1) * per_page,
+                relations: ['moderator', 'etherapy'],
+            });
+
+            return fieldJournals;
+        } catch (err) {
+            throw new Error('Load all field journals error');
         }
     }
 }
