@@ -2,6 +2,9 @@
 import { EntityRepository, getRepository, Repository } from 'typeorm';
 import Moderator from '../../../../core/entities/Moderator';
 import User from '../../../../core/entities/User';
+import ChangePasswordModeratorRepository, {
+    params as changePasswordParams,
+} from '../../../../core/protocols/db/repositories/ChangePasswordModeratorRepository';
 import CreateModeratorsRepository, {
     params,
 } from '../../../../core/protocols/db/repositories/CreateModeratorsRepository';
@@ -18,7 +21,8 @@ class ModeratorTypeormRepository
         LoadModeratorByIdRepository,
         LoadUserByEmailRepository,
         UpdateAccessTokenRepository,
-        LoadUserByTokenRepository {
+        LoadUserByTokenRepository,
+        ChangePasswordModeratorRepository {
     private ormRepository: Repository<ModeratorTypeorm>;
 
     constructor() {
@@ -132,6 +136,29 @@ class ModeratorTypeormRepository
             return user;
         } catch {
             throw new Error('Load by token user error');
+        }
+    }
+
+    async changePassword({
+        id,
+        password,
+    }: changePasswordParams): Promise<boolean> {
+        try {
+            const moderator = await this.ormRepository.findOne({
+                where: { id },
+            });
+
+            if (!moderator) {
+                throw new Error('Moderator not found');
+            }
+
+            moderator.password = password;
+
+            await this.ormRepository.save(moderator);
+
+            return true;
+        } catch {
+            throw new Error('Change password moderator error');
         }
     }
 }
