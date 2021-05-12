@@ -4,7 +4,6 @@
 import Moderator from '../../../src/core/entities/Moderator';
 import CreateModeratorsRepository from '../../../src/core/protocols/db/repositories/CreateModeratorsRepository';
 import LoadModeratorByIdRepository from '../../../src/core/protocols/db/repositories/LoadModeratorByIdRepository';
-import LoadModeratorByEmailRepository from '../../../src/core/protocols/db/repositories/LoadModeratorByEmailRepository';
 
 export class CreateModeratorsRepositoryStub
     implements CreateModeratorsRepository {
@@ -43,24 +42,6 @@ export class LoadModeratorByIdRepositoryStub
         const moderator: Moderator = {
             id,
             email: 'fulano@email.com',
-            name: 'fulano',
-            etherapies: [],
-            fieldJournals: [],
-            password: '1234',
-            token: 'randomToken',
-            role: '',
-        };
-
-        return new Promise(resolve => resolve(moderator));
-    }
-}
-
-export class LoadModeratorByEmailRepositoryStub
-    implements LoadModeratorByEmailRepository {
-    async loadByEmail(email: string): Promise<Moderator> {
-        const moderator: Moderator = {
-            id: 'randomId',
-            email,
             name: 'fulano',
             etherapies: [],
             fieldJournals: [],
