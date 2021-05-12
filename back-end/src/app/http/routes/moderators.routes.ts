@@ -10,6 +10,7 @@ import makeLoadAllFieldJournalsPerModeratorContoller from '../../factories/contr
 import makeSearchFieldJournalsPerMeModeratorContoller from '../../factories/controllers/userModerator/makeSearchFieldJournalsPerMeModeratorContoller';
 import makeChangePasswordModeratorContoller from '../../factories/controllers/userModerator/makeChangePasswordModeratorContoller';
 import makeLoadAllModeratorsContoller from '../../factories/controllers/userManager/makeLoadAllModeratorsContoller';
+import makeSearchModeratorsContoller from '../../factories/controllers/userManager/makeSearchModeratorsContoller';
 
 const moderatorsRouter = Router();
 
@@ -31,11 +32,14 @@ moderatorsRouter.get(
     adapterRouter(makeLoadAllFieldJournalsPerModeratorContoller()),
 );
 moderatorsRouter.get(
+    '/search/:keyword',
+    adapterRouter(makeSearchModeratorsContoller()),
+);
+moderatorsRouter.get(
     '/me/fieldJournals/search/:keyword',
     adapterMiddleware(makeAuthModeratorMiddleware()),
     adapterRouter(makeSearchFieldJournalsPerMeModeratorContoller()),
 );
-
 moderatorsRouter.patch(
     '/me/changePassword',
     adapterMiddleware(makeAuthModeratorMiddleware()),
