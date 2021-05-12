@@ -9,10 +9,12 @@ import makeLoadAllFieldJournalsPerMeModeratorContoller from '../../factories/con
 import makeLoadAllFieldJournalsPerModeratorContoller from '../../factories/controllers/userManager/makeLoadAllFieldJournalsPerModeratorContoller';
 import makeSearchFieldJournalsPerMeModeratorContoller from '../../factories/controllers/userModerator/makeSearchFieldJournalsPerMeModeratorContoller';
 import makeChangePasswordModeratorContoller from '../../factories/controllers/userModerator/makeChangePasswordModeratorContoller';
+import makeLoadAllModeratorsContoller from '../../factories/controllers/userManager/makeLoadAllModeratorsContoller';
 
 const moderatorsRouter = Router();
 
 moderatorsRouter.post('/', adapterRouter(makeCreateModeratorsContoller()));
+moderatorsRouter.get('/', adapterRouter(makeLoadAllModeratorsContoller()));
 moderatorsRouter.get(
     '/me',
     adapterMiddleware(makeAuthModeratorMiddleware()),
