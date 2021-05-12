@@ -8,6 +8,7 @@ import LoadAllTemplatesRepository, {
     params as loadAllParams,
 } from '../../../../core/protocols/db/repositories/LoadAllTemplatesRepository';
 import LoadTemplateByIdRepository from '../../../../core/protocols/db/repositories/LoadTemplateByIdRepository';
+import SearchTemplatesRepository from '../../../../core/protocols/db/repositories/SearchTemplatesRepository';
 import UpdateTemplateRepository, {
     params as updateParams,
 } from '../../../../core/protocols/db/repositories/UpdateTemplateRepository';
@@ -19,7 +20,8 @@ class TemplateTypeormRepository
         CreateTemplateRepository,
         LoadTemplateByIdRepository,
         UpdateTemplateRepository,
-        LoadAllTemplatesRepository {
+        LoadAllTemplatesRepository,
+        SearchTemplatesRepository {
     private ormRepository: Repository<TemplateTypeorm>;
 
     constructor() {
@@ -98,6 +100,31 @@ class TemplateTypeormRepository
             return templates;
         } catch (err) {
             throw new Error('Load all templates error');
+        }
+    }
+
+    async search(keywords: string): Promise<Template[]> {
+        try {
+            const queryBuilder = this.ormRepository.createQueryBuilder(
+                'Template',
+            );
+
+            const finded = queryBuilder
+                .leftJoinAndSelect('Template.etherapies', 'etherapies')
+                .where('Template.name ILIKE :name', {
+                    name: `%${keywords}%`,
+                })
+                .orWhere('etherapies.name ILIKE :name', {
+                    name: `%${keywords}%`,
+                })
+                .orWhere('etherapies.identifier ILIKE :identifier', {
+                    identifier: `%${keywords}%`,
+                })
+                .getMany();
+
+            return finded;
+        } catch {
+            throw new Error('Search templates error');
         }
     }
 }
