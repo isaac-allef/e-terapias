@@ -17,6 +17,7 @@ import LoadFieldJournalByIdRepository from '../../../../core/protocols/db/reposi
 import SearchFieldJournalsPerModeratorRepository, {
     params,
 } from '../../../../core/protocols/db/repositories/SearchFieldJournalsPerModeratorRepository';
+import SearchFieldJournalsRepository from '../../../../core/protocols/db/repositories/SearchFieldJournalsRepository';
 import UpdateFieldJournalRepository, {
     params as updateParams,
 } from '../../../../core/protocols/db/repositories/UpdateFieldJournalRepository';
@@ -31,7 +32,8 @@ class FieldJournalTypeormRepository
         SearchFieldJournalsPerModeratorRepository,
         LoadAllFieldJournalsPerEtherapyRepository,
         UpdateFieldJournalRepository,
-        LoadAllFieldJournalsRepository {
+        LoadAllFieldJournalsRepository,
+        SearchFieldJournalsRepository {
     private ormRepository: Repository<FieldJournalTypeorm>;
 
     constructor() {
@@ -181,6 +183,38 @@ class FieldJournalTypeormRepository
             return fieldJournals;
         } catch (err) {
             throw new Error('Load all field journals error');
+        }
+    }
+
+    async search(keywords: string): Promise<FieldJournal[]> {
+        try {
+            const queryBuilder = this.ormRepository.createQueryBuilder(
+                'FieldJournal',
+            );
+
+            const finded = queryBuilder
+                .leftJoinAndSelect('FieldJournal.moderator', 'moderator')
+                .leftJoinAndSelect('FieldJournal.etherapy', 'etherapy')
+                .where('FieldJournal.name ILIKE :name', {
+                    name: `%${keywords}%`,
+                })
+                .orWhere('etherapy.name ILIKE :name', {
+                    name: `%${keywords}%`,
+                })
+                .orWhere('etherapy.identifier ILIKE :identifier', {
+                    identifier: `%${keywords}%`,
+                })
+                .orWhere('moderator.name ILIKE :name', {
+                    name: `%${keywords}%`,
+                })
+                .orWhere('moderator.email ILIKE :email', {
+                    email: `%${keywords}%`,
+                })
+                .getMany();
+
+            return finded;
+        } catch {
+            throw new Error('Search etherapies error');
         }
     }
 }
