@@ -1,34 +1,34 @@
 import HashComparer from '../protocols/cryptography/HashComparer';
 import HashGenerater from '../protocols/cryptography/HashGenerater';
-import ChangePasswordModeratorRepository from '../protocols/db/repositories/ChangePasswordModeratorRepository';
-import LoadModeratorByIdRepository from '../protocols/db/repositories/LoadModeratorByIdRepository';
+import ChangePasswordRepository from '../protocols/db/repositories/ChangePasswordRepository';
+import LoadUserByTokenRepository from '../protocols/db/repositories/LoadUserByTokenRepository';
 
 export type params = {
-    id: string;
+    token: string;
     currentPassword: string;
     newPassword: string;
     newPasswordConfirmation: string;
 };
 
-class ChangePasswordModeratorService {
+class ChangePasswordService {
     constructor(
         private hashGenerater: HashGenerater,
         private hashComparer: HashComparer,
-        private loadModeratorRepository: LoadModeratorByIdRepository,
-        private changePasswordModeratorRepository: ChangePasswordModeratorRepository,
+        private loadUserByTokenRepository: LoadUserByTokenRepository,
+        private changePasswordRepository: ChangePasswordRepository,
     ) {}
 
     public async execute({
-        id,
+        token,
         currentPassword,
         newPassword,
         newPasswordConfirmation,
     }: params): Promise<boolean> {
-        const moderator = await this.loadModeratorRepository.load(id);
+        const user = await this.loadUserByTokenRepository.loadByToken(token);
 
         const passwordIsCorrect = await this.hashComparer.compare(
             currentPassword,
-            moderator.password,
+            user.password,
         );
 
         if (!passwordIsCorrect) {
@@ -45,15 +45,13 @@ class ChangePasswordModeratorService {
             throw new Error('The new password is equal current password');
         }
 
-        const moderatorUpdated = await this.changePasswordModeratorRepository.changePassword(
-            {
-                id,
-                password: await this.hashGenerater.generate(newPassword),
-            },
-        );
+        const isChange = await this.changePasswordRepository.changePassword({
+            token,
+            password: await this.hashGenerater.generate(newPassword),
+        });
 
-        return moderatorUpdated;
+        return isChange;
     }
 }
 
-export default ChangePasswordModeratorService;
+export default ChangePasswordService;

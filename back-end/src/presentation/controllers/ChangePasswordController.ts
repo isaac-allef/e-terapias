@@ -1,26 +1,26 @@
 /* eslint-disable import/prefer-default-export */
-import ChangePasswordModeratorService from '../../core/services/ChangePasswordModeratorService';
+import ChangePasswordService from '../../core/services/ChangePasswordService';
 import { MissingParamError } from '../erros/missingParamError';
 import { badRequest, ok, serverError } from '../helpers/httpHelder';
 import { Controller } from '../protocols/controller';
 import { HttpRequest, HttpResponse } from '../protocols/http';
 
-export class ChangePasswordModeratorController implements Controller {
+export class ChangePasswordController implements Controller {
     constructor(
-        private readonly changePasswordModeratorService: ChangePasswordModeratorService,
+        private readonly changePasswordService: ChangePasswordService,
     ) {}
 
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
         try {
-            const id = httpRequest.userId;
+            const token = httpRequest.userToken;
             const {
                 currentPassword,
                 newPassword,
                 newPasswordConfirmation,
             } = httpRequest.body;
 
-            if (!id) {
-                return badRequest(new MissingParamError('id'));
+            if (!token) {
+                return badRequest(new MissingParamError('token'));
             }
 
             if (!currentPassword) {
@@ -37,15 +37,13 @@ export class ChangePasswordModeratorController implements Controller {
                 );
             }
 
-            const moderators = await this.changePasswordModeratorService.execute(
-                {
-                    id,
-                    currentPassword,
-                    newPassword,
-                    newPasswordConfirmation,
-                },
-            );
-            return ok(moderators);
+            const isChange = await this.changePasswordService.execute({
+                token,
+                currentPassword,
+                newPassword,
+                newPasswordConfirmation,
+            });
+            return ok(isChange);
         } catch (err) {
             return serverError(err);
         }

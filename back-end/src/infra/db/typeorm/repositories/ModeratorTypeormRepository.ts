@@ -2,9 +2,9 @@
 import { EntityRepository, getRepository, Repository } from 'typeorm';
 import Moderator from '../../../../core/entities/Moderator';
 import User from '../../../../core/entities/User';
-import ChangePasswordModeratorRepository, {
+import ChangePasswordRepository, {
     params as changePasswordParams,
-} from '../../../../core/protocols/db/repositories/ChangePasswordModeratorRepository';
+} from '../../../../core/protocols/db/repositories/ChangePasswordRepository';
 import CreateModeratorsRepository, {
     params,
 } from '../../../../core/protocols/db/repositories/CreateModeratorsRepository';
@@ -26,7 +26,7 @@ class ModeratorTypeormRepository
         LoadUserByEmailRepository,
         UpdateAccessTokenRepository,
         LoadUserByTokenRepository,
-        ChangePasswordModeratorRepository,
+        ChangePasswordRepository,
         LoadAllModeratorsRepository,
         SearchModeratorsRepository {
     private ormRepository: Repository<ModeratorTypeorm>;
@@ -146,25 +146,25 @@ class ModeratorTypeormRepository
     }
 
     async changePassword({
-        id,
+        token,
         password,
     }: changePasswordParams): Promise<boolean> {
         try {
-            const moderator = await this.ormRepository.findOne({
-                where: { id },
+            const user = await this.ormRepository.findOne({
+                where: { token },
             });
 
-            if (!moderator) {
-                throw new Error('Moderator not found');
+            if (!user) {
+                throw new Error('User not found');
             }
 
-            moderator.password = password;
+            user.password = password;
 
-            await this.ormRepository.save(moderator);
+            await this.ormRepository.save(user);
 
             return true;
         } catch {
-            throw new Error('Change password moderator error');
+            throw new Error('Change password user error');
         }
     }
 

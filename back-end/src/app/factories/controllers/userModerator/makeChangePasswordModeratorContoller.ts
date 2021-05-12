@@ -1,23 +1,21 @@
-import ChangePasswordModeratorService from '../../../../core/services/ChangePasswordModeratorService';
+import ChangePasswordService from '../../../../core/services/ChangePasswordService';
 import BcryptAdapter from '../../../../infra/cryptography/bcryptAdapter';
 import ModeratorTypeormRepository from '../../../../infra/db/typeorm/repositories/ModeratorTypeormRepository';
-import { ChangePasswordModeratorController } from '../../../../presentation/controllers/ChangePasswordModeratorController';
+import { ChangePasswordController } from '../../../../presentation/controllers/ChangePasswordController';
 import { Controller } from '../../../../presentation/protocols/controller';
 
 const makeChangePasswordModeratorContoller = (): Controller => {
     const hashGenerater = new BcryptAdapter(12);
     const hashComparer = hashGenerater;
-    const loadModeratorByIdRepository = new ModeratorTypeormRepository();
-    const changePasswordModeratorRepository = new ModeratorTypeormRepository();
-    const changePasswordModeratorService = new ChangePasswordModeratorService(
+    const loadUserByTokenRepository = new ModeratorTypeormRepository();
+    const changePasswordRepository = new ModeratorTypeormRepository();
+    const changePasswordService = new ChangePasswordService(
         hashGenerater,
         hashComparer,
-        loadModeratorByIdRepository,
-        changePasswordModeratorRepository,
+        loadUserByTokenRepository,
+        changePasswordRepository,
     );
-    return new ChangePasswordModeratorController(
-        changePasswordModeratorService,
-    );
+    return new ChangePasswordController(changePasswordService);
 };
 
 export default makeChangePasswordModeratorContoller;
