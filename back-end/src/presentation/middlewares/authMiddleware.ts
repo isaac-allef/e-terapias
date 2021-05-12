@@ -27,7 +27,7 @@ export class AuthMiddleware implements Middleware {
                 this.role,
             );
 
-            return ok({ userId: user.id });
+            return ok({ userId: user.id, userToken: accessToken });
         } catch (err) {
             if (err instanceof AppError) {
                 return forbidden(new AccessDeniedError());

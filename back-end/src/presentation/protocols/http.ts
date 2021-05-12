@@ -10,4 +10,5 @@ export interface HttpRequest {
     body?: any;
     headers?: any;
     userId?: string;
+    userToken?: string;
 }

@@ -10,6 +10,7 @@ const adapterRouter = (controller: Controller) => {
             params: request.params,
             body: request.body,
             userId: request.userId,
+            userToken: request.userToken,
         };
         const httpResponse = await controller.handle(httpRequest);
         response.status(httpResponse.statusCode).json(httpResponse.body);
