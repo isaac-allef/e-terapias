@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import makeUploadManagersListContoller from '../../factories/controllers/userManager/makeUploadManagersListContoller';
+import makeUploadManagersListContoller from '../../factories/controllers/secret/makeUploadManagersListContoller';
 import adapterRouter from '../adapters/expressRouter';
 
 const managersRouter = Router();
