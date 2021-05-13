@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import adapterRouter from '../adapters/expressRouter';
-import makeCreateModeratorsContoller from '../../factories/controllers/userManager/makeCreateModeratorsContoller';
+import makeUploadModeratorsListContoller from '../../factories/controllers/userManager/makeUploadModeratorsListContoller';
 import makeLoadModeratorContoller from '../../factories/controllers/shared/makeLoadModeratorContoller';
 import makeLoadMeModeratorContoller from '../../factories/controllers/userModerator/makeLoadMeModeratorContoller';
 import adapterMiddleware from '../adapters/expressMiddleware';
@@ -14,7 +14,7 @@ import makeSearchModeratorsContoller from '../../factories/controllers/userManag
 
 const moderatorsRouter = Router();
 
-moderatorsRouter.post('/', adapterRouter(makeCreateModeratorsContoller()));
+moderatorsRouter.post('/', adapterRouter(makeUploadModeratorsListContoller()));
 moderatorsRouter.get('/', adapterRouter(makeLoadAllModeratorsContoller()));
 moderatorsRouter.get(
     '/me',

@@ -1,6 +1,6 @@
 import Moderator from '../entities/Moderator';
 import HashGenerater from '../protocols/cryptography/HashGenerater';
-import CreateModeratorsRepository from '../protocols/db/repositories/CreateModeratorsRepository';
+import UploadModeratorsListRepository from '../protocols/db/repositories/UploadModeratorsListRepository';
 import LoadManyEtherapiesByIdentifierRepository from '../protocols/db/repositories/LoadManyEtherapiesByIdentifierRepository';
 
 type dto = {
@@ -11,10 +11,10 @@ type dto = {
 
 export type params = dto[];
 
-class CreateModeratorsService {
+class UploadModeratorsListService {
     constructor(
         private hashGenerater: HashGenerater,
-        private createModeratorsRepository: CreateModeratorsRepository,
+        private uploadModeratorsListRepository: UploadModeratorsListRepository,
         private loadManyEtherapiesByIdentifiersRepository: LoadManyEtherapiesByIdentifierRepository,
     ) {}
 
@@ -34,7 +34,7 @@ class CreateModeratorsService {
             }),
         );
 
-        const moderators = await this.createModeratorsRepository.create(
+        const moderators = await this.uploadModeratorsListRepository.upload(
             moderatorsParams,
         );
 
@@ -50,4 +50,4 @@ class CreateModeratorsService {
     }
 }
 
-export default CreateModeratorsService;
+export default UploadModeratorsListService;

@@ -1,13 +1,13 @@
 /* eslint-disable import/prefer-default-export */
-import CreateModeratorsService from '../../core/services/CreateModeratorsService';
+import UploadModeratorsListService from '../../core/services/UploadModeratorsListService';
 import { MissingParamError } from '../erros/missingParamError';
 import { badRequest, ok, serverError } from '../helpers/httpHelder';
 import { Controller } from '../protocols/controller';
 import { HttpRequest, HttpResponse } from '../protocols/http';
 
-export class CreateModeratorsController implements Controller {
+export class UploadModeratorsListController implements Controller {
     constructor(
-        private readonly createModeratorsService: CreateModeratorsService,
+        private readonly uploadModeratorsListService: UploadModeratorsListService,
     ) {}
 
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -18,7 +18,7 @@ export class CreateModeratorsController implements Controller {
                 return badRequest(new MissingParamError('basicInformations'));
             }
 
-            const moderators = await this.createModeratorsService.execute(
+            const moderators = await this.uploadModeratorsListService.execute(
                 basicInformations,
             );
             return ok(moderators);

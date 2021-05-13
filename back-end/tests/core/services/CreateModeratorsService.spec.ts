@@ -1,32 +1,32 @@
 /* eslint-disable max-classes-per-file */
-import CreateModeratorsService from '../../../src/core/services/CreateModeratorsService';
-import CreateModeratorsRepository from '../../../src/core/protocols/db/repositories/CreateModeratorsRepository';
+import UploadModeratorsListService from '../../../src/core/services/UploadModeratorsListService';
+import UploadModeratorsListRepository from '../../../src/core/protocols/db/repositories/UploadModeratorsListRepository';
 import HashGenerater from '../../../src/core/protocols/cryptography/HashGenerater';
-import { CreateModeratorsRepositoryStub } from '../mocks/mockModerator';
+import { UploadModeratorsListRepositoryStub } from '../mocks/mockModerator';
 import { LoadManyEtherapiesByIdentifiersRepositoryStub } from '../mocks/mockEtherapy';
 import { HashGeneraterStub } from '../mocks/mockCryptography';
 import LoadManyEtherapiesByIdentifierRepository from '../../../src/core/protocols/db/repositories/LoadManyEtherapiesByIdentifierRepository';
 
 interface SutTypes {
-    sut: CreateModeratorsService;
+    sut: UploadModeratorsListService;
     hashGenerater: HashGenerater;
-    createModeratorsRepository: CreateModeratorsRepository;
+    uploadModeratorsListRepository: UploadModeratorsListRepository;
     loadManyEtherapiesByIdentifierRepository: LoadManyEtherapiesByIdentifierRepository;
 }
 
 const makeSut = (): SutTypes => {
     const hashGenerater = new HashGeneraterStub();
-    const createModeratorsRepository = new CreateModeratorsRepositoryStub();
+    const uploadModeratorsListRepository = new UploadModeratorsListRepositoryStub();
     const loadManyEtherapiesByIdentifierRepository = new LoadManyEtherapiesByIdentifiersRepositoryStub();
-    const sut = new CreateModeratorsService(
+    const sut = new UploadModeratorsListService(
         hashGenerater,
-        createModeratorsRepository,
+        uploadModeratorsListRepository,
         loadManyEtherapiesByIdentifierRepository,
     );
     return {
         sut,
         hashGenerater,
-        createModeratorsRepository,
+        uploadModeratorsListRepository,
         loadManyEtherapiesByIdentifierRepository,
     };
 };
@@ -62,8 +62,8 @@ describe('Create Moderator usecase', () => {
     });
 
     test('Should call CreateModeratorRepository with correct values', async () => {
-        const { sut, createModeratorsRepository } = makeSut();
-        const createSpy = jest.spyOn(createModeratorsRepository, 'create');
+        const { sut, uploadModeratorsListRepository } = makeSut();
+        const createSpy = jest.spyOn(uploadModeratorsListRepository, 'upload');
         await sut.execute([
             {
                 email: 'fulano@email.com',
@@ -92,13 +92,14 @@ describe('Create Moderator usecase', () => {
         ]);
     });
 
-    test('Should throw if CreateModeratorsRepository throws', async () => {
-        const { sut, createModeratorsRepository } = makeSut();
-        jest.spyOn(createModeratorsRepository, 'create').mockImplementationOnce(
-            () => {
-                throw new Error('Random error');
-            },
-        );
+    test('Should throw if UploadModeratorsListRepository throws', async () => {
+        const { sut, uploadModeratorsListRepository } = makeSut();
+        jest.spyOn(
+            uploadModeratorsListRepository,
+            'upload',
+        ).mockImplementationOnce(() => {
+            throw new Error('Random error');
+        });
 
         await expect(
             sut.execute([

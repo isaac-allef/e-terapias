@@ -2,12 +2,12 @@
 /* eslint-disable import/prefer-default-export */
 
 import Moderator from '../../../src/core/entities/Moderator';
-import CreateModeratorsRepository from '../../../src/core/protocols/db/repositories/CreateModeratorsRepository';
+import UploadModeratorsListRepository from '../../../src/core/protocols/db/repositories/UploadModeratorsListRepository';
 import LoadModeratorByIdRepository from '../../../src/core/protocols/db/repositories/LoadModeratorByIdRepository';
 
-export class CreateModeratorsRepositoryStub
-    implements CreateModeratorsRepository {
-    async create(): Promise<Moderator[]> {
+export class UploadModeratorsListRepositoryStub
+    implements UploadModeratorsListRepository {
+    async upload(): Promise<Moderator[]> {
         const moderator1: Moderator = {
             id: 'randomId1',
             email: 'fulano@email.com',

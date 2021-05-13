@@ -7,7 +7,7 @@ import ChangePasswordRepository, {
 } from '../../../../core/protocols/db/repositories/ChangePasswordRepository';
 import CreateModeratorsRepository, {
     params,
-} from '../../../../core/protocols/db/repositories/CreateModeratorsRepository';
+} from '../../../../core/protocols/db/repositories/UploadModeratorsListRepository';
 import LoadAllModeratorsRepository, {
     params as loadAllParams,
 } from '../../../../core/protocols/db/repositories/LoadAllModeratorsRepository';
@@ -35,7 +35,7 @@ class ModeratorTypeormRepository
         this.ormRepository = getRepository(ModeratorTypeorm);
     }
 
-    public async create(data: params): Promise<Moderator[]> {
+    public async upload(data: params): Promise<Moderator[]> {
         try {
             const moderators = [];
 
