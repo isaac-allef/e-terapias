@@ -4,6 +4,7 @@ import moderatorsRouter from './moderators.routes';
 import templatesRouter from './templates.routes';
 import fieldJournalsRouter from './fieldJournals.routes';
 import loginRouter from './login.routes';
+import managersRouter from './managers.routes';
 
 const routes = Router();
 
@@ -12,5 +13,6 @@ routes.use('/etherapies', etherapiesRouter);
 routes.use('/moderators', moderatorsRouter);
 routes.use('/templates', templatesRouter);
 routes.use('/fieldJournals', fieldJournalsRouter);
+routes.use('/managers', managersRouter);
 
 export default routes;
