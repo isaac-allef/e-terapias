@@ -8,6 +8,6 @@ type dto = {
 
 export type params = dto[];
 
-export default interface CreateEtherapiesRepository {
-    create(data: params): Promise<Etherapy[]>;
+export default interface UploadEtherapiesListRepository {
+    upload(data: params): Promise<Etherapy[]>;
 }

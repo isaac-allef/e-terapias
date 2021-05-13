@@ -2,9 +2,9 @@
 import { EntityRepository, getRepository, In, Repository } from 'typeorm';
 import Etherapy from '../../../../core/entities/Etherapy';
 import Template from '../../../../core/entities/Template';
-import CreateEtherapiesRepository, {
+import UploadEtherapiesListRepository, {
     params as createParams,
-} from '../../../../core/protocols/db/repositories/CreateEtherapiesRepository';
+} from '../../../../core/protocols/db/repositories/UploadEtherapiesListRepository';
 import LinkTemplateToEtherapiesRepository from '../../../../core/protocols/db/repositories/LinkTemplateToEtherapiesRepository';
 import LoadAllEtherapiesRepository, {
     params,
@@ -18,7 +18,7 @@ import EtherapyTypeorm from '../entities/EtherapyTypeorm';
 @EntityRepository()
 class EtherapyTypeormRepository
     implements
-        CreateEtherapiesRepository,
+        UploadEtherapiesListRepository,
         LoadEtherapyByIdRepository,
         LinkTemplateToEtherapiesRepository,
         LoadAllEtherapiesRepository,
@@ -31,7 +31,7 @@ class EtherapyTypeormRepository
         this.ormRepository = getRepository(EtherapyTypeorm);
     }
 
-    public async create(data: createParams): Promise<Etherapy[]> {
+    public async upload(data: createParams): Promise<Etherapy[]> {
         try {
             const etherapies = [];
 

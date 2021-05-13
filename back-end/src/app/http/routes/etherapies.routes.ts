@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import adapterRouter from '../adapters/expressRouter';
-import makeCreateEtherapiesContoller from '../../factories/controllers/userManager/makeCreateEtherapiesContoller';
+import makeUploadEtherapiesListContoller from '../../factories/controllers/userManager/makeUploadEtherapiesListContoller';
 import makeLoadEtherapyContoller from '../../factories/controllers/shared/makeLoadEtherapyContoller';
 import makeLoadAllEtherapiesContoller from '../../factories/controllers/userManager/makeLoadAllEtherapiesContoller';
 import makeSearchEtherapiesContoller from '../../factories/controllers/userManager/makeSearchEtherapiesContoller';
@@ -8,7 +8,7 @@ import makeLoadAllFieldJournalsPerEtherapyContoller from '../../factories/contro
 
 const etherapiesRouter = Router();
 
-etherapiesRouter.post('/', adapterRouter(makeCreateEtherapiesContoller()));
+etherapiesRouter.post('/', adapterRouter(makeUploadEtherapiesListContoller()));
 etherapiesRouter.get(
     '/search/:keyword',
     adapterRouter(makeSearchEtherapiesContoller()),

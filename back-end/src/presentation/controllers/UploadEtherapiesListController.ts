@@ -1,13 +1,13 @@
 /* eslint-disable import/prefer-default-export */
-import CreateEtherapiesService from '../../core/services/CreateEtherapiesService';
+import UploadEtherapiesListService from '../../core/services/UploadEtherapiesListService';
 import { MissingParamError } from '../erros/missingParamError';
 import { badRequest, ok, serverError } from '../helpers/httpHelder';
 import { Controller } from '../protocols/controller';
 import { HttpRequest, HttpResponse } from '../protocols/http';
 
-export class CreateEtherapiesController implements Controller {
+export class UploadEtherapiesListController implements Controller {
     constructor(
-        private readonly createEtherapiesService: CreateEtherapiesService,
+        private readonly uploadEtherapiesListService: UploadEtherapiesListService,
     ) {}
 
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -18,7 +18,7 @@ export class CreateEtherapiesController implements Controller {
                 return badRequest(new MissingParamError('basicInformations'));
             }
 
-            const etherapies = await this.createEtherapiesService.execute(
+            const etherapies = await this.uploadEtherapiesListService.execute(
                 basicInformations,
             );
             return ok(etherapies);

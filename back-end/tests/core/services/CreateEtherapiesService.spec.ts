@@ -1,19 +1,19 @@
 /* eslint-disable max-classes-per-file */
-import CreateEtherapiesService from '../../../src/core/services/CreateEtherapiesService';
-import CreateEtherapiesRepository from '../../../src/core/protocols/db/repositories/CreateEtherapiesRepository';
-import { CreateEtherapiesRepositoryStub } from '../mocks/mockEtherapy';
+import UploadEtherapiesListService from '../../../src/core/services/UploadEtherapiesListService';
+import UploadEtherapiesListRepository from '../../../src/core/protocols/db/repositories/UploadEtherapiesListRepository';
+import { UploadEtherapiesListRepositoryStub } from '../mocks/mockEtherapy';
 
 interface SutTypes {
-    sut: CreateEtherapiesService;
-    createEtherapiesRepository: CreateEtherapiesRepository;
+    sut: UploadEtherapiesListService;
+    uploadEtherapiesListRepository: UploadEtherapiesListRepository;
 }
 
 const makeSut = (): SutTypes => {
-    const createEtherapiesRepository = new CreateEtherapiesRepositoryStub();
-    const sut = new CreateEtherapiesService(createEtherapiesRepository);
+    const uploadEtherapiesListRepository = new UploadEtherapiesListRepositoryStub();
+    const sut = new UploadEtherapiesListService(uploadEtherapiesListRepository);
     return {
         sut,
-        createEtherapiesRepository,
+        uploadEtherapiesListRepository,
     };
 };
 
@@ -31,9 +31,9 @@ describe('Create Etherapy usecase', () => {
         ]);
     });
 
-    test('Should call CreateEtherapiesRepository with correct values', async () => {
-        const { sut, createEtherapiesRepository } = makeSut();
-        const createSpy = jest.spyOn(createEtherapiesRepository, 'create');
+    test('Should call UploadEtherapiesListRepository with correct values', async () => {
+        const { sut, uploadEtherapiesListRepository } = makeSut();
+        const createSpy = jest.spyOn(uploadEtherapiesListRepository, 'upload');
         await sut.execute([
             { identifier: 'any_identifier', name: 'viver é bom' },
             { identifier: 'any_identifier', name: 'não desista' },
@@ -44,13 +44,14 @@ describe('Create Etherapy usecase', () => {
         ]);
     });
 
-    test('Should throw if CreateEtherapiesRepository throws', async () => {
-        const { sut, createEtherapiesRepository } = makeSut();
-        jest.spyOn(createEtherapiesRepository, 'create').mockImplementationOnce(
-            () => {
-                throw new Error('Random error');
-            },
-        );
+    test('Should throw if UploadEtherapiesListRepository throws', async () => {
+        const { sut, uploadEtherapiesListRepository } = makeSut();
+        jest.spyOn(
+            uploadEtherapiesListRepository,
+            'upload',
+        ).mockImplementationOnce(() => {
+            throw new Error('Random error');
+        });
 
         await expect(
             sut.execute([
