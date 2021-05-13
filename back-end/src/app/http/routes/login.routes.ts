@@ -1,9 +1,11 @@
 import { Router } from 'express';
-import makeLoginContoller from '../../factories/controllers/public/makeLoginContoller';
+import makeLoginManagerContoller from '../../factories/controllers/public/makeLoginManagerContoller';
+import makeLoginModeratorContoller from '../../factories/controllers/public/makeLoginModeratorContoller';
 import adapterRouter from '../adapters/expressRouter';
 
 const loginRouter = Router();
 
-loginRouter.post('/', adapterRouter(makeLoginContoller()));
+loginRouter.post('/moderator', adapterRouter(makeLoginModeratorContoller()));
+loginRouter.post('/manager', adapterRouter(makeLoginManagerContoller()));
 
 export default loginRouter;
