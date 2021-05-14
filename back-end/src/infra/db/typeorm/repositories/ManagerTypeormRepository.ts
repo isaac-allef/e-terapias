@@ -8,13 +8,15 @@ import Manager from '../../../../core/entities/Manager';
 import LoadUserByEmailRepository from '../../../../core/protocols/db/repositories/LoadUserByEmailRepository';
 import User from '../../../../core/entities/User';
 import UpdateAccessTokenRepository from '../../../../core/protocols/db/repositories/UpdateAccessTokenRepository';
+import LoadUserByTokenRepository from '../../../../core/protocols/db/repositories/LoadUserByTokenRepository';
 
 @EntityRepository()
 class ManagerTypeormRepository
     implements
         UploadManagersListRepository,
         LoadUserByEmailRepository,
-        UpdateAccessTokenRepository {
+        UpdateAccessTokenRepository,
+        LoadUserByTokenRepository {
     private ormRepository: Repository<ManagerTypeorm>;
 
     constructor() {
@@ -85,6 +87,30 @@ class ManagerTypeormRepository
             return user;
         } catch {
             throw new Error('Load user error');
+        }
+    }
+
+    async loadByToken(accessToken: string, role?: string): Promise<User> {
+        try {
+            let user;
+
+            if (role) {
+                user = await this.ormRepository.findOne({
+                    where: { token: accessToken, role },
+                });
+            } else {
+                user = await this.ormRepository.findOne({
+                    where: { token: accessToken },
+                });
+            }
+
+            if (!user) {
+                throw new Error('User not found');
+            }
+
+            return user;
+        } catch {
+            throw new Error('Load by token user error');
         }
     }
 }
