@@ -10,12 +10,21 @@ import makeChangePasswordModeratorContoller from '../../factories/controllers/us
 import makeLoadAllModeratorsContoller from '../../factories/controllers/userManager/makeLoadAllModeratorsContoller';
 import makeSearchModeratorsContoller from '../../factories/controllers/userManager/makeSearchModeratorsContoller';
 import { authModerator } from '../middlewares/authModerator';
+import { authManager } from '../middlewares/authManager';
 
 const moderatorsRouter = Router();
 
-moderatorsRouter.post('/', adapterRouter(makeUploadModeratorsListContoller()));
+moderatorsRouter.post(
+    '/',
+    authManager,
+    adapterRouter(makeUploadModeratorsListContoller()),
+);
 
-moderatorsRouter.get('/', adapterRouter(makeLoadAllModeratorsContoller()));
+moderatorsRouter.get(
+    '/',
+    authManager,
+    adapterRouter(makeLoadAllModeratorsContoller()),
+);
 
 moderatorsRouter.get(
     '/me',
@@ -29,15 +38,21 @@ moderatorsRouter.get(
     adapterRouter(makeLoadAllFieldJournalsPerMeModeratorContoller()),
 );
 
-moderatorsRouter.get('/:id', adapterRouter(makeLoadModeratorContoller()));
+moderatorsRouter.get(
+    '/:id',
+    authManager,
+    adapterRouter(makeLoadModeratorContoller()),
+);
 
 moderatorsRouter.get(
     '/:id/fieldJournals',
+    authManager,
     adapterRouter(makeLoadAllFieldJournalsPerModeratorContoller()),
 );
 
 moderatorsRouter.get(
     '/search/:keyword',
+    authManager,
     adapterRouter(makeSearchModeratorsContoller()),
 );
 

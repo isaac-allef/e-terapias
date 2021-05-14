@@ -5,18 +5,37 @@ import makeLoadEtherapyContoller from '../../factories/controllers/shared/makeLo
 import makeLoadAllEtherapiesContoller from '../../factories/controllers/userManager/makeLoadAllEtherapiesContoller';
 import makeSearchEtherapiesContoller from '../../factories/controllers/userManager/makeSearchEtherapiesContoller';
 import makeLoadAllFieldJournalsPerEtherapyContoller from '../../factories/controllers/userManager/makeLoadAllFieldJournalsPerEtherapyContoller';
+import { authManager } from '../middlewares/authManager';
 
 const etherapiesRouter = Router();
 
-etherapiesRouter.post('/', adapterRouter(makeUploadEtherapiesListContoller()));
+etherapiesRouter.post(
+    '/',
+    authManager,
+    adapterRouter(makeUploadEtherapiesListContoller()),
+);
+
 etherapiesRouter.get(
     '/search/:keyword',
+    authManager,
     adapterRouter(makeSearchEtherapiesContoller()),
 );
-etherapiesRouter.get('/:id', adapterRouter(makeLoadEtherapyContoller()));
-etherapiesRouter.get('/', adapterRouter(makeLoadAllEtherapiesContoller()));
+
+etherapiesRouter.get(
+    '/:id',
+    authManager,
+    adapterRouter(makeLoadEtherapyContoller()),
+);
+
+etherapiesRouter.get(
+    '/',
+    authManager,
+    adapterRouter(makeLoadAllEtherapiesContoller()),
+);
+
 etherapiesRouter.get(
     '/:id/fieldJournals',
+    authManager,
     adapterRouter(makeLoadAllFieldJournalsPerEtherapyContoller()),
 );
 
