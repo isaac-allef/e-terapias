@@ -13,43 +13,44 @@ interface Line {
   content: string[][];
 }
 
-export default function ListFieldJournals() {
+export default function FieldJournalList() {
 
   const [matrix, setMatrix] = useState<Line[]>([]);
   const [page , setPage] = useState(1);
   const per_page = 5;
   const [sort , setSort] = useState('updated_at');
   const [direction , setDirection] = useState('asc');
+  // const [token, setToken] = useState(localStorage.getItem('@etherapies:token'));
+  const [token, _] = useState('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNmZTJmYmQyLTRmNTYtNGY0ZS04NzcwLTJjMzc0MTI3MTU2YiIsImlhdCI6MTYyMTAyODk0N30.3HzZioMqIsu1pR_Fb8c9whLOUeho7bh_eZRXN-RtuCI');
 	
 	const timestampFormat = (timestamp: string): string => {
 		return new Date(timestamp).toUTCString();
 	}
 
-    const parseTemplatesToMatrix = (templates: any): Line[] => {
-      return templates.map((template: any) => {
+    const parseFieldJournalsToMatrix = (fieldJournals: any): Line[] => {
+      return fieldJournals.map((fieldJournal: any) => {
         return {
           link: '/',
           content: [
-            [template.name],
-            template.etherapies.map((etherapy: any) => etherapy.identifier),
-			      [timestampFormat(template.created_at)],
-			      [timestampFormat(template.updated_at)],
+            [fieldJournal.name],
+            [fieldJournal.moderator.name],
+            [fieldJournal.etherapy.identifier],
+			[timestampFormat(fieldJournal.created_at)],
+			[timestampFormat(fieldJournal.updated_at)],
           ]
         }
       })
     }
 
     useEffect(() => {
-		// const token = localStorage.getItem('@eterapias:token');
-		const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNmZTJmYmQyLTRmNTYtNGY0ZS04NzcwLTJjMzc0MTI3MTU2YiIsImlhdCI6MTYyMTAyODk0N30.3HzZioMqIsu1pR_Fb8c9whLOUeho7bh_eZRXN-RtuCI';
-      	getTemplates({ 
+      	getFieldJournals({ 
 			token, 
 			page, 
 			per_page, 
 			sort: sort as 'name' | 'created_at' | 'updated_at', 
 			direction: direction as 'asc' | 'desc',
-		}).then(templates => {
-        	return parseTemplatesToMatrix(templates);
+		}).then(fieldJournals => {
+        	return parseFieldJournalsToMatrix(fieldJournals);
       	}).then(matrix => setMatrix(matrix))
     }, [page, direction, sort]);
 
@@ -63,15 +64,16 @@ export default function ListFieldJournals() {
 
 	const heads = [
 		{ name: 'Name', action: () => sortAndDirection('name') }, 
-		{ name: 'Eterapias' }, 
+		{ name: 'Moderator' }, 
+		{ name: 'Etherapy' }, 
 		{ name: 'Created_at', action: () => sortAndDirection('created_at') }, 
 		{ name: 'Updated_at', action: () => sortAndDirection('updated_at') }
 	];
 
     return (
         <Layout>
-        <MyTitle>Templates</MyTitle>
-        <MyInput placeholder="Search templates" search={true} ></MyInput>
+        <MyTitle>FieldJournals</MyTitle>
+        <MyInput placeholder="Search field journals" search={true} ></MyInput>
         <MyTable
             heads={heads}
             matrix={matrix}
@@ -80,7 +82,7 @@ export default function ListFieldJournals() {
 		/>
         <Divider />
         <MyButton>
-			<Link href={'/'}>New template</Link>
+			<Link href={'/'}>New field journal</Link>
         </MyButton>
         </Layout>
     )
@@ -93,8 +95,8 @@ type loadParams ={
 	sort?: 'name' | 'created_at' | 'updated_at';
     direction?: 'asc' | 'desc';
 }
-const getTemplates = async ({ token, page, per_page, sort, direction }: loadParams): Promise<any> => {
-	const response = await api.get('/templates', {
+const getFieldJournals = async ({ token, page, per_page, sort, direction }: loadParams): Promise<any> => {
+	const response = await api.get('/fieldJournals', {
 		params: {
 			page,
 			per_page,
@@ -105,11 +107,11 @@ const getTemplates = async ({ token, page, per_page, sort, direction }: loadPara
 			'Authorization': `token ${token}`
 		}
 	});
-	const templates = response.data;
+	const fieldJournals = response.data;
 	
-	if (!templates) {
+	if (!fieldJournals) {
 		return [];
 	}
 
-	return templates;
+	return fieldJournals;
 }
