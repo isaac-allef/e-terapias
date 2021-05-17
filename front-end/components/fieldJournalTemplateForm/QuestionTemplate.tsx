@@ -1,7 +1,6 @@
 import { Editable, EditableInput, EditablePreview } from "@chakra-ui/editable";
 import { Input } from "@chakra-ui/input";
-import { Box, Stack } from "@chakra-ui/layout";
-import { Skeleton } from "@chakra-ui/skeleton";
+import { Box } from "@chakra-ui/layout";
 import { Textarea } from "@chakra-ui/textarea";
 
 interface MyProps {

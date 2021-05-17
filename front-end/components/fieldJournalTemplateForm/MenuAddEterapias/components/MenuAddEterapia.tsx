@@ -1,27 +1,26 @@
 import { Button } from "@chakra-ui/button";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu";
-import { useState } from "react";
 
 interface MyProps {
-    eterapias: any[];
-    setEterapias: Function;
-    eterapiasToAdd: any[];
-    setEterapiasToAdd: Function;
+    etherapies: any[];
+    setEtherapies: Function;
+    etherapiesToAdd: any[];
+    setEtherapiesToAdd: Function;
 }
 
-export default function MenuAddEterapia({ eterapias, setEterapias, eterapiasToAdd, setEterapiasToAdd }: MyProps) {
-    function removeElementFromEterapias(eterapias, id) {
-        const newEterapias = eterapias.filter(eterapia => {
-            return eterapia.id !== id
+export default function MenuAddEtherapy({ etherapies, setEtherapies, etherapiesToAdd, setEtherapiesToAdd }: MyProps) {
+    function removeElementFromEtherapies(etherapies, id) {
+        const newEtherapies = etherapies.filter(etherapy => {
+            return etherapy.id !== id
         })
 
-        setEterapias(newEterapias);
+        setEtherapies(newEtherapies);
     }
 
-    function addEterapiaInTheList(eterapiasToAdd, setEterapiasToAdd, eterapia) {
-        setEterapiasToAdd([...eterapiasToAdd, eterapia])
-        removeElementFromEterapias(eterapias, eterapia.id);
+    function addEtherapyInTheList(etherapiesToAdd, setEtherapiesToAdd, Etherapy) {
+        setEtherapiesToAdd([...etherapiesToAdd, Etherapy])
+        removeElementFromEtherapies(etherapies, Etherapy.id);
     }
 
     return (
@@ -29,20 +28,20 @@ export default function MenuAddEterapia({ eterapias, setEterapias, eterapiasToAd
             {({ isOpen }) => (
                 <>
                 <MenuButton variant='outline' isActive={isOpen} as={Button} rightIcon={<ChevronDownIcon />}>
-                    Add Eterapia
+                    Add Etherapy
                 </MenuButton>
                 <MenuList>
                 {
-                    eterapias.map(eterapia => {
+                    etherapies.map(etherapy => {
                         return <MenuItem
-                                    key={eterapia.id} 
+                                    key={etherapy.id} 
                                     onClick={() => {
-                                            addEterapiaInTheList(eterapiasToAdd, 
-                                                                setEterapiasToAdd, 
-                                                                eterapia)
+                                            addEtherapyInTheList(etherapiesToAdd, 
+                                                                setEtherapiesToAdd, 
+                                                                etherapy)
                                         }
                                     }
-                                >{ eterapia.name }
+                                >{ etherapy.name }
                                 </MenuItem>
                         })
                 }

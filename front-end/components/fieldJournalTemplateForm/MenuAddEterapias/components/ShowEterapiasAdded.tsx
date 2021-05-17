@@ -1,43 +1,43 @@
-import { Button, IconButton } from "@chakra-ui/button"
-import { CloseIcon, Icon, SearchIcon } from "@chakra-ui/icons"
+import { IconButton } from "@chakra-ui/button"
+import { Icon } from "@chakra-ui/icons"
 import { Flex, Wrap, Text, Link } from "@chakra-ui/layout"
 import { Tooltip } from "@chakra-ui/tooltip";
 import { IoMdCloseCircle } from 'react-icons/io';
 
 interface MyProps {
-    eterapias: any[];
-    setEterapias: Function;
-    eterapiasToAdd: any[];
-    setEterapiasToAdd: Function;
-    warningEterapiaHasAFieldJournalTemplate: boolean
+    etherapies: any[];
+    setEtherapies: Function;
+    etherapiesToAdd: any[];
+    setEtherapiesToAdd: Function;
+    warningEtherapyHasAFieldJournalTemplate: boolean
 }
 
-export default function ShowEterapiasEdded({ eterapias, setEterapias, eterapiasToAdd, setEterapiasToAdd, warningEterapiaHasAFieldJournalTemplate }: MyProps) {
-    function addElementInEterapiasAgain(eterapiasToAdd, eterapias, id) {
-        const eterapia = eterapiasToAdd.find(eterapia => eterapia.id === id);
-        setEterapias([...eterapias, eterapia]);
+export default function ShowEtherapiesEdded({ etherapies, setEtherapies, etherapiesToAdd, setEtherapiesToAdd, warningEtherapyHasAFieldJournalTemplate }: MyProps) {
+    function addElementInEtherapiesAgain(etherapiesToAdd, etherapies, id) {
+        const etherapy = etherapiesToAdd.find(etherapy => etherapy.id === id);
+        setEtherapies([...etherapies, etherapy]);
     }
     
-    function removeEterapiaFromTheList(eterapiasToAdd, setEterapiasToAdd, id) {
-        addElementInEterapiasAgain(eterapiasToAdd, eterapias, id);
-        const newList = eterapiasToAdd.filter(eterapia => eterapia.id !== id);
-        setEterapiasToAdd(newList);
+    function removeEtherapyFromTheList(etherapiesToAdd, setEtherapiesToAdd, id) {
+        addElementInEtherapiesAgain(etherapiesToAdd, etherapies, id);
+        const newList = etherapiesToAdd.filter(etherapy => etherapy.id !== id);
+        setEtherapiesToAdd(newList);
     }
 
     return (
         <Wrap>
         { 
-            eterapiasToAdd.map(eterapia => {
+            etherapiesToAdd.map(etherapy => {
                 return (
-                    <Flex key={eterapia.id} alignItems='center'>
+                    <Flex key={etherapy.id} alignItems='center'>
                     {
-                        warningEterapiaHasAFieldJournalTemplate &&
-                        eterapia.fieldJournalTemplate ?
-                            <Tooltip label='This eterapia already has a field journal template. This action will subscribe to it'>
-                                <Text color='#ffe227'><Link href='/administrator/eterapias/list' isExternal>{ eterapia.name }</Link></Text>
+                        warningEtherapyHasAFieldJournalTemplate &&
+                        etherapy.template ?
+                            <Tooltip label={`This etherapy already has a template call '${etherapy.template.name}'. This action will subscribe to it`}>
+                                <Text color='#ffe227'><Link href='/administrator/Etherapies/list' isExternal>{ etherapy.name }</Link></Text>
                             </Tooltip>
                             :
-                            <Text color='#1a508b'><Link href='/administrator/eterapias/list' isExternal>{ eterapia.name }</Link></Text>
+                            <Text color='#1a508b'><Link href='/administrator/Etherapies/list' isExternal>{ etherapy.name }</Link></Text>
                     }
                     <IconButton 
                         variant='unstyled'
@@ -46,9 +46,9 @@ export default function ShowEterapiasEdded({ eterapias, setEterapias, eterapiasT
                         aria-label="close" 
                         icon={<Icon as={IoMdCloseCircle} />} 
                         onClick={() => {
-                            removeEterapiaFromTheList(eterapiasToAdd, 
-                                                    setEterapiasToAdd, 
-                                                    eterapia.id)
+                            removeEtherapyFromTheList(etherapiesToAdd, 
+                                                    setEtherapiesToAdd, 
+                                                    etherapy.id)
                             }
                         }
                     />
