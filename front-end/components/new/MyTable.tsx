@@ -5,6 +5,7 @@ import {
     Tr,
     Td,
     Th,
+    Button,
   } from "@chakra-ui/react"
 
 import React from "react";
@@ -17,7 +18,7 @@ interface Line {
 }
 
 interface MyProps {
-    heads: string[];
+    heads: { name: string, action?: Function }[];
     matrix: Line[];
 }
 
@@ -26,7 +27,13 @@ export default function MyTable({ heads, matrix }: MyProps) {
         <Table variant="simple">
             <Thead>
                 <Tr>{
-                    React.Children.toArray(heads.map(column => <Th>{ column }</Th>))
+                    React.Children.toArray(heads.map(column => <Th>
+                        <Button onClick={
+                            () => column.action ? column.action(): null
+                        }>
+                            { column.name }
+                        </Button>
+                    </Th>))
                 }<Th />
                 </Tr>
             </Thead>
