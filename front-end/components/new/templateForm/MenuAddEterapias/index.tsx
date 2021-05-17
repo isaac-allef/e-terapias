@@ -1,6 +1,6 @@
 import { Flex } from "@chakra-ui/layout"
-import MenuAddEterapia from "./components/MenuAddEterapia"
-import ShowEterapiasEdded from "./components/ShowEterapiasAdded"
+import MenuAddEterapia from "./MenuAddEterapia"
+import ShowEterapiasEdded from "./ShowEterapiasAdded"
 
 interface MyProps {
     eterapias: any[];

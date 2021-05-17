@@ -15,9 +15,9 @@ import MyTitle from "../../components/shared/MyTitle";
 import MyDivider from "../../components/shared/MyDivider";
 import MyButton from "../../components/shared/MyButton";
 import api from "../../services/api";
-import MenuAddEtherapies from "../../components/fieldJournalTemplateForm/MenuAddEterapias";
-import QuestionTemplate from "../../components/fieldJournalTemplateForm/QuestionTemplate";
-import MenuAddNewQuestionTemplate from "../../components/fieldJournalTemplateForm/MenuAddNewQuestionTemplate";
+import MenuAddEtherapies from "../../components/new/templateForm/MenuAddEterapias";
+import QuestionTemplate from "../../components/new/templateForm/QuestionTemplate";
+import MenuAddNewQuestionTemplate from "../../components/new/templateForm/MenuAddNewQuestionTemplate";
 
 interface Question {
     id: number;
