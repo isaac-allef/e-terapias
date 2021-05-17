@@ -1,4 +1,3 @@
-import { Button } from "@chakra-ui/button";
 import { Center, Divider } from "@chakra-ui/layout";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -16,10 +15,10 @@ interface Line {
 }
 
 export default function ListFieldJournals() {
-  const [heads, _setHeads] = useState<string[]>(['Name', 'Eterapias', 'Created_at', 'Updated_at']);
+
   const [matrix, setMatrix] = useState<Line[]>([]);
   const [page , setPage] = useState(1);
-  const [per_page , setPerPage] = useState(5);
+  const per_page = 5;
   const [sort , setSort] = useState('updated_at');
   const [direction , setDirection] = useState('asc');
 	
@@ -34,8 +33,8 @@ export default function ListFieldJournals() {
           content: [
             [template.name],
             template.etherapies.map((etherapy: any) => etherapy.identifier),
-			[timestampFormat(template.created_at)],
-			[timestampFormat(template.updated_at)],
+			      [timestampFormat(template.created_at)],
+			      [timestampFormat(template.updated_at)],
           ]
         }
       })
@@ -53,31 +52,40 @@ export default function ListFieldJournals() {
 		}).then(templates => {
         	return parseTemplatesToMatrix(templates);
       	}).then(matrix => setMatrix(matrix))
-    }, [page, direction]);
+    }, [page, direction, sort]);
+
+	const sortAndDirection = (sortBy: string) => {
+		setSort(sortBy)
+		setDirection('asc')
+		if (direction === 'asc') {
+			setDirection('desc')
+		}
+	}
+
+	const heads = [
+		{ name: 'Name', action: () => sortAndDirection('name') }, 
+		{ name: 'Eterapias' }, 
+		{ name: 'Created_at', action: () => sortAndDirection('created_at') }, 
+		{ name: 'Updated_at', action: () => sortAndDirection('updated_at') }
+	];
 
     return (
         <Layout>
         <MyTitle>Templates</MyTitle>
         <MyInput placeholder="Search templates" search={true} ></MyInput>
-		<Button
-			onClick={() => {
-				setSort('updated_at');
-				direction === 'asc'? setDirection('desc') : setDirection('asc');
-			}}
-		>updated_at</Button>
-          <MyTable
-              heads={heads}
-              matrix={matrix}
-          />
-          <Center>
-            <MyPagination
-              page={page}
-              setPage={setPage}
-            />
-          </Center>
+        <MyTable
+            heads={heads}
+            matrix={matrix}
+		/>
+        <Center>
+			<MyPagination
+			page={page}
+			setPage={setPage}
+			/>
+        </Center>
         <Divider />
         <MyButton>
-          <Link href={'/'}>New template</Link>
+			<Link href={'/'}>New template</Link>
         </MyButton>
         </Layout>
     )
