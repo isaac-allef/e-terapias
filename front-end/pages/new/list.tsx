@@ -1,7 +1,6 @@
-import { Center, Divider } from "@chakra-ui/layout";
+import { Divider } from "@chakra-ui/layout";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import MyPagination from "../../components/list/MyPagination";
 import MyTable from "../../components/new/MyTable";
 import Layout from "../../components/shared/Layout";
 import MyButton from "../../components/shared/MyButton";
@@ -76,13 +75,9 @@ export default function ListFieldJournals() {
         <MyTable
             heads={heads}
             matrix={matrix}
-		/>
-        <Center>
-			<MyPagination
 			page={page}
 			setPage={setPage}
-			/>
-        </Center>
+		/>
         <Divider />
         <MyButton>
 			<Link href={'/'}>New template</Link>
@@ -111,7 +106,10 @@ const getTemplates = async ({ token, page, per_page, sort, direction }: loadPara
 		}
 	});
 	const templates = response.data;
-	return templates;
+	
+	if (!templates) {
+		return [];
+	}
 
-	return []
+	return templates;
 }
