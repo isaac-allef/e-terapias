@@ -1,4 +1,4 @@
-import { Divider, Text } from "@chakra-ui/layout";
+import { Box, Divider, Flex, Grid, GridItem, Text } from "@chakra-ui/layout";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import MyTable from "../../../components/new/MyTable";
@@ -85,7 +85,7 @@ export default function EtherapyDetail() {
         <Layout>
         <MyTitle>Etherapy Detail</MyTitle>
 		{ me ? details(me) : null }
-		<Text>Field journals: </Text>
+		<Text fontWeight='black'>Field journals: </Text>
         <MyTable
             heads={heads}
             matrix={matrix}
@@ -101,17 +101,19 @@ export default function EtherapyDetail() {
 }
 
 const details = (etherapy) => (
-	<>
-		<Text><>Identifier: </>{`${etherapy.identifier}`}</Text>
-		<Text><>Name: </>{`${etherapy.name}`}</Text>
-		<Text>Moderadors:</Text>
+	<Box marginBottom='1rem'>
+		<Grid templateColumns='2fr 1fr' marginBottom='1rem'>
+			<GridItem><Text><b>Identifier: </b>{`${etherapy.identifier}`}</Text></GridItem>
+			<GridItem><Text><b>Name: </b>{`${etherapy.name}`}</Text></GridItem>
+		</Grid>
+		<Text fontWeight='black'>Moderadors:</Text>
 		{React.Children.toArray(etherapy.moderators.map(moderator => (
-			<>
-			<Text><>Name:</> {moderator.name}</Text>
-			<Text><>Email:</> {moderator.email}</Text>
-			</>
+			<Grid templateColumns='2fr 1fr'>
+				<GridItem><Text><b>Name: </b> {moderator.name}</Text></GridItem>
+				<GridItem><Text><b>Email: </b> {moderator.email}</Text></GridItem>
+			</Grid>
 		)))}
-	</>
+	</Box>
 )
 
 const getEtherapy = async (token: string, id: string): Promise<any> => {
