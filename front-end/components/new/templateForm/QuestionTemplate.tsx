@@ -1,32 +1,39 @@
-import { Button } from "@chakra-ui/button";
+import { Button, IconButton } from "@chakra-ui/button";
 import { Editable, EditableInput, EditablePreview } from "@chakra-ui/editable";
-import { ChevronDownIcon } from "@chakra-ui/icons";
+import { ChevronDownIcon, Icon } from "@chakra-ui/icons";
 import { Input } from "@chakra-ui/input";
 import { Box } from "@chakra-ui/layout";
 import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu";
 import { Textarea } from "@chakra-ui/textarea";
+import { IoMdCloseCircle } from "react-icons/io";
 
 interface MyProps {
     id: any;
     type: 'short' | 'long';
     label: string;
     handleChangeValue: Function;
-    handleChangeType?: Function;
+    handleChangeType: Function;
+    handleRemove: Function;
 }
 
-export default function QuestionTemplate({ id, type, label, handleChangeValue, handleChangeType }: MyProps) {
+export default function QuestionTemplate({ id, type, label, handleChangeValue, handleChangeType, handleRemove }: MyProps) {
     let skeletonType = null;
 
     if (type === 'short') {
-        skeletonType = <Input  border='2px' isDisabled height="30px" />
+        skeletonType = <Input  border='2px' isDisabled height='30px' />
     }
 
     else if (type === 'long') {
-        skeletonType = <Textarea margin={0}  border='2px' isDisabled height="30px" />
+        skeletonType = <Textarea margin={0}  border='2px' isDisabled height='30px' />
     }
 
     const MenuType = () => (
-        <Menu>
+        <Box
+            top='10px'
+            right='40px'
+            position='absolute'
+        >
+            <Menu>
                 {({ isOpen }) => (
                     <>
                     <MenuButton variant='outline' isActive={isOpen} as={Button} rightIcon={<ChevronDownIcon />}>
@@ -39,6 +46,7 @@ export default function QuestionTemplate({ id, type, label, handleChangeValue, h
                     </>
                 )}
             </Menu>
+        </Box>
     )
 
     return (
@@ -49,9 +57,21 @@ export default function QuestionTemplate({ id, type, label, handleChangeValue, h
                     onChange={(newValue) => handleChangeValue(newValue, id)}>
                 <EditablePreview />
                 <EditableInput />
+                { skeletonType }
                 <MenuType />
+                <IconButton
+                    top='15px'
+                    right='-24px'
+                    position='absolute'
+                    variant='unstyled'
+                    isRound={true}
+                    size='lg'
+                    boxSize='30px'
+                    aria-label='close' 
+                    icon={<Icon as={IoMdCloseCircle} boxSize='30px' color='#ec4646' />} 
+                    onClick={() =>  handleRemove(id)}
+                />
             </Editable>
-            { skeletonType }
         </Box>
     )
 }

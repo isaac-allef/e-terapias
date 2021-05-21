@@ -1,15 +1,12 @@
-import { Button, IconButton } from "@chakra-ui/button";
+import { Button } from "@chakra-ui/button";
 import { Box, Flex } from "@chakra-ui/layout";
-import { Icon, SmallAddIcon } from "@chakra-ui/icons";
+import { SmallAddIcon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
 import { Input } from "@chakra-ui/input";
 import { Field, Form, Formik } from "formik";
 import { FormControl, FormErrorMessage, FormLabel } from "@chakra-ui/form-control";
-
 import * as Yup from 'yup';
 import { useRouter } from 'next/router';
-
-import { IoMdCloseCircle } from 'react-icons/io';
 import Layout from "../../components/shared/Layout";
 import MyTitle from "../../components/shared/MyTitle";
 import MyDivider from "../../components/shared/MyDivider";
@@ -74,7 +71,7 @@ export default function TemplateForm() {
         setQuestionsTemplates(newQuestionsTemplates);
     }
 
-    const handleRemove = (id: number): void => {
+    const removeQuestionTemplate = (id: number): void => {
         const newQuestionsTemplates = questionsTemplates.filter(questionTemplate => questionTemplate.id !== id);
         setQuestionsTemplates(newQuestionsTemplates);
     }
@@ -164,18 +161,7 @@ export default function TemplateForm() {
                                 label={question.name} 
                                 handleChangeValue={changeQuestionTemplateValue}
                                 handleChangeType={changeQuestionTemplateType}
-                            />
-                            <IconButton
-                                top='15px'
-                                right='-24px'
-                                position='absolute'
-                                variant='unstyled'
-                                isRound={true}
-                                size='lg'
-                                boxSize='30px'
-                                aria-label="close" 
-                                icon={<Icon as={IoMdCloseCircle} boxSize='30px' color='#ec4646' />} 
-                                onClick={() =>  handleRemove(question.id)}
+                                handleRemove={removeQuestionTemplate}
                             />
                         </Box>
                     )
@@ -229,6 +215,6 @@ const postTemplates = async (token: string, template: Template): Promise<any> =>
         }
     });
 
-    const etherapies = response.data;
-    return etherapies;
+    const templateCreated = response.data;
+    return templateCreated;
 }
