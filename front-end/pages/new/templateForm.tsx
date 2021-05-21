@@ -1,6 +1,6 @@
-import { IconButton } from "@chakra-ui/button";
+import { Button, IconButton } from "@chakra-ui/button";
 import { Box, Flex } from "@chakra-ui/layout";
-import { Icon } from "@chakra-ui/icons";
+import { Icon, SmallAddIcon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
 import { Input } from "@chakra-ui/input";
 import { Field, Form, Formik } from "formik";
@@ -17,7 +17,6 @@ import MyButton from "../../components/shared/MyButton";
 import api from "../../services/api";
 import MenuAddEtherapies from "../../components/new/templateForm/MenuAddEterapias";
 import QuestionTemplate from "../../components/new/templateForm/QuestionTemplate";
-import MenuAddNewQuestionTemplate from "../../components/new/templateForm/MenuAddNewQuestionTemplate";
 
 interface Question {
     id: number;
@@ -52,19 +51,26 @@ export default function TemplateForm() {
         })
     }, []);
 
-    const addNewQuestionTemplate = (type: 'short' | 'long'): void => {
-        const newQuestionTemplate: Question = { id: Math.random(), name: 'Type your question here', type }
+    const addNewQuestionTemplate = (): void => {
+        const newQuestionTemplate: Question = { id: Math.random(), name: 'Type your question here', type: 'short' }
         setQuestionsTemplates([...questionsTemplates, newQuestionTemplate])
     }
 
-    const handleChangeQuestionTemplate = (newValue: string, id: number): void => {
-        const newQuestionsTemplates = questionsTemplates.map(questionTemplate => {
-            if (questionTemplate.id === id) {
-                questionTemplate.name = newValue;
-                return questionTemplate;
-            }
-            return questionTemplate;
-        });
+    const findQuestionTemplateIndex = (id: number): number => {
+        const index = questionsTemplates.findIndex(questionTemplate => questionTemplate.id === id);
+        return index;
+    } 
+
+    const changeQuestionTemplateValue = (newValue: string, id: number): void => {
+        const index = findQuestionTemplateIndex(id);
+        questionsTemplates[index].name = newValue;
+        setQuestionsTemplates(questionsTemplates);
+    }
+
+    const changeQuestionTemplateType = (type: string, id: number): void => {
+        const index = findQuestionTemplateIndex(id);
+        const newQuestionsTemplates =  [...questionsTemplates]
+        newQuestionsTemplates[index].type = type;
         setQuestionsTemplates(newQuestionsTemplates);
     }
 
@@ -112,11 +118,9 @@ export default function TemplateForm() {
 
         const templateJson = createTemplateJson(name, etherapiesIds);
         
-        const template = await postTemplates(token, templateJson);
+        await postTemplates(token, templateJson);
 
         actions.setSubmitting(false);
-
-        console.log(template);
     
         router.push('/');
     }
@@ -151,14 +155,15 @@ export default function TemplateForm() {
                 </Field>
 
                 {
-                questionsTemplates.map(question => {
+                questionsTemplates?.map(question => {
                     return (
                         <Box key={question.id} position='relative'>
                             <QuestionTemplate 
                                 id={question.id}
                                 type={question.type}
                                 label={question.name} 
-                                handleChange={handleChangeQuestionTemplate}
+                                handleChangeValue={changeQuestionTemplateValue}
+                                handleChangeType={changeQuestionTemplateType}
                             />
                             <IconButton
                                 top='15px'
@@ -178,9 +183,10 @@ export default function TemplateForm() {
                 }
 
                 <Flex justifyContent='flex-end'>
-                    <MenuAddNewQuestionTemplate
-                        setNewQuestionTemplate={addNewQuestionTemplate}
-                    />
+                    <Button 
+                        variant='outline'
+                        onClick={() => addNewQuestionTemplate()}
+                    ><SmallAddIcon /></Button>
                 </Flex>
 
                 <MyDivider />
