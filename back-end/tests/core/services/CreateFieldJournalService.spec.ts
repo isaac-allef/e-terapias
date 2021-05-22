@@ -99,14 +99,17 @@ describe('Create field journal usecase', () => {
             ),
         );
         const executeSpy = jest.spyOn(sut, 'execute');
+        const date = new Date();
         await sut.execute({
             name: 'diário das eterapias de promoção ao bem-estar',
+            date,
             fields: fakeFields,
             moderatorId: 'randomIdModerator',
             etherapyId: 'randomIdEtherapy',
         });
         expect(executeSpy).toHaveBeenCalledWith({
             name: 'diário das eterapias de promoção ao bem-estar',
+            date,
             fields: fakeFields,
             moderatorId: 'randomIdModerator',
             etherapyId: 'randomIdEtherapy',
@@ -120,9 +123,11 @@ describe('Create field journal usecase', () => {
                 throw new Error('Random error');
             },
         );
+        const date = new Date();
         await expect(
             sut.execute({
                 name: 'diário das eterapias de promoção ao bem-estar',
+                date,
                 fields: fakeFields,
                 moderatorId: 'randomIdModerator',
                 etherapyId: 'randomIdEtherapy',
@@ -137,9 +142,11 @@ describe('Create field journal usecase', () => {
                 throw new Error('Random error');
             },
         );
+        const date = new Date();
         await expect(
             sut.execute({
                 name: 'diário das eterapias de promoção ao bem-estar',
+                date,
                 fields: fakeFields,
                 moderatorId: 'randomIdModerator',
                 etherapyId: 'randomIdEtherapy',
@@ -205,9 +212,11 @@ describe('Create field journal usecase', () => {
                 );
             },
         );
+        const date = new Date();
         await expect(
             sut.execute({
                 name: 'diário das eterapias de promoção ao bem-estar',
+                date,
                 fields: fakeFields,
                 moderatorId: 'randomIdModerator',
                 etherapyId: 'randomIdEtherapy',
@@ -267,9 +276,11 @@ describe('Create field journal usecase', () => {
                 );
             },
         );
+        const date = new Date();
         await expect(
             sut.execute({
                 name: 'diário das eterapias de promoção ao bem-estar',
+                date,
                 fields: fakeFields,
                 moderatorId: 'randomIdModerator',
                 etherapyId: 'randomIdEtherapy',
@@ -343,6 +354,7 @@ describe('Create field journal usecase', () => {
         await expect(
             sut.execute({
                 name: 'diário das eterapias de promoção ao bem-estar',
+                date: new Date(),
                 fields: fakeFields,
                 moderatorId: 'randomIdModerator',
                 etherapyId: 'randomIdEtherapy',

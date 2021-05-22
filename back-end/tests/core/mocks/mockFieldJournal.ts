@@ -18,6 +18,7 @@ export class CreateFieldJournalRepositoryStub
         const fieldJournal: FieldJournal = {
             id: 'randomId',
             name: 'diário das eterapias de promoção ao bem-estar',
+            date: new Date(),
             fields: [
                 { name: 'Qual o seu nome?', type: 'short', value: 'Isaac' },
                 { name: 'Quanto é 2 + 2?', type: 'short', value: '4' },
@@ -46,6 +47,7 @@ export class LoadFieldJournalByIdRepositoryStub
         const fieldJournal: FieldJournal = {
             id,
             name: 'diário das eterapias de promoção ao bem-estar',
+            date: new Date(),
             fields: [
                 { name: 'Qual o seu nome?', type: 'short', value: 'Isaac' },
                 { name: 'Quanto é 2 + 2?', type: 'short', value: '4' },
@@ -75,6 +77,7 @@ export class LoadAllFieldJournalsPerModeratorRepositoryStub
             {
                 id: 'randomId',
                 name: 'diário das eterapias de promoção ao bem-estar',
+                date: new Date(),
                 fields: [
                     { name: 'Qual o seu nome?', type: 'short', value: 'Isaac' },
                     { name: 'Quanto é 2 + 2?', type: 'short', value: '4' },
@@ -105,6 +108,7 @@ export class SearchFieldJournalsPerModeratorRepositoryStub
             {
                 id: 'randomId',
                 name: 'diário das eterapias de promoção ao bem-estar',
+                date: new Date(),
                 fields: [
                     { name: 'Qual o seu nome?', type: 'short', value: 'Isaac' },
                     { name: 'Quanto é 2 + 2?', type: 'short', value: '4' },
