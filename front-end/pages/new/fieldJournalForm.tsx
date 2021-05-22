@@ -13,6 +13,7 @@ import { Input } from "@chakra-ui/input";
 
 interface field {
     name: string;
+    type: string;
     value: string;
 }
 
@@ -53,6 +54,7 @@ export default function FieldJournalForm() {
     const createFieldsBasedInTemplateFields = (templateFields: templateField[]): field[] => {
         const fields: field[] = templateFields?.map(templateField => ({
             name: templateField.name,
+            type: templateField.type,
             value: '',
         }));
 
@@ -90,9 +92,7 @@ export default function FieldJournalForm() {
                     etherapyId: etherapySelected.id,
                 }
 
-                const fieldJournal = await postFieldJournals(token, fieldJournalJson);
-
-                console.log(fieldJournal)
+                await postFieldJournals(token, fieldJournalJson);
 
                 myToast.execute({ status: 'success', title: 'Field Journal created.' });
                 cleanUp();
