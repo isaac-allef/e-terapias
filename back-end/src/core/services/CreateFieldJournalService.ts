@@ -67,7 +67,10 @@ class CreateFieldJournalService {
 
         // eslint-disable-next-line
         for (let i = 0; i < countTemplateFeilds; i++) {
-            if (templateFields[i].name !== fields[i].name) {
+            if (
+                templateFields[i].name !== fields[i].name ||
+                templateFields[i].type !== fields[i].type
+            ) {
                 return false;
             }
         }

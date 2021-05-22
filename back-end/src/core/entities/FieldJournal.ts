@@ -3,6 +3,7 @@ import Moderator from './Moderator';
 
 export type field = {
     name: string;
+    type: string;
     value: string;
 };
 

@@ -73,7 +73,10 @@ class UpdateFieldJournalService {
 
         // eslint-disable-next-line
         for (let i = 0; i < countOldFeilds; i++) {
-            if (oldFields[i].name !== fields[i].name) {
+            if (
+                oldFields[i].name !== fields[i].name ||
+                oldFields[i].type !== fields[i].type
+            ) {
                 return false;
             }
         }
