@@ -41,8 +41,8 @@ const fakeTemplateFields: templateField[] = [
 ];
 
 const fakeFields: field[] = [
-    { name: 'Qual o seu nome?', value: 'isaac' },
-    { name: 'Fale sobre você', value: 'eu sou um cara legal' },
+    { name: 'Qual o seu nome?', type: 'short', value: 'isaac' },
+    { name: 'Fale sobre você', type: 'long', value: 'eu sou um cara legal' },
 ];
 
 describe('Create field journal usecase', () => {

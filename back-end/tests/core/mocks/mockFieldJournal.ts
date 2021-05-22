@@ -19,13 +19,14 @@ export class CreateFieldJournalRepositoryStub
             id: 'randomId',
             name: 'diário das eterapias de promoção ao bem-estar',
             fields: [
-                { name: 'Qual o seu nome?', value: 'Isaac' },
-                { name: 'Quanto é 2 + 2?', value: '4' },
+                { name: 'Qual o seu nome?', type: 'short', value: 'Isaac' },
+                { name: 'Quanto é 2 + 2?', type: 'short', value: '4' },
                 {
                     name: 'Informe sua data de nascimento',
+                    type: 'short',
                     value: "{% now 'iso-8601', '' %}",
                 },
-                { name: 'Voçê é estudante?', value: 'sim' },
+                { name: 'Voçê é estudante?', type: 'short', value: 'sim' },
             ],
             moderator: await loadModeratorByIdRepositoryStub.load(
                 'randomIdModerator',
@@ -46,13 +47,14 @@ export class LoadFieldJournalByIdRepositoryStub
             id,
             name: 'diário das eterapias de promoção ao bem-estar',
             fields: [
-                { name: 'Qual o seu nome?', value: 'Isaac' },
-                { name: 'Quanto é 2 + 2?', value: '4' },
+                { name: 'Qual o seu nome?', type: 'short', value: 'Isaac' },
+                { name: 'Quanto é 2 + 2?', type: 'short', value: '4' },
                 {
                     name: 'Informe sua data de nascimento',
+                    type: 'short',
                     value: "{% now 'iso-8601', '' %}",
                 },
-                { name: 'Voçê é estudante?', value: 'sim' },
+                { name: 'Voçê é estudante?', type: 'short', value: 'sim' },
             ],
             moderator: await loadModeratorByIdRepositoryStub.load(
                 'randomIdModerator',
@@ -74,13 +76,14 @@ export class LoadAllFieldJournalsPerModeratorRepositoryStub
                 id: 'randomId',
                 name: 'diário das eterapias de promoção ao bem-estar',
                 fields: [
-                    { name: 'Qual o seu nome?', value: 'Isaac' },
-                    { name: 'Quanto é 2 + 2?', value: '4' },
+                    { name: 'Qual o seu nome?', type: 'short', value: 'Isaac' },
+                    { name: 'Quanto é 2 + 2?', type: 'short', value: '4' },
                     {
                         name: 'Informe sua data de nascimento',
+                        type: 'short',
                         value: "{% now 'iso-8601', '' %}",
                     },
-                    { name: 'Voçê é estudante?', value: 'sim' },
+                    { name: 'Voçê é estudante?', type: 'short', value: 'sim' },
                 ],
                 moderator: await loadModeratorByIdRepositoryStub.load(
                     'randomIdModerator',
@@ -103,13 +106,14 @@ export class SearchFieldJournalsPerModeratorRepositoryStub
                 id: 'randomId',
                 name: 'diário das eterapias de promoção ao bem-estar',
                 fields: [
-                    { name: 'Qual o seu nome?', value: 'Isaac' },
-                    { name: 'Quanto é 2 + 2?', value: '4' },
+                    { name: 'Qual o seu nome?', type: 'short', value: 'Isaac' },
+                    { name: 'Quanto é 2 + 2?', type: 'short', value: '4' },
                     {
                         name: 'Informe sua data de nascimento',
+                        type: 'short',
                         value: "{% now 'iso-8601', '' %}",
                     },
-                    { name: 'Voçê é estudante?', value: 'sim' },
+                    { name: 'Voçê é estudante?', type: 'short', value: 'sim' },
                 ],
                 moderator: await loadModeratorByIdRepositoryStub.load(
                     'randomIdModerator',
