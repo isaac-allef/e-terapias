@@ -4,6 +4,7 @@ import Moderator from '../../../entities/Moderator';
 
 export type params = {
     name: string;
+    date: Date;
     fields: field[];
     moderator: Moderator;
     etherapy: Etherapy;
@@ -12,6 +13,7 @@ export type params = {
 export default interface CreateFieldJournalRepository {
     create({
         name,
+        date,
         fields,
         moderator,
         etherapy,

@@ -42,9 +42,10 @@ class FieldJournalTypeormRepository
 
     public async create(data: createParams): Promise<FieldJournal> {
         try {
-            const { name, fields, moderator, etherapy } = data;
+            const { name, date, fields, moderator, etherapy } = data;
             const fieldJournal = this.ormRepository.create({
                 name,
+                date,
                 fields,
                 moderator,
                 etherapy,
@@ -147,7 +148,12 @@ class FieldJournalTypeormRepository
         }
     }
 
-    async update({ id, name, fields }: updateParams): Promise<FieldJournal> {
+    async update({
+        id,
+        name,
+        date,
+        fields,
+    }: updateParams): Promise<FieldJournal> {
         try {
             const fieldJournal = await this.ormRepository.findOne({
                 where: { id },
@@ -158,6 +164,7 @@ class FieldJournalTypeormRepository
             }
 
             fieldJournal.name = name;
+            fieldJournal.date = date;
             fieldJournal.fields = fields;
 
             return fieldJournal;

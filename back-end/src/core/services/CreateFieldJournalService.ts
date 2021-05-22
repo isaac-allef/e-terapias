@@ -6,6 +6,7 @@ import LoadModeratorByIdRepository from '../protocols/db/repositories/LoadModera
 
 export type params = {
     name: string;
+    date: Date;
     fields: field[];
     moderatorId: string;
     etherapyId: string;
@@ -20,6 +21,7 @@ class CreateFieldJournalService {
 
     public async execute({
         name,
+        date,
         fields,
         moderatorId,
         etherapyId,
@@ -46,6 +48,7 @@ class CreateFieldJournalService {
 
         const fieldJournal = await this.createFieldJournalRepository.create({
             name,
+            date,
             fields,
             moderator,
             etherapy,

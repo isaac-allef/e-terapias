@@ -6,6 +6,7 @@ import LoadModeratorByIdRepository from '../protocols/db/repositories/LoadModera
 export type params = {
     id: string;
     name: string;
+    date: Date;
     fields: field[];
     moderatorId: string;
 };
@@ -20,6 +21,7 @@ class UpdateFieldJournalService {
     public async execute({
         id,
         name,
+        date,
         fields,
         moderatorId,
     }: params): Promise<FieldJournal> {
@@ -53,6 +55,7 @@ class UpdateFieldJournalService {
             {
                 id,
                 name,
+                date,
                 fields,
             },
         );

@@ -12,6 +12,8 @@ interface FieldJournal {
 
     name: string;
 
+    date: Date;
+
     moderator: Moderator;
 
     etherapy: Etherapy;

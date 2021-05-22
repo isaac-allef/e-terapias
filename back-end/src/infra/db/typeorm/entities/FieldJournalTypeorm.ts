@@ -20,6 +20,9 @@ class FieldJournalTypeorm implements FieldJournal {
     @Column()
     name: string;
 
+    @Column()
+    date: Date;
+
     @ManyToOne(() => ModeratorTypeorm, moderator => moderator.fieldJournals, {
         onDelete: 'CASCADE',
     })

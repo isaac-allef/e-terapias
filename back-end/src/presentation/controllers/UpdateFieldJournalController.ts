@@ -12,7 +12,7 @@ export class UpdateFieldJournalController implements Controller {
 
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
         try {
-            const { name, fields } = httpRequest.body;
+            const { name, date, fields } = httpRequest.body;
             const { id } = httpRequest.params;
             const moderatorId = httpRequest.userId;
 
@@ -24,6 +24,10 @@ export class UpdateFieldJournalController implements Controller {
                 return badRequest(new MissingParamError('name'));
             }
 
+            if (!date) {
+                return badRequest(new MissingParamError('date'));
+            }
+
             if (!fields) {
                 return badRequest(new MissingParamError('fields'));
             }
@@ -32,13 +36,14 @@ export class UpdateFieldJournalController implements Controller {
                 return badRequest(new MissingParamError('moderatorId'));
             }
 
-            const FieldJournal = await this.updateFieldJournalService.execute({
+            const fieldJournal = await this.updateFieldJournalService.execute({
                 id,
                 name,
+                date,
                 fields,
                 moderatorId,
             });
-            return ok(FieldJournal);
+            return ok(fieldJournal);
         } catch (err) {
             return serverError(err);
         }
