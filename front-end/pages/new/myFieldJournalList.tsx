@@ -63,7 +63,6 @@ export default function MyFieldJournalList() {
 
 	const heads = [
 		{ name: 'Name', action: () => sortAndDirection('name') }, 
-		{ name: 'Moderator' }, 
 		{ name: 'Etherapy' }, 
 		{ name: 'Created_at', action: () => sortAndDirection('created_at') }, 
 		{ name: 'Updated_at', action: () => sortAndDirection('updated_at') }
