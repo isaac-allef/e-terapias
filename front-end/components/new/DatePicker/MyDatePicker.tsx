@@ -3,6 +3,7 @@ import DatePicker from 'react-datepicker';
 import br from "date-fns/locale/pt-BR";
 
 import 'react-datepicker/dist/react-datepicker.css';
+import { Input } from '@chakra-ui/input';
 
 interface Props {
 	selectedDate: Date | undefined;
@@ -39,6 +40,7 @@ const MyDatePicker = ({
 		timeIntervals={15}
 		dateFormat='Pp'
 		{...props}
+		customInput={<Input borderLeftRadius={0} />}
     />
   );
 };

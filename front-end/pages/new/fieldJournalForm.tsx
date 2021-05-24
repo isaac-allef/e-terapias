@@ -1,4 +1,4 @@
-import { Divider, Flex, Text } from "@chakra-ui/layout";
+import { Box, Divider, Flex, Text } from "@chakra-ui/layout";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import MyToast from "../../components/shared/MyToast";
@@ -9,8 +9,13 @@ import Question from "../../components/new/fieldJournalForm/Question";
 import MyDivider from "../../components/shared/MyDivider";
 import { Button } from "@chakra-ui/button";
 import api from "../../services/api";
-import { Input } from "@chakra-ui/input";
+import { Input, InputGroup, InputLeftAddon, InputLeftElement } from "@chakra-ui/input";
 import MyDatePicker from "../../components/new/DatePicker/MyDatePicker";
+import { Field, Form, Formik } from "formik";
+import * as Yup from 'yup';
+import { FormControl, FormErrorMessage, FormLabel } from "@chakra-ui/form-control";
+import { CalendarIcon } from "@chakra-ui/icons";
+import MyButton from "../../components/shared/MyButton";
 
 interface field {
     name: string;
@@ -33,7 +38,7 @@ interface fieldJournal {
 export default function FieldJournalForm() {
     const myToast = new MyToast();
     const router = useRouter();
-    const [name, setName] = useState('');
+    // const [name, setName] = useState('');
     const [date, setDate] = useState(new Date());
     const [fields, setFields] = useState([]);
     const [templateFields, setTemplateFields] = useState([]);
@@ -44,7 +49,7 @@ export default function FieldJournalForm() {
 
     function cleanUp() {
         setFields([]);
-        setName('');
+        // setName('');
         setEtherapySelected(null);
     }
 
@@ -76,6 +81,36 @@ export default function FieldJournalForm() {
         setFields(fields);
     }
 
+    const SignupSchema = Yup.object().shape({
+        name: Yup.string().required('Required'),
+      });
+    
+    const initialValues = {
+        name: '',
+    }
+
+    const functionSubmitForm = async (values, actions) => {
+        const { name } = values;
+        try {
+            const fieldJournalJson: fieldJournal = {
+                name,
+                date,
+                fields,
+                etherapyId: etherapySelected.id,
+            }
+
+            await postFieldJournals(token, fieldJournalJson);
+
+            actions.setSubmitting(false);
+
+            myToast.execute({ status: 'success', title: 'Field Journal created.' });
+            cleanUp();
+            router.push('/');
+        } catch (err) {
+            myToast.execute({ status: 'error', title: 'Error', description: err.message });
+        }
+    }
+
     return (
       <Layout>
         <MyTitle>{'Create Field Journal'}</MyTitle>
@@ -86,32 +121,27 @@ export default function FieldJournalForm() {
             setEtherapySelected={setEtherapySelected}
         />
 
-        <form onSubmit={async (event) => {
-            event.preventDefault();
-            try {
-                const fieldJournalJson: fieldJournal = {
-                    name,
-                    date,
-                    fields,
-                    etherapyId: etherapySelected.id,
-                }
-
-                await postFieldJournals(token, fieldJournalJson);
-
-                myToast.execute({ status: 'success', title: 'Field Journal created.' });
-                cleanUp();
-                router.push('/');
-            } catch (err) {
-                myToast.execute({ status: 'error', title: 'Error', description: err.message });
-            }
-        }}>
+        <Formik
+            initialValues={initialValues}
+            validationSchema={SignupSchema}
+            onSubmit={functionSubmitForm}
+            >
+            {(props) => (
+                <Form>
             <Text>Date</Text>
-            <MyDatePicker selectedDate={date} onChange={date => setDate(date as Date)} />
-            <Text>Name</Text>
-            <Input 
-                value={name}
-                onChange={value => setName(value.target.value)}
-            />
+            <InputGroup>
+                <InputLeftAddon children={<CalendarIcon color="gray.500" />} />
+                <MyDatePicker selectedDate={date} onChange={date => setDate(date as Date)} />
+            </InputGroup>
+            <Field name="name">
+                {({ field, form }) => (
+                    <FormControl isInvalid={form.errors.name && form.touched.name}>
+                        <FormLabel htmlFor="name" margin='0px' >Name</FormLabel>
+                            <Input {...field} id="name" />
+                        <FormErrorMessage>{form.errors.name}</FormErrorMessage>
+                    </FormControl>
+                )}
+            </Field>
             { templateFields?.map((templateField, index) => {
                 return <Question 
                     key={Math.random()}
@@ -125,15 +155,17 @@ export default function FieldJournalForm() {
             <MyDivider />
 
             <Flex justifyContent='flex-end'>
-                <Button
+                <MyButton
                     mt={4}
-                    colorScheme="teal"
+                    isLoading={props.isSubmitting}
                     type="submit"
                     >
                     Save
-                </Button>
+                </MyButton>
             </Flex>
-        </form>
+            </Form>
+            )}
+        </Formik>
 
         <Divider />
       </Layout>
