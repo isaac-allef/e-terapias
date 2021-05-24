@@ -10,6 +10,7 @@ import MyDivider from "../../components/shared/MyDivider";
 import { Button } from "@chakra-ui/button";
 import api from "../../services/api";
 import { Input } from "@chakra-ui/input";
+import MyDatePicker from "../../components/new/DatePicker/MyDatePicker";
 
 interface field {
     name: string;
@@ -24,6 +25,7 @@ interface templateField {
 
 interface fieldJournal {
     name: string;
+    date: Date;
     fields: field[];
     etherapyId: string;
 }
@@ -32,6 +34,7 @@ export default function FieldJournalForm() {
     const myToast = new MyToast();
     const router = useRouter();
     const [name, setName] = useState('');
+    const [date, setDate] = useState(new Date());
     const [fields, setFields] = useState([]);
     const [templateFields, setTemplateFields] = useState([]);
     const [etherapies, setEtherapies] = useState([]);
@@ -88,6 +91,7 @@ export default function FieldJournalForm() {
             try {
                 const fieldJournalJson: fieldJournal = {
                     name,
+                    date,
                     fields,
                     etherapyId: etherapySelected.id,
                 }
@@ -101,6 +105,8 @@ export default function FieldJournalForm() {
                 myToast.execute({ status: 'error', title: 'Error', description: err.message });
             }
         }}>
+            <Text>Date</Text>
+            <MyDatePicker selectedDate={date} onChange={date => setDate(date as Date)} />
             <Text>Name</Text>
             <Input 
                 value={name}
