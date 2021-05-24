@@ -2,7 +2,7 @@ import FieldJournal from '../../../entities/FieldJournal';
 
 export type params = {
     etherapyId: string;
-    sort: 'name' | 'created_at' | 'updated_at';
+    sort: 'name' | 'date' | 'created_at' | 'updated_at';
     direction: 'asc' | 'desc';
     per_page: number;
     page: number;
