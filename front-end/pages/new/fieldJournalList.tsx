@@ -1,10 +1,8 @@
 import { Divider } from "@chakra-ui/layout";
-import Link from "next/link";
 import { useEffect, useState } from "react";
+import MySearchInput from "../../components/new/MySearchInput";
 import MyTable from "../../components/new/MyTable";
 import Layout from "../../components/shared/Layout";
-import MyButton from "../../components/shared/MyButton";
-import MyInput from "../../components/shared/MyInput";
 import MyTitle from "../../components/shared/MyTitle";
 import api from "../../services/api";
 
@@ -20,6 +18,7 @@ export default function FieldJournalList() {
   const per_page = 5;
   const [sort , setSort] = useState('updated_at');
   const [direction , setDirection] = useState('asc');
+  const [search, setSearch] = useState('');
   // const [token, setToken] = useState(localStorage.getItem('@etherapies:token'));
   const [token, _] = useState('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNmZTJmYmQyLTRmNTYtNGY0ZS04NzcwLTJjMzc0MTI3MTU2YiIsImlhdCI6MTYyMTAyODk0N30.3HzZioMqIsu1pR_Fb8c9whLOUeho7bh_eZRXN-RtuCI');
 	
@@ -34,8 +33,8 @@ export default function FieldJournalList() {
           content: [
             [fieldJournal.name],
             [timestampFormat(fieldJournal.date)],
-            [fieldJournal.moderator.name],
-            [fieldJournal.etherapy.identifier],
+            [fieldJournal.moderator.name + ' - ' + fieldJournal.moderator.email],
+            [fieldJournal.etherapy.identifier + ' - ' + fieldJournal.etherapy.name],
 			[timestampFormat(fieldJournal.created_at)],
 			[timestampFormat(fieldJournal.updated_at)],
           ]
@@ -44,16 +43,27 @@ export default function FieldJournalList() {
     }
 
     useEffect(() => {
-      	getFieldJournals({ 
-			token, 
-			page, 
-			per_page, 
-			sort: sort as 'name' | 'date' | 'created_at' | 'updated_at', 
-			direction: direction as 'asc' | 'desc',
-		}).then(fieldJournals => {
-        	return parseFieldJournalsToMatrix(fieldJournals);
-      	}).then(matrix => setMatrix(matrix))
-    }, [page, direction, sort]);
+		if (search !== '') {
+			searchFieldJournals({ 
+				token, 
+				keywords: search,
+				page, 
+				per_page, 
+			}).then(fieldJournals => {
+				return parseFieldJournalsToMatrix(fieldJournals);
+			  }).then(matrix => setMatrix(matrix))
+		} else {
+			getFieldJournals({ 
+			  token, 
+			  page, 
+			  per_page, 
+			  sort: sort as 'name' | 'date' | 'created_at' | 'updated_at', 
+			  direction: direction as 'asc' | 'desc',
+		  }).then(fieldJournals => {
+			  return parseFieldJournalsToMatrix(fieldJournals);
+			}).then(matrix => setMatrix(matrix))
+		}
+    }, [matrix, page, direction, sort]);
 
 	const sortAndDirection = (sortBy: string) => {
 		setSort(sortBy)
@@ -75,7 +85,7 @@ export default function FieldJournalList() {
     return (
         <Layout>
         <MyTitle>FieldJournals</MyTitle>
-        <MyInput placeholder="Search field journals" search={true} ></MyInput>
+		<MySearchInput handleChange={setSearch} placeholder='Search field journals' />
         <MyTable
             heads={heads}
             matrix={matrix}
@@ -101,6 +111,31 @@ const getFieldJournals = async ({ token, page, per_page, sort, direction }: load
 			per_page,
 			sort,
 			direction,
+		},
+		headers: {
+			'Authorization': `token ${token}`
+		}
+	});
+	const fieldJournals = response.data;
+	
+	if (!fieldJournals) {
+		return [];
+	}
+
+	return fieldJournals;
+}
+
+type searchParams ={
+	token: string;
+	keywords: string;
+	page: number;
+	per_page: number;
+}
+const searchFieldJournals = async ({ token, keywords, page, per_page }: searchParams): Promise<any> => {
+	const response = await api.get(`/fieldJournals/search/${keywords}`, {
+		params: {
+			page,
+			per_page,
 		},
 		headers: {
 			'Authorization': `token ${token}`
