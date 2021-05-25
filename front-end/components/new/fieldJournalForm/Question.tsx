@@ -7,17 +7,18 @@ interface MyProps {
     type: 'short' | 'long';
     index: number;
     handleChange: Function;
+    defaultValue?: string;
 }
 
-export default function Question({ label, type, index, handleChange }: MyProps) {
+export default function Question({ label, type, index, handleChange, defaultValue }: MyProps) {
     let inputType = null;
 
     if (type === 'short') {
-        inputType = <Input onChange={(e) => handleChange(e.target.value, index)} />
+        inputType = <Input defaultValue={defaultValue ? defaultValue : ''} onChange={(e) => handleChange(e.target.value, index)} />
     }
 
     else if (type === 'long') {
-        inputType = <Textarea onChange={(e) => handleChange(e.target.value, index)} />
+        inputType = <Textarea defaultValue={defaultValue ? defaultValue : ''} onChange={(e) => handleChange(e.target.value, index)} />
     }
 
     return (
