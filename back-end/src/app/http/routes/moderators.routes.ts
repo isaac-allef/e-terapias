@@ -11,6 +11,7 @@ import makeLoadAllModeratorsContoller from '../../factories/controllers/userMana
 import makeSearchModeratorsContoller from '../../factories/controllers/userManager/makeSearchModeratorsContoller';
 import { authModerator } from '../middlewares/authModerator';
 import { authManager } from '../middlewares/authManager';
+import makeLoadFieldJournalPerMeModeratorContoller from '../../factories/controllers/userModerator/makeLoadFieldJournalPerMeModeratorContoller';
 
 const moderatorsRouter = Router();
 
@@ -36,6 +37,12 @@ moderatorsRouter.get(
     '/me/fieldJournals',
     authModerator,
     adapterRouter(makeLoadAllFieldJournalsPerMeModeratorContoller()),
+);
+
+moderatorsRouter.get(
+    '/me/fieldJournals/:id',
+    authModerator,
+    adapterRouter(makeLoadFieldJournalPerMeModeratorContoller()),
 );
 
 moderatorsRouter.get(
