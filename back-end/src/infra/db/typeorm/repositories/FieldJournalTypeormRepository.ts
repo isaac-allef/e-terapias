@@ -173,6 +173,8 @@ class FieldJournalTypeormRepository
             fieldJournal.date = date;
             fieldJournal.fields = fields;
 
+            await this.ormRepository.save(fieldJournal);
+
             return fieldJournal;
         } catch {
             throw new Error('Update fieldJournal error');
