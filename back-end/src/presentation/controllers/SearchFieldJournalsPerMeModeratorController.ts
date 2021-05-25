@@ -12,19 +12,20 @@ export class SearchFieldJournalsPerMeModeratorController implements Controller {
 
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
         try {
-            const { keyword } = httpRequest.params;
+            const { keywords } = httpRequest.params;
+            const { per_page, page } = httpRequest.query;
             const moderatorId = httpRequest.userId;
 
             if (!moderatorId) {
                 return badRequest(new MissingParamError('moderatorId'));
             }
 
-            if (!keyword) {
-                return badRequest(new MissingParamError('keyword'));
+            if (!keywords) {
+                return badRequest(new MissingParamError('keywords'));
             }
 
             const fieldJournal = await this.searchFieldJournalsPerModeratorService.execute(
-                { moderatorId, keywords: keyword },
+                { moderatorId, keywords, per_page, page },
             );
             return ok(fieldJournal);
         } catch (err) {

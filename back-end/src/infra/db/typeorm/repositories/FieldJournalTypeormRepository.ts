@@ -101,6 +101,8 @@ class FieldJournalTypeormRepository
     async searchPerModerator({
         moderatorId,
         keywords,
+        per_page,
+        page,
     }: params): Promise<FieldJournal[]> {
         try {
             const queryBuilder = this.ormRepository.createQueryBuilder(
@@ -118,6 +120,8 @@ class FieldJournalTypeormRepository
                 .andWhere('FieldJournal.id = :id', {
                     id: moderatorId,
                 })
+                .take(per_page)
+                .skip((page - 1) * per_page)
                 .getMany();
 
             return finded;

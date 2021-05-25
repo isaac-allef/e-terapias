@@ -57,7 +57,7 @@ moderatorsRouter.get(
 );
 
 moderatorsRouter.get(
-    '/me/fieldJournals/search/:keyword',
+    '/me/fieldJournals/search/:keywords',
     authModerator,
     adapterRouter(makeSearchFieldJournalsPerMeModeratorContoller()),
 );
