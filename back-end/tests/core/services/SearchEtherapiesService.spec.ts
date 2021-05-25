@@ -21,15 +21,31 @@ describe('load all Etherapies usecase', () => {
     test('Should call with correct values', async () => {
         const { sut } = makeSut();
         const executeSpy = jest.spyOn(sut, 'execute');
-        await sut.execute('viver é bom');
-        expect(executeSpy).toHaveBeenCalledWith('viver é bom');
+        await sut.execute({
+            keywords: 'viver é bom',
+            page: 10,
+            per_page: 1,
+        });
+        expect(executeSpy).toHaveBeenCalledWith({
+            keywords: 'viver é bom',
+            page: 10,
+            per_page: 1,
+        });
     });
 
     test('Should call SearchEtherapiesRepository with correct values', async () => {
         const { sut, searchEtherapiesRepository } = makeSut();
         const searchSpy = jest.spyOn(searchEtherapiesRepository, 'search');
-        await sut.execute('viver é bom');
-        expect(searchSpy).toHaveBeenCalledWith('viver é bom');
+        await sut.execute({
+            keywords: 'viver é bom',
+            page: 10,
+            per_page: 1,
+        });
+        expect(searchSpy).toHaveBeenCalledWith({
+            keywords: 'viver é bom',
+            page: 10,
+            per_page: 1,
+        });
     });
 
     test('Should throw if SearchEtherapiesRepository throws', async () => {
@@ -39,6 +55,12 @@ describe('load all Etherapies usecase', () => {
                 throw new Error('Random error');
             },
         );
-        await expect(sut.execute('viver é bom')).rejects.toThrow();
+        await expect(
+            sut.execute({
+                keywords: 'viver é bom',
+                page: 10,
+                per_page: 1,
+            }),
+        ).rejects.toThrow();
     });
 });
