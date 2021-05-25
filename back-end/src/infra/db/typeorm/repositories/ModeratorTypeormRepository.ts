@@ -14,7 +14,9 @@ import LoadAllModeratorsRepository, {
 import LoadModeratorByIdRepository from '../../../../core/protocols/db/repositories/LoadModeratorByIdRepository';
 import LoadUserByEmailRepository from '../../../../core/protocols/db/repositories/LoadUserByEmailRepository';
 import LoadUserByTokenRepository from '../../../../core/protocols/db/repositories/LoadUserByTokenRepository';
-import SearchModeratorsRepository from '../../../../core/protocols/db/repositories/SearchModeratorsRepository';
+import SearchModeratorsRepository, {
+    params as searchParams,
+} from '../../../../core/protocols/db/repositories/SearchModeratorsRepository';
 import UpdateAccessTokenRepository from '../../../../core/protocols/db/repositories/UpdateAccessTokenRepository';
 import ModeratorTypeorm from '../entities/ModeratorTypeorm';
 
@@ -188,7 +190,11 @@ class ModeratorTypeormRepository
         }
     }
 
-    async search(keywords: string): Promise<Moderator[]> {
+    async search({
+        keywords,
+        per_page,
+        page,
+    }: searchParams): Promise<Moderator[]> {
         try {
             const queryBuilder = this.ormRepository.createQueryBuilder(
                 'Moderator',
@@ -208,6 +214,8 @@ class ModeratorTypeormRepository
                 .orWhere('etherapies.identifier ILIKE :email', {
                     email: `%${keywords}%`,
                 })
+                .take(per_page)
+                .skip((page - 1) * per_page)
                 .getMany();
 
             return finded;

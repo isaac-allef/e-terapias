@@ -51,7 +51,7 @@ moderatorsRouter.get(
 );
 
 moderatorsRouter.get(
-    '/search/:keyword',
+    '/search/:keywords',
     authManager,
     adapterRouter(makeSearchModeratorsContoller()),
 );
