@@ -83,9 +83,6 @@ export default function FieldJournalList() {
 			setPage={setPage}
 		/>
         <Divider />
-        <MyButton>
-			<Link href={'/'}>New field journal</Link>
-        </MyButton>
         </Layout>
     )
 }
