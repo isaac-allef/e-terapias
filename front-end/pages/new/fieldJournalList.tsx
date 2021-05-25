@@ -4,7 +4,7 @@ import MySearchInput from "../../components/new/MySearchInput";
 import MyTable from "../../components/new/MyTable";
 import Layout from "../../components/shared/Layout";
 import MyTitle from "../../components/shared/MyTitle";
-import api from "../../services/api";
+import api, {cancelRequest} from "../../services/api";
 
 interface Line {
   link: string;
@@ -63,6 +63,7 @@ export default function FieldJournalList() {
 			  return parseFieldJournalsToMatrix(fieldJournals);
 			}).then(matrix => setMatrix(matrix))
 		}
+		return () => cancelRequest();
     }, [matrix, page, direction, sort]);
 
 	const sortAndDirection = (sortBy: string) => {
