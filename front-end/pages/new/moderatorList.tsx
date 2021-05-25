@@ -1,12 +1,12 @@
 import { Divider } from "@chakra-ui/layout";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import MySearchInput from "../../components/new/MySearchInput";
 import MyTable from "../../components/new/MyTable";
 import Layout from "../../components/shared/Layout";
 import MyButton from "../../components/shared/MyButton";
-import MyInput from "../../components/shared/MyInput";
 import MyTitle from "../../components/shared/MyTitle";
-import api from "../../services/api";
+import api, { cancelRequest } from "../../services/api";
 
 interface Line {
   link: string;
@@ -20,6 +20,7 @@ export default function ModeratorList() {
   const per_page = 5;
   const [sort , setSort] = useState('updated_at');
   const [direction , setDirection] = useState('asc');
+  const [search, setSearch] = useState('');
   // const [token, setToken] = useState(localStorage.getItem('@etherapies:token'));
   const [token, _] = useState('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNmZTJmYmQyLTRmNTYtNGY0ZS04NzcwLTJjMzc0MTI3MTU2YiIsImlhdCI6MTYyMTAyODk0N30.3HzZioMqIsu1pR_Fb8c9whLOUeho7bh_eZRXN-RtuCI');
 	
@@ -42,16 +43,28 @@ export default function ModeratorList() {
     }
 
     useEffect(() => {
-      	getModerators({ 
-			token, 
-			page, 
-			per_page, 
-			sort: sort as 'name' | 'created_at' | 'updated_at', 
-			direction: direction as 'asc' | 'desc',
-		}).then(moderators => {
-        	return parseModeratorsToMatrix(moderators);
-      	}).then(matrix => setMatrix(matrix))
-    }, [page, direction, sort]);
+		if (search !== '') {
+			searchModerators({ 
+				token, 
+				keywords: search,
+				page, 
+				per_page, 
+			}).then(moderators => {
+				return parseModeratorsToMatrix(moderators);
+			  }).then(matrix => setMatrix(matrix))
+		} else {
+			getModerators({ 
+				token, 
+				page, 
+				per_page, 
+				sort: sort as 'name' | 'created_at' | 'updated_at', 
+				direction: direction as 'asc' | 'desc',
+			}).then(moderators => {
+				return parseModeratorsToMatrix(moderators);
+			}).then(matrix => setMatrix(matrix))
+		}
+		return () => cancelRequest();
+    }, [matrix, page, direction, sort]);
 
 	const sortAndDirection = (sortBy: string) => {
 		setSort(sortBy)
@@ -71,7 +84,7 @@ export default function ModeratorList() {
     return (
         <Layout>
         <MyTitle>Moderators</MyTitle>
-        <MyInput placeholder="Search Moderators" search={true} ></MyInput>
+		<MySearchInput handleChange={setSearch} placeholder='Search Moderators' />
         <MyTable
             heads={heads}
             matrix={matrix}
@@ -100,6 +113,31 @@ const getModerators = async ({ token, page, per_page, sort, direction }: loadPar
 			per_page,
 			sort,
 			direction,
+		},
+		headers: {
+			'Authorization': `token ${token}`
+		}
+	});
+	const moderators = response.data;
+	
+	if (!moderators) {
+		return [];
+	}
+
+	return moderators;
+}
+
+type searchParams ={
+	token: string;
+	keywords: string;
+	page: number;
+	per_page: number;
+}
+const searchModerators = async ({ token, keywords, page, per_page }: searchParams): Promise<any> => {
+	const response = await api.get(`/moderators/search/${keywords}`, {
+		params: {
+			page,
+			per_page,
 		},
 		headers: {
 			'Authorization': `token ${token}`
