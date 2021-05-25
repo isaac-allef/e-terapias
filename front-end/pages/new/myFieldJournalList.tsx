@@ -33,6 +33,7 @@ export default function MyFieldJournalList() {
           link: '/',
           content: [
             [fieldJournal.name],
+            [timestampFormat(fieldJournal.date)],
             [fieldJournal.etherapy.identifier],
 			[timestampFormat(fieldJournal.created_at)],
 			[timestampFormat(fieldJournal.updated_at)],
@@ -46,7 +47,7 @@ export default function MyFieldJournalList() {
 			token, 
 			page, 
 			per_page, 
-			sort: sort as 'name' | 'created_at' | 'updated_at', 
+			sort: sort as 'name' | 'date' | 'created_at' | 'updated_at', 
 			direction: direction as 'asc' | 'desc',
 		}).then(fieldJournals => {
         	return parseFieldJournalsToMatrix(fieldJournals);
@@ -63,6 +64,7 @@ export default function MyFieldJournalList() {
 
 	const heads = [
 		{ name: 'Name', action: () => sortAndDirection('name') }, 
+		{ name: 'Date', action: () => sortAndDirection('date') }, 
 		{ name: 'Etherapy' }, 
 		{ name: 'Created_at', action: () => sortAndDirection('created_at') }, 
 		{ name: 'Updated_at', action: () => sortAndDirection('updated_at') }
@@ -90,7 +92,7 @@ type loadParams ={
 	token: string;
 	page: number;
 	per_page: number;
-	sort?: 'name' | 'created_at' | 'updated_at';
+	sort?: 'name' | 'date' | 'created_at' | 'updated_at';
     direction?: 'asc' | 'desc';
 }
 const getMyFieldJournals = async ({ token, page, per_page, sort, direction }: loadParams): Promise<any> => {
