@@ -12,15 +12,18 @@ export class SearchTemplatesController implements Controller {
 
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
         try {
-            const { keyword } = httpRequest.params;
+            const { keywords } = httpRequest.params;
+            const { per_page, page } = httpRequest.query;
 
-            if (!keyword) {
-                return badRequest(new MissingParamError('keyword'));
+            if (!keywords) {
+                return badRequest(new MissingParamError('keywords'));
             }
 
-            const templates = await this.searchTemplatesService.execute(
-                keyword,
-            );
+            const templates = await this.searchTemplatesService.execute({
+                keywords,
+                per_page,
+                page,
+            });
             return ok(templates);
         } catch (err) {
             return serverError(err);

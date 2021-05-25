@@ -30,7 +30,7 @@ templatesRouter.put(
     adapterRouter(makeUpdateTemplateContoller()),
 );
 templatesRouter.get(
-    '/search/:keyword',
+    '/search/:keywords',
     authManager,
     adapterRouter(makeSearchTemplatesContoller()),
 );

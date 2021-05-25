@@ -8,7 +8,9 @@ import LoadAllTemplatesRepository, {
     params as loadAllParams,
 } from '../../../../core/protocols/db/repositories/LoadAllTemplatesRepository';
 import LoadTemplateByIdRepository from '../../../../core/protocols/db/repositories/LoadTemplateByIdRepository';
-import SearchTemplatesRepository from '../../../../core/protocols/db/repositories/SearchTemplatesRepository';
+import SearchTemplatesRepository, {
+    params as searchParams,
+} from '../../../../core/protocols/db/repositories/SearchTemplatesRepository';
 import UpdateTemplateRepository, {
     params as updateParams,
 } from '../../../../core/protocols/db/repositories/UpdateTemplateRepository';
@@ -103,7 +105,11 @@ class TemplateTypeormRepository
         }
     }
 
-    async search(keywords: string): Promise<Template[]> {
+    async search({
+        keywords,
+        per_page,
+        page,
+    }: searchParams): Promise<Template[]> {
         try {
             const queryBuilder = this.ormRepository.createQueryBuilder(
                 'Template',
@@ -120,6 +126,8 @@ class TemplateTypeormRepository
                 .orWhere('etherapies.identifier ILIKE :identifier', {
                     identifier: `%${keywords}%`,
                 })
+                .take(per_page)
+                .skip((page - 1) * per_page)
                 .getMany();
 
             return finded;
