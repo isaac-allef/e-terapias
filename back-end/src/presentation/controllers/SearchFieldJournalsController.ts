@@ -12,14 +12,15 @@ export class SearchFieldJournalsController implements Controller {
 
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
         try {
-            const { keyword } = httpRequest.params;
+            const { keywords } = httpRequest.params;
+            const { per_page, page } = httpRequest.query;
 
-            if (!keyword) {
-                return badRequest(new MissingParamError('keyword'));
+            if (!keywords) {
+                return badRequest(new MissingParamError('keywords'));
             }
 
             const fieldJournals = await this.searchFieldJournalsService.execute(
-                keyword,
+                { keywords, per_page, page },
             );
             return ok(fieldJournals);
         } catch (err) {

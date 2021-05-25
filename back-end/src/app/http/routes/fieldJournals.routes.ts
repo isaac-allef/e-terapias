@@ -35,7 +35,7 @@ fieldJournalsRouter.put(
 );
 
 fieldJournalsRouter.get(
-    '/search/:keyword',
+    '/search/:keywords',
     authManager,
     adapterRouter(makeSearchFieldJournalsContoller()),
 );

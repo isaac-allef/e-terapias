@@ -1,13 +1,23 @@
 import FieldJournal from '../entities/FieldJournal';
-import SearchFieldJournalsRepository from '../protocols/db/repositories/SearchFieldJournalsRepository';
+import SearchFieldJournalsRepository, {
+    params,
+} from '../protocols/db/repositories/SearchFieldJournalsRepository';
 
 class SearchFieldJournalsService {
     constructor(
         private searchFieldJournalsRepository: SearchFieldJournalsRepository,
     ) {}
 
-    public async execute(keywords: string): Promise<FieldJournal[]> {
-        return this.searchFieldJournalsRepository.search(keywords);
+    public async execute({
+        keywords,
+        per_page = 10,
+        page = 1,
+    }: params): Promise<FieldJournal[]> {
+        return this.searchFieldJournalsRepository.search({
+            keywords,
+            per_page,
+            page,
+        });
     }
 }
 

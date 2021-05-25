@@ -17,7 +17,9 @@ import LoadFieldJournalByIdRepository from '../../../../core/protocols/db/reposi
 import SearchFieldJournalsPerModeratorRepository, {
     params,
 } from '../../../../core/protocols/db/repositories/SearchFieldJournalsPerModeratorRepository';
-import SearchFieldJournalsRepository from '../../../../core/protocols/db/repositories/SearchFieldJournalsRepository';
+import SearchFieldJournalsRepository, {
+    params as searchParams,
+} from '../../../../core/protocols/db/repositories/SearchFieldJournalsRepository';
 import UpdateFieldJournalRepository, {
     params as updateParams,
 } from '../../../../core/protocols/db/repositories/UpdateFieldJournalRepository';
@@ -197,7 +199,11 @@ class FieldJournalTypeormRepository
         }
     }
 
-    async search(keywords: string): Promise<FieldJournal[]> {
+    async search({
+        keywords,
+        per_page,
+        page,
+    }: searchParams): Promise<FieldJournal[]> {
         try {
             const queryBuilder = this.ormRepository.createQueryBuilder(
                 'FieldJournal',
@@ -221,6 +227,8 @@ class FieldJournalTypeormRepository
                 .orWhere('moderator.email ILIKE :email', {
                     email: `%${keywords}%`,
                 })
+                .take(per_page)
+                .skip((page - 1) * per_page)
                 .getMany();
 
             return finded;
