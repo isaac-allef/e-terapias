@@ -26,10 +26,14 @@ describe('load all Field journals per moderator usecase', () => {
         await sut.execute({
             moderatorId: 'randomModeratorId',
             keywords: 'any_word',
+            per_page: 10,
+            page: 1,
         });
         expect(executeSpy).toHaveBeenCalledWith({
             moderatorId: 'randomModeratorId',
             keywords: 'any_word',
+            per_page: 10,
+            page: 1,
         });
     });
 
@@ -42,10 +46,14 @@ describe('load all Field journals per moderator usecase', () => {
         await sut.execute({
             moderatorId: 'randomModeratorId',
             keywords: 'any_word',
+            per_page: 10,
+            page: 1,
         });
         expect(searchSpy).toHaveBeenCalledWith({
             moderatorId: 'randomModeratorId',
             keywords: 'any_word',
+            per_page: 10,
+            page: 1,
         });
     });
 
@@ -61,6 +69,8 @@ describe('load all Field journals per moderator usecase', () => {
             sut.execute({
                 moderatorId: 'randomModeratorId',
                 keywords: 'any_word',
+                per_page: 10,
+                page: 1,
             }),
         ).rejects.toThrow();
     });
