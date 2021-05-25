@@ -64,7 +64,7 @@ export default function FieldJournalList() {
 			}).then(matrix => setMatrix(matrix))
 		}
 		return () => cancelRequest();
-    }, [matrix, page, direction, sort]);
+    }, [page, direction, sort, search]);
 
 	const sortAndDirection = (sortBy: string) => {
 		setSort(sortBy)
