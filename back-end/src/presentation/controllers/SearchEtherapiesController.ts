@@ -12,15 +12,18 @@ export class SearchEtherapiesController implements Controller {
 
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
         try {
-            const { keyword } = httpRequest.params;
+            const { keywords } = httpRequest.params;
+            const { per_page, page } = httpRequest.query;
 
-            if (!keyword) {
-                return badRequest(new MissingParamError('keyword'));
+            if (!keywords) {
+                return badRequest(new MissingParamError('keywords'));
             }
 
-            const etherapy = await this.searchEtherapiesService.execute(
-                keyword,
-            );
+            const etherapy = await this.searchEtherapiesService.execute({
+                keywords,
+                per_page,
+                page,
+            });
             return ok(etherapy);
         } catch (err) {
             return serverError(err);

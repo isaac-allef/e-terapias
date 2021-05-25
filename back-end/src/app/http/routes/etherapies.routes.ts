@@ -16,7 +16,7 @@ etherapiesRouter.post(
 );
 
 etherapiesRouter.get(
-    '/search/:keyword',
+    '/search/:keywords',
     authManager,
     adapterRouter(makeSearchEtherapiesContoller()),
 );

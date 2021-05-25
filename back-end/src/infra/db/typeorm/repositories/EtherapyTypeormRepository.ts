@@ -12,7 +12,9 @@ import LoadAllEtherapiesRepository, {
 import LoadEtherapyByIdRepository from '../../../../core/protocols/db/repositories/LoadEtherapyByIdRepository';
 import LoadEtherapyByIdentifierRepository from '../../../../core/protocols/db/repositories/LoadEtherapyByIdentifierRepository';
 import LoadManyEtherapiesByIdentifierRepository from '../../../../core/protocols/db/repositories/LoadManyEtherapiesByIdentifierRepository';
-import SearchEtherapiesRepository from '../../../../core/protocols/db/repositories/SearchEtherapiesRepository';
+import SearchEtherapiesRepository, {
+    params as searchParams,
+} from '../../../../core/protocols/db/repositories/SearchEtherapiesRepository';
 import EtherapyTypeorm from '../entities/EtherapyTypeorm';
 
 @EntityRepository()
@@ -149,7 +151,11 @@ class EtherapyTypeormRepository
         }
     }
 
-    async search(keywords: string): Promise<Etherapy[]> {
+    async search({
+        keywords,
+        per_page,
+        page,
+    }: searchParams): Promise<Etherapy[]> {
         try {
             const queryBuilder = this.ormRepository.createQueryBuilder(
                 'Etherapy',
@@ -173,6 +179,8 @@ class EtherapyTypeormRepository
                 .orWhere('template.name ILIKE :name', {
                     name: `%${keywords}%`,
                 })
+                .take(per_page)
+                .skip((page - 1) * per_page)
                 .getMany();
 
             return finded;
