@@ -5,7 +5,6 @@ import MySearchInput from "../../components/new/MySearchInput";
 import MyTable from "../../components/new/MyTable";
 import Layout from "../../components/shared/Layout";
 import MyButton from "../../components/shared/MyButton";
-import MyInput from "../../components/shared/MyInput";
 import MyTitle from "../../components/shared/MyTitle";
 import api, { cancelRequest } from "../../services/api";
 
@@ -22,8 +21,11 @@ export default function MyFieldJournalList() {
   const [sort , setSort] = useState('updated_at');
   const [direction , setDirection] = useState('asc');
   const [search, setSearch] = useState('');
-  // const [token, setToken] = useState(localStorage.getItem('@etherapies:token'));
-  const [token, _] = useState('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhhMDRjNGEwLTVhY2MtNDVhZi1iOTMxLWYyNTRmOTE0YmQ3YyIsImlhdCI6MTYyMTAyODg5OH0.tbSNd_Cl32z_phFMHcpMGjDcb80a32vZRtzOmS_wVUc');
+  const [token, setToken] = useState('');
+
+    useEffect(() => {
+        setToken(localStorage.getItem('@etherapies:token'));
+    }, []);
 	
 	const timestampFormat = (timestamp: string): string => {
 		return new Date(timestamp).toUTCString();
@@ -45,28 +47,30 @@ export default function MyFieldJournalList() {
     }
 
     useEffect(() => {
-		if (search !== '') {
-			searchMyFieldJournals({ 
-				token, 
-				keywords: search,
-				page, 
-				per_page, 
-			}).then(fieldJournals => {
-				return parseFieldJournalsToMatrix(fieldJournals);
-			  }).then(matrix => setMatrix(matrix))
-		} else {
-			getMyFieldJournals({ 
-				token, 
-				page, 
-				per_page, 
-				sort: sort as 'name' | 'date' | 'created_at' | 'updated_at', 
-				direction: direction as 'asc' | 'desc',
-			}).then(fieldJournals => {
-				return parseFieldJournalsToMatrix(fieldJournals);
-			}).then(matrix => setMatrix(matrix))
+		if (token) {
+			if (search !== '') {
+				searchMyFieldJournals({ 
+					token, 
+					keywords: search,
+					page, 
+					per_page, 
+				}).then(fieldJournals => {
+					return parseFieldJournalsToMatrix(fieldJournals);
+				}).then(matrix => setMatrix(matrix))
+			} else {
+				getMyFieldJournals({ 
+					token, 
+					page, 
+					per_page, 
+					sort: sort as 'name' | 'date' | 'created_at' | 'updated_at', 
+					direction: direction as 'asc' | 'desc',
+				}).then(fieldJournals => {
+					return parseFieldJournalsToMatrix(fieldJournals);
+				}).then(matrix => setMatrix(matrix))
+			}
+			return () => cancelRequest();
 		}
-		return () => cancelRequest();
-    }, [page, direction, sort, search]);
+    }, [token, page, direction, sort, search]);
 
 	const sortAndDirection = (sortBy: string) => {
 		setSort(sortBy)

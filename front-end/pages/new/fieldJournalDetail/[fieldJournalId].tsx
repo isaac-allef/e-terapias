@@ -13,14 +13,19 @@ export default function FieldJournalDetail() {
 	const id = router.query.fieldJournalId as string;
 
 	const [me, setMe] = useState(null);
-	// const [token, setToken] = useState(localStorage.getItem('@etherapies:token'));
-	const [token, _] = useState('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNmZTJmYmQyLTRmNTYtNGY0ZS04NzcwLTJjMzc0MTI3MTU2YiIsImlhdCI6MTYyMTAyODk0N30.3HzZioMqIsu1pR_Fb8c9whLOUeho7bh_eZRXN-RtuCI');
+	const [token, setToken] = useState('');
+
+    useEffect(() => {
+        setToken(localStorage.getItem('@etherapies:token'));
+    }, []);
 	
 	useEffect(() => {
-		if (id) {
-			getFieldJournal(token, id).then(FieldJournal => setMe(FieldJournal));
+		if (token) {
+			if (id) {
+				getFieldJournal(token, id).then(FieldJournal => setMe(FieldJournal));
+			}
 		}
-	}, [id]);
+	}, [token, id]);
 
     return (
         <Layout>

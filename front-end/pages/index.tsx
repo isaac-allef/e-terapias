@@ -11,7 +11,7 @@ import { Flex } from "@chakra-ui/layout";
 export default function Home() {
   return (
     <>
-    <MyTitle>Welcome. Do you are a moderator or administrator?</MyTitle>
+    <MyTitle>Welcome. Do you are a moderator or manager?</MyTitle>
     <Flex>
       <Card
         icon={<Icon as={GrUserExpert} />}
@@ -19,15 +19,15 @@ export default function Home() {
         description={"Catch up on what's been cookin' at \
                       Smashing and explore some of the \
                       mostpopular community resources."}
-        link='/login/moderator'
+        link='/new/login/moderator'
       />
       <Card
         icon={<Icon as={GrUserAdmin} />}
-        title={'Administrator'}
+        title={'Manager'}
         description={"Catch up on what's been cookin' at \
                       Smashing and explore some of the \
                       mostpopular community resources."}
-        link='/login/administrator'
+        link='/new/login/manager'
       />
     </Flex>
     </>

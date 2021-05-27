@@ -1,4 +1,4 @@
-import { Box, Divider, Flex, Text } from "@chakra-ui/layout";
+import { Divider, Flex, Text } from "@chakra-ui/layout";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import MyToast from "../../components/shared/MyToast";
@@ -7,9 +7,8 @@ import MyTitle from "../../components/shared/MyTitle";
 import MenuSelectEtherapy from "../../components/new/fieldJournalForm/MenuSelectEtherapy";
 import Question from "../../components/new/fieldJournalForm/Question";
 import MyDivider from "../../components/shared/MyDivider";
-import { Button } from "@chakra-ui/button";
 import api from "../../services/api";
-import { Input, InputGroup, InputLeftAddon, InputLeftElement } from "@chakra-ui/input";
+import { Input, InputGroup, InputLeftAddon } from "@chakra-ui/input";
 import MyDatePicker from "../../components/new/DatePicker/MyDatePicker";
 import { Field, Form, Formik } from "formik";
 import * as Yup from 'yup';
@@ -38,26 +37,29 @@ interface fieldJournal {
 export default function FieldJournalForm() {
     const myToast = new MyToast();
     const router = useRouter();
-    // const [name, setName] = useState('');
     const [date, setDate] = useState(new Date());
     const [fields, setFields] = useState([]);
     const [templateFields, setTemplateFields] = useState([]);
     const [etherapies, setEtherapies] = useState([]);
     const [etherapySelected, setEtherapySelected] = useState(null);
-    // const [token, setToken] = useState(localStorage.getItem('@etherapies:token'));
-    const [token, _] = useState('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhhMDRjNGEwLTVhY2MtNDVhZi1iOTMxLWYyNTRmOTE0YmQ3YyIsImlhdCI6MTYyMTAyODg5OH0.tbSNd_Cl32z_phFMHcpMGjDcb80a32vZRtzOmS_wVUc');
+    const [token, setToken] = useState('');
+
+    useEffect(() => {
+        setToken(localStorage.getItem('@etherapies:token'));
+    }, []);
 
     function cleanUp() {
         setFields([]);
-        // setName('');
         setEtherapySelected(null);
     }
 
     useEffect(() => {
-        getMyInformations(token).then(me => {
-            setEtherapies(me.etherapies);
-        })
-    }, []);
+        if (token) {
+            getMyInformations(token).then(me => {
+                setEtherapies(me.etherapies);
+            })
+        }
+    }, [token]);
 
     const createFieldsBasedInTemplateFields = (templateFields: templateField[]): field[] => {
         const fields: field[] = templateFields?.map(templateField => ({

@@ -1,13 +1,9 @@
-import MyTitle from "../../components/shared/MyTitle";
 import * as Yup from 'yup';
 import { FormControl, FormErrorMessage, FormLabel } from "@chakra-ui/form-control";
 import { Input, InputGroup, InputLeftElement, InputRightElement } from "@chakra-ui/input";
 import { Button } from "@chakra-ui/button";
 import { Divider, Flex } from "@chakra-ui/layout";
 import { Field, Form, Formik } from "formik";
-
-import api from '../../services/api';
-
 import MyToast from "../../components/shared/MyToast";
 import { useRouter } from 'next/router';
 import Icon from "@chakra-ui/icon";
@@ -24,8 +20,11 @@ export default function Login() {
     const myToast = new MyToast();
     const router = useRouter();
     const [initialValues, setInitialValues] = useState(null);
-    // const [token, setToken] = useState(localStorage.getItem('@etherapies:token'));
-    const [token, _] = useState('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNmZTJmYmQyLTRmNTYtNGY0ZS04NzcwLTJjMzc0MTI3MTU2YiIsImlhdCI6MTYyMTAyODk0N30.3HzZioMqIsu1pR_Fb8c9whLOUeho7bh_eZRXN-RtuCI');
+    const [token, setToken] = useState('');
+
+    useEffect(() => {
+        setToken(localStorage.getItem('@etherapies:token'));
+    }, []);
 
     const getSettings = async () => {
         return axios.get('/api/getSettingsGoogleSheets');
@@ -50,10 +49,12 @@ export default function Login() {
     }
 
     useEffect(() => {
-        getSettings().then(settings => {
-            setInitialValues(settings.data);
-        });
-    }, []);
+        if (token) {
+            getSettings().then(settings => {
+                setInitialValues(settings.data);
+            });
+        }
+    }, [token]);
     
   const SignupSchema = Yup.object().shape({
     docIdEtherapies: Yup.string(),

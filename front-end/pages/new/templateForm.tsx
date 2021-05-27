@@ -39,14 +39,19 @@ export default function TemplateForm() {
     const [questionsTemplates, setQuestionsTemplates] = useState([]);
     const [etherapies, setEtherapies] = useState([]);
     const [etherapiesToAdd, setEtherapiesToAdd] = useState([]);
-    // const [token, setToken] = useState(localStorage.getItem('@etherapies:token'));
-    const [token, _] = useState('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNmZTJmYmQyLTRmNTYtNGY0ZS04NzcwLTJjMzc0MTI3MTU2YiIsImlhdCI6MTYyMTAyODk0N30.3HzZioMqIsu1pR_Fb8c9whLOUeho7bh_eZRXN-RtuCI');
+    const [token, setToken] = useState('');
 
     useEffect(() => {
-        getEtherapies(token).then(etherapies => {
-            setEtherapies(etherapies);
-        })
+        setToken(localStorage.getItem('@etherapies:token'));
     }, []);
+
+    useEffect(() => {
+        if (token) {
+            getEtherapies(token).then(etherapies => {
+                setEtherapies(etherapies);
+            })
+        }
+    }, [token]);
 
     const addNewQuestionTemplate = (): void => {
         const newQuestionTemplate: Question = { id: Math.random(), name: 'Type your question here', type: 'short' }

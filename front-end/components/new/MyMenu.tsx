@@ -33,7 +33,7 @@ function Item({ title, link, icon, ...props }) {
 	const [userType, setUserType] = useState('');
       
     useEffect(() => {
-        const entity = localStorage.getItem('@eterapias:entity');
+        const entity = localStorage.getItem('@etherapies:entity');
 
         if (entity === 'manager') {
             setUserType('manager');
@@ -44,7 +44,7 @@ function Item({ title, link, icon, ...props }) {
     return (
 		<>
 		{
-			userType !== 'manager' ? 
+			userType === 'manager' ? 
 			<Stack background='#6930c3' spacing={0} {...props} height='100%' borderRight='1px solid' borderColor='gray.300'>
 				<Item marginTop='3rem' title='Dashboard' link='/administrator/dashboard' icon={<Icon as={VscGraph} />} />
 				<Item title='Field journals' link='/new/fieldJournalList' icon={<Icon as={IoIosJournal} />} />

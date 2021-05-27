@@ -11,8 +11,11 @@ import api from "../../services/api";
 export default function Perfil() {
     const router = useRouter();
 	const [me, setMe] = useState(null);
-	// const [token, setToken] = useState(localStorage.getItem('@etherapies:token'));
-	const [token, _] = useState('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhhMDRjNGEwLTVhY2MtNDVhZi1iOTMxLWYyNTRmOTE0YmQ3YyIsImlhdCI6MTYyMTAyODg5OH0.tbSNd_Cl32z_phFMHcpMGjDcb80a32vZRtzOmS_wVUc');
+	const [token, setToken] = useState('');
+
+    useEffect(() => {
+        setToken(localStorage.getItem('@etherapies:token'));
+    }, []);
 	
 	useEffect(() => {
 		if (token) {

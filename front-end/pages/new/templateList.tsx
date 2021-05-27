@@ -22,8 +22,11 @@ export default function TemplateList() {
   const [sort , setSort] = useState('updated_at');
   const [direction , setDirection] = useState('asc');
   const [search, setSearch] = useState('');
-  // const [token, setToken] = useState(localStorage.getItem('@etherapies:token'));
-  const [token, _] = useState('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNmZTJmYmQyLTRmNTYtNGY0ZS04NzcwLTJjMzc0MTI3MTU2YiIsImlhdCI6MTYyMTAyODk0N30.3HzZioMqIsu1pR_Fb8c9whLOUeho7bh_eZRXN-RtuCI');
+  const [token, setToken] = useState('');
+
+    useEffect(() => {
+        setToken(localStorage.getItem('@etherapies:token'));
+    }, []);
 	
 	const timestampFormat = (timestamp: string): string => {
 		return new Date(timestamp).toUTCString();
@@ -44,28 +47,30 @@ export default function TemplateList() {
     }
 
     useEffect(() => {
-		if (search !== '') {
-			searchTemplates({ 
-				token, 
-				keywords: search,
-				page, 
-				per_page, 
-			}).then(moderators => {
-				return parseTemplatesToMatrix(moderators);
-			  }).then(matrix => setMatrix(matrix))
-		} else {
-			getTemplates({ 
-				token, 
-				page, 
-				per_page, 
-				sort: sort as 'name' | 'created_at' | 'updated_at', 
-				direction: direction as 'asc' | 'desc',
-			}).then(templates => {
-				return parseTemplatesToMatrix(templates);
-			}).then(matrix => setMatrix(matrix))
+		if (token) {
+			if (search !== '') {
+				searchTemplates({ 
+					token, 
+					keywords: search,
+					page, 
+					per_page, 
+				}).then(moderators => {
+					return parseTemplatesToMatrix(moderators);
+				}).then(matrix => setMatrix(matrix))
+			} else {
+				getTemplates({ 
+					token, 
+					page, 
+					per_page, 
+					sort: sort as 'name' | 'created_at' | 'updated_at', 
+					direction: direction as 'asc' | 'desc',
+				}).then(templates => {
+					return parseTemplatesToMatrix(templates);
+				}).then(matrix => setMatrix(matrix))
+			}
+			return () => cancelRequest();
 		}
-		return () => cancelRequest();
-    }, [page, direction, sort, search]);
+    }, [token, page, direction, sort, search]);
 
 	const sortAndDirection = (sortBy: string) => {
 		setSort(sortBy)

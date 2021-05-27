@@ -24,8 +24,11 @@ export default function ModeratorDetail() {
 	const per_page = 5;
 	const [sort , setSort] = useState('updated_at');
 	const [direction , setDirection] = useState('asc');
-	// const [token, setToken] = useState(localStorage.getItem('@etherapies:token'));
-	const [token, _] = useState('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNmZTJmYmQyLTRmNTYtNGY0ZS04NzcwLTJjMzc0MTI3MTU2YiIsImlhdCI6MTYyMTAyODk0N30.3HzZioMqIsu1pR_Fb8c9whLOUeho7bh_eZRXN-RtuCI');
+	const [token, setToken] = useState('');
+
+    useEffect(() => {
+        setToken(localStorage.getItem('@etherapies:token'));
+    }, []);
 	
 	const timestampFormat = (timestamp: string): string => {
 		return new Date(timestamp).toUTCString();
@@ -46,8 +49,10 @@ export default function ModeratorDetail() {
 	  }
 	
 	useEffect(() => {
-		if (id) {
-			getModerator(token, id).then(moderator => setMe(moderator));
+		if (token) {
+			if (id) {
+				getModerator(token, id).then(moderator => setMe(moderator));
+			}
 		}
 	}, [id]);
 

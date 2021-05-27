@@ -1,16 +1,16 @@
-import MyTitle from "../../components/shared/MyTitle";
+import MyTitle from "../../../components/shared/MyTitle";
 import * as Yup from 'yup';
-import { FormControl, FormErrorMessage, FormLabel } from "@chakra-ui/form-control";
+import { FormControl, FormErrorMessage } from "@chakra-ui/form-control";
 import { Input, InputGroup, InputLeftElement } from "@chakra-ui/input";
 import { Button } from "@chakra-ui/button";
 import { Divider } from "@chakra-ui/layout";
 import { Field, Form, Formik } from "formik";
 
-import api from '../../services/api';
+import api from '../../../services/api';
 
-import MyToast from "../../components/shared/MyToast";
+import MyToast from "../../../components/shared/MyToast";
 import { useRouter } from 'next/router';
-import LayoutLogin from "../../components/shared/LayoutLogin";
+import LayoutLogin from "../../../components/shared/LayoutLogin";
 import Icon from "@chakra-ui/icon";
 import { AiTwotoneMail, AiOutlineLock } from 'react-icons/ai';
 
@@ -43,28 +43,27 @@ export default function Login() {
 
     }
     
-    localStorage.setItem('@eterapias:token', token);
-    localStorage.setItem('@eterapias:myId', id);
+    localStorage.setItem('@etherapies:token', token);
+    localStorage.setItem('@etherapies:myId', id);
 
     actions.setSubmitting(false);
 
-    if (entity === 'administrator') {
-        localStorage.setItem('@eterapias:entity', 'administrator');
-        router.push('/administrator/dashboard');
+    if (entity === 'manager') {
+        localStorage.setItem('@etherapies:entity', 'manager');
+        router.push('/new/dashboard');
     } else if (entity === 'moderator') {
-        localStorage.setItem('@eterapias:entity', 'moderator');
-        router.push('/moderator/fieldJournals/list');
+        localStorage.setItem('@etherapies:entity', 'moderator');
+        router.push('/new/myFieldJournalList');
     }
   }
 
   async function authenticationJWT(email: string, password: string): Promise<{ id: string, token: string } | null> {
     try {
-        const response = await api.post(`/sessions/${entity}`, {
+        const response = await api.post(`/login/${entity}`, {
             email,
             password,
         });
-        const { token } = response.data;
-        const { id } = response.data[`${entity}`]
+        const { id, token } = response.data;
         return { id, token };
     } catch(error) {
         console.log(error);
@@ -86,7 +85,6 @@ export default function Login() {
             <Field name="email">
                 {({ field, form }) => (
                     <FormControl isInvalid={form.errors.email && form.touched.email}>
-                        {/* <FormLabel htmlFor="email">Email</FormLabel> */}
                             <InputGroup>
                             <InputLeftElement pointerEvents="none" children={<Icon as={AiTwotoneMail} color="gray.400" />} />
                                 <Input {...field} id="email" placeholder="email" />
@@ -98,7 +96,6 @@ export default function Login() {
             <Field name="password">
                 {({ field, form }) => (
                     <FormControl marginTop='1rem' isInvalid={form.errors.password && form.touched.password}>
-                        {/* <FormLabel htmlFor="password">Password</FormLabel> */}
                         <InputGroup>
                             <InputLeftElement pointerEvents="none" children={<Icon as={AiOutlineLock} color="gray.400" />} />
                             <Input {...field} id="password" placeholder="password" type="password" />

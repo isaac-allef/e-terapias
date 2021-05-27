@@ -1,5 +1,5 @@
 import { Flex } from "@chakra-ui/layout";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Field, Form, Formik } from "formik";
 import { FormControl, FormErrorMessage, FormLabel } from "@chakra-ui/form-control";
 import * as Yup from 'yup';
@@ -7,7 +7,6 @@ import { useRouter } from 'next/router';
 import Layout from "../../components/shared/Layout";
 import MyTitle from "../../components/shared/MyTitle";
 import MyDivider from "../../components/shared/MyDivider";
-import MyButton from "../../components/shared/MyButton";
 import api from "../../services/api";
 import { PasswordInput } from "../../components/shared/PasswordInput";
 import MyToast from "../../components/shared/MyToast";
@@ -22,8 +21,11 @@ interface changePassword {
 export default function ChangePasswordForm() {
     const myToast = new MyToast();
     const router = useRouter();
-    // const [token, setToken] = useState(localStorage.getItem('@etherapies:token'));
-    const [token, _] = useState('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhhMDRjNGEwLTVhY2MtNDVhZi1iOTMxLWYyNTRmOTE0YmQ3YyIsImlhdCI6MTYyMTAyODg5OH0.tbSNd_Cl32z_phFMHcpMGjDcb80a32vZRtzOmS_wVUc');
+    const [token, setToken] = useState('');
+
+    useEffect(() => {
+        setToken(localStorage.getItem('@etherapies:token'));
+    }, []);
 
     const SignupSchema = Yup.object().shape({
         currentPassword: Yup.string().required('Required'),

@@ -24,8 +24,11 @@ export default function EtherapyDetail() {
 	const per_page = 5;
 	const [sort , setSort] = useState('updated_at');
 	const [direction , setDirection] = useState('asc');
-	// const [token, setToken] = useState(localStorage.getItem('@etherapies:token'));
-	const [token, _] = useState('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNmZTJmYmQyLTRmNTYtNGY0ZS04NzcwLTJjMzc0MTI3MTU2YiIsImlhdCI6MTYyMTAyODk0N30.3HzZioMqIsu1pR_Fb8c9whLOUeho7bh_eZRXN-RtuCI');
+	const [token, setToken] = useState('');
+
+    useEffect(() => {
+        setToken(localStorage.getItem('@etherapies:token'));
+    }, []);
 	
 	const timestampFormat = (timestamp: string): string => {
 		return new Date(timestamp).toUTCString();
@@ -46,10 +49,12 @@ export default function EtherapyDetail() {
 	  }
 	
 	useEffect(() => {
-		if (id) {
-			getEtherapy(token, id).then(etherapy => setMe(etherapy));
+		if (token) {
+			if (id) {
+				getEtherapy(token, id).then(etherapy => setMe(etherapy));
+			}
 		}
-	}, [id]);
+	}, [token, id]);
 
     useEffect(() => {
 		if (me) {

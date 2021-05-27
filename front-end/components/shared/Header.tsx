@@ -8,12 +8,12 @@ export default function Header() {
     const [headingLink, setHeadingLink] = useState('/');
 
     useEffect(() => {
-        const entity = localStorage.getItem('@eterapias:entity');
+        const entity = localStorage.getItem('@etherapies:entity');
 
-        if (entity === 'administrator') {
-            setHeadingLink('/administrator/dashboard');
+        if (entity === 'manager') {
+            setHeadingLink('/new/dashboard');
         } else if (entity === 'moderator') {
-            setHeadingLink('/moderator/fieldJournals/list');
+            setHeadingLink('/new/myFieldJournalList');
         }
     }, []);
 
@@ -38,8 +38,9 @@ export default function Header() {
             <HStack spacing='6'>
                 <Button variant='link' textColor='white'>About</Button>
                 <Button variant='link' textColor='white' onClick={() => {
-                    localStorage.setItem('@eterapias:token', null);
-                    localStorage.setItem('@eterapias:myId', null);
+                    localStorage.setItem('@etherapies:token', null);
+                    localStorage.setItem('@etherapies:myId', null);
+                    localStorage.setItem('@etherapies:entity', null);
                     router.push('/');
                 }}><IoLogOutSharp /></Button>
             </HStack>
