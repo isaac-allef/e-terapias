@@ -52,7 +52,7 @@ export default function FieldJournalForm() {
                 getFieldJournal(token, id).then(fieldJournal => setMe(fieldJournal));
             }
         }
-	}, [id]);
+	}, [token, id]);
 
     useEffect(() => {
         if (me) {

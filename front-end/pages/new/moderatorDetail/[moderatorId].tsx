@@ -54,7 +54,7 @@ export default function ModeratorDetail() {
 				getModerator(token, id).then(moderator => setMe(moderator));
 			}
 		}
-	}, [id]);
+	}, [token, id]);
 
     useEffect(() => {
 		if (me) {

@@ -7,6 +7,7 @@ import { IoIosJournal, IoIosPeople } from "react-icons/io";
 import { RiPsychotherapyFill } from "react-icons/ri";
 import { BsFillPersonFill } from "react-icons/bs";
 import { VscGraph } from "react-icons/vsc";
+import { IoSettingsSharp } from "react-icons/io5";
 
 function Item({ title, link, icon, ...props }) {
     return (
@@ -51,6 +52,7 @@ function Item({ title, link, icon, ...props }) {
 				<Item title='Templates' link='/new/templateList' icon={<Icon as={AiFillCopy} />} />
 				<Item title='Moderators' link='/new/moderatorList' icon={<Icon as={IoIosPeople} />} />
 				<Item title='Etherapies' link='/new/etherapyList' icon={<Icon as={RiPsychotherapyFill} />} />
+				<Item title='Settings' link='/new/settings' icon={<Icon as={IoSettingsSharp} />} />
 			</Stack>
 			:
 			<Stack background='#6930c3' spacing={0} {...props} height='100%' borderRight='1px solid' borderColor='gray.300'>
