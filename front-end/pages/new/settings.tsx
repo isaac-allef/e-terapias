@@ -40,6 +40,15 @@ export default function Login() {
         });
     }
 
+    const uploadModeratorsList = async () => {
+        return axios.post('/api/uploadModeratorsList', {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            }
+        });
+    }
+
     useEffect(() => {
         getSettings().then(settings => {
             setInitialValues(settings.data);
@@ -81,7 +90,14 @@ export default function Login() {
                                 (err) => myToast.execute({ status: 'error', title: 'Error', description: err.message })
                             )
                         }
-                        <Button>Upload moderators list</Button>
+                        {
+                            uploadListForm(
+                                'Upload moderators list', 
+                                uploadModeratorsList,
+                                () => myToast.execute({ status: 'success', title: 'Moderators list updated' }),
+                                (err) => myToast.execute({ status: 'error', title: 'Error', description: err.message })
+                            )
+                        }
                     </Flex>
                 </TabPanel>
             </TabPanels>
