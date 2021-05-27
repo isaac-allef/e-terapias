@@ -24,9 +24,20 @@ export default function Login() {
     const myToast = new MyToast();
     const router = useRouter();
     const [initialValues, setInitialValues] = useState(null);
+    // const [token, setToken] = useState(localStorage.getItem('@etherapies:token'));
+    const [token, _] = useState('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNmZTJmYmQyLTRmNTYtNGY0ZS04NzcwLTJjMzc0MTI3MTU2YiIsImlhdCI6MTYyMTAyODk0N30.3HzZioMqIsu1pR_Fb8c9whLOUeho7bh_eZRXN-RtuCI');
 
     const getSettings = async () => {
         return axios.get('/api/getSettingsGoogleSheets');
+    }
+
+    const uploadEtherapiesList = async () => {
+        return axios.post('/api/uploadEtherapiesList', {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            }
+        });
     }
 
     useEffect(() => {
@@ -62,7 +73,14 @@ export default function Login() {
                 </TabPanel>
                 <TabPanel>
                     <Flex justifyContent='space-around' paddingBottom='3vh'>
-                        <Button>Upload etherapies list</Button>
+                        {
+                            uploadListForm(
+                                'Upload etherapies list', 
+                                uploadEtherapiesList,
+                                () => myToast.execute({ status: 'success', title: 'Etherapies list updated' }),
+                                (err) => myToast.execute({ status: 'error', title: 'Error', description: err.message })
+                            )
+                        }
                         <Button>Upload moderators list</Button>
                     </Flex>
                 </TabPanel>
@@ -143,3 +161,31 @@ const settingsSheetsForm = (initialValues, SignupSchema, functionSubmitForm) => 
         )}
         </Formik>
 );
+
+const uploadListForm = (
+    text: string, 
+    uploadList: Function, 
+    toastSuccess?: Function,
+    toastError?: Function ) => (
+    <Formik
+            initialValues={{}}
+            onSubmit={async (values, actions) => {
+                try {
+                    await uploadList();
+                    actions.setSubmitting(false);
+                    toastSuccess? toastSuccess() : null;
+                } catch (err) {
+                    toastError? toastError(err) : null;
+                }
+            }}
+            >
+            {(props) => (
+                <Form>
+                    <Button 
+                        isLoading={props.isSubmitting}
+                        type="submit"
+                    >{ text }</Button>
+                </Form>
+            )}
+        </Formik>
+)
