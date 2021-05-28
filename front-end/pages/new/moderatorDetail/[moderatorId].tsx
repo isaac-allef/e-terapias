@@ -8,6 +8,7 @@ import api from "../../../services/api";
 import React from "react";
 import { Button } from "@chakra-ui/button";
 import { DeleteIcon } from "@chakra-ui/icons";
+import MyMenu from "../../../components/new/MyMenu";
 
 interface Line {
   link: string;
@@ -87,7 +88,7 @@ export default function ModeratorDetail() {
 	];
 
     return (
-        <Layout>
+		<Layout menu={<MyMenu manager={true} />}>
         <MyTitle>Moderator Detail</MyTitle>
 		{ me ? details(me) : null }
 		<Text fontWeight='black'>Field journals: </Text>

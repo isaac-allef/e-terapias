@@ -30,23 +30,12 @@ function Item({ title, link, icon, ...props }) {
     )
   }
   
-  function MyMenu(props) {
-	const [userType, setUserType] = useState('');
-      
-    useEffect(() => {
-        const entity = localStorage.getItem('@etherapies:entity');
-
-        if (entity === 'manager') {
-            setUserType('manager');
-        } else if (entity === 'moderator') {
-            setUserType('moderator');
-        }
-    }, []);
+  function MyMenu({ manager }) {
     return (
 		<>
 		{
-			userType === 'manager' ? 
-			<Stack background='#6930c3' spacing={0} {...props} height='100%' borderRight='1px solid' borderColor='gray.300'>
+			manager ? 
+			<Stack background='#6930c3' spacing={0} height='100%' borderRight='1px solid' borderColor='gray.300'>
 				<Item marginTop='3rem' title='Dashboard' link='/new/dashboard' icon={<Icon as={VscGraph} />} />
 				<Item title='Field journals' link='/new/fieldJournalList' icon={<Icon as={IoIosJournal} />} />
 				<Item title='Templates' link='/new/templateList' icon={<Icon as={AiFillCopy} />} />
@@ -55,7 +44,7 @@ function Item({ title, link, icon, ...props }) {
 				<Item title='Settings' link='/new/settings' icon={<Icon as={IoSettingsSharp} />} />
 			</Stack>
 			:
-			<Stack background='#6930c3' spacing={0} {...props} height='100%' borderRight='1px solid' borderColor='gray.300'>
+			<Stack background='#6930c3' spacing={0} height='100%' borderRight='1px solid' borderColor='gray.300'>
 				<Item marginTop='3rem' title='Field journals' link='/new/myFieldJournalList' icon={<Icon as={IoIosJournal} />} />
 				<Item title='Perfil' link='/new/perfil' icon={<Icon as={BsFillPersonFill} />} />
 			</Stack>

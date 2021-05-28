@@ -7,6 +7,7 @@ import api from "../../../services/api";
 import React from "react";
 import { Button } from "@chakra-ui/button";
 import { DeleteIcon } from "@chakra-ui/icons";
+import MyMenu from "../../../components/new/MyMenu";
 
 export default function FieldJournalDetail() {
     const router = useRouter();
@@ -28,7 +29,7 @@ export default function FieldJournalDetail() {
 	}, [token, id]);
 
     return (
-        <Layout>
+		<Layout menu={<MyMenu manager={true} />}>
         <MyTitle>FieldJournal Detail</MyTitle>
 		{ me ? details(me) : null }
         <Divider marginBottom='1rem'/>

@@ -15,6 +15,7 @@ import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/tabs";
 import { Textarea } from "@chakra-ui/textarea";
 import axios from 'axios';
 import { useEffect, useState } from "react";
+import MyMenu from '../../components/new/MyMenu';
 
 export default function Login() {
     const myToast = new MyToast();
@@ -68,7 +69,7 @@ export default function Login() {
   }
 
   return (
-      <Layout>
+    <Layout menu={<MyMenu manager={true} />}>
         <Tabs isFitted variant='line'>
             <TabList mb="1em">
                 <Tab>Settings</Tab>

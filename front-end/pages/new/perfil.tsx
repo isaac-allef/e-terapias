@@ -7,6 +7,7 @@ import { UnlockIcon } from "@chakra-ui/icons";
 import Layout from "../../components/shared/Layout";
 import MyTitle from "../../components/shared/MyTitle";
 import api from "../../services/api";
+import MyMenu from "../../components/new/MyMenu";
 
 export default function Perfil() {
     const router = useRouter();
@@ -24,7 +25,7 @@ export default function Perfil() {
 	}, [token]);
 
     return (
-        <Layout>
+        <Layout menu={<MyMenu manager={false} />}>
         <MyTitle>Perfil</MyTitle>
 		{ me ? details(me) : null }
         <Divider marginBottom='1rem' />

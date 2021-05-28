@@ -14,6 +14,7 @@ import MyDivider from "../../../components/shared/MyDivider";
 import MyButton from "../../../components/shared/MyButton";
 import api from "../../../services/api";
 import MenuAddEtherapies from "../../../components/new/templateForm/MenuAddEterapias";
+import MyMenu from "../../../components/new/MyMenu";
 
 interface Question {
     id: number;
@@ -144,7 +145,7 @@ export default function TemplateForm() {
     }
 
     return (
-      <Layout>
+        <Layout menu={<MyMenu manager={true} />}>
         <MyTitle>{'Edit Template'}</MyTitle>
 
         <MenuAddEtherapies

@@ -15,6 +15,7 @@ import { FormControl, FormErrorMessage, FormLabel } from "@chakra-ui/form-contro
 import { CalendarIcon, DeleteIcon } from "@chakra-ui/icons";
 import MyButton from "../../../components/shared/MyButton";
 import { Button } from "@chakra-ui/button";
+import MyMenu from "../../../components/new/MyMenu";
 
 interface field {
     name: string;
@@ -93,7 +94,7 @@ export default function FieldJournalForm() {
     }
 
     return (
-      <Layout>
+        <Layout menu={<MyMenu manager={true} />}>
         <MyTitle>{'Edit Field Journal'}</MyTitle>
         
         {

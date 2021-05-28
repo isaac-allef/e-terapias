@@ -1,8 +1,7 @@
-import { Box, Flex, Grid, GridItem, Heading } from "@chakra-ui/layout";
-import MyMenu from "../new/MyMenu";
+import { Box, Flex, Grid, GridItem } from "@chakra-ui/layout";
 import Header from "./Header";
 
-export default function Layout({ children }) {
+export default function Layout({ menu, children }) {
     return (
         <Flex h='100vh' flexDirection='column'>
             <Header />
@@ -11,7 +10,7 @@ export default function Layout({ children }) {
             flex='1'
             >
                 <GridItem colSpan={1}>
-                    <MyMenu />
+                    { menu }
                 </GridItem>
                 <GridItem colSpan={4}>
                     <Box

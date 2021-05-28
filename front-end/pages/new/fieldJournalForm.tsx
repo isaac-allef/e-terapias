@@ -15,6 +15,7 @@ import * as Yup from 'yup';
 import { FormControl, FormErrorMessage, FormLabel } from "@chakra-ui/form-control";
 import { CalendarIcon } from "@chakra-ui/icons";
 import MyButton from "../../components/shared/MyButton";
+import MyMenu from "../../components/new/MyMenu";
 
 interface field {
     name: string;
@@ -114,7 +115,7 @@ export default function FieldJournalForm() {
     }
 
     return (
-      <Layout>
+        <Layout menu={<MyMenu manager={true} />}>
         <MyTitle>{'Create Field Journal'}</MyTitle>
         
         <Text fontSize='small' marginBottom='-1px'>Eterapia</Text>

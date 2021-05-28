@@ -11,6 +11,7 @@ import api from "../../services/api";
 import { PasswordInput } from "../../components/shared/PasswordInput";
 import MyToast from "../../components/shared/MyToast";
 import { Button } from "@chakra-ui/button";
+import MyMenu from "../../components/new/MyMenu";
 
 interface changePassword {
     currentPassword: string,
@@ -62,7 +63,7 @@ export default function ChangePasswordForm() {
     }
 
     return (
-      <Layout>
+        <Layout menu={<MyMenu manager={true} />}>
         <MyTitle>{'Change Password'}</MyTitle>
 
         <Formik

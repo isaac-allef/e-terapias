@@ -1,6 +1,7 @@
 import { Divider } from "@chakra-ui/layout";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import MyMenu from "../../components/new/MyMenu";
 import MySearchInput from "../../components/new/MySearchInput";
 import MyTable from "../../components/new/MyTable";
 import Layout from "../../components/shared/Layout";
@@ -89,7 +90,7 @@ export default function MyFieldJournalList() {
 	];
 
     return (
-        <Layout>
+        <Layout menu={<MyMenu manager={false} />}>
         <MyTitle>FieldJournals</MyTitle>
 		<MySearchInput handleChange={setSearch} placeholder='Search my field journals' />
         <MyTable
