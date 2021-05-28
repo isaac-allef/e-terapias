@@ -102,7 +102,7 @@ export default function MyFieldJournalList() {
 			<MyTitle>FieldJournals</MyTitle>
 			
 			<Link href={'/new/fieldJournalForm'}>
-				<MyButton>New</MyButton>
+				<div><MyButton>New</MyButton></div>
 			</Link>
 		</Flex>
 		

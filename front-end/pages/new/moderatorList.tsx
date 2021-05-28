@@ -1,12 +1,9 @@
-import { Divider } from "@chakra-ui/layout";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import MyMenu from "../../components/new/MyMenu";
 import MySearchInput from "../../components/new/MySearchInput";
 import MySkeletonTable from "../../components/new/MySkeletonTable";
 import MyTable from "../../components/new/MyTable";
 import Layout from "../../components/shared/Layout";
-import MyButton from "../../components/shared/MyButton";
 import MyTitle from "../../components/shared/MyTitle";
 import api, { cancelRequest } from "../../services/api";
 
@@ -106,7 +103,6 @@ export default function ModeratorList() {
 				setPage={setPage}
 			/>
 		</MySkeletonTable>
-        <Divider />
         </Layout>
     )
 }

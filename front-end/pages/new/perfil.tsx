@@ -36,10 +36,12 @@ export default function Perfil() {
 		<Divider marginBottom='1rem' />
 		
 		<Link href={'/new/changePasswordForm'}>
+			<div>
 			<MyButton colorScheme="yellow">
 				<UnlockIcon marginRight='0.5rem'/>
 				Change password
 			</MyButton>
+			</div>
 		</Link>
         
 		</Layout>

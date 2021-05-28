@@ -159,7 +159,6 @@ export default function FieldJournalForm() {
 
             <Flex justifyContent='flex-end'>
                 <MyButton
-                    mt={4}
                     isLoading={props.isSubmitting}
                     type="submit"
                     >

@@ -1,4 +1,3 @@
-import { Divider } from "@chakra-ui/layout";
 import { useEffect, useState } from "react";
 import MyMenu from "../../components/new/MyMenu";
 import MySearchInput from "../../components/new/MySearchInput";
@@ -107,7 +106,6 @@ export default function FieldJournalList() {
 				setPage={setPage}
 			/>
 		</MySkeletonTable>
-        <Divider />
         </Layout>
     )
 }

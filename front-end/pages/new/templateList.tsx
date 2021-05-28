@@ -101,7 +101,7 @@ export default function TemplateList() {
         	<MyTitle>Templates</MyTitle>
 			
 			<Link href={'/new/templateForm'}>
-				<MyButton>New</MyButton>
+				<div><MyButton>New</MyButton></div>
 			</Link>
 		</Flex>
 		
