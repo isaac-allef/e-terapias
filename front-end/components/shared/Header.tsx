@@ -1,5 +1,5 @@
 import { Heading, Flex, HStack, Button } from "@chakra-ui/react";
-import { IoLogOutSharp } from 'react-icons/io5';
+import { IoLogOutOutline, IoLogoGithub } from 'react-icons/io5';
 import Link from 'next/link';
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -24,7 +24,7 @@ export default function Header() {
             top={0}
             // position='sticky'
             justifyContent='space-between'
-            py='1rem'
+            py='0.5rem'
             bgColor='#151515'
             borderBottom='1px solid'
             borderColor='gray.500'
@@ -33,16 +33,18 @@ export default function Header() {
             textColor='white'
         >
             <Flex>
-            <Heading marginLeft='1rem'><Link href={headingLink}>E-Terapias</Link></Heading>
+            <Heading size='lg' marginLeft='1rem'><Link href={headingLink}>E-Terapias</Link></Heading>
             </Flex>
             <HStack spacing='6'>
-                <Button variant='link' textColor='white'>About</Button>
+                <Button variant='link' textColor='white'>
+                    <IoLogoGithub size='1.2rem' />
+                </Button>
                 <Button variant='link' textColor='white' onClick={() => {
                     localStorage.setItem('@etherapies:token', null);
                     localStorage.setItem('@etherapies:myId', null);
                     localStorage.setItem('@etherapies:entity', null);
                     router.push('/');
-                }}><IoLogOutSharp /></Button>
+                }}><IoLogOutOutline size='1.2rem' /></Button>
             </HStack>
         </Flex>
     )

@@ -67,7 +67,7 @@ export default function MyTable({ heads, matrix, page, setPage }: MyProps) {
     
     return (
         <>
-        <Table variant='simple' colorScheme='teal'>
+        <Table variant='simple' colorScheme='blackAlpha'>
             <Thead>
                 <Tr>{
                     React.Children.toArray(heads.map(column => <Th>
@@ -86,7 +86,7 @@ export default function MyTable({ heads, matrix, page, setPage }: MyProps) {
                     matrix.map(line => {
                         return (
                         <Link href={line.link}>
-                        <Tr _hover={{color: "teal.500"}} cursor='pointer'>
+                        <Tr textColor='#696969' _hover={{color: 'blue.500'}} cursor='pointer'>
                                 {React.Children.toArray(
                                     line.content.map(value => {
                                         const valueFormated = value.map((v, index) => {
@@ -134,7 +134,7 @@ function MyPagination({ page, setPage }: paginationProps) {
     }
 
     return (
-        <Flex>
+        <Flex marginTop='1rem' marginBottom='1rem'>
             <Button 
                 variant='outline'
                 isDisabled={page === 1 ? true : false} 
@@ -155,9 +155,10 @@ function MyPagination({ page, setPage }: paginationProps) {
                 onClick={() => changePage(page - 1)}
             >{ page - 1 }</Button>
             <Button
-                variant='outline'
+                boxShadow='xl'
                 size='md'
                 aria-label="close" 
+                colorScheme='blue'
             >{ page }</Button>
             <Button
                 variant='link'
