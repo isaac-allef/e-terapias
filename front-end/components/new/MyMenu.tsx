@@ -47,7 +47,7 @@ function Item({ title, link, icon, ...props }) {
 		{
 			userType === 'manager' ? 
 			<Stack background='#6930c3' spacing={0} {...props} height='100%' borderRight='1px solid' borderColor='gray.300'>
-				<Item marginTop='3rem' title='Dashboard' link='/administrator/dashboard' icon={<Icon as={VscGraph} />} />
+				<Item marginTop='3rem' title='Dashboard' link='/new/dashboard' icon={<Icon as={VscGraph} />} />
 				<Item title='Field journals' link='/new/fieldJournalList' icon={<Icon as={IoIosJournal} />} />
 				<Item title='Templates' link='/new/templateList' icon={<Icon as={AiFillCopy} />} />
 				<Item title='Moderators' link='/new/moderatorList' icon={<Icon as={IoIosPeople} />} />
