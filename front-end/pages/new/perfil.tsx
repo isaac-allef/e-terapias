@@ -9,6 +9,7 @@ import MyTitle from "../../components/shared/MyTitle";
 import api from "../../services/api";
 import MyMenu from "../../components/new/MyMenu";
 import Link from "next/link";
+import MyButton from "../../components/shared/MyButton";
 
 export default function Perfil() {
     const router = useRouter();
@@ -27,14 +28,21 @@ export default function Perfil() {
 
     return (
         <Layout menu={<MyMenu manager={false} />}>
-        <MyTitle>Perfil</MyTitle>
+        
+		<MyTitle>Perfil</MyTitle>
+		
 		{ me ? details(me) : null }
-        <Divider marginBottom='1rem' />
-		<Button colorScheme="yellow">
-			<UnlockIcon marginRight='0.5rem'/>
-			<Link href={'/new/changePasswordForm'}>Change password</Link>
-        </Button>
-        </Layout>
+        
+		<Divider marginBottom='1rem' />
+		
+		<Link href={'/new/changePasswordForm'}>
+			<MyButton colorScheme="yellow">
+				<UnlockIcon marginRight='0.5rem'/>
+				Change password
+			</MyButton>
+		</Link>
+        
+		</Layout>
     )
 }
 

@@ -12,6 +12,7 @@ import { PasswordInput } from "../../components/shared/PasswordInput";
 import MyToast from "../../components/shared/MyToast";
 import { Button } from "@chakra-ui/button";
 import MyMenu from "../../components/new/MyMenu";
+import MyButton from "../../components/shared/MyButton";
 
 interface changePassword {
     currentPassword: string,
@@ -73,29 +74,29 @@ export default function ChangePasswordForm() {
             >
             {(props) => (
                 <Form>
-                <Field name="currentPassword">
+                <Field name='currentPassword'>
                     {({ field, form }) => (
                         <FormControl isRequired isInvalid={form.errors.currentPassword && form.touched.currentPassword}>
-                            <FormLabel htmlFor="currentPassword" margin='0px' >Current password</FormLabel>
-                                <PasswordInput props={field} id="currentPassword" />
+                            <FormLabel htmlFor='currentPassword' margin='0px' >Current password</FormLabel>
+                                <PasswordInput props={field} id='currentPassword' />
                             <FormErrorMessage>{form.errors.currentPassword}</FormErrorMessage>
                         </FormControl>
                     )}
                 </Field>
-                <Field name="newPassword">
+                <Field name='newPassword'>
                     {({ field, form }) => (
                         <FormControl isRequired isInvalid={form.errors.newPassword && form.touched.newPassword}>
-                            <FormLabel htmlFor="newPassword" margin='0px' >New password</FormLabel>
-                                <PasswordInput props={field} id="newPassword" />
+                            <FormLabel htmlFor='newPassword' margin='0px' >New password</FormLabel>
+                                <PasswordInput props={field} id='newPassword' />
                             <FormErrorMessage>{form.errors.newPassword}</FormErrorMessage>
                         </FormControl>
                     )}
                 </Field>
-                <Field name="newPasswordConfirmation">
+                <Field name='newPasswordConfirmation'>
                     {({ field, form }) => (
                         <FormControl isRequired isInvalid={form.errors.newPasswordConfirmation && form.touched.newPasswordConfirmation}>
-                            <FormLabel htmlFor="newPasswordConfirmation" margin='0px' >New password confirmation</FormLabel>
-                                <PasswordInput props={field} id="newPasswordConfirmation" />
+                            <FormLabel htmlFor='newPasswordConfirmation' margin='0px' >New password confirmation</FormLabel>
+                                <PasswordInput props={field} id='newPasswordConfirmation' />
                             <FormErrorMessage>{form.errors.newPasswordConfirmation}</FormErrorMessage>
                         </FormControl>
                     )}
@@ -103,15 +104,17 @@ export default function ChangePasswordForm() {
 
                 <MyDivider />
 
-                <Flex justifyContent='flex-end' paddingBottom='3vh'>
-                <Button colorScheme="yellow"
-                    mt={4}
-                    isLoading={props.isSubmitting}
-                    type="submit"
-                    >
-                    Change
-                </Button>
+                <Flex justifyContent='flex-end'>
+                    <MyButton colorScheme='yellow'
+                        mt={4}
+                        isLoading={props.isSubmitting}
+                        type='submit'
+                        >
+                        Change
+                    </MyButton>
                 </Flex>
+                
+
                 </Form>
             )}
         </Formik>

@@ -1,4 +1,4 @@
-import { Divider } from "@chakra-ui/layout";
+import { Divider, Flex } from "@chakra-ui/layout";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import MyMenu from "../../components/new/MyMenu";
@@ -96,8 +96,17 @@ export default function TemplateList() {
 
     return (
         <Layout menu={<MyMenu manager={true} />}>
-        <MyTitle>Templates</MyTitle>
+		
+		<Flex justifyContent='space-between'>
+        	<MyTitle>Templates</MyTitle>
+			
+			<Link href={'/new/templateForm'}>
+				<MyButton>New</MyButton>
+			</Link>
+		</Flex>
+		
 		<MySearchInput handleChange={setSearch} placeholder='Search templates' />
+		
 		<MySkeletonTable isLoaded={!loading}>
 			<MyTable
 				heads={heads}
@@ -106,10 +115,7 @@ export default function TemplateList() {
 				setPage={setPage}
 			/>
 		</MySkeletonTable>
-        <Divider />
-        <MyButton>
-			<Link href={'/new/templateForm'}>New template</Link>
-        </MyButton>
+		
         </Layout>
     )
 }

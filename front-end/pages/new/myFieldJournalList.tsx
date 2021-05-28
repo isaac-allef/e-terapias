@@ -1,4 +1,4 @@
-import { Divider } from "@chakra-ui/layout";
+import { Divider, Flex } from "@chakra-ui/layout";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import MyMenu from "../../components/new/MyMenu";
@@ -97,8 +97,17 @@ export default function MyFieldJournalList() {
 
     return (
         <Layout menu={<MyMenu manager={false} />}>
-        <MyTitle>FieldJournals</MyTitle>
+		
+		<Flex justifyContent='space-between'>
+			<MyTitle>FieldJournals</MyTitle>
+			
+			<Link href={'/new/fieldJournalForm'}>
+				<MyButton>New</MyButton>
+			</Link>
+		</Flex>
+		
 		<MySearchInput handleChange={setSearch} placeholder='Search my field journals' />
+		
 		<MySkeletonTable isLoaded={!loading}>
 			<MyTable
 				heads={heads}
@@ -107,11 +116,8 @@ export default function MyFieldJournalList() {
 				setPage={setPage}
 			/>
 		</MySkeletonTable>
-        <Divider />
-        <MyButton>
-			<Link href={'/new/fieldJournalForm'}>New field journal</Link>
-        </MyButton>
-        </Layout>
+        
+		</Layout>
     )
 }
 
