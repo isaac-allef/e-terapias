@@ -1,6 +1,6 @@
 import { Button } from "@chakra-ui/button";
 import { Box, Flex } from "@chakra-ui/layout";
-import { DeleteIcon, SmallAddIcon } from "@chakra-ui/icons";
+import { SmallAddIcon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
 import { Input } from "@chakra-ui/input";
 import { Field, Form, Formik } from "formik";
@@ -200,12 +200,10 @@ export default function TemplateForm() {
 
                 <MyDivider />
 
-                <Flex justifyContent='space-between' paddingBottom='3vh'>
-                    <Button mt={4} colorScheme="red">
-                        <DeleteIcon />
-                    </Button>
+                <Flex justifyContent='space-between'>
+		            <MyButton type='delete' />
+
                     <MyButton
-                        mt={4}
                         isLoading={props.isSubmitting}
                         type="submit"
                         >

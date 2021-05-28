@@ -1,14 +1,14 @@
-import { Box, Divider, Grid, GridItem, Text } from "@chakra-ui/layout";
+import { Box, Grid, GridItem, Text } from "@chakra-ui/layout";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Layout from "../../../components/shared/Layout";
 import MyTitle from "../../../components/shared/MyTitle";
 import api from "../../../services/api";
 import React from "react";
-import { Button } from "@chakra-ui/button";
-import { DeleteIcon } from "@chakra-ui/icons";
 import MyMenu from "../../../components/new/MyMenu";
 import Link from "next/link";
+import MyDivider from "../../../components/shared/MyDivider";
+import MyButton from "../../../components/shared/MyButton";
 
 export default function FieldJournalDetail() {
     const router = useRouter();
@@ -31,15 +31,20 @@ export default function FieldJournalDetail() {
 
     return (
 		<Layout menu={<MyMenu manager={true} />}>
-        <MyTitle>FieldJournal Detail</MyTitle>
+        
+		<MyTitle>FieldJournal Detail</MyTitle>
+		
 		{ me ? details(me) : null }
-        <Divider marginBottom='1rem'/>
+        
+		<MyDivider />
+		
 		{ me ? fields(me.fields) : null }
-        <Divider marginTop='1rem' marginBottom='1rem' />
-		<Button colorScheme="red">
-			<DeleteIcon />
-        </Button>
-        </Layout>
+        
+		<MyDivider />
+		
+		<MyButton type='delete' />
+        
+		</Layout>
     )
 }
 

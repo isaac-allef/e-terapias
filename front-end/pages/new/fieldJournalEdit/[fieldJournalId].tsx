@@ -1,4 +1,4 @@
-import { Divider, Flex, Text } from "@chakra-ui/layout";
+import { Flex, Text } from "@chakra-ui/layout";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import MyToast from "../../../components/shared/MyToast";
@@ -12,9 +12,8 @@ import MyDatePicker from "../../../components/new/DatePicker/MyDatePicker";
 import { Field, Form, Formik } from "formik";
 import * as Yup from 'yup';
 import { FormControl, FormErrorMessage, FormLabel } from "@chakra-ui/form-control";
-import { CalendarIcon, DeleteIcon } from "@chakra-ui/icons";
+import { CalendarIcon } from "@chakra-ui/icons";
 import MyButton from "../../../components/shared/MyButton";
-import { Button } from "@chakra-ui/button";
 import MyMenu from "../../../components/new/MyMenu";
 
 interface field {
@@ -138,9 +137,8 @@ export default function FieldJournalForm() {
                 <MyDivider />
 
                 <Flex justifyContent='space-between' paddingBottom='3vh'>
-                    <Button mt={4} colorScheme="red">
-                        <DeleteIcon />
-                    </Button>
+		            <MyButton type='delete' />
+
                     <MyButton
                         mt={4}
                         isLoading={props.isSubmitting}
@@ -155,7 +153,7 @@ export default function FieldJournalForm() {
             </> : null
         }
 
-        <Divider />
+        <MyDivider />
       </Layout>
   )
 }

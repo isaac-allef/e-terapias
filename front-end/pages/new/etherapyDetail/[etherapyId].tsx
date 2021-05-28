@@ -1,4 +1,4 @@
-import { Box, Divider, Flex, Grid, GridItem, Text } from "@chakra-ui/layout";
+import { Box, Grid, GridItem, Text } from "@chakra-ui/layout";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import MyTable from "../../../components/new/MyTable";
@@ -6,10 +6,10 @@ import Layout from "../../../components/shared/Layout";
 import MyTitle from "../../../components/shared/MyTitle";
 import api from "../../../services/api";
 import React from "react";
-import { Button } from "@chakra-ui/button";
-import { DeleteIcon } from "@chakra-ui/icons";
 import MyMenu from "../../../components/new/MyMenu";
 import Link from "next/link";
+import MyDivider from "../../../components/shared/MyDivider";
+import MyButton from "../../../components/shared/MyButton";
 
 interface Line {
   link: string;
@@ -99,10 +99,8 @@ export default function EtherapyDetail() {
 			page={page}
 			setPage={setPage}
 		/>
-        <Divider />
-		<Button colorScheme="red">
-			<DeleteIcon />
-        </Button>
+        <MyDivider />
+		<MyButton type='delete' />
         </Layout>
     )
 }
