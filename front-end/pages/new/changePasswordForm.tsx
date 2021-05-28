@@ -63,7 +63,7 @@ export default function ChangePasswordForm() {
     }
 
     return (
-        <Layout menu={<MyMenu manager={true} />}>
+        <Layout menu={<MyMenu manager={false} />}>
         <MyTitle>{'Change Password'}</MyTitle>
 
         <Formik

@@ -94,7 +94,7 @@ export default function FieldJournalForm() {
     }
 
     return (
-        <Layout menu={<MyMenu manager={true} />}>
+        <Layout menu={<MyMenu manager={false} />}>
         <MyTitle>{'Edit Field Journal'}</MyTitle>
         
         {

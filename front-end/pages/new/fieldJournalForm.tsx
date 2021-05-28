@@ -115,7 +115,7 @@ export default function FieldJournalForm() {
     }
 
     return (
-        <Layout menu={<MyMenu manager={true} />}>
+        <Layout menu={<MyMenu manager={false} />}>
         <MyTitle>{'Create Field Journal'}</MyTitle>
         
         <Text fontSize='small' marginBottom='-1px'>Eterapia</Text>
