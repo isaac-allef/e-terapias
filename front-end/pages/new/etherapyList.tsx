@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import MyMenu from "../../components/new/MyMenu";
 import MySearchInput from "../../components/new/MySearchInput";
+import MySkeletonTable from "../../components/new/MySkeletonTable";
 import MyTable from "../../components/new/MyTable";
 import Layout from "../../components/shared/Layout";
 import MyButton from "../../components/shared/MyButton";
@@ -23,6 +24,7 @@ export default function EtherapyList() {
   const [direction , setDirection] = useState('asc');
   const [search, setSearch] = useState('');
   const [token, setToken] = useState('');
+  const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         setToken(localStorage.getItem('@etherapies:token'));
@@ -49,6 +51,7 @@ export default function EtherapyList() {
     useEffect(() => {
 		if (token) {
 			if (search !== '') {
+				setLoading(true);
 				searchEtherapies({ 
 					token, 
 					keywords: search,
@@ -57,7 +60,9 @@ export default function EtherapyList() {
 				}).then(moderators => {
 					return parseEtherapiesToMatrix(moderators);
 				}).then(matrix => setMatrix(matrix))
+				setLoading(false);
 			} else {
+				setLoading(true);
 				getEtherapies({ 
 					token, 
 					page, 
@@ -67,6 +72,7 @@ export default function EtherapyList() {
 				}).then(etherapies => {
 					return parseEtherapiesToMatrix(etherapies);
 				}).then(matrix => setMatrix(matrix))
+				setLoading(false);
 			}
 			return () => cancelRequest();
 		}
@@ -91,12 +97,14 @@ export default function EtherapyList() {
         <Layout menu={<MyMenu manager={true} />}>
         <MyTitle>Etherapies</MyTitle>
 		<MySearchInput handleChange={setSearch} placeholder='Search Etherapies' />
-        <MyTable
-            heads={heads}
-            matrix={matrix}
-			page={page}
-			setPage={setPage}
-		/>
+		<MySkeletonTable isLoaded={!loading}>
+			<MyTable
+				heads={heads}
+				matrix={matrix}
+				page={page}
+				setPage={setPage}
+			/>
+		</MySkeletonTable>
         <Divider />
         </Layout>
     )

@@ -2,6 +2,7 @@ import { Divider } from "@chakra-ui/layout";
 import { useEffect, useState } from "react";
 import MyMenu from "../../components/new/MyMenu";
 import MySearchInput from "../../components/new/MySearchInput";
+import MySkeletonTable from "../../components/new/MySkeletonTable";
 import MyTable from "../../components/new/MyTable";
 import Layout from "../../components/shared/Layout";
 import MyTitle from "../../components/shared/MyTitle";
@@ -21,6 +22,7 @@ export default function FieldJournalList() {
   const [direction , setDirection] = useState('asc');
   const [search, setSearch] = useState('');
   const [token, setToken] = useState('');
+  const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         setToken(localStorage.getItem('@etherapies:token'));
@@ -49,6 +51,7 @@ export default function FieldJournalList() {
     useEffect(() => {
 		if (token) {
 			if (search !== '') {
+				setLoading(true);
 				searchFieldJournals({ 
 					token, 
 					keywords: search,
@@ -57,7 +60,9 @@ export default function FieldJournalList() {
 				}).then(fieldJournals => {
 					return parseFieldJournalsToMatrix(fieldJournals);
 				}).then(matrix => setMatrix(matrix))
+				setLoading(false);
 			} else {
+				setLoading(true);
 				getFieldJournals({ 
 				token, 
 				page, 
@@ -67,6 +72,7 @@ export default function FieldJournalList() {
 			}).then(fieldJournals => {
 				return parseFieldJournalsToMatrix(fieldJournals);
 				}).then(matrix => setMatrix(matrix))
+				setLoading(false);
 			}
 			return () => cancelRequest();
 		}
@@ -93,12 +99,14 @@ export default function FieldJournalList() {
         <Layout menu={<MyMenu manager={true} />}>
         <MyTitle>FieldJournals</MyTitle>
 		<MySearchInput handleChange={setSearch} placeholder='Search field journals' />
-        <MyTable
-            heads={heads}
-            matrix={matrix}
-			page={page}
-			setPage={setPage}
-		/>
+		<MySkeletonTable isLoaded={!loading}>
+			<MyTable
+				heads={heads}
+				matrix={matrix}
+				page={page}
+				setPage={setPage}
+			/>
+		</MySkeletonTable>
         <Divider />
         </Layout>
     )

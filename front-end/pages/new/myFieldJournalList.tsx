@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import MyMenu from "../../components/new/MyMenu";
 import MySearchInput from "../../components/new/MySearchInput";
+import MySkeletonTable from "../../components/new/MySkeletonTable";
 import MyTable from "../../components/new/MyTable";
 import Layout from "../../components/shared/Layout";
 import MyButton from "../../components/shared/MyButton";
@@ -23,6 +24,7 @@ export default function MyFieldJournalList() {
   const [direction , setDirection] = useState('asc');
   const [search, setSearch] = useState('');
   const [token, setToken] = useState('');
+  const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         setToken(localStorage.getItem('@etherapies:token'));
@@ -50,6 +52,7 @@ export default function MyFieldJournalList() {
     useEffect(() => {
 		if (token) {
 			if (search !== '') {
+				setLoading(true);
 				searchMyFieldJournals({ 
 					token, 
 					keywords: search,
@@ -58,7 +61,9 @@ export default function MyFieldJournalList() {
 				}).then(fieldJournals => {
 					return parseFieldJournalsToMatrix(fieldJournals);
 				}).then(matrix => setMatrix(matrix))
+				setLoading(false);
 			} else {
+				setLoading(true);
 				getMyFieldJournals({ 
 					token, 
 					page, 
@@ -68,6 +73,7 @@ export default function MyFieldJournalList() {
 				}).then(fieldJournals => {
 					return parseFieldJournalsToMatrix(fieldJournals);
 				}).then(matrix => setMatrix(matrix))
+				setLoading(false);
 			}
 			return () => cancelRequest();
 		}
@@ -93,12 +99,14 @@ export default function MyFieldJournalList() {
         <Layout menu={<MyMenu manager={false} />}>
         <MyTitle>FieldJournals</MyTitle>
 		<MySearchInput handleChange={setSearch} placeholder='Search my field journals' />
-        <MyTable
-            heads={heads}
-            matrix={matrix}
-			page={page}
-			setPage={setPage}
-		/>
+		<MySkeletonTable isLoaded={!loading}>
+			<MyTable
+				heads={heads}
+				matrix={matrix}
+				page={page}
+				setPage={setPage}
+			/>
+		</MySkeletonTable>
         <Divider />
         <MyButton>
 			<Link href={'/new/fieldJournalForm'}>New field journal</Link>

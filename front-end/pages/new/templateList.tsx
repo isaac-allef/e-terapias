@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import MyMenu from "../../components/new/MyMenu";
 import MySearchInput from "../../components/new/MySearchInput";
+import MySkeletonTable from "../../components/new/MySkeletonTable";
 import MyTable from "../../components/new/MyTable";
 import Layout from "../../components/shared/Layout";
 import MyButton from "../../components/shared/MyButton";
@@ -24,6 +25,7 @@ export default function TemplateList() {
   const [direction , setDirection] = useState('asc');
   const [search, setSearch] = useState('');
   const [token, setToken] = useState('');
+  const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         setToken(localStorage.getItem('@etherapies:token'));
@@ -50,6 +52,7 @@ export default function TemplateList() {
     useEffect(() => {
 		if (token) {
 			if (search !== '') {
+				setLoading(true);
 				searchTemplates({ 
 					token, 
 					keywords: search,
@@ -58,7 +61,9 @@ export default function TemplateList() {
 				}).then(moderators => {
 					return parseTemplatesToMatrix(moderators);
 				}).then(matrix => setMatrix(matrix))
+				setLoading(false);
 			} else {
+				setLoading(true);
 				getTemplates({ 
 					token, 
 					page, 
@@ -68,6 +73,7 @@ export default function TemplateList() {
 				}).then(templates => {
 					return parseTemplatesToMatrix(templates);
 				}).then(matrix => setMatrix(matrix))
+				setLoading(false);
 			}
 			return () => cancelRequest();
 		}
@@ -92,12 +98,14 @@ export default function TemplateList() {
         <Layout menu={<MyMenu manager={true} />}>
         <MyTitle>Templates</MyTitle>
 		<MySearchInput handleChange={setSearch} placeholder='Search templates' />
-        <MyTable
-            heads={heads}
-            matrix={matrix}
-			page={page}
-			setPage={setPage}
-		/>
+		<MySkeletonTable isLoaded={!loading}>
+			<MyTable
+				heads={heads}
+				matrix={matrix}
+				page={page}
+				setPage={setPage}
+			/>
+		</MySkeletonTable>
         <Divider />
         <MyButton>
 			<Link href={'/new/templateForm'}>New template</Link>
