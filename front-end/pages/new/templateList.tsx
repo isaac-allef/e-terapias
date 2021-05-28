@@ -35,7 +35,7 @@ export default function TemplateList() {
     const parseTemplatesToMatrix = (templates: any): Line[] => {
       return templates.map((template: any) => {
         return {
-          link: '/',
+          link: `/new/templateEdit/${template.id}`,
           content: [
             [template.name],
             template.etherapies.map((etherapy: any) => etherapy.identifier),
@@ -99,7 +99,7 @@ export default function TemplateList() {
 		/>
         <Divider />
         <MyButton>
-			<Link href={'/'}>New template</Link>
+			<Link href={'/new/templateForm'}>New template</Link>
         </MyButton>
         </Layout>
     )

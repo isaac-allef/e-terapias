@@ -34,7 +34,7 @@ export default function EtherapyList() {
     const parseEtherapiesToMatrix = (etherapies: any): Line[] => {
       return etherapies.map((etherapy: any) => {
         return {
-          link: '/',
+          link: `/new/etherapyDetail/${etherapy.id}`,
           content: [
             [etherapy.name],
             etherapy.moderators.map((moderator: any) => moderator.name),

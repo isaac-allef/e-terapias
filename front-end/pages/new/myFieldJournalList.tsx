@@ -34,7 +34,7 @@ export default function MyFieldJournalList() {
     const parseFieldJournalsToMatrix = (fieldJournals: any): Line[] => {
       return fieldJournals.map((fieldJournal: any) => {
         return {
-          link: '/',
+          link: `/new/fieldJournalEdit/${fieldJournal.id}`,
           content: [
             [fieldJournal.name],
             [timestampFormat(fieldJournal.date)],
@@ -100,7 +100,7 @@ export default function MyFieldJournalList() {
 		/>
         <Divider />
         <MyButton>
-			<Link href={'/'}>New field journal</Link>
+			<Link href={'/new/fieldJournalForm'}>New field journal</Link>
         </MyButton>
         </Layout>
     )

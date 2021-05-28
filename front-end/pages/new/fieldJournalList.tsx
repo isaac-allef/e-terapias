@@ -32,7 +32,7 @@ export default function FieldJournalList() {
     const parseFieldJournalsToMatrix = (fieldJournals: any): Line[] => {
       return fieldJournals.map((fieldJournal: any) => {
         return {
-          link: '/',
+          link: `/new/fieldJournalDetail/${fieldJournal.id}`,
           content: [
             [fieldJournal.name],
             [timestampFormat(fieldJournal.date)],

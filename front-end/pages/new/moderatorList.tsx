@@ -34,7 +34,7 @@ export default function ModeratorList() {
     const parseModeratorsToMatrix = (moderators: any): Line[] => {
       return moderators.map((moderator: any) => {
         return {
-          link: '/',
+          link: `/new/moderatorDetail/${moderator.id}`,
           content: [
             [moderator.name],
             moderator.etherapies.map((etherapy: any) => etherapy.identifier),
@@ -97,9 +97,6 @@ export default function ModeratorList() {
 			setPage={setPage}
 		/>
         <Divider />
-        <MyButton>
-			<Link href={'/'}>New moderator</Link>
-        </MyButton>
         </Layout>
     )
 }

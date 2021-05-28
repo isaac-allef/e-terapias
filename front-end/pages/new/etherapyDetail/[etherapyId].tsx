@@ -37,7 +37,7 @@ export default function EtherapyDetail() {
     const parseFieldJournalsToMatrix = (fieldJournals: any): Line[] => {
 		return fieldJournals.map((fieldJournal: any) => {
 		  return {
-			link: '/',
+			link: `/new/fieldJournalDetail/${fieldJournal.id}`,
 			content: [
 			  [fieldJournal.name],
 			  [fieldJournal.moderator.name],
