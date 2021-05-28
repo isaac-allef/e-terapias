@@ -67,7 +67,7 @@ export default function MyTable({ heads, matrix, page, setPage }: MyProps) {
     
     return (
         <>
-        <Table variant='simple'>
+        <Table variant='simple' colorScheme='teal'>
             <Thead>
                 <Tr>{
                     React.Children.toArray(heads.map(column => <Th>
@@ -86,7 +86,7 @@ export default function MyTable({ heads, matrix, page, setPage }: MyProps) {
                     matrix.map(line => {
                         return (
                         <Link href={line.link}>
-                        <Tr _hover={{color: "teal.500"}}>
+                        <Tr _hover={{color: "teal.500"}} cursor='pointer'>
                                 {React.Children.toArray(
                                     line.content.map(value => {
                                         const valueFormated = value.map((v, index) => {
