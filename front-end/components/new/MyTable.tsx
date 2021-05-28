@@ -8,10 +8,10 @@ import {
     Button,
   } from "@chakra-ui/react"
 
-  import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
+  import { ArrowDownIcon, ArrowUpIcon, ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
   import { Center, Flex } from "@chakra-ui/layout";
 
-import React from "react";
+import React, { useState } from "react";
 
 import Link from 'next/link';
 
@@ -27,18 +27,56 @@ interface MyProps {
     setPage: Function;
 }
 
+const ColumnComponent = ({ name, action, verifyColumnIsActive, setColumnActiveName }) => {
+    const [icon, setIcon] = useState(null);
+    const [up, setUp] = useState(false);
+    return (
+        <Button 
+            variant='unstyled' 
+            rightIcon={verifyColumnIsActive(name) ? icon : null} 
+            onClick={
+            () => { 
+                if (action) {
+                    action();
+                    if (up) {
+                        setColumnActiveName(name)
+                        setUp(!up);
+                        setIcon(<ArrowUpIcon />);
+                    } else {
+                        setColumnActiveName(name)
+                        setUp(!up);
+                        setIcon(<ArrowDownIcon />);
+                    }
+                }
+            }
+        }>
+            { name }
+        </Button>
+    )
+};
+
 export default function MyTable({ heads, matrix, page, setPage }: MyProps) {
+    const [columnActiveName, setColumnActiveName] = useState(null);
+
+    const verifyColumnIsActive = (name) => {
+        if (columnActiveName === name) {
+            return true;
+        }
+        return false;
+    }
+    
     return (
         <>
-        <Table variant="simple">
+        <Table variant='simple'>
             <Thead>
                 <Tr>{
                     React.Children.toArray(heads.map(column => <Th>
-                        <Button onClick={
-                            () => column.action ? column.action(): null
-                        }>
-                            { column.name }
-                        </Button>
+                        <ColumnComponent 
+                            name={column.name} 
+                            action={column.action}
+                            setColumnActiveName={setColumnActiveName}
+                            verifyColumnIsActive={verifyColumnIsActive}
+                        />
                     </Th>))
                 }<Th />
                 </Tr>
