@@ -34,10 +34,10 @@ export default function ShowEtherapiesEdded({ etherapies, setEtherapies, etherap
                         warningEtherapyHasAFieldJournalTemplate &&
                         etherapy.template ?
                             <Tooltip label={`This etherapy already has a template call '${etherapy.template.name}'. This action will subscribe to it`}>
-                                <Text color='#ffe227'><Link href='/administrator/Etherapies/list' isExternal>{ etherapy.name }</Link></Text>
+                                <Text color='#ffe227'><Link href={`/new/etherapyDetail/${etherapy.id}`} isExternal>{ etherapy.name }</Link></Text>
                             </Tooltip>
                             :
-                            <Text color='#1a508b'><Link href='/administrator/Etherapies/list' isExternal>{ etherapy.name }</Link></Text>
+                            <Text color='#1a508b'><Link href={`/new/etherapyDetail/${etherapy.id}`} isExternal>{ etherapy.name }</Link></Text>
                     }
                     <IconButton 
                         variant='unstyled'

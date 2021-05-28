@@ -8,6 +8,7 @@ import Layout from "../../components/shared/Layout";
 import MyTitle from "../../components/shared/MyTitle";
 import api from "../../services/api";
 import MyMenu from "../../components/new/MyMenu";
+import Link from "next/link";
 
 export default function Perfil() {
     const router = useRouter();
@@ -31,7 +32,7 @@ export default function Perfil() {
         <Divider marginBottom='1rem' />
 		<Button colorScheme="yellow">
 			<UnlockIcon marginRight='0.5rem'/>
-            Change password
+			<Link href={'/new/changePasswordForm'}>Change password</Link>
         </Button>
         </Layout>
     )

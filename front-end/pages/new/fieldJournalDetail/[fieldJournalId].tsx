@@ -8,6 +8,7 @@ import React from "react";
 import { Button } from "@chakra-ui/button";
 import { DeleteIcon } from "@chakra-ui/icons";
 import MyMenu from "../../../components/new/MyMenu";
+import Link from "next/link";
 
 export default function FieldJournalDetail() {
     const router = useRouter();
@@ -46,8 +47,20 @@ const details = (fieldJournal) => (
 	<Box marginBottom='1rem'>
 		<Text><b>Name: </b>{`${fieldJournal.name}`}</Text>
 		<Grid templateColumns='2fr 1fr'>
-			<GridItem><Text><b>Moderator: </b> {`${fieldJournal.moderator.name} - ${fieldJournal.moderator.email}`}</Text></GridItem>
-			<GridItem><Text><b>Etherapy: </b> {`${fieldJournal.etherapy.identifier} - ${fieldJournal.etherapy.name}`}</Text></GridItem>
+			<GridItem>
+				<Text><b>Moderator: </b> 
+				<Link href={`/new/moderatorDetail/${fieldJournal.moderator.id}`}>
+					{`${fieldJournal.moderator.name} - ${fieldJournal.moderator.email}`}
+				</Link>
+				</Text>
+			</GridItem>
+			<GridItem>
+				<Text><b>Etherapy: </b> 
+				<Link href={`/new/etherapyDetail/${fieldJournal.etherapy.id}`}>
+					{`${fieldJournal.etherapy.identifier} - ${fieldJournal.etherapy.name}`}
+				</Link>
+				</Text>
+			</GridItem>
 		</Grid>
 	</Box>
 )

@@ -9,6 +9,7 @@ import React from "react";
 import { Button } from "@chakra-ui/button";
 import { DeleteIcon } from "@chakra-ui/icons";
 import MyMenu from "../../../components/new/MyMenu";
+import Link from "next/link";
 
 interface Line {
   link: string;
@@ -115,7 +116,13 @@ const details = (etherapy) => (
 		<Text fontWeight='black'>Moderadors:</Text>
 		{React.Children.toArray(etherapy.moderators.map(moderator => (
 			<Grid templateColumns='2fr 1fr'>
-				<GridItem><Text><b>Name: </b> {moderator.name}</Text></GridItem>
+				<GridItem>
+					<Text><b>Name: </b> 
+						<Link href={`/new/moderatorDetail/${moderator.id}`}>
+							{moderator.name}
+						</Link>
+					</Text>
+				</GridItem>
 				<GridItem><Text><b>Email: </b> {moderator.email}</Text></GridItem>
 			</Grid>
 		)))}

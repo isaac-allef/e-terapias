@@ -98,9 +98,6 @@ export default function EtherapyList() {
 			setPage={setPage}
 		/>
         <Divider />
-        <MyButton>
-			<Link href={'/'}>New Etherapy</Link>
-        </MyButton>
         </Layout>
     )
 }
