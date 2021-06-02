@@ -10,6 +10,11 @@ interface Props {
 	onChange: (date: Date) => any;
 }
 
+const isWeekday = (date) => {
+	const day = date.getDay();
+	return day !== 0 && day !== 6;
+};
+
 const MyDatePicker = ({
 	selectedDate,
 	onChange,
@@ -19,6 +24,7 @@ const MyDatePicker = ({
 	<DatePicker
 		selected={selectedDate}
 		onChange={onChange}
+		filterDate={isWeekday}
 		maxDate={new Date()}
 		locale={br}
 		showTimeSelect
