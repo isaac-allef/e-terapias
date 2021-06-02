@@ -10,20 +10,6 @@ interface Props {
 	onChange: (date: Date) => any;
 }
 
-const isFuture = date => {
-    const today = new Date();
-	if (today.getFullYear() < date.getFullYear()) {
-		return false;
-	}
-	if (today.getMonth() < date.getMonth()) {
-		return false;
-	}
-	if (today.getDate() < date.getDate()) {
-		return false;
-	}
-    return true;
-};
-
 const MyDatePicker = ({
 	selectedDate,
 	onChange,
@@ -33,7 +19,7 @@ const MyDatePicker = ({
 	<DatePicker
 		selected={selectedDate}
 		onChange={onChange}
-		filterDate={isFuture}
+		maxDate={new Date()}
 		locale={br}
 		showTimeSelect
 		timeFormat='p'
