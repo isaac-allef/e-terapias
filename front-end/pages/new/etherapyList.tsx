@@ -6,6 +6,7 @@ import MyTable from "../../components/new/MyTable";
 import Layout from "../../components/shared/Layout";
 import MyTitle from "../../components/shared/MyTitle";
 import api, { cancelRequest } from "../../services/api";
+import { timestampToDateTime } from "../../utils/timestampFormat";
 
 interface Line {
   link: string;
@@ -26,10 +27,6 @@ export default function EtherapyList() {
     useEffect(() => {
         setToken(localStorage.getItem('@etherapies:token'));
     }, []);
-	
-	const timestampFormat = (timestamp: string): string => {
-		return new Date(timestamp).toUTCString();
-	}
 
     const parseEtherapiesToMatrix = (etherapies: any): Line[] => {
       return etherapies.map((etherapy: any) => {
@@ -38,8 +35,8 @@ export default function EtherapyList() {
           content: [
             [etherapy.name],
             etherapy.moderators.map((moderator: any) => moderator.name),
-			[timestampFormat(etherapy.created_at)],
-			[timestampFormat(etherapy.updated_at)],
+			[timestampToDateTime(etherapy.created_at)],
+			[timestampToDateTime(etherapy.updated_at)],
           ]
         }
       })

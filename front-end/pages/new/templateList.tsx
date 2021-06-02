@@ -1,4 +1,4 @@
-import { Divider, Flex } from "@chakra-ui/layout";
+import { Flex } from "@chakra-ui/layout";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import MyMenu from "../../components/new/MyMenu";
@@ -7,9 +7,9 @@ import MySkeletonTable from "../../components/new/MySkeletonTable";
 import MyTable from "../../components/new/MyTable";
 import Layout from "../../components/shared/Layout";
 import MyButton from "../../components/shared/MyButton";
-import MyInput from "../../components/shared/MyInput";
 import MyTitle from "../../components/shared/MyTitle";
 import api, { cancelRequest } from "../../services/api";
+import { timestampToDateTime } from "../../utils/timestampFormat";
 
 interface Line {
   link: string;
@@ -30,10 +30,6 @@ export default function TemplateList() {
     useEffect(() => {
         setToken(localStorage.getItem('@etherapies:token'));
     }, []);
-	
-	const timestampFormat = (timestamp: string): string => {
-		return new Date(timestamp).toUTCString();
-	}
 
     const parseTemplatesToMatrix = (templates: any): Line[] => {
       return templates.map((template: any) => {
@@ -42,8 +38,8 @@ export default function TemplateList() {
           content: [
             [template.name],
             template.etherapies.map((etherapy: any) => etherapy.identifier),
-			      [timestampFormat(template.created_at)],
-			      [timestampFormat(template.updated_at)],
+			      [timestampToDateTime(template.created_at)],
+			      [timestampToDateTime(template.updated_at)],
           ]
         }
       })

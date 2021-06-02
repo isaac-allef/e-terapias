@@ -6,6 +6,7 @@ import MyTable from "../../components/new/MyTable";
 import Layout from "../../components/shared/Layout";
 import MyTitle from "../../components/shared/MyTitle";
 import api, {cancelRequest} from "../../services/api";
+import { timestampToDate, timestampToDateTime } from "../../utils/timestampFormat";
 
 interface Line {
   link: string;
@@ -26,10 +27,6 @@ export default function FieldJournalList() {
     useEffect(() => {
         setToken(localStorage.getItem('@etherapies:token'));
     }, []);
-	
-	const timestampFormat = (timestamp: string): string => {
-		return new Date(timestamp).toUTCString();
-	}
 
     const parseFieldJournalsToMatrix = (fieldJournals: any): Line[] => {
       return fieldJournals.map((fieldJournal: any) => {
@@ -37,11 +34,11 @@ export default function FieldJournalList() {
           link: `/new/fieldJournalDetail/${fieldJournal.id}`,
           content: [
             [fieldJournal.name],
-            [timestampFormat(fieldJournal.date)],
+            [timestampToDate(fieldJournal.date)],
             [fieldJournal.moderator.name + ' - ' + fieldJournal.moderator.email],
             [fieldJournal.etherapy.identifier + ' - ' + fieldJournal.etherapy.name],
-			[timestampFormat(fieldJournal.created_at)],
-			[timestampFormat(fieldJournal.updated_at)],
+			[timestampToDateTime(fieldJournal.created_at)],
+			[timestampToDateTime(fieldJournal.updated_at)],
           ]
         }
       })
