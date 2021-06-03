@@ -88,7 +88,7 @@ export default function EtherapyList() {
 	];
 
     return (
-        <Layout menu={<MyMenu manager={true} />}>
+        <Layout menu={<MyMenu manager={true} itemSelected='etherapyList' />}>
         <MyTitle>Etherapies</MyTitle>
 		<MySearchInput handleChange={setSearch} placeholder='Search Etherapies' />
 		<MySkeletonTable isLoaded={!loading}>

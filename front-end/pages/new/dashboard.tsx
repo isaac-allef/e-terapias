@@ -6,7 +6,7 @@ import MyMenu from "../../components/new/MyMenu";
 
 export default function Dashboard() {
     return (
-        <Layout menu={<MyMenu manager={true} />}>
+        <Layout menu={<MyMenu manager={true} itemSelected='dashboard' />}>
             <Center><MyTitle>DASHBOARD</MyTitle></Center>
             <Flex direction={'column'} alignItems='center'>
                 

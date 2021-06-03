@@ -88,7 +88,7 @@ export default function ModeratorList() {
 	];
 
     return (
-        <Layout menu={<MyMenu manager={true} />}>
+        <Layout menu={<MyMenu manager={true} itemSelected='moderatorList' />}>
 		<MyTitle>Moderators</MyTitle>
 		<MySearchInput handleChange={setSearch} placeholder='Search Moderators' />
 

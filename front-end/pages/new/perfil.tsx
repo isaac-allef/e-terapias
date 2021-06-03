@@ -27,7 +27,7 @@ export default function Perfil() {
 	}, [token]);
 
     return (
-        <Layout menu={<MyMenu manager={false} />}>
+        <Layout menu={<MyMenu manager={false} itemSelected='perfil' />}>
         
 		<MyTitle>Perfil</MyTitle>
 		

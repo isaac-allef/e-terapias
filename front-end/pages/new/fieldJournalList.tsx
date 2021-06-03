@@ -92,7 +92,7 @@ export default function FieldJournalList() {
 	];
 
     return (
-        <Layout menu={<MyMenu manager={true} />}>
+        <Layout menu={<MyMenu manager={true} itemSelected='fieldJournalList' />}>
         <MyTitle>FieldJournals</MyTitle>
 		<MySearchInput handleChange={setSearch} placeholder='Search field journals' />
 		<MySkeletonTable isLoaded={!loading}>

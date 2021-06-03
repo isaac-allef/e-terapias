@@ -69,7 +69,7 @@ export default function Login() {
   }
 
   return (
-    <Layout menu={<MyMenu manager={true} />}>
+    <Layout menu={<MyMenu manager={true} itemSelected='settings' />}>
         <Tabs isFitted variant='line'>
             <TabList mb="1em">
                 <Tab>Settings</Tab>

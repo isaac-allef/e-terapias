@@ -91,7 +91,7 @@ export default function TemplateList() {
 	];
 
     return (
-        <Layout menu={<MyMenu manager={true} />}>
+        <Layout menu={<MyMenu manager={true} itemSelected='templateList' />}>
 		
 		<Flex justifyContent='space-between'>
         	<MyTitle>Templates</MyTitle>

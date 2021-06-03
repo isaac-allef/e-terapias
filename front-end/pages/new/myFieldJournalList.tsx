@@ -93,7 +93,7 @@ export default function MyFieldJournalList() {
 	];
 
     return (
-        <Layout menu={<MyMenu manager={false} />}>
+        <Layout menu={<MyMenu manager={false} itemSelected='myFieldJournalList' />}>
 		
 		<Flex justifyContent='space-between'>
 			<MyTitle>FieldJournals</MyTitle>
