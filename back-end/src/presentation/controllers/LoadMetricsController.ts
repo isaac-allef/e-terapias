@@ -7,9 +7,14 @@ import { HttpRequest, HttpResponse } from '../protocols/http';
 export class LoadMetricsController implements Controller {
     constructor(private readonly loadMetricsService: LoadMetricsService) {}
 
-    async handle(_httpRequest: HttpRequest): Promise<HttpResponse> {
+    async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
         try {
-            const metrics = await this.loadMetricsService.execute();
+            const { numberOfFieldJournalsLastFourWeeks } = httpRequest.query;
+
+            const metrics = await this.loadMetricsService.execute({
+                numberOfFieldJournalsLastFourWeeks,
+            });
+
             return ok(metrics);
         } catch (err) {
             return serverError(err);
