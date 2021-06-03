@@ -15,6 +15,7 @@ import MyButton from "../../../components/shared/MyButton";
 import api from "../../../services/api";
 import MenuAddEtherapies from "../../../components/new/templateForm/MenuAddEterapias";
 import MyMenu from "../../../components/new/MyMenu";
+import MyToast from "../../../components/shared/MyToast";
 
 interface Question {
     id: number;
@@ -36,6 +37,7 @@ interface Template {
 }
 
 export default function TemplateForm() {
+    const myToast = new MyToast();
     const router = useRouter();
 
     const id = router.query.templateId as string;
@@ -131,17 +133,23 @@ export default function TemplateForm() {
     });
 
     const functionSubmitForm = async (values, actions) => {
-        const { name } = values;
+        try {
+            const { name } = values;
 
-        const etherapiesIds = getIdsFromEtherapies(etherapiesToAdd);
+            const etherapiesIds = getIdsFromEtherapies(etherapiesToAdd);
 
-        const templateJson = createTemplateJson(name, etherapiesIds);
+            const templateJson = createTemplateJson(name, etherapiesIds);
+            
+            await putTemplates(token, templateJson, me.id);
+
+            actions.setSubmitting(false);
+
+            myToast.execute({ status: 'success', title: 'Template updated.' });
         
-        await putTemplates(token, templateJson, me.id);
-
-        actions.setSubmitting(false);
-    
-        router.push('/new/templateList');
+            router.push('/new/templateList');
+        } catch(err) {
+            myToast.execute({ status: 'error', title: 'Error', description: err.message });
+        }
     }
 
     return (
