@@ -116,10 +116,19 @@ class FieldJournalTypeormRepository
                 .where('FieldJournal.name ILIKE :name', {
                     name: `%${keywords}%`,
                 })
+                .andWhere('FieldJournal.moderatorId = :id', {
+                    id: moderatorId,
+                })
                 .orWhere('etherapy.name ILIKE :name', {
                     name: `%${keywords}%`,
                 })
-                .andWhere('FieldJournal.id = :id', {
+                .andWhere('FieldJournal.moderatorId = :id', {
+                    id: moderatorId,
+                })
+                .orWhere('etherapy.identifier ILIKE :identifier', {
+                    identifier: `%${keywords}%`,
+                })
+                .andWhere('FieldJournal.moderatorId = :id', {
                     id: moderatorId,
                 })
                 .take(per_page)
