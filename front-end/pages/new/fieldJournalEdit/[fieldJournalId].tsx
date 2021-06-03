@@ -137,7 +137,7 @@ export default function FieldJournalForm() {
                 <MyDivider />
 
                 <Flex justifyContent='space-between' paddingBottom='3vh'>
-		            <MyButton type='delete' />
+		            <MyButton styleType='delete' />
 
                     <MyButton
                         mt={4}

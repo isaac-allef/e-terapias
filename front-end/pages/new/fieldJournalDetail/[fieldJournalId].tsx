@@ -42,7 +42,7 @@ export default function FieldJournalDetail() {
         
 		<MyDivider />
 		
-		<MyButton type='delete' />
+		<MyButton styleType='delete' />
         
 		</Layout>
     )

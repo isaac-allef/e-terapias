@@ -201,7 +201,7 @@ export default function TemplateForm() {
                 <MyDivider />
 
                 <Flex justifyContent='space-between'>
-		            <MyButton type='delete' />
+		            <MyButton styleType='delete' />
 
                     <MyButton
                         isLoading={props.isSubmitting}

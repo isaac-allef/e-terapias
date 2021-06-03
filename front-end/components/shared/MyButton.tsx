@@ -1,12 +1,12 @@
 import { DeleteIcon } from "@chakra-ui/icons"
 import { Button } from "@chakra-ui/react"
 
-export default function MyButton({ type='normal', children=null, ...moreProps }) {
+export default function MyButton({ styleType='normal', children=null, ...props }) {
     return (
-            type === 'delete' ?
+            styleType === 'delete' ?
             <Button 
                 colorScheme="red"
-                { ...moreProps }
+                { ...props }
                 >
                 <DeleteIcon />
                 { children }
@@ -14,7 +14,7 @@ export default function MyButton({ type='normal', children=null, ...moreProps })
             :
             <Button 
                 colorScheme='blue'
-                { ...moreProps } 
+                { ...props } 
             >{ children }</Button>
 
     )

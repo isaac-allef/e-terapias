@@ -102,7 +102,7 @@ export default function ModeratorDetail() {
         
 		<MyDivider />
 		
-		<MyButton type='delete' />
+		<MyButton styleType='delete' />
 
         </Layout>
     )

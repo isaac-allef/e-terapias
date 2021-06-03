@@ -100,7 +100,7 @@ export default function EtherapyDetail() {
 			setPage={setPage}
 		/>
         <MyDivider />
-		<MyButton type='delete' />
+		<MyButton styleType='delete' />
         </Layout>
     )
 }
