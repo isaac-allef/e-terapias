@@ -22,7 +22,7 @@ export default function TemplateList() {
   const [page , setPage] = useState(1);
   const per_page = 5;
   const [sort , setSort] = useState('updated_at');
-  const [direction , setDirection] = useState('asc');
+  const [direction , setDirection] = useState('desc');
   const [search, setSearch] = useState('');
   const [token, setToken] = useState('');
   const [loading, setLoading] = useState(true);
