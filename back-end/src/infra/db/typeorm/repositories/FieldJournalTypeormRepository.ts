@@ -1,6 +1,7 @@
 /* eslint-disable no-restricted-syntax */
 import { EntityRepository, getRepository, Repository } from 'typeorm';
 import FieldJournal from '../../../../core/entities/FieldJournal';
+import CountFieldJournalsRepository from '../../../../core/protocols/db/repositories/CountFieldJournalsRepository';
 import CreateFieldJournalRepository, {
     params as createParams,
 } from '../../../../core/protocols/db/repositories/CreateFieldJournalRepository';
@@ -35,7 +36,8 @@ class FieldJournalTypeormRepository
         LoadAllFieldJournalsPerEtherapyRepository,
         UpdateFieldJournalRepository,
         LoadAllFieldJournalsRepository,
-        SearchFieldJournalsRepository {
+        SearchFieldJournalsRepository,
+        CountFieldJournalsRepository {
     private ormRepository: Repository<FieldJournalTypeorm>;
 
     constructor() {
@@ -245,6 +247,14 @@ class FieldJournalTypeormRepository
             return finded;
         } catch {
             throw new Error('Search filed journals error');
+        }
+    }
+
+    async count(): Promise<number> {
+        try {
+            return this.ormRepository.count();
+        } catch {
+            throw new Error('Count field journals error.');
         }
     }
 }
