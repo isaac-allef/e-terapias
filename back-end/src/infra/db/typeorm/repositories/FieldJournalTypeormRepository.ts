@@ -1,7 +1,9 @@
 /* eslint-disable no-restricted-syntax */
-import { EntityRepository, getRepository, Repository } from 'typeorm';
+import { Between, EntityRepository, getRepository, Repository } from 'typeorm';
 import FieldJournal from '../../../../core/entities/FieldJournal';
-import CountFieldJournalsRepository from '../../../../core/protocols/db/repositories/CountFieldJournalsRepository';
+import CountFieldJournalsRepository, {
+    filterDate,
+} from '../../../../core/protocols/db/repositories/CountFieldJournalsRepository';
 import CreateFieldJournalRepository, {
     params as createParams,
 } from '../../../../core/protocols/db/repositories/CreateFieldJournalRepository';
@@ -250,9 +252,23 @@ class FieldJournalTypeormRepository
         }
     }
 
-    async count(): Promise<number> {
+    async count(data: filterDate): Promise<number> {
         try {
-            return this.ormRepository.count();
+            let count = null;
+
+            if (data) {
+                count = await this.ormRepository.count({
+                    date: Between(data.begin, data.end),
+                });
+            } else {
+                count = await this.ormRepository.count();
+            }
+
+            if (count === null) {
+                throw new Error('Count field journals error.');
+            }
+
+            return count;
         } catch {
             throw new Error('Count field journals error.');
         }
