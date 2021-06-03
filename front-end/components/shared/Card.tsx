@@ -15,8 +15,13 @@ export default function Card({ icon, title, description, link }: MyProps) {
             maxW="sm" p="5" 
             borderWidth="1px" 
             rounded="md" 
-            background='#6930c3'
-            textColor='white'
+            margin='5px'
+            _hover={{
+                textColor: 'blue.500',
+                boxShadow: 'lg',
+            }}
+            width='30vw'
+            height='20vh'
         >
             <Heading size="md" my="2">
                 { icon }
