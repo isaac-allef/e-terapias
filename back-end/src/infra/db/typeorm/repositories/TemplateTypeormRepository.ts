@@ -1,6 +1,7 @@
 /* eslint-disable no-restricted-syntax */
 import { EntityRepository, getRepository, Repository } from 'typeorm';
 import Template from '../../../../core/entities/Template';
+import CountTemplatesRepository from '../../../../core/protocols/db/repositories/CountTemplatesRepository';
 import CreateTemplateRepository, {
     params as createParams,
 } from '../../../../core/protocols/db/repositories/CreateTemplateRepository';
@@ -23,7 +24,8 @@ class TemplateTypeormRepository
         LoadTemplateByIdRepository,
         UpdateTemplateRepository,
         LoadAllTemplatesRepository,
-        SearchTemplatesRepository {
+        SearchTemplatesRepository,
+        CountTemplatesRepository {
     private ormRepository: Repository<TemplateTypeorm>;
 
     constructor() {
@@ -133,6 +135,14 @@ class TemplateTypeormRepository
             return finded;
         } catch {
             throw new Error('Search templates error');
+        }
+    }
+
+    async count(): Promise<number> {
+        try {
+            return this.ormRepository.count();
+        } catch {
+            throw new Error('Count templates error.');
         }
     }
 }
