@@ -86,7 +86,7 @@ export default function FieldJournalForm() {
 
             myToast.execute({ status: 'success', title: 'Field Journal updated.' });
             cleanUp();
-            router.push('/');
+            router.push('/new/myFieldJournalList');
         } catch (err) {
             myToast.execute({ status: 'error', title: 'Error', description: err.message });
         }

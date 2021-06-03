@@ -57,7 +57,7 @@ export default function ChangePasswordForm() {
         
         myToast.execute({ status: 'success', title: 'Passwor changed' });
 
-        router.push('/');
+        router.push('/new/perfil');
         } catch (err) {
             myToast.execute({ status: 'error', title: 'Error', description: err.message });
         }

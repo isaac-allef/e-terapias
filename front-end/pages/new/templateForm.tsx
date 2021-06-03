@@ -125,7 +125,7 @@ export default function TemplateForm() {
 
         actions.setSubmitting(false);
     
-        router.push('/');
+        router.push('/new/templateList');
     }
 
     return (
