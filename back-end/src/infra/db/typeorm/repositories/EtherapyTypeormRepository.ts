@@ -16,6 +16,7 @@ import SearchEtherapiesRepository, {
     params as searchParams,
 } from '../../../../core/protocols/db/repositories/SearchEtherapiesRepository';
 import EtherapyTypeorm from '../entities/EtherapyTypeorm';
+import CountEtherapiesRepository from '../../../../core/protocols/db/repositories/CountEtherapiesRepository';
 
 @EntityRepository()
 class EtherapyTypeormRepository
@@ -26,7 +27,8 @@ class EtherapyTypeormRepository
         LoadAllEtherapiesRepository,
         SearchEtherapiesRepository,
         LoadEtherapyByIdentifierRepository,
-        LoadManyEtherapiesByIdentifierRepository {
+        LoadManyEtherapiesByIdentifierRepository,
+        CountEtherapiesRepository {
     private ormRepository: Repository<EtherapyTypeorm>;
 
     constructor() {
@@ -215,6 +217,14 @@ class EtherapyTypeormRepository
             return etherapies;
         } catch {
             throw new Error('Load many etherapies by identifiers error');
+        }
+    }
+
+    async count(): Promise<number> {
+        try {
+            return this.ormRepository.count();
+        } catch {
+            throw new Error('Count etherapies error.');
         }
     }
 }
