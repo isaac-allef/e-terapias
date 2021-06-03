@@ -19,6 +19,7 @@ import SearchModeratorsRepository, {
 } from '../../../../core/protocols/db/repositories/SearchModeratorsRepository';
 import UpdateAccessTokenRepository from '../../../../core/protocols/db/repositories/UpdateAccessTokenRepository';
 import ModeratorTypeorm from '../entities/ModeratorTypeorm';
+import CountModeratorsRepository from '../../../../core/protocols/db/repositories/CountModeratorsRepository';
 
 @EntityRepository()
 class ModeratorTypeormRepository
@@ -30,7 +31,8 @@ class ModeratorTypeormRepository
         LoadUserByTokenRepository,
         ChangePasswordRepository,
         LoadAllModeratorsRepository,
-        SearchModeratorsRepository {
+        SearchModeratorsRepository,
+        CountModeratorsRepository {
     private ormRepository: Repository<ModeratorTypeorm>;
 
     constructor() {
@@ -221,6 +223,14 @@ class ModeratorTypeormRepository
             return finded;
         } catch {
             throw new Error('Search moderator error');
+        }
+    }
+
+    async count(): Promise<number> {
+        try {
+            return this.ormRepository.count();
+        } catch {
+            throw new Error('Count moderators error.');
         }
     }
 }
