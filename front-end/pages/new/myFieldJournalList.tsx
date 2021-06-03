@@ -38,7 +38,7 @@ export default function MyFieldJournalList() {
           content: [
             [fieldJournal.name],
             [timestampToDate(fieldJournal.date)],
-            [fieldJournal.etherapy.identifier],
+            [fieldJournal.etherapy.identifier + ' - ' + fieldJournal.etherapy.name],
 			[timestampToDateTime(fieldJournal.created_at)],
 			[timestampToDateTime(fieldJournal.updated_at)],
           ]
