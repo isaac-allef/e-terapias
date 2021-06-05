@@ -1,8 +1,8 @@
 import FieldJournal, { field } from '../entities/FieldJournal';
-import { templateField } from '../entities/Template';
 import CreateFieldJournalRepository from '../protocols/db/repositories/CreateFieldJournalRepository';
 import LoadEtherapyByIdRepository from '../protocols/db/repositories/LoadEtherapyByIdRepository';
 import LoadModeratorByIdRepository from '../protocols/db/repositories/LoadModeratorByIdRepository';
+import { verifyMatchFieldJournalFields } from './utils/VerifyMatchFieldJournalFields';
 
 export type params = {
     name: string;
@@ -42,7 +42,7 @@ class CreateFieldJournalService {
 
         const { templateFields } = etherapy.template;
 
-        if (!this.matchFieldsWithtemplateFields(templateFields, fields)) {
+        if (!verifyMatchFieldJournalFields(templateFields, fields)) {
             throw new Error("This field journal doesn't match the template");
         }
 
@@ -55,30 +55,6 @@ class CreateFieldJournalService {
         });
 
         return fieldJournal;
-    }
-
-    private matchFieldsWithtemplateFields(
-        templateFields: templateField[],
-        fields: field[],
-    ): boolean {
-        const countTemplateFeilds = templateFields.length;
-        const countFields = fields.length;
-
-        if (countTemplateFeilds !== countFields) {
-            return false;
-        }
-
-        // eslint-disable-next-line
-        for (let i = 0; i < countTemplateFeilds; i++) {
-            if (
-                templateFields[i].name !== fields[i].name ||
-                templateFields[i].type !== fields[i].type
-            ) {
-                return false;
-            }
-        }
-
-        return true;
     }
 }
 
