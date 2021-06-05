@@ -3,8 +3,16 @@ import Moderator from './Moderator';
 
 export type field = {
     name: string;
-    type: string;
-    value: string;
+    type:
+        | 'short'
+        | 'long'
+        | 'date'
+        | 'choice'
+        | 'check'
+        | 'dropdown'
+        | 'linear';
+    options?: string[];
+    value: string | string[] | Date;
 };
 
 interface FieldJournal {
