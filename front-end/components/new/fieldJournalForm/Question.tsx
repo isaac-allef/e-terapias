@@ -2,11 +2,12 @@ import { Input } from "@chakra-ui/input";
 import { Box, Text } from "@chakra-ui/layout";
 import { Textarea } from "@chakra-ui/textarea";
 import { useState } from "react";
+import { typesOfQuestions } from "../../../utils/typesOfQuestions";
 import MyDatePicker from "../DatePicker/MyDatePicker";
 
 interface MyProps {
     label: string;
-    type: 'short' | 'long' | 'date';
+    type: typesOfQuestions;
     index: number;
     handleChange: Function;
     defaultValue?: string;

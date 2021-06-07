@@ -15,10 +15,11 @@ import { FormControl, FormErrorMessage, FormLabel } from "@chakra-ui/form-contro
 import { CalendarIcon } from "@chakra-ui/icons";
 import MyButton from "../../../components/shared/MyButton";
 import MyMenu from "../../../components/new/MyMenu";
+import { typesOfQuestions } from "../../../utils/typesOfQuestions";
 
 interface field {
     name: string;
-    type: 'short' | 'long' | 'date';
+    type: typesOfQuestions;
     value: string;
 }
 

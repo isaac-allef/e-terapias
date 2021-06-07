@@ -6,10 +6,11 @@ import { Box } from "@chakra-ui/layout";
 import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu";
 import { Textarea } from "@chakra-ui/textarea";
 import { IoMdCloseCircle } from "react-icons/io";
+import { typesOfQuestions } from "../../../utils/typesOfQuestions";
 
 interface MyProps {
     id: any;
-    type: 'short' | 'long' | 'date';
+    type: typesOfQuestions;
     label: string;
     handleChangeValue: Function;
     handleChangeType: Function;

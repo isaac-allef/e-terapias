@@ -16,16 +16,17 @@ import api from "../../../services/api";
 import MenuAddEtherapies from "../../../components/new/templateForm/MenuAddEterapias";
 import MyMenu from "../../../components/new/MyMenu";
 import MyToast from "../../../components/shared/MyToast";
+import { typesOfQuestions } from "../../../utils/typesOfQuestions";
 
 interface Question {
     id: number;
     name: string;
-    type: 'short' | 'long' | 'date';
+    type: typesOfQuestions;
 }
 
 interface FiledTemplate {
     name: string;
-    type: 'short' | 'long' | 'date';
+    type: typesOfQuestions;
 }
 
 interface Template {
