@@ -35,7 +35,7 @@ export function verifyMatchFieldJournalFields(
             }
         }
 
-        if (fields[i].type === 'choice') {
+        if (fields[i].type === 'check') {
             const arrayValue = fields[i].value as string[];
             if (
                 !arrayValue.every(value =>
@@ -47,7 +47,7 @@ export function verifyMatchFieldJournalFields(
         }
 
         if (
-            fields[i].type === 'check' ||
+            fields[i].type === 'choice' ||
             fields[i].type === 'dropdown' ||
             fields[i].type === 'linear'
         ) {
