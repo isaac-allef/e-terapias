@@ -20,12 +20,12 @@ import MyToast from "../../components/shared/MyToast";
 interface Question {
     id: number;
     name: string;
-    type: 'short' | 'long';
+    type: 'short' | 'long' | 'date';
 }
 
 interface FiledTemplate {
     name: string;
-    type: 'short' | 'long';
+    type: 'short' | 'long' | 'date';
 }
 
 interface Template {

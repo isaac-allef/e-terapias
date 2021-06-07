@@ -19,13 +19,13 @@ import MyMenu from "../../components/new/MyMenu";
 
 interface field {
     name: string;
-    type: string;
+    type: 'short' | 'long' | 'date';
     value: string;
 }
 
 interface templateField {
     name: string;
-    type: 'short' | 'long';
+    type: 'short' | 'long' | 'date';
 }
 
 interface fieldJournal {

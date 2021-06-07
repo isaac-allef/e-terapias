@@ -18,7 +18,7 @@ import MyMenu from "../../../components/new/MyMenu";
 
 interface field {
     name: string;
-    type: string;
+    type: 'short' | 'long' | 'date';
     value: string;
 }
 

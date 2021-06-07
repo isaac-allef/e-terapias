@@ -9,7 +9,7 @@ import { IoMdCloseCircle } from "react-icons/io";
 
 interface MyProps {
     id: any;
-    type: 'short' | 'long';
+    type: 'short' | 'long' | 'date';
     label: string;
     handleChangeValue: Function;
     handleChangeType: Function;
@@ -27,6 +27,10 @@ export default function QuestionTemplate({ id, type, label, handleChangeValue, h
         skeletonType = <Textarea margin={0}  border='2px' isDisabled height='30px' />
     }
 
+    else if (type === 'date') {
+        skeletonType = <Input value='dia / mês / ano' border='2px' isDisabled height='30px' />
+    }
+
     const MenuType = () => (
         <Box
             top='10px'
@@ -42,6 +46,7 @@ export default function QuestionTemplate({ id, type, label, handleChangeValue, h
                     <MenuList>
                         <MenuItem onClick={() => handleChangeType('short', id)}>Short</MenuItem>
                         <MenuItem onClick={() => handleChangeType('long', id)}>Long</MenuItem>
+                        <MenuItem onClick={() => handleChangeType('date', id)}>Date</MenuItem>
                     </MenuList>
                     </>
                 )}
