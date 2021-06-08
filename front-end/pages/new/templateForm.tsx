@@ -22,11 +22,13 @@ interface Question {
     id: number;
     name: string;
     type: typesOfQuestions;
+    options?: string[];
 }
 
 interface FiledTemplate {
     name: string;
     type: typesOfQuestions;
+    addOptions?: Function;
 }
 
 interface Template {
@@ -58,7 +60,12 @@ export default function TemplateForm() {
     }, [token]);
 
     const addNewQuestionTemplate = (): void => {
-        const newQuestionTemplate: Question = { id: Math.random(), name: 'Type your question here', type: 'short' }
+        const newQuestionTemplate: Question = { 
+            id: Math.random(), 
+            name: 'Type your question here', 
+            type: 'short',
+            options: [],
+        }
         setQuestionsTemplates([...questionsTemplates, newQuestionTemplate])
     }
 
@@ -73,7 +80,13 @@ export default function TemplateForm() {
         setQuestionsTemplates(questionsTemplates);
     }
 
-    const changeQuestionTemplateType = (type: string, id: number): void => {
+    const addOptions = (options: string[], id): void => {
+        const index = findQuestionTemplateIndex(id);
+        questionsTemplates[index].options = options;
+        setQuestionsTemplates(questionsTemplates);
+    }
+
+    const changeQuestionTemplateType = (type: typesOfQuestions, id: number): void => {
         const index = findQuestionTemplateIndex(id);
         const newQuestionsTemplates =  [...questionsTemplates]
         newQuestionsTemplates[index].type = type;
@@ -87,9 +100,19 @@ export default function TemplateForm() {
 
     const parseQuestionsTemplatesToTemplateFields = (): FiledTemplate[] => {
         return questionsTemplates.map(questionTemplate => {    
+            if (questionTemplate.type === 'short' || 
+                questionTemplate.type === 'long' ||
+                questionTemplate.type === 'date') {
+                return {
+                    name: questionTemplate.name,
+                    type: questionTemplate.type,
+                }
+            }
+
             return {
                 name: questionTemplate.name,
                 type: questionTemplate.type,
+                options: questionTemplate.options.map(option => option.value),
             }
         });
     }
@@ -177,6 +200,7 @@ export default function TemplateForm() {
                                 handleChangeValue={changeQuestionTemplateValue}
                                 handleChangeType={changeQuestionTemplateType}
                                 handleRemove={removeQuestionTemplate}
+                                addOptions={addOptions}
                             />
                         </Box>
                     )
