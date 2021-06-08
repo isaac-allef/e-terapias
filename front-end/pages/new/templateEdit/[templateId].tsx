@@ -22,11 +22,13 @@ interface Question {
     id: number;
     name: string;
     type: typesOfQuestions;
+    options?: string[];
 }
 
 interface FiledTemplate {
     name: string;
     type: typesOfQuestions;
+    options?: string[];
 }
 
 interface Template {
@@ -67,7 +69,20 @@ export default function TemplateForm() {
             setInitialValues({name: me.name})
             setEtherapiesToAdd([...me.etherapies]);
             const q = me.templateFields.map(templateField => {
-                return { id: Math.random(), name: templateField.name, type: templateField.type };
+                if (templateField.type === 'short' || 
+                    templateField.type === 'long' || 
+                    templateField.type === 'date') {
+                    return { id: Math.random(), name: templateField.name, type: templateField.type };
+                }
+                return { 
+                    id: Math.random(), 
+                    name: templateField.name, 
+                    type: templateField.type, 
+                    options: templateField.options.map(option => {
+                        return {
+                            key: Math.random().toString(), value: option}
+                        })
+                };
             });
             getEtherapies(token).then(etherapies => {
                 const etherapiesNotAdded = etherapies.filter(etherapy => !me.etherapies.find(e => e.id === etherapy.id));
@@ -76,6 +91,12 @@ export default function TemplateForm() {
             setQuestionsTemplates([...q]);
         }
     }, [me]);
+
+    const addOptions = (options: string[], id): void => {
+        const index = findQuestionTemplateIndex(id);
+        questionsTemplates[index].options = options;
+        setQuestionsTemplates(questionsTemplates);
+    }
 
     const addNewQuestionTemplate = (): void => {
         const newQuestionTemplate: Question = { id: Math.random(), name: 'Type your question here', type: 'short' }
@@ -106,10 +127,20 @@ export default function TemplateForm() {
     }
 
     const parseQuestionsTemplatesToTemplateFields = (): FiledTemplate[] => {
-        return questionsTemplates.map(questionTemplate => {    
+        return questionsTemplates.map(questionTemplate => {
+            if (questionTemplate.type === 'short' || 
+                questionTemplate.type === 'long' || 
+                questionTemplate.type === 'date') {
+                return {
+                    name: questionTemplate.name,
+                    type: questionTemplate.type,
+                }
+            }
+
             return {
                 name: questionTemplate.name,
                 type: questionTemplate.type,
+                options: questionTemplate.options.map(option => option?.value),
             }
         });
     }
@@ -194,6 +225,8 @@ export default function TemplateForm() {
                                 handleChangeValue={changeQuestionTemplateValue}
                                 handleChangeType={changeQuestionTemplateType}
                                 handleRemove={removeQuestionTemplate}
+                                addOptions={addOptions}
+                                defaultOption={question.options}
                             />
                         </Box>
                     )
