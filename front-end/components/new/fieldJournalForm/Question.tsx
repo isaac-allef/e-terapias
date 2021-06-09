@@ -1,7 +1,8 @@
+import { Checkbox, CheckboxGroup } from "@chakra-ui/checkbox";
 import { Input } from "@chakra-ui/input";
-import { Box, Text } from "@chakra-ui/layout";
+import { Box, Text, Wrap } from "@chakra-ui/layout";
 import { Textarea } from "@chakra-ui/textarea";
-import { useState } from "react";
+import React, { useState } from "react";
 import { typesOfQuestions } from "../../../utils/typesOfQuestions";
 import MyDatePicker from "../DatePicker/MyDatePicker";
 
@@ -10,10 +11,11 @@ interface MyProps {
     type: typesOfQuestions;
     index: number;
     handleChange: Function;
-    defaultValue?: string;
+    defaultValue?: string | string[];
+    defaultOptions?: string[];
 }
 
-export default function Question({ label, type, index, handleChange, defaultValue }: MyProps) {
+export default function Question({ label, type, index, handleChange, defaultValue, defaultOptions }: MyProps) {
     let inputType = null;
 
     if (type === 'short') {
@@ -31,7 +33,7 @@ export default function Question({ label, type, index, handleChange, defaultValu
     }
 
     else if (type === 'date') {
-        const [myDate, setDate] = useState(defaultValue ? new Date(defaultValue) : new Date);
+        const [myDate, setDate] = useState(defaultValue ? new Date(defaultValue as string) : new Date);
         inputType = <MyDatePicker 
                         selectedDate={myDate} 
                         onChange={date => {
@@ -39,6 +41,24 @@ export default function Question({ label, type, index, handleChange, defaultValu
                             setDate(date as Date) 
                         }
                     } />
+    }
+
+    else if (type === 'check') {
+        const options = defaultOptions;
+        inputType = <CheckboxGroup colorScheme="green" defaultValue={defaultValue ? [...defaultValue as string[]] : null}>
+                    {
+                        React.Children.toArray(
+                            options?.map(option => {
+                                return <Checkbox 
+                                        value={option}
+                                        onChange={(e) => handleChange(e.target.value, index)} 
+                                    >
+                                        { option }
+                                    </Checkbox>
+                            })
+                        )
+                    }
+                    </CheckboxGroup>
     }
 
     return (

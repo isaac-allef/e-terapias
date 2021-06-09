@@ -1,1 +1,1 @@
-export type typesOfQuestions = 'short' | 'long' | 'date' | 'check';
+export type typesOfQuestions = 'short' | 'long' | 'date' | 'check' | 'choice';
