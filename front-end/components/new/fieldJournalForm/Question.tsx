@@ -1,6 +1,7 @@
 import { Checkbox, CheckboxGroup } from "@chakra-ui/checkbox";
 import { Input } from "@chakra-ui/input";
 import { Box, Text, Wrap } from "@chakra-ui/layout";
+import { Radio, RadioGroup } from "@chakra-ui/radio";
 import { Textarea } from "@chakra-ui/textarea";
 import React, { useState } from "react";
 import { typesOfQuestions } from "../../../utils/typesOfQuestions";
@@ -60,6 +61,28 @@ export default function Question({ label, type, index, handleChange, defaultValu
                         )
                     }
                     </CheckboxGroup>
+    }
+
+    else if (type === 'choice') {
+        const options = defaultOptions;
+        const [value, setValue] = useState(defaultValue);
+        inputType = <RadioGroup 
+                        colorScheme="green" 
+                        onChange={(selected) => {
+                            handleChange(selected, index)
+                            setValue(selected as string)
+                        }} 
+                        value={value as string}>
+                        {
+                            React.Children.toArray(
+                                options?.map(option => {
+                                    return <Radio value={option}>
+                                            { option }
+                                        </Radio>
+                                })
+                            )
+                        }
+                    </RadioGroup>
     }
 
     return (
