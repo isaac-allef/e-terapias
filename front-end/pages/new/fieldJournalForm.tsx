@@ -21,12 +21,14 @@ import { typesOfQuestions } from '../../utils/typesOfQuestions';
 interface field {
     name: string;
     type: typesOfQuestions;
-    value: string;
+    value: string | string[];
+    options?: string[];
 }
 
 interface templateField {
     name: string;
     type: typesOfQuestions;
+    options?: string[];
 }
 
 interface fieldJournal {
@@ -64,11 +66,24 @@ export default function FieldJournalForm() {
     }, [token]);
 
     const createFieldsBasedInTemplateFields = (templateFields: templateField[]): field[] => {
-        const fields: field[] = templateFields?.map(templateField => ({
-            name: templateField.name,
-            type: templateField.type,
-            value: '',
-        }));
+        const fields: field[] = templateFields?.map(templateField => {
+            if (templateField.type === 'short' ||
+                templateField.type === 'long' ||
+                templateField.type === 'date') {
+                return {
+                    name: templateField.name,
+                    type: templateField.type,
+                    value: '',
+                }
+            }
+
+            return {
+                name: templateField.name,
+                type: templateField.type,
+                value: templateField.type === 'check' ? [] : '',
+                options: templateField.options,
+            }            
+        });
 
         return fields;
     }
@@ -81,7 +96,21 @@ export default function FieldJournalForm() {
     }, [etherapySelected]);
 
     function handleChange(newValue, index) {
-        fields[index].value = newValue;
+        const field = fields[index];
+        if (field.type === 'check') {
+            const findedIndex = field.value.findIndex(v => v === newValue);
+            if (findedIndex > -1) {
+                for( var i = 0; i < field.value.length; i++){ 
+                    if ( field.value[i] === newValue) { 
+                        field.value.splice(i, 1); 
+                    }
+                }
+            } else {
+                field.value = [...(field.value), newValue]
+            }
+        } else {
+            field.value = newValue
+        }
         setFields(fields);
     }
 
@@ -102,6 +131,8 @@ export default function FieldJournalForm() {
                 fields,
                 etherapyId: etherapySelected.id,
             }
+
+            console.log(fieldJournalJson)
 
             await postFieldJournals(token, fieldJournalJson);
 
@@ -153,6 +184,7 @@ export default function FieldJournalForm() {
                     type={templateField.type}
                     index={index}
                     handleChange={handleChange}
+                    defaultOptions={templateField.options}
                 />
             }) }
 
