@@ -21,6 +21,7 @@ interface field {
     name: string;
     type: typesOfQuestions;
     value: string;
+    options?: string[];
 }
 
 interface fieldJournal {
@@ -64,7 +65,21 @@ export default function FieldJournalForm() {
     }, [me]);
 
     function handleChange(newValue, index) {
-        fields[index].value = newValue;
+        const field = fields[index];
+        if (field.type === 'check') {
+            const findedIndex = field.value.findIndex(v => v === newValue);
+            if (findedIndex > -1) {
+                for( var i = 0; i < field.value.length; i++){ 
+                    if ( field.value[i] === newValue) { 
+                        field.value.splice(i, 1); 
+                    }
+                }
+            } else {
+                field.value = [...(field.value), newValue]
+            }
+        } else {
+            field.value = newValue
+        }
         setFields(fields);
     }
 
@@ -132,6 +147,7 @@ export default function FieldJournalForm() {
                         index={index}
                         handleChange={handleChange}
                         defaultValue={field.value}
+                        defaultOptions={field.options}
                     />
                 }) }
 
