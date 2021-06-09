@@ -30,19 +30,23 @@ export function verifyMatchFieldJournalFields(
         }
 
         if (fields[i].type === 'date') {
-            if (!Date.parse(fields[i].value as string)) {
-                throw new Error('Type date must be a instance of Date.');
+            if (
+                fields[i].value !== '' &&
+                !Date.parse(fields[i].value as string)
+            ) {
+                throw new Error('Type date must be a instance of Date or "".');
             }
         }
 
         if (fields[i].type === 'check') {
             const arrayValue = fields[i].value as string[];
             if (
+                arrayValue !== [] &&
                 !arrayValue.every(value =>
                     templateOrOldFields[i].options?.includes(value),
                 )
             ) {
-                throw new Error('The values must be equal somes option.');
+                throw new Error('The values must be equal somes option or [].');
             }
         }
 
@@ -52,11 +56,12 @@ export function verifyMatchFieldJournalFields(
             fields[i].type === 'linear'
         ) {
             if (
+                fields[i].value !== '' &&
                 !templateOrOldFields[i].options?.includes(
                     fields[i].value as string,
                 )
             ) {
-                throw new Error('The value must be equal some option.');
+                throw new Error('The value must be equal some option or "".');
             }
         }
     }

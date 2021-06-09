@@ -132,8 +132,6 @@ export default function FieldJournalForm() {
                 etherapyId: etherapySelected.id,
             }
 
-            console.log(fieldJournalJson)
-
             await postFieldJournals(token, fieldJournalJson);
 
             actions.setSubmitting(false);
