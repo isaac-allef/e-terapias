@@ -19,7 +19,7 @@ const MyDatePicker = ({
 	selectedDate,
 	onChange,
 	...props
-}: Props) => {
+}) => {
 	return (
 	<DatePicker
 		selected={selectedDate}

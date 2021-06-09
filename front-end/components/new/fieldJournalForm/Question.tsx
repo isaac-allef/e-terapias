@@ -33,9 +33,10 @@ export default function Question({ label, type, index, handleChange, defaultValu
     }
 
     else if (type === 'date') {
-        const [myDate, setDate] = useState(defaultValue ? new Date(defaultValue as string) : new Date);
+        const [myDate, setDate] = useState(defaultValue ? new Date(defaultValue as string) : null);
         inputType = <MyDatePicker 
-                        selectedDate={myDate} 
+                        placeholderText='dia, mês, ano'
+                        selectedDate={myDate}
                         onChange={date => {
                             handleChange(date as Date, index); 
                             setDate(date as Date) 
