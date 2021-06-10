@@ -1,3 +1,4 @@
+/* eslint-disable no-continue */
 import { field } from '../../entities/FieldJournal';
 import { templateField } from '../../entities/Template';
 
@@ -15,53 +16,81 @@ export function verifyMatchFieldJournalFields(
 
     // eslint-disable-next-line
     for (let i = 0; i < countTemplateOrOldFields; i++) {
+        const templateOrOldFieldsName = templateOrOldFields[i].name;
+        const templateOrOldFieldsType = templateOrOldFields[i].type;
+        const templateOrOldFieldsOptions = templateOrOldFields[i].options;
+
+        const fieldsName = fields[i].name;
+        const fieldsType = fields[i].type;
+        const fieldsOptions = fields[i].options;
+        const fieldsValue = fields[i].value;
+
         if (
-            templateOrOldFields[i].name !== fields[i].name ||
-            templateOrOldFields[i].type !== fields[i].type
+            templateOrOldFieldsName !== fieldsName ||
+            templateOrOldFieldsType !== fieldsType
         ) {
             return false;
         }
 
         if (
-            JSON.stringify(templateOrOldFields[i].options) !==
-            JSON.stringify(fields[i].options)
+            JSON.stringify(templateOrOldFieldsOptions) !==
+            JSON.stringify(fieldsOptions)
         ) {
             return false;
         }
 
-        if (fields[i].type === 'date') {
-            if (
-                fields[i].value !== '' &&
-                !Date.parse(fields[i].value as string)
-            ) {
+        if (fieldsType === 'short' || fieldsType === 'long') {
+            continue;
+        }
+
+        if (fieldsType === 'date') {
+            if (fieldsValue !== '' && !Date.parse(fieldsValue as string)) {
                 throw new Error('Type date must be a instance of Date or "".');
             }
+            continue;
         }
 
-        if (fields[i].type === 'check') {
-            const arrayValue = fields[i].value as string[];
+        if (!fieldsOptions) {
+            throw Error(
+                'In types: choice, check, dropdown and linear must have options field.',
+            );
+        }
+
+        if (fieldsType === 'check') {
+            const arrayValue = fieldsValue as string[];
             if (
                 arrayValue !== [] &&
                 !arrayValue.every(value =>
-                    templateOrOldFields[i].options?.includes(value),
+                    templateOrOldFieldsOptions?.includes(value),
                 )
             ) {
-                throw new Error('The values must be equal somes option or [].');
+                throw new Error(
+                    'In check type the values must be equal somes option or [].',
+                );
             }
         }
 
-        if (
-            fields[i].type === 'choice' ||
-            fields[i].type === 'dropdown' ||
-            fields[i].type === 'linear'
-        ) {
+        if (fieldsType === 'choice' || fieldsType === 'dropdown') {
             if (
-                fields[i].value !== '' &&
-                !templateOrOldFields[i].options?.includes(
-                    fields[i].value as string,
+                fieldsValue !== '' &&
+                !templateOrOldFieldsOptions?.includes(fieldsValue as string)
+            ) {
+                throw new Error(
+                    'In types: choice and dropdown the value must be equal some option or "".',
+                );
+            }
+        }
+
+        if (fieldsType === 'linear') {
+            if (
+                !(
+                    fieldsValue >= fieldsOptions[0] &&
+                    fieldsValue <= fieldsOptions[1]
                 )
             ) {
-                throw new Error('The value must be equal some option or "".');
+                throw new Error(
+                    'In type linear the value must be between first option and second option.',
+                );
             }
         }
     }

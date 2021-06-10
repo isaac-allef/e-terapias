@@ -63,5 +63,29 @@ export function validateTemplateFields(templateFields: templateField[]): void {
                 'Property options is required for types: choice, check, dropdown and linear',
             );
         }
+
+        if (fieldTemplate.type === 'linear') {
+            if (fieldTemplate.options?.length !== 2) {
+                throw new AppError(
+                    'The lienar type must have two options only: begin and end.',
+                );
+            }
+
+            const begin = fieldTemplate.options[0];
+
+            if (!['0', '1'].includes(begin)) {
+                throw new AppError(
+                    'The begin from linear type must be 0 or 1.',
+                );
+            }
+
+            const end = fieldTemplate.options[1];
+
+            if (!['2', '3', '4', '5', '6', '7', '8', '9', '10'].includes(end)) {
+                throw new AppError(
+                    'The end from linear type must be between 2 and 10.',
+                );
+            }
+        }
     });
 }
