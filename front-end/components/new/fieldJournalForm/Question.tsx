@@ -85,6 +85,34 @@ export default function Question({ label, type, index, handleChange, defaultValu
                     </RadioGroup>
     }
 
+    else if (type === 'linear') {
+        const options = defaultOptions;
+        const [value, setValue] = useState(defaultValue);
+        const [arrayOptions, _setArrayOptions] = useState(
+            Array.from(
+                { length: parseInt(options[1]) + 1 }, 
+                (_, i) => (i + parseInt(options[0]) + '')
+            )
+        );
+        inputType = <RadioGroup 
+                        colorScheme="green" 
+                        onChange={(selected) => {
+                            handleChange(selected, index)
+                            setValue(selected as string)
+                        }} 
+                        value={value as string}>
+                        {
+                            React.Children.toArray(
+                                arrayOptions?.map(option => {
+                                    return <Radio value={option}>
+                                            { option }
+                                        </Radio>
+                                })
+                            )
+                        }
+                    </RadioGroup>
+    }
+
     return (
         <Box key={Math.random()} marginTop='1.5vh' marginBottom='1.5vh'>
             <Text>{ label }</Text>
