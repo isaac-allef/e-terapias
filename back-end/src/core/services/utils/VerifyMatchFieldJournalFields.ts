@@ -82,12 +82,14 @@ export function verifyMatchFieldJournalFields(
         }
 
         if (fieldsType === 'linear') {
-            if (
-                !(
-                    fieldsValue >= fieldsOptions[0] &&
-                    fieldsValue <= fieldsOptions[1]
-                )
-            ) {
+            // eslint-disable-next-line radix
+            const begin = parseInt(fieldsOptions[0]);
+            // eslint-disable-next-line radix
+            const end = parseInt(fieldsOptions[1]);
+            // eslint-disable-next-line radix
+            const fieldsValueInt = parseInt(fieldsValue as string);
+
+            if (!(fieldsValueInt >= begin && fieldsValueInt <= end)) {
                 throw new Error(
                     'In type linear the value must be between first option and second option.',
                 );
