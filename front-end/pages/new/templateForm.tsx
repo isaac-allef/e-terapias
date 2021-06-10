@@ -112,7 +112,10 @@ export default function TemplateForm() {
             return {
                 name: questionTemplate.name,
                 type: questionTemplate.type,
-                options: questionTemplate.options.map(option => option.value),
+                options: questionTemplate.type === 'linear' ?
+                    questionTemplate.options
+                    :
+                    questionTemplate.options.map(option => option.value),
             }
         });
     }

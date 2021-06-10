@@ -78,7 +78,10 @@ export default function TemplateForm() {
                     id: Math.random(), 
                     name: templateField.name, 
                     type: templateField.type, 
-                    options: templateField.options.map(option => {
+                    options: templateField.type === 'linear' ?
+                        templateField.options
+                        :
+                        templateField.options.map(option => {
                         return {
                             key: Math.random().toString(), value: option}
                         })
@@ -140,7 +143,10 @@ export default function TemplateForm() {
             return {
                 name: questionTemplate.name,
                 type: questionTemplate.type,
-                options: questionTemplate.options.map(option => option?.value),
+                options: questionTemplate.type === 'linear' ?
+                    questionTemplate.options
+                    :
+                    questionTemplate.options.map(option => option?.value),
             }
         });
     }

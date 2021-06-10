@@ -3,9 +3,10 @@ import { Checkbox } from "@chakra-ui/checkbox";
 import { Editable, EditableInput, EditablePreview } from "@chakra-ui/editable";
 import { ChevronDownIcon, Icon, SmallAddIcon } from "@chakra-ui/icons";
 import { Input } from "@chakra-ui/input";
-import { Box, Flex, Stack } from "@chakra-ui/layout";
+import { Text, Box, Flex, Stack } from "@chakra-ui/layout";
 import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu";
 import { Radio } from "@chakra-ui/radio";
+import { Select } from "@chakra-ui/react";
 import { Textarea } from "@chakra-ui/textarea";
 import { useState } from "react";
 import { IoMdClose, IoMdCloseCircle } from "react-icons/io";
@@ -82,6 +83,42 @@ const ListOfOptions = ({addOptions, defaultOption=[], id, direction, input}) => 
     )
 }
 
+const Linear = ({ defaultOption=['1', '5'], addOptions, id }) => {
+    const [options, setOptions] = useState(defaultOption);
+
+    const handleChange = (newValue, index) => {
+        const newOptions = [...options];
+        newOptions[index] = newValue;
+        setOptions(newOptions);
+        addOptions(newOptions, id);
+    }
+
+    return (<Flex alignItems='center'>
+    <Select 
+        value={options[0]} 
+        onChange={e => handleChange(e.target.value, 0)} 
+        maxWidth='max-content'>
+            <option value="0">0</option>
+            <option value="1">1</option>
+    </Select>
+    <Text margin={4}>to</Text>
+    <Select 
+        value={options[1]} 
+        onChange={e => handleChange(e.target.value, 1)} 
+        maxWidth='max-content'>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+    </Select>
+    </Flex>)
+}
+
 interface MyProps {
     id: any;
     type: typesOfQuestions;
@@ -143,6 +180,13 @@ export default function QuestionTemplate({
                         </Box>
     }
 
+    else if (type === 'linear') {
+        skeletonType = 
+                        <Box border='2px' borderColor='gray.200' padding={2} borderRadius={5}>
+                        <Linear defaultOption={defaultOption} addOptions={addOptions} id={id} />
+                        </Box>
+    }
+
     const MenuType = () => (
         <Box
             top='10px'
@@ -161,6 +205,7 @@ export default function QuestionTemplate({
                         <MenuItem onClick={() => handleChangeType('date', id)}>Date</MenuItem>
                         <MenuItem onClick={() => handleChangeType('check', id)}>Check</MenuItem>
                         <MenuItem onClick={() => handleChangeType('choice', id)}>Choice</MenuItem>
+                        <MenuItem onClick={() => handleChangeType('linear', id)}>Linear</MenuItem>
                     </MenuList>
                     </>
                 )}
