@@ -120,6 +120,12 @@ export default function TemplateForm() {
     const changeQuestionTemplateType = (type: string, id: number): void => {
         const index = findQuestionTemplateIndex(id);
         const newQuestionsTemplates =  [...questionsTemplates]
+        if (type === 'linear') {
+            newQuestionsTemplates[index].options = ['1', '5'];
+        }
+        if (newQuestionsTemplates[index].type === 'linear') {
+            newQuestionsTemplates[index].options = undefined;
+        }
         newQuestionsTemplates[index].type = type;
         setQuestionsTemplates(newQuestionsTemplates);
     }
@@ -178,6 +184,7 @@ export default function TemplateForm() {
 
             const templateJson = createTemplateJson(name, etherapiesIds);
             
+            console.log(templateJson)
             await putTemplates(token, templateJson, me.id);
 
             actions.setSubmitting(false);
