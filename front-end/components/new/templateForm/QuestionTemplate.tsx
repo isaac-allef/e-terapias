@@ -6,11 +6,12 @@ import { Input } from "@chakra-ui/input";
 import { Text, Box, Flex, Stack } from "@chakra-ui/layout";
 import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu";
 import { Radio } from "@chakra-ui/radio";
-import { Select } from "@chakra-ui/react";
+import { FormControl, FormLabel, Select, Switch } from "@chakra-ui/react";
 import { Textarea } from "@chakra-ui/textarea";
 import { useState } from "react";
 import { IoMdClose, IoMdCloseCircle } from "react-icons/io";
 import { typesOfQuestions } from "../../../utils/typesOfQuestions";
+import MyDivider from "../../../components/shared/MyDivider";
 
 const ListOfOptions = ({addOptions, defaultOption=[], id, direction, input}) => {
     const [options, setOptions] = useState(defaultOption);
@@ -126,6 +127,8 @@ interface MyProps {
     handleChangeValue: Function;
     handleChangeType: Function;
     handleRemove: Function;
+    handleIsRequired: Function;
+    defaultIsRequired: boolean;
     addOptions?: Function;
     defaultOption?: string[];
 }
@@ -137,10 +140,21 @@ export default function QuestionTemplate({
         handleChangeValue, 
         handleChangeType, 
         handleRemove, 
+        handleIsRequired,
+        defaultIsRequired,
         addOptions,
         defaultOption,
     }: MyProps) {
     let skeletonType = null;
+
+    const RequiredButton = () => (
+        <FormControl width='max-content' display="flex" alignItems="center">
+            <FormLabel htmlFor="switch-required" mb="0">
+                Required
+            </FormLabel>
+            <Switch id="switch-required" defaultChecked={defaultIsRequired} onChange={() => handleIsRequired(id)} />
+        </FormControl>
+    )
 
     if (type === 'short') {
         skeletonType = <Input value=''  border='2px' isDisabled height='30px' />
@@ -156,7 +170,7 @@ export default function QuestionTemplate({
 
     else if (type === 'check') {
         skeletonType = 
-                        <Box border='2px' borderColor='gray.200' padding={2} borderRadius={5}>
+                        <Box>
                         <ListOfOptions 
                             addOptions={addOptions}
                             id={id}
@@ -169,7 +183,7 @@ export default function QuestionTemplate({
 
     else if (type === 'choice') {
         skeletonType = 
-                        <Box border='2px' borderColor='gray.200' padding={2} borderRadius={5}>
+                        <Box>
                         <ListOfOptions 
                             addOptions={addOptions}
                             id={id}
@@ -182,14 +196,14 @@ export default function QuestionTemplate({
 
     else if (type === 'linear') {
         skeletonType = 
-                        <Box border='2px' borderColor='gray.200' padding={2} borderRadius={5}>
+                        <Box>
                         <Linear defaultOption={defaultOption} addOptions={addOptions} id={id} />
                         </Box>
     }
 
     const MenuType = () => (
         <Box
-            top='10px'
+            top='-20px'
             right='40px'
             position='absolute'
         >
@@ -214,7 +228,14 @@ export default function QuestionTemplate({
     )
 
     return (
-        <Box marginTop='1.5vh' marginBottom='1.5vh'>
+        <Box marginTop={10} marginBottom='1.5vh'
+            borderWidth="1px" 
+            rounded='md'
+            paddingTop='0.5rem'
+            paddingBottom='0.5rem'
+            paddingLeft='1rem'
+            paddingRight='1rem'
+        >
             <Editable defaultValue={ label } 
                     marginBottom='-5px'
                     bgSize='100%'
@@ -222,9 +243,13 @@ export default function QuestionTemplate({
                 <EditablePreview />
                 <EditableInput />
                 { skeletonType }
+                <MyDivider />
+                <Flex justifyContent='right'>
+                    <RequiredButton />
+                </Flex>
                 <MenuType />
                 <IconButton
-                    top='15px'
+                    top='-13px'
                     right='-24px'
                     position='absolute'
                     variant='unstyled'
@@ -233,7 +258,7 @@ export default function QuestionTemplate({
                     boxSize='30px'
                     aria-label='close' 
                     icon={<Icon as={IoMdCloseCircle} boxSize='30px' color='#ec4646' />} 
-                    onClick={() =>  handleRemove(id)}
+                    onClick={() => handleRemove(id)}
                 />
             </Editable>
         </Box>
