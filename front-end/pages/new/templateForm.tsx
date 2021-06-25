@@ -22,12 +22,14 @@ interface Question {
     id: number;
     name: string;
     type: typesOfQuestions;
+    isRequired: boolean;
     options?: string[];
 }
 
 interface FiledTemplate {
     name: string;
     type: typesOfQuestions;
+    isRequired: boolean;
     addOptions?: Function;
 }
 
@@ -64,6 +66,7 @@ export default function TemplateForm() {
             id: Math.random(), 
             name: 'Type your question here', 
             type: 'short',
+            isRequired: false,
             options: [],
         }
         setQuestionsTemplates([...questionsTemplates, newQuestionTemplate])
@@ -93,6 +96,17 @@ export default function TemplateForm() {
         setQuestionsTemplates(newQuestionsTemplates);
     }
 
+    const changeQuestionTemplateIsRequired = (id: number): void => {
+        const index = findQuestionTemplateIndex(id);
+        const isRequired = questionsTemplates[index].isRequired;
+        if (isRequired === false) {
+            questionsTemplates[index].isRequired = true;
+        } else {
+            questionsTemplates[index].isRequired = false;
+        }
+        setQuestionsTemplates(questionsTemplates);
+    }
+
     const removeQuestionTemplate = (id: number): void => {
         const newQuestionsTemplates = questionsTemplates.filter(questionTemplate => questionTemplate.id !== id);
         setQuestionsTemplates(newQuestionsTemplates);
@@ -106,12 +120,14 @@ export default function TemplateForm() {
                 return {
                     name: questionTemplate.name,
                     type: questionTemplate.type,
+                    isRequired: questionTemplate.isRequired,
                 }
             }
 
             return {
                 name: questionTemplate.name,
                 type: questionTemplate.type,
+                isRequired: questionTemplate.isRequired,
                 options: questionTemplate.type === 'linear' ?
                     questionTemplate.options
                     :
@@ -202,6 +218,8 @@ export default function TemplateForm() {
                                 label={question.name} 
                                 handleChangeValue={changeQuestionTemplateValue}
                                 handleChangeType={changeQuestionTemplateType}
+                                handleIsRequired={changeQuestionTemplateIsRequired}
+                                defaultIsRequired={question.isRequired}
                                 handleRemove={removeQuestionTemplate}
                                 addOptions={addOptions}
                             />
