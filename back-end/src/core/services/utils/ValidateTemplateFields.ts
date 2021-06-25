@@ -8,27 +8,32 @@ export function validateTemplateFields(templateFields: templateField[]): void {
     }
 
     templateFields.forEach(fieldTemplate => {
-        const LENGTH_FIELD_WITHOUT_OPTIONS = 2;
-        const LENGTH_FIELD_WITH_OPTIONS = 3;
+        const LENGTH_FIELD_WITHOUT_OPTIONS = 3;
+        const LENGTH_FIELD_WITH_OPTIONS = 4;
         const lengthField = Object.keys(fieldTemplate).length;
-
-        if (
-            !(
-                lengthField === LENGTH_FIELD_WITHOUT_OPTIONS ||
-                lengthField === LENGTH_FIELD_WITH_OPTIONS
-            )
-        ) {
-            throw new AppError(
-                'Each object in fieldTemplates must have exactly two or three properties only, name, type and maybe options',
-            );
-        }
 
         if (!('name' in fieldTemplate)) {
             throw new AppError('Property name not found.');
         }
 
+        if (typeof fieldTemplate.name !== 'string') {
+            throw new AppError('Property name must be a string.');
+        }
+
         if (!('type' in fieldTemplate)) {
             throw new AppError('Property type not found.');
+        }
+
+        if (typeof fieldTemplate.type !== 'string') {
+            throw new AppError('Property type must be a string.');
+        }
+
+        if (!('isRequired' in fieldTemplate)) {
+            throw new AppError('Property isRequired not found.');
+        }
+
+        if (typeof fieldTemplate.isRequired !== 'boolean') {
+            throw new AppError('Property isRequired must be a boolean.');
         }
 
         if (
@@ -39,6 +44,12 @@ export function validateTemplateFields(templateFields: templateField[]): void {
             if ('options' in fieldTemplate) {
                 throw new AppError(
                     'Property options is not required for types: short, long and date.',
+                );
+            }
+
+            if (lengthField > LENGTH_FIELD_WITHOUT_OPTIONS) {
+                throw new AppError(
+                    `${fieldTemplate.type} type must have ${LENGTH_FIELD_WITHOUT_OPTIONS} properties only: name, type and isRequired.`,
                 );
             }
 
@@ -61,6 +72,12 @@ export function validateTemplateFields(templateFields: templateField[]): void {
         if (!('options' in fieldTemplate)) {
             throw new AppError(
                 'Property options is required for types: choice, check, dropdown and linear',
+            );
+        }
+
+        if (lengthField > LENGTH_FIELD_WITH_OPTIONS) {
+            throw new AppError(
+                `${fieldTemplate.type} type must have ${LENGTH_FIELD_WITH_OPTIONS} properties only: name, type, isRequired and options.`,
             );
         }
 

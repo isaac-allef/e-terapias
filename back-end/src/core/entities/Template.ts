@@ -10,6 +10,7 @@ export type templateField = {
         | 'check'
         | 'dropdown'
         | 'linear';
+    isRequired: boolean;
     options?: string[];
 };
 
