@@ -90,7 +90,7 @@ export default function Question({ label, type, index, handleChange, defaultValu
         const [value, setValue] = useState(defaultValue);
         const [arrayOptions, _setArrayOptions] = useState(
             Array.from(
-                { length: parseInt(options[1]) + 1 }, 
+                { length: parseInt(options[1]) }, 
                 (_, i) => (i + parseInt(options[0]) + '')
             )
         );
