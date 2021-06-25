@@ -2,6 +2,7 @@ import { Checkbox, CheckboxGroup } from "@chakra-ui/checkbox";
 import { Input } from "@chakra-ui/input";
 import { Box, Text, Wrap } from "@chakra-ui/layout";
 import { Radio, RadioGroup } from "@chakra-ui/radio";
+import { Button } from "@chakra-ui/react";
 import { Textarea } from "@chakra-ui/textarea";
 import React, { useState } from "react";
 import { typesOfQuestions } from "../../../utils/typesOfQuestions";
@@ -18,6 +19,13 @@ interface MyProps {
 
 export default function Question({ label, type, index, handleChange, defaultValue, defaultOptions }: MyProps) {
     let inputType = null;
+
+    const CleanAnswerButtom = ({ setValue }) => (
+        <Button variant='ghost' textColor='gray.600' onClick={() => {
+            handleChange('', index)
+            setValue('')
+        }}>Clean answer</Button>
+    )
 
     if (type === 'short') {
         inputType = <Input 
@@ -66,7 +74,8 @@ export default function Question({ label, type, index, handleChange, defaultValu
     else if (type === 'choice') {
         const options = defaultOptions;
         const [value, setValue] = useState(defaultValue);
-        inputType = <RadioGroup 
+        inputType = <>
+                    <RadioGroup 
                         colorScheme="green" 
                         onChange={(selected) => {
                             handleChange(selected, index)
@@ -83,6 +92,8 @@ export default function Question({ label, type, index, handleChange, defaultValu
                             )
                         }
                     </RadioGroup>
+                    <CleanAnswerButtom setValue={setValue} />
+                    </>
     }
 
     else if (type === 'linear') {
@@ -94,7 +105,8 @@ export default function Question({ label, type, index, handleChange, defaultValu
                 (_, i) => (i + parseInt(options[0]) + '')
             )
         );
-        inputType = <RadioGroup 
+        inputType = <>
+                    <RadioGroup 
                         colorScheme="green" 
                         onChange={(selected) => {
                             handleChange(selected, index)
@@ -111,6 +123,8 @@ export default function Question({ label, type, index, handleChange, defaultValu
                             )
                         }
                     </RadioGroup>
+                    <CleanAnswerButtom setValue={setValue} />
+                    </>
     }
 
     return (
