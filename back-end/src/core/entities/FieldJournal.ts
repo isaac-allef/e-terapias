@@ -11,6 +11,7 @@ export type field = {
         | 'check'
         | 'dropdown'
         | 'linear';
+    isRequired: boolean;
     options?: string[];
     value: string | string[] | Date;
 };

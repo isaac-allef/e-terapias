@@ -18,18 +18,25 @@ export function verifyMatchFieldJournalFields(
     for (let i = 0; i < countTemplateOrOldFields; i++) {
         const templateOrOldFieldsName = templateOrOldFields[i].name;
         const templateOrOldFieldsType = templateOrOldFields[i].type;
+        const templateOrOldFieldsIsRequired = templateOrOldFields[i].isRequired;
         const templateOrOldFieldsOptions = templateOrOldFields[i].options;
 
         const fieldsName = fields[i].name;
         const fieldsType = fields[i].type;
+        const fieldsIsRequired = fields[i].isRequired;
         const fieldsOptions = fields[i].options;
         const fieldsValue = fields[i].value;
 
         if (
             templateOrOldFieldsName !== fieldsName ||
-            templateOrOldFieldsType !== fieldsType
+            templateOrOldFieldsType !== fieldsType ||
+            templateOrOldFieldsIsRequired !== fieldsIsRequired
         ) {
             return false;
+        }
+
+        if (fieldsIsRequired && (!fieldsValue || fieldsValue === '')) {
+            throw new Error('This question needs an answer.');
         }
 
         if (
