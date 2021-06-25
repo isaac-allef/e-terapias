@@ -36,8 +36,8 @@ const makeSut = (): SutTypes => {
 };
 
 const fakeTemplateFields: templateField[] = [
-    { name: 'Qual o seu nome?', type: 'short' },
-    { name: 'Fale sobre você', type: 'long' },
+    { name: 'Qual o seu nome?', type: 'short', isRequired: true },
+    { name: 'Fale sobre você', type: 'long', isRequired: true },
 ];
 
 const fakeFields: field[] = [
@@ -344,6 +344,7 @@ describe('Create field journal usecase', () => {
                                 {
                                     name: 'Question of diferent template',
                                     type: 'long',
+                                    isRequired: true,
                                 },
                             ],
                         },

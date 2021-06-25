@@ -7,8 +7,8 @@ import LoadTemplateByIdRepository from '../../../src/core/protocols/db/repositor
 import LinkTemplateToEtherapiesRepository from '../../../src/core/protocols/db/repositories/LinkTemplateToEtherapiesRepository';
 
 const fakeTemplateFields: templateField[] = [
-    { name: 'Qual o seu nome?', type: 'short' },
-    { name: 'Fale sobre você', type: 'long' },
+    { name: 'Qual o seu nome?', type: 'short', isRequired: true },
+    { name: 'Fale sobre você', type: 'long', isRequired: true },
 ];
 
 export class CreateTemplateRepositoryStub implements CreateTemplateRepository {
