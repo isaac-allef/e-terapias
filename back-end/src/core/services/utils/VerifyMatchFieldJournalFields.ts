@@ -89,7 +89,10 @@ export function verifyMatchFieldJournalFields(
             // eslint-disable-next-line radix
             const fieldsValueInt = parseInt(fieldsValue as string);
 
-            if (!(fieldsValueInt >= begin && fieldsValueInt <= end)) {
+            if (
+                fieldsValue !== '' &&
+                !(fieldsValueInt >= begin && fieldsValueInt <= end)
+            ) {
                 throw new Error(
                     'In type linear the value must be between first option and second option.',
                 );
