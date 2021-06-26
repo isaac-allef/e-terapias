@@ -22,6 +22,7 @@ interface field {
     type: typesOfQuestions;
     value: string;
     options?: string[];
+    isRequired: boolean;
 }
 
 interface fieldJournal {
@@ -148,6 +149,7 @@ export default function FieldJournalForm() {
                         handleChange={handleChange}
                         defaultValue={field.value}
                         defaultOptions={field.options}
+                        isRequired={field.isRequired}
                     />
                 }) }
 
