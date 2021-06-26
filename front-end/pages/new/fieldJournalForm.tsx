@@ -23,12 +23,14 @@ interface field {
     type: typesOfQuestions;
     value: string | string[];
     options?: string[];
+    isRequired: boolean;
 }
 
 interface templateField {
     name: string;
     type: typesOfQuestions;
     options?: string[];
+    isRequired: boolean;
 }
 
 interface fieldJournal {
@@ -74,6 +76,7 @@ export default function FieldJournalForm() {
                     name: templateField.name,
                     type: templateField.type,
                     value: '',
+                    isRequired: templateField.isRequired,
                 }
             }
 
@@ -82,6 +85,7 @@ export default function FieldJournalForm() {
                 type: templateField.type,
                 value: templateField.type === 'check' ? [] : '',
                 options: templateField.options,
+                isRequired: templateField.isRequired,
             }            
         });
 
@@ -183,6 +187,7 @@ export default function FieldJournalForm() {
                     index={index}
                     handleChange={handleChange}
                     defaultOptions={templateField.options}
+                    isRequired={templateField.isRequired}
                 />
             }) }
 
