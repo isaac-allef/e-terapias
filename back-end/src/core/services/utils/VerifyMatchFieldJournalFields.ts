@@ -35,7 +35,12 @@ export function verifyMatchFieldJournalFields(
             return false;
         }
 
-        if (fieldsIsRequired && (!fieldsValue || fieldsValue === '')) {
+        if (
+            fieldsIsRequired &&
+            (!fieldsValue ||
+                fieldsValue === '' ||
+                JSON.stringify(fieldsValue) === JSON.stringify([]))
+        ) {
             throw new Error('This question needs an answer.');
         }
 
