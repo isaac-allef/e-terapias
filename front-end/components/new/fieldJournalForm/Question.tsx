@@ -2,7 +2,7 @@ import { Checkbox, CheckboxGroup } from "@chakra-ui/checkbox";
 import { Input } from "@chakra-ui/input";
 import { Box, Text, Wrap } from "@chakra-ui/layout";
 import { Radio, RadioGroup } from "@chakra-ui/radio";
-import { Button } from "@chakra-ui/react";
+import { Button, FormControl, FormLabel } from "@chakra-ui/react";
 import { Textarea } from "@chakra-ui/textarea";
 import React, { useState } from "react";
 import { typesOfQuestions } from "../../../utils/typesOfQuestions";
@@ -15,9 +15,10 @@ interface MyProps {
     handleChange: Function;
     defaultValue?: string | string[];
     defaultOptions?: string[];
+    isRequired: boolean;
 }
 
-export default function Question({ label, type, index, handleChange, defaultValue, defaultOptions }: MyProps) {
+export default function Question({ label, type, index, handleChange, defaultValue, defaultOptions, isRequired }: MyProps) {
     let inputType = null;
 
     const CleanAnswerButtom = ({ setValue }) => (
@@ -55,7 +56,8 @@ export default function Question({ label, type, index, handleChange, defaultValu
 
     else if (type === 'check') {
         const options = defaultOptions;
-        inputType = <CheckboxGroup colorScheme="green" defaultValue={defaultValue ? [...defaultValue as string[]] : null}>
+        inputType = <>
+                    <CheckboxGroup colorScheme="green" defaultValue={defaultValue ? [...defaultValue as string[]] : null}>
                     {
                         React.Children.toArray(
                             options?.map(option => {
@@ -69,6 +71,7 @@ export default function Question({ label, type, index, handleChange, defaultValu
                         )
                     }
                     </CheckboxGroup>
+                    </>
     }
 
     else if (type === 'choice') {
@@ -128,9 +131,12 @@ export default function Question({ label, type, index, handleChange, defaultValu
     }
 
     return (
-        <Box key={Math.random()} marginTop='1.5vh' marginBottom='1.5vh'>
-            <Text>{ label }</Text>
+            <FormControl 
+                isRequired={isRequired}
+                key={Math.random()} marginTop='1.5vh' marginBottom='1.5vh'
+            >
+            <FormLabel>{ label }</FormLabel>
             { inputType }
-        </Box>
+            </FormControl>
     )
 }
