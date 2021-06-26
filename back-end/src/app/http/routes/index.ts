@@ -6,6 +6,7 @@ import fieldJournalsRouter from './fieldJournals.routes';
 import loginRouter from './login.routes';
 import managersRouter from './managers.routes';
 import metricsRouter from './metrics.routes';
+import offerRouter from './offer.routes';
 
 const routes = Router();
 
@@ -16,5 +17,6 @@ routes.use('/templates', templatesRouter);
 routes.use('/fieldJournals', fieldJournalsRouter);
 routes.use('/managers', managersRouter);
 routes.use('/metrics', metricsRouter);
+routes.use('/offer', offerRouter);
 
 export default routes;
