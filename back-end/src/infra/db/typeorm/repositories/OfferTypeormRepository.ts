@@ -3,10 +3,14 @@ import Offer from '../../../../core/entities/Offer';
 import CreateOfferRepository, {
     params,
 } from '../../../../core/protocols/db/repositories/CreateOfferRepository';
+import UpdateOfferRepository, {
+    params as updateParams,
+} from '../../../../core/protocols/db/repositories/UpdateOfferRepository';
 import OfferTypeorm from '../entities/OfferTypeorm';
 
 @EntityRepository()
-class OfferTypeormRepository implements CreateOfferRepository {
+class OfferTypeormRepository
+    implements CreateOfferRepository, UpdateOfferRepository {
     private ormRepository: Repository<OfferTypeorm>;
 
     constructor() {
@@ -32,6 +36,35 @@ class OfferTypeormRepository implements CreateOfferRepository {
             return offer;
         } catch {
             throw new Error('Create offer error');
+        }
+    }
+
+    public async update({
+        id,
+        name,
+        dateStart,
+        dateEnd,
+        settings,
+    }: updateParams): Promise<Offer> {
+        try {
+            const offer = await this.ormRepository.findOne({
+                where: { id },
+            });
+
+            if (!offer) {
+                throw new Error('Offer not found');
+            }
+
+            offer.name = name;
+            offer.dateStart = dateStart;
+            offer.dateEnd = dateEnd;
+            offer.settings = settings;
+
+            await this.ormRepository.save(offer);
+
+            return offer;
+        } catch (err) {
+            throw new Error('Update offer error');
         }
     }
 }
