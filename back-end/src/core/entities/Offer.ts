@@ -1,4 +1,5 @@
-// import Manager from './Manager';
+import Etherapy from './Etherapy';
+import Manager from './Manager';
 
 type settings_service_account = {
     client_email: string;
@@ -35,7 +36,9 @@ interface Offer {
 
     settings: settings;
 
-    // supervisor: Manager;
+    managers: Manager[];
+
+    etherapies: Etherapy[];
 }
 
 export default Offer;

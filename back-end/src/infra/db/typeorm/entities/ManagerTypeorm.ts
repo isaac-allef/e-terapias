@@ -2,10 +2,13 @@ import {
     Column,
     CreateDateColumn,
     Entity,
+    ManyToMany,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
 import Manager from '../../../../core/entities/Manager';
+import Offer from '../../../../core/entities/Offer';
+import OfferTypeorm from './OfferTypeorm';
 
 @Entity('Manager')
 class ManagerTypeorm implements Manager {
@@ -26,6 +29,9 @@ class ManagerTypeorm implements Manager {
 
     @Column()
     name: string;
+
+    @ManyToMany(() => OfferTypeorm, offer => offer.managers)
+    offers: Offer[];
 
     @CreateDateColumn()
     created_at: Date;
