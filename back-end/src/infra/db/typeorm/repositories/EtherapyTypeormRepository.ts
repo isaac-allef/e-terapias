@@ -37,9 +37,10 @@ class EtherapyTypeormRepository
 
     public async upload(data: createParams): Promise<Etherapy[]> {
         try {
+            const { etherapiesData, offer } = data;
             const etherapies = [];
 
-            for (const dto of data) {
+            for (const dto of etherapiesData) {
                 // eslint-disable-next-line no-await-in-loop
                 const etherapyExists = await this.ormRepository.findOne({
                     identifier: dto.identifier,
@@ -52,6 +53,7 @@ class EtherapyTypeormRepository
                     const etherapy = this.ormRepository.create({
                         identifier: dto.identifier,
                         name: dto.name,
+                        offer,
                     });
                     etherapies.push(etherapy);
                 }
