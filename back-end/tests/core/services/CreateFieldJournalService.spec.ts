@@ -35,6 +35,32 @@ const makeSut = (): SutTypes => {
     };
 };
 
+const fakeOffer = {
+    id: 'fakeOfferId',
+    name: 'fakeOffer',
+    dateStart: new Date(),
+    dateEnd: new Date(),
+    etherapies: [],
+    managers: [],
+    settings: {
+        serviceAccount: {
+            client_email: '',
+            private_key: '',
+        },
+        moderators: {
+            sheet_link: '',
+            column_email: '',
+            column_name: '',
+            column_etherapies_identifiers: '',
+        },
+        etherapies: {
+            sheet_link: '',
+            column_identifier: '',
+            column_name: '',
+        },
+    },
+};
+
 const fakeTemplateFields: templateField[] = [
     { name: 'Qual o seu nome?', type: 'short', isRequired: true },
     { name: 'Fale sobre você', type: 'long', isRequired: true },
@@ -82,6 +108,7 @@ describe('Create field journal usecase', () => {
                                 etherapies: [],
                                 templateFields: fakeTemplateFields,
                             },
+                            offer: fakeOffer,
                         },
                     ],
                     fieldJournals: [],
@@ -105,6 +132,7 @@ describe('Create field journal usecase', () => {
                         etherapies: [],
                         templateFields: fakeTemplateFields,
                     },
+                    offer: fakeOffer,
                 }),
             ),
         );
@@ -192,6 +220,7 @@ describe('Create field journal usecase', () => {
                                     etherapies: [],
                                     templateFields: fakeTemplateFields,
                                 },
+                                offer: fakeOffer,
                             },
                         ],
                         fieldJournals: [],
@@ -218,6 +247,7 @@ describe('Create field journal usecase', () => {
                             etherapies: [],
                             templateFields: fakeTemplateFields,
                         },
+                        offer: fakeOffer,
                     }),
                 );
             },
@@ -262,6 +292,7 @@ describe('Create field journal usecase', () => {
                                     etherapies: [],
                                     templateFields: fakeTemplateFields,
                                 },
+                                offer: fakeOffer,
                             },
                         ],
                         fieldJournals: [],
@@ -282,6 +313,7 @@ describe('Create field journal usecase', () => {
                         fieldJournals: [],
                         moderators: [],
                         template: null,
+                        offer: fakeOffer,
                     }),
                 );
             },
@@ -326,6 +358,7 @@ describe('Create field journal usecase', () => {
                                     etherapies: [],
                                     templateFields: fakeTemplateFields,
                                 },
+                                offer: fakeOffer,
                             },
                         ],
                         fieldJournals: [],
@@ -358,6 +391,7 @@ describe('Create field journal usecase', () => {
                                 },
                             ],
                         },
+                        offer: fakeOffer,
                     }),
                 );
             },

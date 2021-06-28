@@ -8,6 +8,32 @@ import LoadAllEtherapiesRepository from '../../../src/core/protocols/db/reposito
 import SearchEtherapiesRepository from '../../../src/core/protocols/db/repositories/SearchEtherapiesRepository';
 import LoadManyEtherapiesByIdentifierRepository from '../../../src/core/protocols/db/repositories/LoadManyEtherapiesByIdentifierRepository';
 
+const fakeOffer = {
+    id: 'fakeOfferId',
+    name: 'fakeOffer',
+    dateStart: new Date(),
+    dateEnd: new Date(),
+    etherapies: [],
+    managers: [],
+    settings: {
+        serviceAccount: {
+            client_email: '',
+            private_key: '',
+        },
+        moderators: {
+            sheet_link: '',
+            column_email: '',
+            column_name: '',
+            column_etherapies_identifiers: '',
+        },
+        etherapies: {
+            sheet_link: '',
+            column_identifier: '',
+            column_name: '',
+        },
+    },
+};
+
 export class UploadEtherapiesListRepositoryStub
     implements UploadEtherapiesListRepository {
     async upload(): Promise<Etherapy[]> {
@@ -18,6 +44,7 @@ export class UploadEtherapiesListRepositoryStub
             fieldJournals: [],
             moderators: [],
             template: null,
+            offer: fakeOffer,
         };
 
         const etherapy2: Etherapy = {
@@ -27,6 +54,7 @@ export class UploadEtherapiesListRepositoryStub
             fieldJournals: [],
             moderators: [],
             template: null,
+            offer: fakeOffer,
         };
 
         const etherapies = [etherapy1, etherapy2];
@@ -45,6 +73,7 @@ export class LoadEtherapyByIdRepositoryStub
             fieldJournals: [],
             moderators: [],
             template: null,
+            offer: fakeOffer,
         };
 
         return new Promise(resolve => resolve(etherapy));
@@ -62,6 +91,7 @@ export class LoadAllEtherapiesRepositoryStub
                 fieldJournals: [],
                 moderators: [],
                 template: null,
+                offer: fakeOffer,
             },
             {
                 id: 'randomId2',
@@ -70,6 +100,7 @@ export class LoadAllEtherapiesRepositoryStub
                 fieldJournals: [],
                 moderators: [],
                 template: null,
+                offer: fakeOffer,
             },
         ];
 
@@ -88,6 +119,7 @@ export class SearchEtherapiesRepositoryStub
                 fieldJournals: [],
                 moderators: [],
                 template: null,
+                offer: fakeOffer,
             },
             {
                 id: 'randomId2',
@@ -96,6 +128,7 @@ export class SearchEtherapiesRepositoryStub
                 fieldJournals: [],
                 moderators: [],
                 template: null,
+                offer: fakeOffer,
             },
         ];
 
@@ -113,6 +146,7 @@ export class LoadEtherapyByIdentifierRepositoryStub
             fieldJournals: [],
             moderators: [],
             template: null,
+            offer: fakeOffer,
         };
 
         return new Promise(resolve => resolve(etherapy));
