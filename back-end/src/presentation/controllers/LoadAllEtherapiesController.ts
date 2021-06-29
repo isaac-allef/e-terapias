@@ -11,9 +11,16 @@ export class LoadAllEtherapiesController implements Controller {
 
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
         try {
-            const { sort, direction, per_page, page } = httpRequest.query;
+            const {
+                offerId,
+                sort,
+                direction,
+                per_page,
+                page,
+            } = httpRequest.query;
 
             const etherapy = await this.loadAllEtherapiesService.execute({
+                offerId,
                 sort,
                 direction,
                 per_page,

@@ -71,7 +71,7 @@ class EtherapyTypeormRepository
         try {
             const etherapy = await this.ormRepository.findOne({
                 where: { id },
-                relations: ['template', 'moderators'],
+                relations: ['template', 'moderators', 'offer'],
             });
 
             if (!etherapy) {
@@ -136,6 +136,7 @@ class EtherapyTypeormRepository
     }
 
     async loadAll({
+        offerId,
         sort,
         direction,
         per_page,
@@ -143,10 +144,11 @@ class EtherapyTypeormRepository
     }: params): Promise<Etherapy[]> {
         try {
             const etherapies = await this.ormRepository.find({
+                where: offerId ? { offer: { id: offerId } } : {},
                 order: { [sort]: direction.toUpperCase() },
                 take: per_page,
                 skip: (page - 1) * per_page,
-                relations: ['template', 'moderators'],
+                relations: ['template', 'moderators', 'offer'],
             });
 
             return etherapies;
@@ -197,7 +199,7 @@ class EtherapyTypeormRepository
         try {
             const etherapy = await this.ormRepository.findOne({
                 where: { identifier },
-                relations: ['template', 'fieldJournals', 'moderators'],
+                relations: ['template', 'fieldJournals', 'moderators', 'offer'],
             });
 
             if (!etherapy) {

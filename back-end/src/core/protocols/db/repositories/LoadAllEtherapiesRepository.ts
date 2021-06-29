@@ -1,6 +1,7 @@
 import Etherapy from '../../../entities/Etherapy';
 
 export type params = {
+    offerId?: string;
     sort: 'name' | 'created_at' | 'updated_at';
     direction: 'asc' | 'desc';
     per_page: number;
