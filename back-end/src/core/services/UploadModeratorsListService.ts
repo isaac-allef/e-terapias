@@ -37,6 +37,7 @@ class UploadModeratorsListService {
                     password: await this.generateRandomPassword(),
                     etherapies: await this.loadManyEtherapiesByIdentifiersRepository.loadManyByIdentifiers(
                         d.etherapiesIdentifiers,
+                        offerId,
                     ),
                 };
 

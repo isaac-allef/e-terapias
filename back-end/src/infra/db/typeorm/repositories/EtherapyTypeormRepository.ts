@@ -212,10 +212,19 @@ class EtherapyTypeormRepository
         }
     }
 
-    async loadManyByIdentifiers(identifiers: string[]): Promise<Etherapy[]> {
+    async loadManyByIdentifiers(
+        identifiers: string[],
+        offerId?: string,
+    ): Promise<Etherapy[]> {
         try {
             const etherapies = await this.ormRepository.find({
-                where: { identifier: In([...identifiers]) },
+                // where: { identifier: In([...identifiers]) },
+                where: offerId
+                    ? {
+                          offer: { id: offerId },
+                          identifier: In([...identifiers]),
+                      }
+                    : { identifier: In([...identifiers]) },
                 relations: ['offer'],
             });
 
