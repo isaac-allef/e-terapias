@@ -41,17 +41,32 @@ class ModeratorTypeormRepository
 
     public async upload(data: params): Promise<Moderator[]> {
         try {
+            const { moderatorsData, offer } = data;
             const moderators = [];
 
-            for (const dto of data) {
+            for (const dto of moderatorsData) {
                 // eslint-disable-next-line no-await-in-loop
                 const moderatorExists = await this.ormRepository.findOne({
-                    email: dto.email,
+                    where: { email: dto.email },
+                    relations: ['etherapies', 'etherapies.offer'],
                 });
 
                 if (moderatorExists) {
                     moderatorExists.name = dto.name;
-                    moderatorExists.etherapies = dto.etherapies;
+
+                    const etherapiesOfOtherOffer = moderatorExists.etherapies.filter(
+                        etherapy => etherapy.offer.id !== offer.id,
+                    );
+
+                    const etherapiesOfThisOffer = dto.etherapies.filter(
+                        etherapy => etherapy.offer.id === offer.id,
+                    );
+
+                    moderatorExists.etherapies = [
+                        ...etherapiesOfOtherOffer,
+                        ...etherapiesOfThisOffer,
+                    ];
+
                     moderators.push(moderatorExists);
                 } else {
                     const moderator = this.ormRepository.create({

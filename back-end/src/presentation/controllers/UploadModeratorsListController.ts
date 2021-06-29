@@ -12,15 +12,20 @@ export class UploadModeratorsListController implements Controller {
 
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
         try {
-            const { basicInformations } = httpRequest.body;
+            const { offerId, basicInformations } = httpRequest.body;
+
+            if (!offerId) {
+                return badRequest(new MissingParamError('offerId'));
+            }
 
             if (!basicInformations) {
                 return badRequest(new MissingParamError('basicInformations'));
             }
 
-            const moderators = await this.uploadModeratorsListService.execute(
-                basicInformations,
-            );
+            const moderators = await this.uploadModeratorsListService.execute({
+                offerId,
+                moderatorsData: basicInformations,
+            });
             return ok(moderators);
         } catch (err) {
             return serverError(err);
