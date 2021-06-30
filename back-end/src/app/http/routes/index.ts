@@ -17,6 +17,6 @@ routes.use('/templates', templatesRouter);
 routes.use('/fieldJournals', fieldJournalsRouter);
 routes.use('/managers', managersRouter);
 routes.use('/metrics', metricsRouter);
-routes.use('/offer', offerRouter);
+routes.use('/offers', offerRouter);
 
 export default routes;
