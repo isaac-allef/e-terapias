@@ -1,6 +1,7 @@
 import FieldJournal from '../../../entities/FieldJournal';
 
 export type params = {
+    offerId?: string;
     etherapyId: string;
     sort: 'name' | 'date' | 'created_at' | 'updated_at';
     direction: 'asc' | 'desc';

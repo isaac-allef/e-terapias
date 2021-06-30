@@ -83,6 +83,7 @@ class FieldJournalTypeormRepository
     }
 
     async loadAllPerModerator({
+        offerId,
         moderatorId,
         sort,
         direction,
@@ -90,13 +91,30 @@ class FieldJournalTypeormRepository
         page,
     }: loadAllPerModeratorParams): Promise<FieldJournal[]> {
         try {
-            const fieldJournals = await this.ormRepository.find({
-                where: { moderator: { id: moderatorId } },
-                order: { [sort]: direction.toUpperCase() },
-                take: per_page,
-                skip: (page - 1) * per_page,
-                relations: ['etherapy'],
-            });
+            const queryBuilder = this.ormRepository.createQueryBuilder(
+                'FieldJournal',
+            );
+
+            queryBuilder
+                .leftJoin('FieldJournal.moderator', 'moderator')
+                .leftJoinAndSelect('FieldJournal.etherapy', 'etherapy')
+                .leftJoinAndSelect('etherapy.offer', 'offer');
+
+            queryBuilder.where('moderator.id = :id', { id: moderatorId });
+
+            if (offerId) {
+                queryBuilder.where('offer.id = :id', { id: offerId });
+            }
+
+            queryBuilder
+                .orderBy(
+                    `FieldJournal.${sort}`,
+                    direction.toUpperCase() as 'ASC' | 'DESC',
+                )
+                .take(per_page)
+                .skip((page - 1) * per_page);
+
+            const fieldJournals = await queryBuilder.getMany();
 
             return fieldJournals;
         } catch (err) {
@@ -146,6 +164,7 @@ class FieldJournalTypeormRepository
     }
 
     async loadAllPerEtherapy({
+        offerId,
         etherapyId,
         sort,
         direction,
@@ -153,13 +172,30 @@ class FieldJournalTypeormRepository
         page,
     }: loadAllPerEtherapyParams): Promise<FieldJournal[]> {
         try {
-            const fieldJournals = await this.ormRepository.find({
-                where: { etherapy: { id: etherapyId } },
-                order: { [sort]: direction.toUpperCase() },
-                take: per_page,
-                skip: (page - 1) * per_page,
-                relations: ['moderator'],
-            });
+            const queryBuilder = this.ormRepository.createQueryBuilder(
+                'FieldJournal',
+            );
+
+            queryBuilder
+                .leftJoinAndSelect('FieldJournal.moderator', 'moderator')
+                .leftJoin('FieldJournal.etherapy', 'etherapy')
+                .leftJoinAndSelect('etherapy.offer', 'offer');
+
+            queryBuilder.where('etherapy.id = :id', { id: etherapyId });
+
+            if (offerId) {
+                queryBuilder.where('offer.id = :id', { id: offerId });
+            }
+
+            queryBuilder
+                .orderBy(
+                    `FieldJournal.${sort}`,
+                    direction.toUpperCase() as 'ASC' | 'DESC',
+                )
+                .take(per_page)
+                .skip((page - 1) * per_page);
+
+            const fieldJournals = await queryBuilder.getMany();
 
             return fieldJournals;
         } catch (err) {
@@ -195,18 +231,35 @@ class FieldJournalTypeormRepository
     }
 
     async loadAll({
+        offerId,
         sort,
         direction,
         per_page,
         page,
     }: loadAllParams): Promise<FieldJournal[]> {
         try {
-            const fieldJournals = await this.ormRepository.find({
-                order: { [sort]: direction.toUpperCase() },
-                take: per_page,
-                skip: (page - 1) * per_page,
-                relations: ['moderator', 'etherapy'],
-            });
+            const queryBuilder = this.ormRepository.createQueryBuilder(
+                'FieldJournal',
+            );
+
+            queryBuilder
+                .leftJoinAndSelect('FieldJournal.moderator', 'moderator')
+                .leftJoinAndSelect('FieldJournal.etherapy', 'etherapy')
+                .leftJoinAndSelect('etherapy.offer', 'offer');
+
+            if (offerId) {
+                queryBuilder.where('offer.id = :id', { id: offerId });
+            }
+
+            queryBuilder
+                .orderBy(
+                    `FieldJournal.${sort}`,
+                    direction.toUpperCase() as 'ASC' | 'DESC',
+                )
+                .take(per_page)
+                .skip((page - 1) * per_page);
+
+            const fieldJournals = await queryBuilder.getMany();
 
             return fieldJournals;
         } catch (err) {

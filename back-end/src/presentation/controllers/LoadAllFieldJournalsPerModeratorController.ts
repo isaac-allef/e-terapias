@@ -12,7 +12,13 @@ export class LoadAllFieldJournalsPerModeratorController implements Controller {
 
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
         try {
-            const { sort, direction, per_page, page } = httpRequest.query;
+            const {
+                offerId,
+                sort,
+                direction,
+                per_page,
+                page,
+            } = httpRequest.query;
             const { id } = httpRequest.params;
 
             if (!id) {
@@ -21,6 +27,7 @@ export class LoadAllFieldJournalsPerModeratorController implements Controller {
 
             const fieldJournal = await this.loadAllFieldJournalsPerModeratorService.execute(
                 {
+                    offerId,
                     moderatorId: id,
                     sort,
                     direction,

@@ -9,6 +9,7 @@ class LoadAllFieldJournalsPerModeratorService {
     ) {}
 
     public async execute({
+        offerId,
         moderatorId,
         sort = 'updated_at',
         direction = 'asc',
@@ -16,6 +17,7 @@ class LoadAllFieldJournalsPerModeratorService {
         page = 1,
     }: params): Promise<FieldJournal[]> {
         return this.loadAllEtherapiesRepository.loadAllPerModerator({
+            offerId,
             moderatorId,
             sort,
             direction,

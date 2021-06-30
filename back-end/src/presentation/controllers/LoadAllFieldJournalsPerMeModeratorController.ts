@@ -13,7 +13,13 @@ export class LoadAllFieldJournalsPerMeModeratorController
 
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
         try {
-            const { sort, direction, per_page, page } = httpRequest.query;
+            const {
+                offerId,
+                sort,
+                direction,
+                per_page,
+                page,
+            } = httpRequest.query;
             const moderatorId = httpRequest.userId;
 
             if (!moderatorId) {
@@ -22,6 +28,7 @@ export class LoadAllFieldJournalsPerMeModeratorController
 
             const fieldJournal = await this.loadAllFieldJournalsPerModeratorService.execute(
                 {
+                    offerId,
                     moderatorId,
                     sort,
                     direction,

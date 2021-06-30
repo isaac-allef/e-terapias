@@ -11,10 +11,17 @@ export class LoadAllFieldJournalsController implements Controller {
 
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
         try {
-            const { sort, direction, per_page, page } = httpRequest.query;
+            const {
+                offerId,
+                sort,
+                direction,
+                per_page,
+                page,
+            } = httpRequest.query;
 
             const fieldJournal = await this.loadAllFieldJournalsService.execute(
                 {
+                    offerId,
                     sort,
                     direction,
                     per_page,
