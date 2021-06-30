@@ -3,6 +3,9 @@ import Offer from '../../../../core/entities/Offer';
 import CreateOfferRepository, {
     params,
 } from '../../../../core/protocols/db/repositories/CreateOfferRepository';
+import LoadAllOffersRepository, {
+    params as loadAllParams,
+} from '../../../../core/protocols/db/repositories/LoadAllOffersRepository';
 import LoadOfferByIdRepository from '../../../../core/protocols/db/repositories/LoadOfferByIdRepository';
 import UpdateOfferRepository, {
     params as updateParams,
@@ -14,7 +17,8 @@ class OfferTypeormRepository
     implements
         CreateOfferRepository,
         UpdateOfferRepository,
-        LoadOfferByIdRepository {
+        LoadOfferByIdRepository,
+        LoadAllOffersRepository {
     private ormRepository: Repository<OfferTypeorm>;
 
     constructor() {
@@ -86,6 +90,26 @@ class OfferTypeormRepository
             return offer;
         } catch {
             throw new Error('Load offer error');
+        }
+    }
+
+    public async loadAll({
+        sort,
+        direction,
+        per_page,
+        page,
+    }: loadAllParams): Promise<Offer[]> {
+        try {
+            const offers = await this.ormRepository.find({
+                order: { [sort]: direction.toUpperCase() },
+                take: per_page,
+                skip: (page - 1) * per_page,
+                relations: ['etherapies'],
+            });
+
+            return offers;
+        } catch (err) {
+            throw new Error('Load all offers error');
         }
     }
 }
