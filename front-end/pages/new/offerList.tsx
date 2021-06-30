@@ -1,4 +1,4 @@
-import { Heading, LinkBox, LinkOverlay, Text } from "@chakra-ui/react";
+import { Flex, Heading, LinkBox, LinkOverlay, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import MyMenu from "../../components/new/MyMenu";
 import Layout from "../../components/shared/Layout";
@@ -9,6 +9,7 @@ import { MdLocalOffer } from "react-icons/md";
 import Icon from "@chakra-ui/icon";
 import { timestampToDateShort } from "../../utils/timestampFormat";
 import { useRouter } from 'next/router';
+import Link from "next/link";
 
 export default function OfferList() {
   const router = useRouter();
@@ -51,7 +52,14 @@ export default function OfferList() {
 
     return (
         <Layout menu={<MyMenu manager={true} itemSelected='offerList' />}>
-		<MyTitle>Offers</MyTitle>
+		
+		<Flex justifyContent='space-between'>
+			<MyTitle>Offers</MyTitle>
+			
+			<Link href={'/new/offerForm'}>
+				<div><MyButton>New</MyButton></div>
+			</Link>
+		</Flex>
 		{
 			offers.map(offer => {
 				return <LinkBox
@@ -89,9 +97,6 @@ export default function OfferList() {
 				</LinkBox>
 			})
 		}
-		<MyButton>
-			New Offer
-		</MyButton>
         </Layout>
     )
 }
