@@ -88,18 +88,34 @@ class TemplateTypeormRepository
     }
 
     async loadAll({
+        offerId,
         sort,
         direction,
         per_page,
         page,
     }: loadAllParams): Promise<Template[]> {
         try {
-            const templates = await this.ormRepository.find({
-                order: { [sort]: direction.toUpperCase() },
-                take: per_page,
-                skip: (page - 1) * per_page,
-                relations: ['etherapies'],
-            });
+            const queryBuilder = this.ormRepository.createQueryBuilder(
+                'Template',
+            );
+
+            queryBuilder
+                .leftJoinAndSelect('Template.etherapies', 'etherapies')
+                .leftJoinAndSelect('etherapies.offer', 'offer');
+
+            if (offerId) {
+                queryBuilder.where('offer.id = :id', { id: offerId });
+            }
+
+            queryBuilder
+                .orderBy(
+                    `Template.${sort}`,
+                    direction.toUpperCase() as 'ASC' | 'DESC',
+                )
+                .take(per_page)
+                .skip((page - 1) * per_page);
+
+            const templates = await queryBuilder.getMany();
 
             return templates;
         } catch (err) {
