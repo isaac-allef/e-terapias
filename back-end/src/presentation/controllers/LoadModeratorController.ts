@@ -13,12 +13,16 @@ export class LoadModeratorController implements Controller {
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
         try {
             const { id } = httpRequest.params;
+            const { offerId } = httpRequest.query;
 
             if (!id) {
                 return badRequest(new MissingParamError('id'));
             }
 
-            const moderator = await this.loadModeratorByIdService.execute(id);
+            const moderator = await this.loadModeratorByIdService.execute(
+                id,
+                offerId,
+            );
             return ok(moderator);
         } catch (err) {
             return serverError(err);

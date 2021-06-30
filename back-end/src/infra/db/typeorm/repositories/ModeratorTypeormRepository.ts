@@ -87,15 +87,25 @@ class ModeratorTypeormRepository
         }
     }
 
-    async load(id: string): Promise<Moderator> {
+    async load(id: string, offerId: string): Promise<Moderator> {
         try {
             const moderator = await this.ormRepository.findOne({
                 where: { id },
-                relations: ['etherapies', 'etherapies.template'],
+                relations: [
+                    'etherapies',
+                    'etherapies.template',
+                    'etherapies.offer',
+                ],
             });
 
             if (!moderator) {
                 throw new Error('Moderator not found');
+            }
+
+            if (offerId) {
+                moderator.etherapies = moderator.etherapies.filter(
+                    etherapy => etherapy.offer.id === offerId,
+                );
             }
 
             return moderator;

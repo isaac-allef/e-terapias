@@ -6,8 +6,8 @@ class LoadModeratorByIdService {
         private loadModeratorByIdRepository: LoadModeratorByIdRepository,
     ) {}
 
-    public async execute(id: string): Promise<Moderator> {
-        return this.loadModeratorByIdRepository.load(id);
+    public async execute(id: string, offerId?: string): Promise<Moderator> {
+        return this.loadModeratorByIdRepository.load(id, offerId);
     }
 }
 
