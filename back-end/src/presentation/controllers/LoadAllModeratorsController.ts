@@ -11,9 +11,16 @@ export class LoadAllModeratorsController implements Controller {
 
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
         try {
-            const { sort, direction, per_page, page } = httpRequest.query;
+            const {
+                offerId,
+                sort,
+                direction,
+                per_page,
+                page,
+            } = httpRequest.query;
 
             const moderator = await this.loadAllModeratorsService.execute({
+                offerId,
                 sort,
                 direction,
                 per_page,

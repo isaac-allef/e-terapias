@@ -188,18 +188,34 @@ class ModeratorTypeormRepository
     }
 
     async loadAll({
+        offerId,
         sort,
         direction,
         per_page,
         page,
     }: loadAllParams): Promise<Moderator[]> {
         try {
-            const moderators = await this.ormRepository.find({
-                order: { [sort]: direction.toUpperCase() },
-                take: per_page,
-                skip: (page - 1) * per_page,
-                relations: ['etherapies'],
-            });
+            const queryBuilder = this.ormRepository.createQueryBuilder(
+                'Moderator',
+            );
+
+            queryBuilder
+                .leftJoinAndSelect('Moderator.etherapies', 'etherapies')
+                .leftJoinAndSelect('etherapies.offer', 'offer');
+
+            if (offerId) {
+                queryBuilder.where('offer.id = :id', { id: offerId });
+            }
+
+            queryBuilder
+                .orderBy(
+                    `Moderator.${sort}`,
+                    direction.toUpperCase() as 'ASC' | 'DESC',
+                )
+                .take(per_page)
+                .skip((page - 1) * per_page);
+
+            const moderators = await queryBuilder.getMany();
 
             return moderators;
         } catch (err) {
