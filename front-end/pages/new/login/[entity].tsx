@@ -50,7 +50,7 @@ export default function Login() {
 
     if (entity === 'manager') {
         localStorage.setItem('@etherapies:entity', 'manager');
-        router.push('/new/dashboard');
+        router.push('/new/offerList');
     } else if (entity === 'moderator') {
         localStorage.setItem('@etherapies:entity', 'moderator');
         router.push('/new/myFieldJournalList');
