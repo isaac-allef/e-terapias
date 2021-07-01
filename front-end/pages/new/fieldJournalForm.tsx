@@ -212,6 +212,9 @@ export default function FieldJournalForm() {
 
 const getMyInformations = async (token: string): Promise<any> => {
     const response = await api.get('/moderators/me', {
+        params: {
+            offerId: localStorage.getItem('@etherapies:offerId'),
+        },
         headers: {
           'Authorization': `token ${token}`
         }
