@@ -9,10 +9,14 @@ export class LoadMetricsController implements Controller {
 
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
         try {
-            const { numberOfFieldJournalsLastFourWeeks } = httpRequest.query;
+            const {
+                offerId,
+                numberOfFieldJournalsLastFourWeeks,
+            } = httpRequest.query;
 
             const metrics = await this.loadMetricsService.execute({
                 numberOfFieldJournalsLastFourWeeks,
+                offerId,
             });
 
             return ok(metrics);
