@@ -1,3 +1,3 @@
 export default interface CountEtherapiesRepository {
-    count(): Promise<number>;
+    count(offerId?: string): Promise<number>;
 }

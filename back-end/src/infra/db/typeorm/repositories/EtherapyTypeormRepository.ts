@@ -234,8 +234,17 @@ class EtherapyTypeormRepository
         }
     }
 
-    async count(): Promise<number> {
+    async count(offerId: string): Promise<number> {
         try {
+            if (offerId) {
+                return this.ormRepository.count({
+                    relations: ['offer'],
+                    where: {
+                        offer: { id: offerId },
+                    },
+                });
+            }
+
             return this.ormRepository.count();
         } catch {
             throw new Error('Count etherapies error.');
