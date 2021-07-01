@@ -13,7 +13,7 @@ export default function Header() {
         if (entity === 'manager') {
             setHeadingLink('/new/offerList');
         } else if (entity === 'moderator') {
-            setHeadingLink('/new/myFieldJournalList');
+            setHeadingLink('/new/myOfferList');
         }
     }, []);
 

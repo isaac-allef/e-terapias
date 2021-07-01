@@ -53,7 +53,7 @@ export default function Login() {
         router.push('/new/offerList');
     } else if (entity === 'moderator') {
         localStorage.setItem('@etherapies:entity', 'moderator');
-        router.push('/new/myFieldJournalList');
+        router.push('/new/myOfferList');
     }
   }
 
