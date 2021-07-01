@@ -267,9 +267,22 @@ class ModeratorTypeormRepository
         }
     }
 
-    async count(): Promise<number> {
+    async count(offerId: string): Promise<number> {
         try {
-            return this.ormRepository.count();
+            const queryBuilder = this.ormRepository.createQueryBuilder(
+                'Moderator',
+            );
+
+            if (offerId) {
+                queryBuilder
+                    .leftJoin('Moderator.etherapies', 'etherapies')
+                    .leftJoin('etherapies.offer', 'offer')
+                    .where('offer.id = :id', {
+                        id: offerId,
+                    });
+            }
+
+            return queryBuilder.getCount();
         } catch {
             throw new Error('Count moderators error.');
         }
