@@ -11,7 +11,7 @@ export default function Header() {
         const entity = localStorage.getItem('@etherapies:entity');
 
         if (entity === 'manager') {
-            setHeadingLink('/new/dashboard');
+            setHeadingLink('/new/offerList');
         } else if (entity === 'moderator') {
             setHeadingLink('/new/myFieldJournalList');
         }

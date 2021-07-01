@@ -9,10 +9,13 @@ export default function Layout({ menu, children }) {
             templateColumns="repeat(6, 1fr)"
             flex='1'
             >
-                <GridItem colSpan={1}>
-                    { menu }
-                </GridItem>
-                <GridItem colSpan={5}>
+                {
+                    menu ? <GridItem colSpan={1}>
+                            { menu }
+                            </GridItem>
+                    : null
+                }
+                <GridItem colSpan={menu ? 5 : 6}>
                     <Box
                         marginTop='2rem'
                         marginLeft='5rem'

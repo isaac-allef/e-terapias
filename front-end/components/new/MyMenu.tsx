@@ -7,7 +7,6 @@ import { RiPsychotherapyFill } from "react-icons/ri";
 import { BsFillPersonFill } from "react-icons/bs";
 import { VscGraph } from "react-icons/vsc";
 import { IoSettingsSharp } from "react-icons/io5";
-import { MdLocalOffer } from "react-icons/md";
 
 function Item({ title, link, icon, isSelected=false, ...props }) {
     return (
@@ -37,7 +36,6 @@ function Item({ title, link, icon, isSelected=false, ...props }) {
 		{
 			manager ? 
 			<Stack boxShadow='xl' spacing={0} height='100%'>
-				<Item isSelected={itemSelected === 'offerList'} marginTop='3rem' title='Offers' link='/new/offerList' icon={<Icon as={MdLocalOffer} />} />
 				<Item isSelected={itemSelected === 'dashboard'} marginTop='3rem' title='Dashboard' link='/new/dashboard' icon={<Icon as={VscGraph} />} />
 				<Item isSelected={itemSelected === 'fieldJournalList'} title='Field journals' link='/new/fieldJournalList' icon={<Icon as={IoIosJournal} />} />
 				<Item isSelected={itemSelected === 'templateList'} title='Templates' link='/new/templateList' icon={<Icon as={AiFillCopy} />} />

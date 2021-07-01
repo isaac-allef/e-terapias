@@ -1,4 +1,4 @@
-import { Flex, Heading, LinkBox, LinkOverlay, Text } from "@chakra-ui/react";
+import { Flex, Heading, LinkBox, LinkOverlay, Text, Wrap } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import MyMenu from "../../components/new/MyMenu";
 import Layout from "../../components/shared/Layout";
@@ -51,7 +51,7 @@ export default function OfferList() {
     }, [token, page, direction, sort, search]);
 
     return (
-        <Layout menu={<MyMenu manager={true} itemSelected='offerList' />}>
+        <Layout menu={null} >
 		
 		<Flex justifyContent='space-between'>
 			<MyTitle>Offers</MyTitle>
@@ -60,10 +60,12 @@ export default function OfferList() {
 				<div><MyButton>New</MyButton></div>
 			</Link>
 		</Flex>
+		<Wrap>
 		{
 			offers.map(offer => {
 				return <LinkBox
-					borderColor={localStorage.getItem('@etherapies:offerId') === offer.id ? 'blue.500' : 'white'}
+					borderColor={localStorage.getItem('@etherapies:offerId') === offer.id ? 'blue.500' : 'gray.300'}
+					textColor={localStorage.getItem('@etherapies:offerId') === offer.id ? 'blue.500' : 'black'}
 					key={offer.id}
 					as="article" 
 					maxW="sm" p="5" 
@@ -97,6 +99,7 @@ export default function OfferList() {
 				</LinkBox>
 			})
 		}
+		</Wrap>
         </Layout>
     )
 }

@@ -59,7 +59,7 @@ export default function OfferForm() {
     }
 
     return (
-        <Layout menu={<MyMenu manager={true} />}>
+        <Layout menu={null}>
         <MyTitle>{'Create Offer'}</MyTitle>
 
         <Formik
