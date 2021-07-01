@@ -127,5 +127,9 @@ const getOffers = async ({ token, page, per_page, sort, direction }: loadParams)
 		});
 	  })
 
+	myOffersSet.sort((a, b) => {
+		if (a.created_at > b.created_at) return -1
+	})
+
 	return myOffersSet;
 }
