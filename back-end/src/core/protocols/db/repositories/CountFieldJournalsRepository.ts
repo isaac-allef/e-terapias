@@ -4,5 +4,5 @@ export type filterDate = {
 };
 
 export default interface countFieldJournalsRepository {
-    count(data?: filterDate): Promise<number>;
+    count(data?: filterDate, offerId?: string): Promise<number>;
 }

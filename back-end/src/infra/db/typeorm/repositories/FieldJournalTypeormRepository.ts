@@ -1,5 +1,5 @@
 /* eslint-disable no-restricted-syntax */
-import { Between, EntityRepository, getRepository, Repository } from 'typeorm';
+import { EntityRepository, getRepository, Repository } from 'typeorm';
 import FieldJournal from '../../../../core/entities/FieldJournal';
 import CountFieldJournalsRepository, {
     filterDate,
@@ -305,17 +305,29 @@ class FieldJournalTypeormRepository
         }
     }
 
-    async count(data: filterDate): Promise<number> {
+    async count(data: filterDate, offerId: string): Promise<number> {
         try {
-            let count = null;
+            const queryBuilder = this.ormRepository.createQueryBuilder(
+                'FieldJournal',
+            );
 
             if (data) {
-                count = await this.ormRepository.count({
-                    date: Between(data.begin, data.end),
-                });
-            } else {
-                count = await this.ormRepository.count();
+                queryBuilder.where(
+                    'FieldJournal.date BETWEEN :begin AND :end',
+                    { begin: data.begin, end: data.end },
+                );
             }
+
+            if (offerId) {
+                queryBuilder
+                    .leftJoin('FieldJournal.etherapy', 'etherapy')
+                    .leftJoin('etherapy.offer', 'offer')
+                    .andWhere('offer.id = :id', {
+                        id: offerId,
+                    });
+            }
+
+            const count = queryBuilder.getCount();
 
             if (count === null) {
                 throw new Error('Count field journals error.');
