@@ -130,6 +130,7 @@ const getTemplates = async ({ token, page, per_page, sort, direction }: loadPara
 			per_page,
 			sort,
 			direction,
+			offerId: localStorage.getItem('@etherapies:offerId'),
 		},
 		headers: {
 			'Authorization': `token ${token}`

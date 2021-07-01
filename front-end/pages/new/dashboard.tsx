@@ -109,6 +109,7 @@ const getMetrics = async (token: string): Promise<any> => {
 	const response = await api.get('/metrics', {
 		params: {
 			numberOfFieldJournalsLastFourWeeks: new Date(),
+            offerId: localStorage.getItem('@etherapies:offerId'),
 		},
 		headers: {
 			'Authorization': `token ${token}`

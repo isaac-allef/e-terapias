@@ -257,6 +257,7 @@ const getEtherapies = async (token: string): Promise<any[]> => {
     const response = await api.get('/etherapies', {
         params: {
             per_page: 100,
+            offerId: localStorage.getItem('@etherapies:offerId'),
           },
         headers: {
           'Authorization': `token ${token}`

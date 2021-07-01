@@ -121,6 +121,7 @@ const getFieldJournals = async ({ token, page, per_page, sort, direction }: load
 			per_page,
 			sort,
 			direction,
+			offerId: localStorage.getItem('@etherapies:offerId'),
 		},
 		headers: {
 			'Authorization': `token ${token}`

@@ -132,6 +132,9 @@ const details = (moderator) => (
 
 const getModerator = async (token: string, id: string): Promise<any> => {
 	const response = await api.get(`/moderators/${id}`, {
+		params: {
+			offerId: localStorage.getItem('@etherapies:offerId'),
+		},
 		headers: {
 			'Authorization': `token ${token}`
 		}
@@ -158,6 +161,7 @@ const getFieldJournals = async ({ token, moderatorId, page, per_page, sort, dire
 			per_page,
 			sort,
 			direction,
+			offerId: localStorage.getItem('@etherapies:offerId'),
 		},
 		headers: {
 			'Authorization': `token ${token}`

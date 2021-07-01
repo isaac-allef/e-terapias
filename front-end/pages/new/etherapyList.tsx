@@ -117,6 +117,7 @@ const getEtherapies = async ({ token, page, per_page, sort, direction }: loadPar
 			per_page,
 			sort,
 			direction,
+			offerId: localStorage.getItem('@etherapies:offerId'),
 		},
 		headers: {
 			'Authorization': `token ${token}`
