@@ -43,6 +43,7 @@ export default function Header() {
                     localStorage.setItem('@etherapies:token', null);
                     localStorage.setItem('@etherapies:myId', null);
                     localStorage.setItem('@etherapies:entity', null);
+                    localStorage.setItem('@etherapies:offerId', null);
                     router.push('/');
                 }}><IoLogOutOutline size='1.2rem' /></Button>
             </HStack>
