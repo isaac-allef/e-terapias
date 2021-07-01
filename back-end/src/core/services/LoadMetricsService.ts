@@ -24,6 +24,7 @@ type metrics = {
 
 type params = {
     numberOfFieldJournalsLastFourWeeks: Date;
+    offerId?: string;
 };
 
 class LoadMetricsService {
@@ -35,10 +36,15 @@ class LoadMetricsService {
     ) {}
 
     public async execute(data?: params): Promise<metrics> {
-        const numberOfEtherapies = await this.countEtherapies.count();
-        const numberOfModerators = await this.countModerators.count();
-        const numberOfFieldJournals = await this.countFieldJournals.count();
-        const templatesNumber = await this.countTemplates.count();
+        const offerId = data?.offerId;
+
+        const numberOfEtherapies = await this.countEtherapies.count(offerId);
+        const numberOfModerators = await this.countModerators.count(offerId);
+        const numberOfFieldJournals = await this.countFieldJournals.count(
+            undefined,
+            offerId,
+        );
+        const templatesNumber = await this.countTemplates.count(offerId);
 
         if (!data?.numberOfFieldJournalsLastFourWeeks) {
             return {
@@ -65,15 +71,19 @@ class LoadMetricsService {
 
         const numberOfFieldJournalsLastWeek = await this.countFieldJournals.count(
             { begin: lastWeek, end: today },
+            offerId,
         );
         const numberOfFieldJournalsBeforeLastWeek = await this.countFieldJournals.count(
             { begin: beforeLastWeek, end: lastWeek },
+            offerId,
         );
         const numberOfFieldJournalsThreeWeeksAgo = await this.countFieldJournals.count(
             { begin: threeWeeksAgo, end: beforeLastWeek },
+            offerId,
         );
         const numberOfFieldJournalsFourWeeksAgo = await this.countFieldJournals.count(
             { begin: fourWeeksAgo, end: threeWeeksAgo },
+            offerId,
         );
 
         return {
