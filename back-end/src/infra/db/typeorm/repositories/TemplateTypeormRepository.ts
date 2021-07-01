@@ -154,9 +154,22 @@ class TemplateTypeormRepository
         }
     }
 
-    async count(): Promise<number> {
+    async count(offerId: string): Promise<number> {
         try {
-            return this.ormRepository.count();
+            const queryBuilder = this.ormRepository.createQueryBuilder(
+                'Template',
+            );
+
+            if (offerId) {
+                queryBuilder
+                    .leftJoin('Template.etherapies', 'etherapies')
+                    .leftJoin('etherapies.offer', 'offer')
+                    .where('offer.id = :id', {
+                        id: offerId,
+                    });
+            }
+
+            return queryBuilder.getCount();
         } catch {
             throw new Error('Count templates error.');
         }

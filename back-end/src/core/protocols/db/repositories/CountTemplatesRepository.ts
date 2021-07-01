@@ -1,3 +1,3 @@
 export default interface countTemplatesRepository {
-    count(): Promise<number>;
+    count(offerId?: string): Promise<number>;
 }
