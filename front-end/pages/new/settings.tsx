@@ -7,7 +7,7 @@ import { Field, Form, Formik } from "formik";
 import MyToast from "../../components/shared/MyToast";
 import { useRouter } from 'next/router';
 import Icon from "@chakra-ui/icon";
-import { AiTwotoneMail } from 'react-icons/ai';
+import { AiOutlineCloudSync, AiTwotoneMail } from 'react-icons/ai';
 import { BiKey } from 'react-icons/bi';
 import { IoIosDocument } from 'react-icons/io';
 import Layout from "../../components/shared/Layout";
@@ -17,6 +17,7 @@ import { useEffect, useState } from "react";
 import MyMenu from '../../components/new/MyMenu';
 import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Heading, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper } from '@chakra-ui/react';
 import api from '../../services/api';
+import MyTitle from '../../components/shared/MyTitle';
 
 export default function Login() {
     const myToast = new MyToast();
@@ -29,24 +30,6 @@ export default function Login() {
         setToken(localStorage.getItem('@etherapies:token'));
         setOfferId(localStorage.getItem('@etherapies:offerId'));
     }, []);
-
-    const uploadEtherapiesList = async () => {
-        return axios.post('/api/uploadEtherapiesList', {
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json',
-            }
-        });
-    }
-
-    const uploadModeratorsList = async () => {
-        return axios.post('/api/uploadModeratorsList', {
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json',
-            }
-        });
-    }
 
     useEffect(() => {
         if (token && offerId) {
@@ -66,8 +49,8 @@ export default function Login() {
       moderatorsColumnEtherapiesIdentifiers: Yup.string(),
       etherapiesLink: Yup.string(),
       etherapiesIndex: Yup.number().default(0),
-      etherapyColumnIdentifier: Yup.string(),
-      etherapyColumnName: Yup.string(),
+      etherapiesColumnIdentifier: Yup.string(),
+      etherapiesColumnName: Yup.string(),
   });
 
   const functionSubmitForm = async (values, actions) => {
@@ -81,11 +64,9 @@ export default function Login() {
         moderatorsColumnEtherapiesIdentifiers,
         etherapiesLink,
         etherapiesIndex,
-        etherapyColumnIdentifier,
-        etherapyColumnName,
+        etherapiesColumnIdentifier,
+        etherapiesColumnName,
     } = values;
-
-    console.log(etherapiesIndex)
 
     try {
         const settings: settings = {
@@ -103,8 +84,8 @@ export default function Login() {
             etherapies: {
                 sheet_link: etherapiesLink,
                 sheet_index: etherapiesIndex,
-                column_name: etherapyColumnIdentifier,
-                column_identifier: etherapyColumnName,
+                column_identifier: etherapiesColumnIdentifier,
+                column_name: etherapiesColumnName,
             }
         }
 
@@ -118,32 +99,68 @@ export default function Login() {
     }
   }
 
+  const syncEtherapies = async (link, index, column_identifier, column_name) => {
+      try {
+        await syncEtherapiesList(token, offerId, link, index, column_identifier, column_name);
+        myToast.execute({ status: 'success', title: 'Etherapies list updated' })
+    } catch (err) {
+        myToast.execute({ status: 'error', title: 'Error', description: err.message })
+    }
+  }
+
+  const syncModerators = async (link, index, column_email, column_name, column_etherapies_identifiers) => {
+    try {
+      await syncModeratorsList(token, offerId, link, index, column_email, column_name, column_etherapies_identifiers);
+      myToast.execute({ status: 'success', title: 'Moderators list updated' })
+  } catch (err) {
+      myToast.execute({ status: 'error', title: 'Error', description: err.message })
+  }
+}
+
   return (
     <Layout menu={<MyMenu manager={true} itemSelected='settings' />}>
-        <Flex justifyContent='space-around' paddingBottom='3vh'>
-            {
-                uploadListForm(
-                    'Upload etherapies list', 
-                    uploadEtherapiesList,
-                    () => myToast.execute({ status: 'success', title: 'Etherapies list updated' }),
-                    (err) => myToast.execute({ status: 'error', title: 'Error', description: err.message })
-                )
-            }
-            {
-                uploadListForm(
-                    'Upload moderators list', 
-                    uploadModeratorsList,
-                    () => myToast.execute({ status: 'success', title: 'Moderators list updated' }),
-                    (err) => myToast.execute({ status: 'error', title: 'Error', description: err.message })
-                )
-            }
-        </Flex>
+        <MyTitle>Settings</MyTitle>
         {   initialValues ?
-            settingsSheetsForm(initialValues, SignupSchema, functionSubmitForm)
+            settingsSheetsForm(
+                initialValues, 
+                SignupSchema, 
+                functionSubmitForm, 
+                syncEtherapies, 
+                syncModerators
+            )
             : null
         }
       </Layout>
   )
+}
+
+const syncEtherapiesList = async (token, offerId, link, index, column_identifier, column_name) => {
+    return axios.post('/api/syncEtherapiesList', {
+        offerId,
+        link,
+        index,
+        column_identifier,
+        column_name,
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        }
+    });
+}
+
+const syncModeratorsList = async (token, offerId, link, index, column_email, column_name, column_etherapies_identifiers) => {
+    return axios.post('/api/syncModeratorsList', {
+        offerId,
+        link,
+        index,
+        column_email,
+        column_name,
+        column_etherapies_identifiers,
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        }
+    });
 }
 
 const getSettings = async (token, offerId)  => {
@@ -168,8 +185,8 @@ const getSettings = async (token, offerId)  => {
         moderatorsColumnEtherapiesIdentifiers: settings?.moderators?.column_etherapies_identifiers,
         etherapiesLink: settings?.etherapies?.sheet_link,
         etherapiesIndex: settings?.etherapies?.sheet_index,
-        etherapyColumnIdentifier: settings?.etherapies?.column_identifier,
-        etherapyColumnName: settings?.etherapies?.column_name,
+        etherapiesColumnIdentifier: settings?.etherapies?.column_identifier,
+        etherapiesColumnName: settings?.etherapies?.column_name,
     };
 }
 
@@ -205,7 +222,7 @@ const putSettings = async (token: string, offerId: string, settings: settings): 
     return offer;
 }
 
-const settingsSheetsForm = (initialValues, SignupSchema, functionSubmitForm) => (
+const settingsSheetsForm = (initialValues, SignupSchema, functionSubmitForm, syncEtherapies, syncModerators) => (
     <Formik
         initialValues={initialValues}
         validationSchema={SignupSchema}
@@ -213,6 +230,60 @@ const settingsSheetsForm = (initialValues, SignupSchema, functionSubmitForm) => 
         >
         {(props) => (
             <Form>
+                <Flex justifyContent='space-around' paddingBottom='3vh'>
+                    <Button
+                        leftIcon={<AiOutlineCloudSync />}
+                        mt={4}
+                        colorScheme="yellow"
+                        isLoading={props.isSubmitting}
+                        onClick={async () => {
+                            props.setSubmitting(true);
+                            const { 
+                                etherapiesLink, 
+                                etherapiesIndex, 
+                                etherapiesColumnIdentifier, 
+                                etherapiesColumnName 
+                            } = props.values;
+                            
+                            await syncEtherapies(
+                                etherapiesLink, 
+                                etherapiesIndex, 
+                                etherapiesColumnIdentifier, 
+                                etherapiesColumnName,
+                            );
+                            props.setSubmitting(false);
+                        }}
+                        >
+                        Sync etherapies
+                    </Button>
+                    <Button
+                        leftIcon={<AiOutlineCloudSync />}
+                        mt={4}
+                        colorScheme="yellow"
+                        isLoading={props.isSubmitting}
+                        onClick={async () => {
+                            props.setSubmitting(true);
+                            const { 
+                                moderatorsLink, 
+                                moderatorsIndex, 
+                                moderatorsColumnEmail, 
+                                moderatorsColumnName, 
+                                moderatorsColumnEtherapiesIdentifiers, 
+                            } = props.values;
+                            
+                            await syncModerators(
+                                moderatorsLink, 
+                                moderatorsIndex, 
+                                moderatorsColumnEmail, 
+                                moderatorsColumnName,
+                                moderatorsColumnEtherapiesIdentifiers,
+                            );
+                            props.setSubmitting(false);
+                        }}
+                        >
+                        Sync moderators
+                    </Button>
+                </Flex>
             <Accordion defaultIndex={[0]} allowToggle>
             <AccordionItem>
                 <AccordionButton _expanded={{ bg: "blue.500", color: "white" }}>
@@ -368,27 +439,27 @@ const settingsSheetsForm = (initialValues, SignupSchema, functionSubmitForm) => 
                         </FormControl>
                         )}
                     </Field>
-                    <Field name="etherapyColumnIdentifier">
+                    <Field name="etherapiesColumnIdentifier">
                         {({ field, form }) => (
-                        <FormControl isInvalid={form.errors.etherapyColumnIdentifier && form.touched.etherapyColumnIdentifier}>
-                            <FormLabel margin={0} htmlFor="etherapyColumnIdentifier">Etherapy column identifier</FormLabel>
+                        <FormControl isInvalid={form.errors.etherapiesColumnIdentifier && form.touched.etherapiesColumnIdentifier}>
+                            <FormLabel margin={0} htmlFor="etherapiesColumnIdentifier">Etherapies column identifier</FormLabel>
                             <InputGroup>
                             <InputLeftElement pointerEvents="none" children={<Icon as={IoIosDocument} color="gray.400" />} />
-                                <Input {...field} id="etherapyColumnIdentifier" placeholder="Id" />
+                                <Input {...field} id="etherapiesColumnIdentifier" placeholder="Id" />
                             </InputGroup>
-                        <   FormErrorMessage>{form.errors.etherapyColumnIdentifier}</FormErrorMessage>
+                        <   FormErrorMessage>{form.errors.etherapiesColumnIdentifier}</FormErrorMessage>
                         </FormControl>
                         )}
                     </Field>
-                    <Field name="etherapyColumnName">
+                    <Field name="etherapiesColumnName">
                         {({ field, form }) => (
-                        <FormControl isInvalid={form.errors.etherapyColumnName && form.touched.etherapyColumnName}>
-                            <FormLabel margin={0} htmlFor="etherapyColumnName">Etherapy column name</FormLabel>
+                        <FormControl isInvalid={form.errors.etherapiesColumnName && form.touched.etherapiesColumnName}>
+                            <FormLabel margin={0} htmlFor="etherapiesColumnName">Etherapies column name</FormLabel>
                             <InputGroup>
                             <InputLeftElement pointerEvents="none" children={<Icon as={IoIosDocument} color="gray.400" />} />
-                                <Input {...field} id="etherapyColumnName" placeholder="Id" />
+                                <Input {...field} id="etherapiesColumnName" placeholder="Id" />
                             </InputGroup>
-                        <   FormErrorMessage>{form.errors.etherapyColumnName}</FormErrorMessage>
+                        <   FormErrorMessage>{form.errors.etherapiesColumnName}</FormErrorMessage>
                         </FormControl>
                         )}
                     </Field>
@@ -398,29 +469,32 @@ const settingsSheetsForm = (initialValues, SignupSchema, functionSubmitForm) => 
             
             <Divider />
 
-            <Button
-                mt={4}
-                colorScheme="green"
-                isLoading={props.isSubmitting}
-                type="submit"
-                >
-                Save
-            </Button>
+            <Flex justifyContent='flex-end' paddingBottom='3vh'>
+                <Button
+                    mt={4}
+                    colorScheme="blue"
+                    isLoading={props.isSubmitting}
+                    type="submit"
+                    >
+                    Save
+                </Button>
+            </Flex>
+
             </Form>
         )}
         </Formik>
 );
 
-const uploadListForm = (
+const syncListForm = (
     text: string, 
-    uploadList: Function, 
+    syncList: Function, 
     toastSuccess?: Function,
     toastError?: Function ) => (
     <Formik
             initialValues={{}}
             onSubmit={async (values, actions) => {
                 try {
-                    await uploadList();
+                    await syncList();
                     actions.setSubmitting(false);
                     toastSuccess? toastSuccess() : null;
                 } catch (err) {

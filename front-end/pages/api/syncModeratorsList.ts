@@ -5,13 +5,20 @@ import { getSheet } from '../../services/getSheet';
 export default async (request: NextApiRequest, response: NextApiResponse) => {
     try {
         const token = request.body?.headers?.Authorization || request.headers?.authorization;
+        const offerId = request.body?.offerId;
+        const link = request.body?.link;
+        const index = request.body?.index;
+        const column_email = request.body?.column_email;
+        const column_name = request.body?.column_name;
+        const column_etherapies_identifiers = request.body?.column_etherapies_identifiers;
 
-        const sheet = await getSheet(process.env.DOCIDMODERATORS, 1);
+
+        const sheet = await getSheet(link, index);
 
         const sheetJson = sheet.objectJson.map(object => ({
-            email: object['Endereço de e-mail'],
-            name: object['Nome Completo:'],
-            etherapiesIdentifiers: object['Você é mediador ou estudante de apoio em qual(is) oficina(s)?']
+            email: object[column_email],
+            name: object[column_name],
+            etherapiesIdentifiers: object[column_etherapies_identifiers]
                                     .split(',')
                                     .map(etherapy => {
                                         return etherapy.split(' - ')[0].trim();
@@ -19,6 +26,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
         }));
 
         const uploadRequest = {
+            offerId,
             basicInformations: sheetJson
         }
         

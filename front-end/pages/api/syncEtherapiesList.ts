@@ -5,15 +5,21 @@ import { getSheet } from '../../services/getSheet';
 export default async (request: NextApiRequest, response: NextApiResponse) => {
     try {
         const token = request.body?.headers?.Authorization || request.headers?.authorization;
+        const offerId = request.body?.offerId;
+        const link = request.body?.link;
+        const index = request.body?.index;
+        const column_identifier = request.body?.column_identifier;
+        const column_name = request.body?.column_name;
 
-        const sheet = await getSheet(process.env.DOCIDETHERAPIES, 3);
+        const sheet = await getSheet(link, index);
 
         const sheetJson = sheet.objectJson.map(object => ({
-            identifier: object.Identificador,
-            name: object.Nome,
+            identifier: object[column_identifier],
+            name: object[column_name],
         }));
 
         const uploadRequest = {
+            offerId,
             basicInformations: sheetJson
         }
         
