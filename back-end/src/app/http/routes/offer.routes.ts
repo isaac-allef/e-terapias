@@ -34,6 +34,10 @@ offerRouter.post(
                     column_identifier: Joi.string(),
                     column_name: Joi.string(),
                 }),
+                participants: Joi.object().keys({
+                    sheet_link: Joi.string(),
+                    sheet_index: Joi.number(),
+                }),
             }),
         }),
     }),
@@ -68,6 +72,10 @@ offerRouter.put(
                     sheet_index: Joi.number(),
                     column_identifier: Joi.string(),
                     column_name: Joi.string(),
+                }),
+                participants: Joi.object().keys({
+                    sheet_link: Joi.string(),
+                    sheet_index: Joi.number(),
                 }),
             }),
         }),

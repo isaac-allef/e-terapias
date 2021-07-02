@@ -21,10 +21,16 @@ type settings_etherapies = {
     column_name: string;
 };
 
+type settings_participants = {
+    sheet_link: string;
+    sheet_index: number;
+};
+
 export type settings = {
     serviceAccount: settings_service_account;
     moderators: settings_moderators;
     etherapies: settings_etherapies;
+    participants: settings_participants;
 };
 
 interface Offer {
