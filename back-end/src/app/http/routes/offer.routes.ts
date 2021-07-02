@@ -23,12 +23,14 @@ offerRouter.post(
                 }),
                 moderators: Joi.object().keys({
                     sheet_link: Joi.string(),
+                    sheet_index: Joi.number(),
                     column_email: Joi.string(),
                     column_name: Joi.string(),
                     column_etherapies_identifiers: Joi.string(),
                 }),
                 etherapies: Joi.object().keys({
                     sheet_link: Joi.string(),
+                    sheet_index: Joi.number(),
                     column_identifier: Joi.string(),
                     column_name: Joi.string(),
                 }),
@@ -56,12 +58,14 @@ offerRouter.put(
                 }),
                 moderators: Joi.object().keys({
                     sheet_link: Joi.string(),
+                    sheet_index: Joi.number(),
                     column_email: Joi.string(),
                     column_name: Joi.string(),
                     column_etherapies_identifiers: Joi.string(),
                 }),
                 etherapies: Joi.object().keys({
                     sheet_link: Joi.string(),
+                    sheet_index: Joi.number(),
                     column_identifier: Joi.string(),
                     column_name: Joi.string(),
                 }),

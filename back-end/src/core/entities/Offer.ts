@@ -8,6 +8,7 @@ type settings_service_account = {
 
 type settings_moderators = {
     sheet_link: string;
+    sheet_index: number;
     column_email: string;
     column_name: string;
     column_etherapies_identifiers: string;
@@ -15,6 +16,7 @@ type settings_moderators = {
 
 type settings_etherapies = {
     sheet_link: string;
+    sheet_index: number;
     column_identifier: string;
     column_name: string;
 };
