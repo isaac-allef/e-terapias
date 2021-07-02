@@ -25,8 +25,6 @@ export default function ParticipantList() {
 			getParticipants({ 
 				token, 
 				offerId,
-                docId: '1LtRsnsCGTk9Gl0QS-Wm4FVnoNRvdOHg4KPYlydV-KS0',
-                docIndex: 2,
 			}).then(participants => {
 				setParticipants(participants);
 			})
@@ -73,7 +71,7 @@ export default function ParticipantList() {
     )
 }
 
-const getParticipants = async ({ token, offerId, docId, docIndex }): Promise<any> => {
+const getParticipants = async ({ token, offerId }): Promise<any> => {
 	const response = await api.get(`/offers/${offerId}`, {
 		headers: {
 			'Authorization': `token ${token}`
@@ -86,8 +84,8 @@ const getParticipants = async ({ token, offerId, docId, docIndex }): Promise<any
 		params: {
 			client_email: settings.serviceAccount.client_email,
 			private_key: settings.serviceAccount.private_key.replace(/\\n/gm, '\n'),
-            docId,
-            docIndex,
+            docId: settings.participants.sheet_link,
+            docIndex: settings.participants.sheet_index,
         }
 	});
 	
