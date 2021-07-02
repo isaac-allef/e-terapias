@@ -46,12 +46,13 @@ export default function OfferForm() {
         try {
             const { name } = values;
 
-            await postOffer(token, { name, dateStart, dateEnd, settings: {} });
+            const offer = await postOffer(token, { name, dateStart, dateEnd, settings: {} });
 
             actions.setSubmitting(false);
 
             myToast.execute({ status: 'success', title: 'Template created.' });
         
+            localStorage.setItem('@etherapies:offerId', offer.id)
             router.push('/new/dashboard');
         } catch (err) {
             myToast.execute({ status: 'error', title: 'Error', description: err.message });
