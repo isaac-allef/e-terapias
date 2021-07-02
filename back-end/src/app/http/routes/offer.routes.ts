@@ -46,9 +46,9 @@ offerRouter.put(
             id: Joi.string().required(),
         }),
         [Segments.BODY]: Joi.object().keys({
-            name: Joi.string().required(),
-            dateStart: Joi.date().required(),
-            dateEnd: Joi.date().required(),
+            name: Joi.string(),
+            dateStart: Joi.date(),
+            dateEnd: Joi.date(),
             settings: Joi.object().keys({
                 serviceAccount: Joi.object().keys({
                     client_email: Joi.string(),
