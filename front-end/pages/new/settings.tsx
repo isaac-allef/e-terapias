@@ -16,19 +16,44 @@ import { Textarea } from "@chakra-ui/textarea";
 import axios from 'axios';
 import { useEffect, useState } from "react";
 import MyMenu from '../../components/new/MyMenu';
+import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Heading } from '@chakra-ui/react';
+import api from '../../services/api';
 
 export default function Login() {
     const myToast = new MyToast();
     const router = useRouter();
     const [initialValues, setInitialValues] = useState(null);
     const [token, setToken] = useState('');
+    const [offerId, setOfferId] = useState('');
 
     useEffect(() => {
         setToken(localStorage.getItem('@etherapies:token'));
+        setOfferId(localStorage.getItem('@etherapies:offerId'));
     }, []);
 
-    const getSettings = async () => {
-        return axios.get('/api/getSettingsGoogleSheets');
+    const getSettings = async (token, offerId) => {
+        const result = await api.get(`/offers/${offerId}`, {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            }
+        });
+    
+        const offer = result.data;
+    
+        const { settings } = offer;
+    
+        return {
+            client_email: settings?.serviceAccount?.client_email,
+            private_key: settings?.serviceAccount?.private_key,
+            moderatorsLink: settings?.moderators?.sheet_link,
+            moderatorsColumnEmail: settings?.moderators?.column_email,
+            moderatorsColumnName: settings?.moderators?.column_name,
+            moderatorsColumnEtherapiesIdentifiers: settings?.moderators?.column_etherapies_identifiers,
+            etherapiesLink: settings?.etherapies?.sheet_link,
+            etherapyColumnIdentifier: settings?.etherapies?.column_identifier,
+            etherapyColumnName: settings?.etherapies?.column_name,
+        };
     }
 
     const uploadEtherapiesList = async () => {
@@ -50,60 +75,63 @@ export default function Login() {
     }
 
     useEffect(() => {
-        if (token) {
-            getSettings().then(settings => {
-                setInitialValues(settings.data);
+        if (token && offerId) {
+            getSettings(token, offerId).then(settings => {
+                setInitialValues(settings);
             });
         }
-    }, [token]);
+    }, [token, offerId]);
     
   const SignupSchema = Yup.object().shape({
-    docIdEtherapies: Yup.string(),
-    docIdModerators: Yup.string(),
-    client_email: Yup.string().email(),
-    private_key: Yup.string().matches(/^-----BEGIN PRIVATE KEY-----.*-----END PRIVATE KEY-----\\n$/, 'Private key is no valid'),
+      client_email: Yup.string().email(),
+      private_key: Yup.string().matches(/^-----BEGIN PRIVATE KEY-----.*-----END PRIVATE KEY-----\\n$/, 'Private key is no valid'),
+      moderatorsLink: Yup.string(),
+      moderatorsColumnEmail: Yup.string(),
+      moderatorsColumnName: Yup.string(),
+      moderatorsColumnEtherapiesIdentifiers: Yup.string(),
+      etherapiesLink: Yup.string(),
+      etherapyColumnIdentifier: Yup.string(),
+      etherapyColumnName: Yup.string(),
   });
 
   const functionSubmitForm = async (values, actions) => {
-    const { linkEtherapiesSheet, linkModeratorsSheet } = values;
+    const { 
+        client_email,
+        private_key,
+        moderatorsLink,
+        moderatorsColumnEmail,
+        moderatorsColumnName,
+        moderatorsColumnEtherapiesIdentifiers,
+        etherapiesLink,
+        etherapyColumnIdentifier,
+        etherapyColumnName,
+    } = values;
   }
 
   return (
     <Layout menu={<MyMenu manager={true} itemSelected='settings' />}>
-        <Tabs isFitted variant='line'>
-            <TabList mb="1em">
-                <Tab>Settings</Tab>
-                <Tab>Uploads</Tab>
-            </TabList>
-            <TabPanels>
-                <TabPanel>
-                    {   initialValues ?
-                        settingsSheetsForm(initialValues, SignupSchema, functionSubmitForm)
-                        : null
-                    }
-                </TabPanel>
-                <TabPanel>
-                    <Flex justifyContent='space-around' paddingBottom='3vh'>
-                        {
-                            uploadListForm(
-                                'Upload etherapies list', 
-                                uploadEtherapiesList,
-                                () => myToast.execute({ status: 'success', title: 'Etherapies list updated' }),
-                                (err) => myToast.execute({ status: 'error', title: 'Error', description: err.message })
-                            )
-                        }
-                        {
-                            uploadListForm(
-                                'Upload moderators list', 
-                                uploadModeratorsList,
-                                () => myToast.execute({ status: 'success', title: 'Moderators list updated' }),
-                                (err) => myToast.execute({ status: 'error', title: 'Error', description: err.message })
-                            )
-                        }
-                    </Flex>
-                </TabPanel>
-            </TabPanels>
-        </Tabs>
+        <Flex justifyContent='space-around' paddingBottom='3vh'>
+            {
+                uploadListForm(
+                    'Upload etherapies list', 
+                    uploadEtherapiesList,
+                    () => myToast.execute({ status: 'success', title: 'Etherapies list updated' }),
+                    (err) => myToast.execute({ status: 'error', title: 'Error', description: err.message })
+                )
+            }
+            {
+                uploadListForm(
+                    'Upload moderators list', 
+                    uploadModeratorsList,
+                    () => myToast.execute({ status: 'success', title: 'Moderators list updated' }),
+                    (err) => myToast.execute({ status: 'error', title: 'Error', description: err.message })
+                )
+            }
+        </Flex>
+        {   initialValues ?
+            settingsSheetsForm(initialValues, SignupSchema, functionSubmitForm)
+            : null
+        }
       </Layout>
   )
 }
@@ -116,58 +144,150 @@ const settingsSheetsForm = (initialValues, SignupSchema, functionSubmitForm) => 
         >
         {(props) => (
             <Form>
-            <Field name="docIdEtherapies">
-                {({ field, form }) => (
-                <FormControl isInvalid={form.errors.docIdEtherapies && form.touched.docIdEtherapies}>
-                    <FormLabel htmlFor="docIdEtherapies">Doc id etherapies</FormLabel>
-                    <InputGroup>
-                    <InputLeftElement pointerEvents="none" children={<Icon as={IoIosDocument} color="gray.400" />} />
-                        <Input disabled {...field} id="docIdEtherapies" placeholder="Id" />
-                    </InputGroup>
-                <   FormErrorMessage>{form.errors.docIdEtherapies}</FormErrorMessage>
-                </FormControl>
-                )}
-            </Field>
-            <Field name="docIdModerators">
-                {({ field, form }) => (
-                <FormControl isInvalid={form.errors.docIdModerators && form.touched.docIdModerators}>
-                    <FormLabel htmlFor="docIdModerators">Doc id moderators</FormLabel>
-                    <InputGroup>
-                    <InputLeftElement pointerEvents="none" children={<Icon as={IoIosDocument} color="gray.400" />} />
-                        <Input disabled {...field} id="docIdModerators" placeholder="Id" />
-                    </InputGroup>
-                <   FormErrorMessage>{form.errors.docIdModerators}</FormErrorMessage>
-                </FormControl>
-                )}
-            </Field>
-            <Field name="client_email">
-                {({ field, form }) => (
-                <FormControl isInvalid={form.errors.client_email && form.touched.client_email}>
-                    <FormLabel htmlFor="client_email">Client email</FormLabel>
-                    <InputGroup>
-                    <InputLeftElement pointerEvents="none" children={<Icon as={AiTwotoneMail} color="gray.400" />} />
-                        <Input disabled {...field} id="client_email" placeholder="Client email" />
-                    </InputGroup>
-                <   FormErrorMessage>{form.errors.client_email}</FormErrorMessage>
-                </FormControl>
-                )}
-            </Field>
-            <Field name="private_key">
-                {({ field, form }) => (
-                <FormControl isInvalid={form.errors.private_key && form.touched.private_key}>
-                    <FormLabel htmlFor="private_key">Private key</FormLabel>
-                    <InputGroup>
-                    <InputRightElement pointerEvents="none" children={<Icon as={BiKey} color="gray.400" />} />
-                        <Textarea disabled {...field} id="private_key" placeholder="Private key" />
-                    </InputGroup>
-                <   FormErrorMessage>{form.errors.private_key}</FormErrorMessage>
-                </FormControl>
-                )}
-            </Field>
+            <Accordion defaultIndex={[0]} allowToggle>
+            <AccordionItem>
+                <AccordionButton _expanded={{ bg: "blue.500", color: "white" }}>
+                    <Box flex="1" textAlign="left">
+                    <Heading size='sm'>Service account</Heading>
+                    </Box>
+                    <AccordionIcon />
+                </AccordionButton>
+                <AccordionPanel pb={4}>
+                    <Field name="client_email">
+                        {({ field, form }) => (
+                        <FormControl isInvalid={form.errors.client_email && form.touched.client_email}>
+                            <FormLabel margin={0} htmlFor="client_email">Client email</FormLabel>
+                            <InputGroup>
+                            <InputLeftElement pointerEvents="none" children={<Icon as={AiTwotoneMail} color="gray.400" />} />
+                                <Input {...field} id="client_email" placeholder="Client email" />
+                            </InputGroup>
+                        <   FormErrorMessage>{form.errors.client_email}</FormErrorMessage>
+                        </FormControl>
+                        )}
+                    </Field>
+                    <Field name="private_key">
+                        {({ field, form }) => (
+                        <FormControl isInvalid={form.errors.private_key && form.touched.private_key}>
+                            <FormLabel margin={0} htmlFor="private_key">Private key</FormLabel>
+                            <InputGroup>
+                            <InputRightElement pointerEvents="none" children={<Icon as={BiKey} color="gray.400" />} />
+                                <Textarea {...field} id="private_key" placeholder="Private key" />
+                            </InputGroup>
+                        <   FormErrorMessage>{form.errors.private_key}</FormErrorMessage>
+                        </FormControl>
+                        )}
+                    </Field>
+                </AccordionPanel>
+            </AccordionItem>
+            <AccordionItem>
+                <AccordionButton _expanded={{ bg: "blue.500", color: "white" }}>
+                    <Box flex="1" textAlign="left">
+                    <Heading size='sm'>Sheet moderators</Heading>
+                    </Box>
+                    <AccordionIcon />
+                </AccordionButton>
+                <AccordionPanel pb={4}>
+                    <Field name="moderatorsLink">
+                        {({ field, form }) => (
+                        <FormControl isInvalid={form.errors.moderatorsLink && form.touched.moderatorsLink}>
+                            <FormLabel margin={0} htmlFor="moderatorsLink">Link</FormLabel>
+                            <InputGroup>
+                            <InputLeftElement pointerEvents="none" children={<Icon as={IoIosDocument} color="gray.400" />} />
+                                <Input {...field} id="moderatorsLink" placeholder="Id" />
+                            </InputGroup>
+                        <   FormErrorMessage>{form.errors.moderatorsLink}</FormErrorMessage>
+                        </FormControl>
+                        )}
+                    </Field>
+                    <Field name="moderatorsColumnEmail">
+                        {({ field, form }) => (
+                        <FormControl isInvalid={form.errors.moderatorsColumnEmail && form.touched.moderatorsColumnEmail}>
+                            <FormLabel margin={0} htmlFor="moderatorsColumnEmail">Column email</FormLabel>
+                            <InputGroup>
+                            <InputLeftElement pointerEvents="none" children={<Icon as={IoIosDocument} color="gray.400" />} />
+                                <Input {...field} id="moderatorsColumnEmail" placeholder="column email" />
+                            </InputGroup>
+                        <   FormErrorMessage>{form.errors.moderatorsColumnEmail}</FormErrorMessage>
+                        </FormControl>
+                        )}
+                    </Field>
+                    <Field name="moderatorsColumnName">
+                        {({ field, form }) => (
+                        <FormControl isInvalid={form.errors.moderatorsColumnName && form.touched.moderatorsColumnName}>
+                            <FormLabel margin={0} htmlFor="moderatorsColumnName">Moderator column name</FormLabel>
+                            <InputGroup>
+                            <InputLeftElement pointerEvents="none" children={<Icon as={IoIosDocument} color="gray.400" />} />
+                                <Input {...field} id="moderatorsColumnName" placeholder="column name" />
+                            </InputGroup>
+                        <   FormErrorMessage>{form.errors.moderatorsColumnName}</FormErrorMessage>
+                        </FormControl>
+                        )}
+                    </Field>
+                    <Field name="moderatorsColumnEtherapiesIdentifiers">
+                        {({ field, form }) => (
+                        <FormControl isInvalid={form.errors.moderatorsColumnEtherapiesIdentifiers && form.touched.moderatorsColumnEtherapiesIdentifiers}>
+                            <FormLabel margin={0} htmlFor="moderatorsColumnEtherapiesIdentifiers">Moderator column etherapies identifiers</FormLabel>
+                            <InputGroup>
+                            <InputLeftElement pointerEvents="none" children={<Icon as={IoIosDocument} color="gray.400" />} />
+                                <Input {...field} id="moderatorsColumnEtherapiesIdentifiers" placeholder="column etherapies identifiers" />
+                            </InputGroup>
+                        <   FormErrorMessage>{form.errors.moderatorsColumnEtherapiesIdentifiers}</FormErrorMessage>
+                        </FormControl>
+                        )}
+                    </Field>
+                </AccordionPanel>
+            </AccordionItem>
+            <AccordionItem>
+                <AccordionButton _expanded={{ bg: "blue.500", color: "white" }}>
+                    <Box flex="1" textAlign="left">
+                    <Heading size='sm'>Sheet etherapies</Heading>
+                    </Box>
+                    <AccordionIcon />
+                </AccordionButton>
+                <AccordionPanel pb={4}>
+                    <Field name="etherapiesLink">
+                        {({ field, form }) => (
+                        <FormControl isInvalid={form.errors.etherapiesLink && form.touched.etherapiesLink}>
+                            <FormLabel margin={0} htmlFor="etherapiesLink">Doc id moderators</FormLabel>
+                            <InputGroup>
+                            <InputLeftElement pointerEvents="none" children={<Icon as={IoIosDocument} color="gray.400" />} />
+                                <Input {...field} id="etherapiesLink" placeholder="Id" />
+                            </InputGroup>
+                        <   FormErrorMessage>{form.errors.etherapiesLink}</FormErrorMessage>
+                        </FormControl>
+                        )}
+                    </Field>
+                    <Field name="etherapyColumnIdentifier">
+                        {({ field, form }) => (
+                        <FormControl isInvalid={form.errors.etherapyColumnIdentifier && form.touched.etherapyColumnIdentifier}>
+                            <FormLabel margin={0} htmlFor="etherapyColumnIdentifier">Etherapy column identifier</FormLabel>
+                            <InputGroup>
+                            <InputLeftElement pointerEvents="none" children={<Icon as={IoIosDocument} color="gray.400" />} />
+                                <Input {...field} id="etherapyColumnIdentifier" placeholder="Id" />
+                            </InputGroup>
+                        <   FormErrorMessage>{form.errors.etherapyColumnIdentifier}</FormErrorMessage>
+                        </FormControl>
+                        )}
+                    </Field>
+                    <Field name="etherapyColumnName">
+                        {({ field, form }) => (
+                        <FormControl isInvalid={form.errors.etherapyColumnName && form.touched.etherapyColumnName}>
+                            <FormLabel margin={0} htmlFor="etherapyColumnName">Etherapy column name</FormLabel>
+                            <InputGroup>
+                            <InputLeftElement pointerEvents="none" children={<Icon as={IoIosDocument} color="gray.400" />} />
+                                <Input {...field} id="etherapyColumnName" placeholder="Id" />
+                            </InputGroup>
+                        <   FormErrorMessage>{form.errors.etherapyColumnName}</FormErrorMessage>
+                        </FormControl>
+                        )}
+                    </Field>
+                </AccordionPanel>
+            </AccordionItem>
+            </Accordion>
+            
             <Divider />
 
             <Button
-                disabled
                 mt={4}
                 colorScheme="green"
                 isLoading={props.isSubmitting}
