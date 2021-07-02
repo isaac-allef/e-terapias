@@ -51,6 +51,8 @@ export default function Login() {
       etherapiesIndex: Yup.number().default(0),
       etherapiesColumnIdentifier: Yup.string(),
       etherapiesColumnName: Yup.string(),
+      participantsLink: Yup.string(),
+      participantsIndex: Yup.number().default(0),
   });
 
   const functionSubmitForm = async (values, actions) => {
@@ -66,7 +68,11 @@ export default function Login() {
         etherapiesIndex,
         etherapiesColumnIdentifier,
         etherapiesColumnName,
+        participantsLink,
+        participantsIndex,
     } = values;
+
+    console.log(participantsLink)
 
     try {
         const settings: settings = {
@@ -86,6 +92,10 @@ export default function Login() {
                 sheet_index: etherapiesIndex,
                 column_identifier: etherapiesColumnIdentifier,
                 column_name: etherapiesColumnName,
+            },
+            participants: {
+                sheet_link: participantsLink,
+                sheet_index: participantsIndex,
             }
         }
 
@@ -225,6 +235,8 @@ const getSettings = async (token, offerId)  => {
         etherapiesIndex: settings?.etherapies?.sheet_index,
         etherapiesColumnIdentifier: settings?.etherapies?.column_identifier,
         etherapiesColumnName: settings?.etherapies?.column_name,
+        participantsLink: settings?.participants?.sheet_link,
+        participantsIndex: settings?.participants?.sheet_index,
     };
 }
 
@@ -245,7 +257,11 @@ interface settings {
         sheet_index: number,
         column_identifier: string,
         column_name: string,
-    }
+    },
+    participants: {
+        sheet_link: string,
+        sheet_index: number,
+    },
 };
 
 const putSettings = async (token: string, offerId: string, settings: settings): Promise<any> => {
@@ -421,7 +437,7 @@ const settingsSheetsForm = (initialValues, SignupSchema, functionSubmitForm, syn
                     <Field name="moderatorsColumnName">
                         {({ field, form }) => (
                         <FormControl isInvalid={form.errors.moderatorsColumnName && form.touched.moderatorsColumnName}>
-                            <FormLabel margin={0} htmlFor="moderatorsColumnName">Moderator column name</FormLabel>
+                            <FormLabel margin={0} htmlFor="moderatorsColumnName">Column name</FormLabel>
                             <InputGroup>
                             <InputLeftElement pointerEvents="none" children={<Icon as={IoIosDocument} color="gray.400" />} />
                                 <Input {...field} id="moderatorsColumnName" placeholder="column name" />
@@ -433,7 +449,7 @@ const settingsSheetsForm = (initialValues, SignupSchema, functionSubmitForm, syn
                     <Field name="moderatorsColumnEtherapiesIdentifiers">
                         {({ field, form }) => (
                         <FormControl isInvalid={form.errors.moderatorsColumnEtherapiesIdentifiers && form.touched.moderatorsColumnEtherapiesIdentifiers}>
-                            <FormLabel margin={0} htmlFor="moderatorsColumnEtherapiesIdentifiers">Moderator column etherapies identifiers</FormLabel>
+                            <FormLabel margin={0} htmlFor="moderatorsColumnEtherapiesIdentifiers">Column etherapies identifiers</FormLabel>
                             <InputGroup>
                             <InputLeftElement pointerEvents="none" children={<Icon as={IoIosDocument} color="gray.400" />} />
                                 <Input {...field} id="moderatorsColumnEtherapiesIdentifiers" placeholder="column etherapies identifiers" />
@@ -455,10 +471,10 @@ const settingsSheetsForm = (initialValues, SignupSchema, functionSubmitForm, syn
                     <Field name="etherapiesLink">
                         {({ field, form }) => (
                         <FormControl isInvalid={form.errors.etherapiesLink && form.touched.etherapiesLink}>
-                            <FormLabel margin={0} htmlFor="etherapiesLink">Doc id moderators</FormLabel>
+                            <FormLabel margin={0} htmlFor="etherapiesLink">Link</FormLabel>
                             <InputGroup>
                             <InputLeftElement pointerEvents="none" children={<Icon as={IoIosDocument} color="gray.400" />} />
-                                <Input {...field} id="etherapiesLink" placeholder="Id" />
+                                <Input {...field} id="etherapiesLink" placeholder="link" />
                             </InputGroup>
                         <   FormErrorMessage>{form.errors.etherapiesLink}</FormErrorMessage>
                         </FormControl>
@@ -488,10 +504,10 @@ const settingsSheetsForm = (initialValues, SignupSchema, functionSubmitForm, syn
                     <Field name="etherapiesColumnIdentifier">
                         {({ field, form }) => (
                         <FormControl isInvalid={form.errors.etherapiesColumnIdentifier && form.touched.etherapiesColumnIdentifier}>
-                            <FormLabel margin={0} htmlFor="etherapiesColumnIdentifier">Etherapies column identifier</FormLabel>
+                            <FormLabel margin={0} htmlFor="etherapiesColumnIdentifier">Column identifier</FormLabel>
                             <InputGroup>
                             <InputLeftElement pointerEvents="none" children={<Icon as={IoIosDocument} color="gray.400" />} />
-                                <Input {...field} id="etherapiesColumnIdentifier" placeholder="Id" />
+                                <Input {...field} id="etherapiesColumnIdentifier" placeholder="column identifier" />
                             </InputGroup>
                         <   FormErrorMessage>{form.errors.etherapiesColumnIdentifier}</FormErrorMessage>
                         </FormControl>
@@ -500,12 +516,55 @@ const settingsSheetsForm = (initialValues, SignupSchema, functionSubmitForm, syn
                     <Field name="etherapiesColumnName">
                         {({ field, form }) => (
                         <FormControl isInvalid={form.errors.etherapiesColumnName && form.touched.etherapiesColumnName}>
-                            <FormLabel margin={0} htmlFor="etherapiesColumnName">Etherapies column name</FormLabel>
+                            <FormLabel margin={0} htmlFor="etherapiesColumnName">Column name</FormLabel>
                             <InputGroup>
                             <InputLeftElement pointerEvents="none" children={<Icon as={IoIosDocument} color="gray.400" />} />
-                                <Input {...field} id="etherapiesColumnName" placeholder="Id" />
+                                <Input {...field} id="etherapiesColumnName" placeholder="column name" />
                             </InputGroup>
                         <   FormErrorMessage>{form.errors.etherapiesColumnName}</FormErrorMessage>
+                        </FormControl>
+                        )}
+                    </Field>
+                </AccordionPanel>
+            </AccordionItem>
+            <AccordionItem>
+                <AccordionButton _expanded={{ bg: "blue.500", color: "white" }}>
+                    <Box flex="1" textAlign="left">
+                    <Heading size='sm'>Sheet participants</Heading>
+                    </Box>
+                    <AccordionIcon />
+                </AccordionButton>
+                <AccordionPanel pb={4}>
+                    <Field name="participantsLink">
+                        {({ field, form }) => (
+                        <FormControl isInvalid={form.errors.participantsLink && form.touched.participantsLink}>
+                            <FormLabel margin={0} htmlFor="participantsLink">Link</FormLabel>
+                            <InputGroup>
+                            <InputLeftElement pointerEvents="none" children={<Icon as={AiTwotoneMail} color="gray.400" />} />
+                                <Input {...field} id="participantsLink" placeholder="link" />
+                            </InputGroup>
+                        <   FormErrorMessage>{form.errors.participantsLink}</FormErrorMessage>
+                        </FormControl>
+                        )}
+                    </Field>
+                    <Field name="participantsIndex">
+                        {({ field, form }) => (
+                        <FormControl isInvalid={form.errors.participantsIndex && form.touched.participantsIndex}>
+                            <FormLabel margin={0} htmlFor="participantsIndex">Index</FormLabel>
+                            <InputGroup>
+                                <NumberInput 
+                                    {...field} id="participantsIndex"
+                                    onChange={ (val) => form.setFieldValue(field.name, val) }
+                                    min={0} max={100}
+                                >
+                                <NumberInputField {...field} id="participantsIndex" />
+                                <NumberInputStepper>
+                                    <NumberIncrementStepper />
+                                    <NumberDecrementStepper />
+                                </NumberInputStepper>
+                                </NumberInput>
+                            </InputGroup>
+                        <   FormErrorMessage>{form.errors.participantsIndex}</FormErrorMessage>
                         </FormControl>
                         )}
                     </Field>
