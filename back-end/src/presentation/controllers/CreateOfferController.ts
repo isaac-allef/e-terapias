@@ -11,7 +11,6 @@ export class CreateOfferController implements Controller {
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
         try {
             const { name, dateStart, dateEnd, settings } = httpRequest.body;
-            // const managerId = httpRequest.userId;
 
             if (!name) {
                 return badRequest(new MissingParamError('name'));
@@ -28,10 +27,6 @@ export class CreateOfferController implements Controller {
             if (!settings) {
                 return badRequest(new MissingParamError('settings'));
             }
-
-            // if (!managerId) {
-            //     return badRequest(new MissingParamError('managerId'));
-            // }
 
             const offer = await this.createOfferService.execute({
                 name,

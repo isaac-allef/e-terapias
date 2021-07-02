@@ -80,7 +80,6 @@ class OfferTypeormRepository
         try {
             const offer = await this.ormRepository.findOne({
                 where: { id },
-                // relations: ['manager'],
             });
 
             if (!offer) {

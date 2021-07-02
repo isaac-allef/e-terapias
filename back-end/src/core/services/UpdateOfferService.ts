@@ -1,5 +1,4 @@
 /* eslint-disable no-shadow */
-/* eslint-disable prettier/prettier */
 import Offer, { settings } from '../entities/Offer';
 import UpdateOfferRepository from '../protocols/db/repositories/UpdateOfferRepository';
 
@@ -9,7 +8,6 @@ export type params = {
     dateStart: Date;
     dateEnd: Date;
     settings: settings;
-    // supervisor: Manager;
 };
 
 class UpdateOfferService {
@@ -21,9 +19,7 @@ class UpdateOfferService {
         dateStart,
         dateEnd,
         settings,
-        // supervisor,
-    }:
-    params): Promise<Offer> {
+    }: params): Promise<Offer> {
         return this.updateOfferRepository.update({
             id,
             name,

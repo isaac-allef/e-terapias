@@ -12,15 +12,10 @@ export class UpdateOfferController implements Controller {
         try {
             const { id } = httpRequest.params;
             const { name, dateStart, dateEnd, settings } = httpRequest.body;
-            // const managerId = httpRequest.userId;
 
             if (!id) {
                 return badRequest(new MissingParamError('id'));
             }
-
-            // if (!managerId) {
-            //     return badRequest(new MissingParamError('managerId'));
-            // }
 
             const offer = await this.updateOfferService.execute({
                 id,

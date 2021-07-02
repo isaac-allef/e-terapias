@@ -1,5 +1,4 @@
 /* eslint-disable no-shadow */
-/* eslint-disable prettier/prettier */
 import Offer, { settings } from '../entities/Offer';
 import CreateOfferRepository from '../protocols/db/repositories/CreateOfferRepository';
 
@@ -8,7 +7,6 @@ export type params = {
     dateStart: Date;
     dateEnd: Date;
     settings: settings;
-    // supervisor: Manager;
 };
 
 class CreateOfferService {
@@ -19,9 +17,7 @@ class CreateOfferService {
         dateStart,
         dateEnd,
         settings,
-        // supervisor,
-    }:
-    params): Promise<Offer> {
+    }: params): Promise<Offer> {
         return this.createOfferRepository.create({
             name,
             dateStart,
