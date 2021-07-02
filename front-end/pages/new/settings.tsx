@@ -31,31 +31,6 @@ export default function Login() {
         setOfferId(localStorage.getItem('@etherapies:offerId'));
     }, []);
 
-    const getSettings = async (token, offerId) => {
-        const result = await api.get(`/offers/${offerId}`, {
-            headers: {
-              'Authorization': `Bearer ${token}`,
-              'Content-Type': 'application/json',
-            }
-        });
-    
-        const offer = result.data;
-    
-        const { settings } = offer;
-    
-        return {
-            client_email: settings?.serviceAccount?.client_email,
-            private_key: settings?.serviceAccount?.private_key,
-            moderatorsLink: settings?.moderators?.sheet_link,
-            moderatorsColumnEmail: settings?.moderators?.column_email,
-            moderatorsColumnName: settings?.moderators?.column_name,
-            moderatorsColumnEtherapiesIdentifiers: settings?.moderators?.column_etherapies_identifiers,
-            etherapiesLink: settings?.etherapies?.sheet_link,
-            etherapyColumnIdentifier: settings?.etherapies?.column_identifier,
-            etherapyColumnName: settings?.etherapies?.column_name,
-        };
-    }
-
     const uploadEtherapiesList = async () => {
         return axios.post('/api/uploadEtherapiesList', {
             headers: {
@@ -106,6 +81,34 @@ export default function Login() {
         etherapyColumnIdentifier,
         etherapyColumnName,
     } = values;
+
+    try {
+        const settings: settings = {
+            serviceAccount: {
+                client_email,
+                private_key,
+            },
+            moderators: {
+                sheet_link: moderatorsLink,
+                column_email: moderatorsColumnEmail,
+                column_name: moderatorsColumnName,
+                column_etherapies_identifiers: moderatorsColumnEtherapiesIdentifiers,
+            },
+            etherapies: {
+                sheet_link: etherapiesLink,
+                column_name: etherapyColumnIdentifier,
+                column_identifier: etherapyColumnName,
+            }
+        }
+
+        await putSettings(token, offerId, settings);
+
+        actions.setSubmitting(false);
+
+        myToast.execute({ status: 'success', title: 'Field Journal updated.' });
+    } catch (err) {
+        myToast.execute({ status: 'error', title: 'Error', description: err.message });
+    }
   }
 
   return (
@@ -134,6 +137,61 @@ export default function Login() {
         }
       </Layout>
   )
+}
+
+const getSettings = async (token, offerId)  => {
+    const result = await api.get(`/offers/${offerId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        }
+    });
+
+    const offer = result.data;
+
+    const { settings } = offer;
+
+    return {
+        client_email: settings?.serviceAccount?.client_email,
+        private_key: settings?.serviceAccount?.private_key,
+        moderatorsLink: settings?.moderators?.sheet_link,
+        moderatorsColumnEmail: settings?.moderators?.column_email,
+        moderatorsColumnName: settings?.moderators?.column_name,
+        moderatorsColumnEtherapiesIdentifiers: settings?.moderators?.column_etherapies_identifiers,
+        etherapiesLink: settings?.etherapies?.sheet_link,
+        etherapyColumnIdentifier: settings?.etherapies?.column_identifier,
+        etherapyColumnName: settings?.etherapies?.column_name,
+    };
+}
+
+interface settings {
+    serviceAccount: {
+        client_email: string,
+        private_key: string,
+    },
+    moderators: {
+        sheet_link: string,
+        column_email: string,
+        column_name: string,
+        column_etherapies_identifiers: string,
+    },
+    etherapies: {
+        sheet_link: string,
+        column_identifier: string,
+        column_name: string,
+    }
+};
+
+const putSettings = async (token: string, offerId: string, settings: settings): Promise<any> => {
+    const response = await api.put(`/offers/${offerId}`, { settings }, {
+        headers: {
+          'Authorization': `token ${token}`,
+          'Content-Type': 'application/json',
+        }
+    });
+
+    const offer = response.data;
+    return offer;
 }
 
 const settingsSheetsForm = (initialValues, SignupSchema, functionSubmitForm) => (
