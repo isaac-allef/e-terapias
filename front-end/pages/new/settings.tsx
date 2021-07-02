@@ -11,12 +11,11 @@ import { AiTwotoneMail } from 'react-icons/ai';
 import { BiKey } from 'react-icons/bi';
 import { IoIosDocument } from 'react-icons/io';
 import Layout from "../../components/shared/Layout";
-import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/tabs";
 import { Textarea } from "@chakra-ui/textarea";
 import axios from 'axios';
 import { useEffect, useState } from "react";
 import MyMenu from '../../components/new/MyMenu';
-import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Heading } from '@chakra-ui/react';
+import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Heading, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper } from '@chakra-ui/react';
 import api from '../../services/api';
 
 export default function Login() {
@@ -61,10 +60,12 @@ export default function Login() {
       client_email: Yup.string().email(),
       private_key: Yup.string().matches(/^-----BEGIN PRIVATE KEY-----.*-----END PRIVATE KEY-----\\n$/, 'Private key is no valid'),
       moderatorsLink: Yup.string(),
+      moderatorsIndex: Yup.number().default(0),
       moderatorsColumnEmail: Yup.string(),
       moderatorsColumnName: Yup.string(),
       moderatorsColumnEtherapiesIdentifiers: Yup.string(),
       etherapiesLink: Yup.string(),
+      etherapiesIndex: Yup.number().default(0),
       etherapyColumnIdentifier: Yup.string(),
       etherapyColumnName: Yup.string(),
   });
@@ -74,13 +75,17 @@ export default function Login() {
         client_email,
         private_key,
         moderatorsLink,
+        moderatorsIndex,
         moderatorsColumnEmail,
         moderatorsColumnName,
         moderatorsColumnEtherapiesIdentifiers,
         etherapiesLink,
+        etherapiesIndex,
         etherapyColumnIdentifier,
         etherapyColumnName,
     } = values;
+
+    console.log(etherapiesIndex)
 
     try {
         const settings: settings = {
@@ -90,12 +95,14 @@ export default function Login() {
             },
             moderators: {
                 sheet_link: moderatorsLink,
+                sheet_index: moderatorsIndex,
                 column_email: moderatorsColumnEmail,
                 column_name: moderatorsColumnName,
                 column_etherapies_identifiers: moderatorsColumnEtherapiesIdentifiers,
             },
             etherapies: {
                 sheet_link: etherapiesLink,
+                sheet_index: etherapiesIndex,
                 column_name: etherapyColumnIdentifier,
                 column_identifier: etherapyColumnName,
             }
@@ -155,10 +162,12 @@ const getSettings = async (token, offerId)  => {
         client_email: settings?.serviceAccount?.client_email,
         private_key: settings?.serviceAccount?.private_key,
         moderatorsLink: settings?.moderators?.sheet_link,
+        moderatorsIndex: settings?.moderators?.sheet_index,
         moderatorsColumnEmail: settings?.moderators?.column_email,
         moderatorsColumnName: settings?.moderators?.column_name,
         moderatorsColumnEtherapiesIdentifiers: settings?.moderators?.column_etherapies_identifiers,
         etherapiesLink: settings?.etherapies?.sheet_link,
+        etherapiesIndex: settings?.etherapies?.sheet_index,
         etherapyColumnIdentifier: settings?.etherapies?.column_identifier,
         etherapyColumnName: settings?.etherapies?.column_name,
     };
@@ -171,12 +180,14 @@ interface settings {
     },
     moderators: {
         sheet_link: string,
+        sheet_index: number,
         column_email: string,
         column_name: string,
         column_etherapies_identifiers: string,
     },
     etherapies: {
         sheet_link: string,
+        sheet_index: number,
         column_identifier: string,
         column_name: string,
     }
@@ -257,6 +268,27 @@ const settingsSheetsForm = (initialValues, SignupSchema, functionSubmitForm) => 
                         </FormControl>
                         )}
                     </Field>
+                    <Field name="moderatorsIndex">
+                        {({ field, form }) => (
+                        <FormControl isInvalid={form.errors.moderatorsIndex && form.touched.moderatorsIndex}>
+                            <FormLabel margin={0} htmlFor="moderatorsIndex">Index</FormLabel>
+                            <InputGroup>
+                                <NumberInput 
+                                    {...field} id="moderatorsIndex"
+                                    onChange={ (val) => form.setFieldValue(field.name, val) }
+                                    min={0} max={100}
+                                >
+                                <NumberInputField {...field} id="moderatorsIndex" />
+                                <NumberInputStepper>
+                                    <NumberIncrementStepper />
+                                    <NumberDecrementStepper />
+                                </NumberInputStepper>
+                                </NumberInput>
+                            </InputGroup>
+                        <   FormErrorMessage>{form.errors.moderatorsIndex}</FormErrorMessage>
+                        </FormControl>
+                        )}
+                    </Field>
                     <Field name="moderatorsColumnEmail">
                         {({ field, form }) => (
                         <FormControl isInvalid={form.errors.moderatorsColumnEmail && form.touched.moderatorsColumnEmail}>
@@ -312,6 +344,27 @@ const settingsSheetsForm = (initialValues, SignupSchema, functionSubmitForm) => 
                                 <Input {...field} id="etherapiesLink" placeholder="Id" />
                             </InputGroup>
                         <   FormErrorMessage>{form.errors.etherapiesLink}</FormErrorMessage>
+                        </FormControl>
+                        )}
+                    </Field>
+                    <Field name="etherapiesIndex">
+                        {({ field, form }) => (
+                        <FormControl isInvalid={form.errors.etherapiesIndex && form.touched.etherapiesIndex}>
+                            <FormLabel margin={0} htmlFor="etherapiesIndex">Index</FormLabel>
+                            <InputGroup>
+                                <NumberInput 
+                                    {...field} id="etherapiesIndex"
+                                    onChange={ (val) => form.setFieldValue(field.name, val) }
+                                    min={0} max={100}
+                                >
+                                <NumberInputField {...field} id="etherapiesIndex" />
+                                <NumberInputStepper>
+                                    <NumberIncrementStepper />
+                                    <NumberDecrementStepper />
+                                </NumberInputStepper>
+                                </NumberInput>
+                            </InputGroup>
+                        <   FormErrorMessage>{form.errors.etherapiesIndex}</FormErrorMessage>
                         </FormControl>
                         )}
                     </Field>
