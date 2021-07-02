@@ -1,12 +1,12 @@
 import { GoogleSpreadsheet } from 'google-spreadsheet';
 
-export const getSheet = async (docId, docIndex) => {
+export const getSheet = async (client_email, private_key, docId, docIndex) => {
 
     const doc = new GoogleSpreadsheet(docId);
 
     await doc.useServiceAccountAuth({
-        client_email: process.env.CLIENT_EMAIL,
-        private_key: process.env.PRIVATE_KEY,
+        client_email,
+        private_key,
     });
 
     await doc.loadInfo();

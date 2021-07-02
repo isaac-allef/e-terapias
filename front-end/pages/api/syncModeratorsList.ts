@@ -6,6 +6,8 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
     try {
         const token = request.body?.headers?.Authorization || request.headers?.authorization;
         const offerId = request.body?.offerId;
+        const client_email = request.body?.client_email;
+        const private_key = request.body?.private_key;
         const link = request.body?.link;
         const index = request.body?.index;
         const column_email = request.body?.column_email;
@@ -13,7 +15,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
         const column_etherapies_identifiers = request.body?.column_etherapies_identifiers;
 
 
-        const sheet = await getSheet(link, index);
+        const sheet = await getSheet(client_email, private_key, link, index);
 
         const sheetJson = sheet.objectJson.map(object => ({
             email: object[column_email],

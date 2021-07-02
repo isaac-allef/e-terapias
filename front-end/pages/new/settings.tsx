@@ -99,18 +99,52 @@ export default function Login() {
     }
   }
 
-  const syncEtherapies = async (link, index, column_identifier, column_name) => {
+  const syncEtherapies = async (
+      client_email, 
+      private_key, 
+      link, 
+      index, 
+      column_identifier, 
+      column_name
+    ) => {
       try {
-        await syncEtherapiesList(token, offerId, link, index, column_identifier, column_name);
+        await syncEtherapiesList(
+            token, 
+            offerId, 
+            client_email, 
+            private_key, 
+            link, 
+            index, 
+            column_identifier, 
+            column_name
+        );
         myToast.execute({ status: 'success', title: 'Etherapies list updated' })
     } catch (err) {
         myToast.execute({ status: 'error', title: 'Error', description: err.message })
     }
   }
 
-  const syncModerators = async (link, index, column_email, column_name, column_etherapies_identifiers) => {
+  const syncModerators = async (
+      client_email, 
+      private_key, 
+      link, 
+      index, 
+      column_email, 
+      column_name, 
+      column_etherapies_identifiers
+    ) => {
     try {
-      await syncModeratorsList(token, offerId, link, index, column_email, column_name, column_etherapies_identifiers);
+      await syncModeratorsList(
+          token, 
+          offerId, 
+          client_email, 
+          private_key, 
+          link, 
+          index, 
+          column_email, 
+          column_name, 
+          column_etherapies_identifiers
+        );
       myToast.execute({ status: 'success', title: 'Moderators list updated' })
   } catch (err) {
       myToast.execute({ status: 'error', title: 'Error', description: err.message })
@@ -134,9 +168,11 @@ export default function Login() {
   )
 }
 
-const syncEtherapiesList = async (token, offerId, link, index, column_identifier, column_name) => {
+const syncEtherapiesList = async (token, offerId, client_email, private_key, link, index, column_identifier, column_name) => {
     return axios.post('/api/syncEtherapiesList', {
         offerId,
+        client_email,
+        private_key: private_key.replace(/\\n/gm, '\n'),
         link,
         index,
         column_identifier,
@@ -148,9 +184,11 @@ const syncEtherapiesList = async (token, offerId, link, index, column_identifier
     });
 }
 
-const syncModeratorsList = async (token, offerId, link, index, column_email, column_name, column_etherapies_identifiers) => {
+const syncModeratorsList = async (token, offerId, client_email, private_key, link, index, column_email, column_name, column_etherapies_identifiers) => {
     return axios.post('/api/syncModeratorsList', {
         offerId,
+        client_email, 
+        private_key: private_key.replace(/\\n/gm, '\n'),
         link,
         index,
         column_email,
@@ -239,6 +277,8 @@ const settingsSheetsForm = (initialValues, SignupSchema, functionSubmitForm, syn
                         onClick={async () => {
                             props.setSubmitting(true);
                             const { 
+                                client_email,
+                                private_key,
                                 etherapiesLink, 
                                 etherapiesIndex, 
                                 etherapiesColumnIdentifier, 
@@ -246,6 +286,8 @@ const settingsSheetsForm = (initialValues, SignupSchema, functionSubmitForm, syn
                             } = props.values;
                             
                             await syncEtherapies(
+                                client_email,
+                                private_key,
                                 etherapiesLink, 
                                 etherapiesIndex, 
                                 etherapiesColumnIdentifier, 
@@ -264,6 +306,8 @@ const settingsSheetsForm = (initialValues, SignupSchema, functionSubmitForm, syn
                         onClick={async () => {
                             props.setSubmitting(true);
                             const { 
+                                client_email,
+                                private_key,
                                 moderatorsLink, 
                                 moderatorsIndex, 
                                 moderatorsColumnEmail, 
@@ -272,6 +316,8 @@ const settingsSheetsForm = (initialValues, SignupSchema, functionSubmitForm, syn
                             } = props.values;
                             
                             await syncModerators(
+                                client_email,
+                                private_key,
                                 moderatorsLink, 
                                 moderatorsIndex, 
                                 moderatorsColumnEmail, 
