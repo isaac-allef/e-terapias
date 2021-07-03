@@ -12,8 +12,8 @@ export default function ParticipantList() {
   const [participants, setParticipants] = useState(null);
   const [token, setToken] = useState('');
   const [offerId, setOfferId] = useState('');
-  const [loading, setLoading] = useState(true);
   const [columnSeleted, setColumnSeleted] = useState(null);
+  const [structFilter, setStructFilter] = useState({});
 
     useEffect(() => {
         setToken(localStorage.getItem('@etherapies:token'));
@@ -22,14 +22,12 @@ export default function ParticipantList() {
 
     useEffect(() => {
 		if (token) {
-			setLoading(true);
 			getParticipants({ 
 				token, 
 				offerId,
 			}).then(participants => {
 				setParticipants(participants);
 			})
-			setLoading(false);
 			return () => cancelRequest();
 		}
     }, [token]);
@@ -61,17 +59,12 @@ export default function ParticipantList() {
 			<Box maxHeight='20vh' overflowY='scroll' marginTop={4} marginBottom={4}>
 				<Stack>
 				{
-					columnSeleted ? 
-					participants.objectJson.filter((thing, index) => {
-						const _thing = thing[columnSeleted];
-						return index === participants.objectJson.findIndex(obj => {
-						  return obj[columnSeleted] === _thing;
-						});
-					  }).map(line => {
-						return <Checkbox key={Math.random()} colorScheme="blue">
-							{line[columnSeleted]}
-						</Checkbox>
-					})
+					columnSeleted ? 					
+						structFilter[columnSeleted].map(options => {
+							return <Checkbox key={Math.random()} colorScheme="blue">
+									{options}
+								</Checkbox>
+						})
 					: null
 				}
 				</Stack>
@@ -85,7 +78,10 @@ export default function ParticipantList() {
 				<Thead background='blue.500'>
 					<Tr>
 						{Children.toArray(
-							participants.columnsNames.map(column => <Th color='white'>{column}</Th>)
+							participants.columnsNames.map(column => {
+								structFilter[column] = [];
+								return <Th color='white'>{column}</Th>
+							})
 						)}
 					</Tr>
 				</Thead>
@@ -94,7 +90,13 @@ export default function ParticipantList() {
 						return Children.toArray(
 							<Tr>{
 								Children.toArray(
-									participants.columnsNames.map(column => <Td>{line[column]}</Td>)
+									participants.columnsNames.map(column => {
+										const response = line[column];
+										if (!structFilter[column].includes(response)) {
+											structFilter[column].push(response);
+										}
+										return <Td>{line[column]}</Td>
+									})
 								)
 							}</Tr>
 						)
