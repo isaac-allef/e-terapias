@@ -1,4 +1,4 @@
-import { Flex, Heading, LinkBox, LinkOverlay, Table, Tr, Th, Td, Text, Thead, Wrap, Tbody, Box, Select, Checkbox, Accordion, AccordionItem, AccordionButton, AccordionIcon, AccordionPanel, Stack } from "@chakra-ui/react";
+import { Flex, Heading, LinkBox, LinkOverlay, Table, Tr, Th, Td, Text, Thead, Wrap, Tbody, Box, Select, Checkbox, Accordion, AccordionItem, AccordionButton, AccordionIcon, AccordionPanel, Stack, CheckboxGroup, Button } from "@chakra-ui/react";
 import { Children, useEffect, useState } from "react";
 import Layout from "../../components/shared/Layout";
 import MyTitle from "../../components/shared/MyTitle";
@@ -6,14 +6,71 @@ import api, { cancelRequest } from "../../services/api";
 import { useRouter } from 'next/router';
 import axios from "axios";
 import MyLoading from "../../components/shared/MyLoading";
+import MyButton from "../../components/shared/MyButton";
+
+const Filter = ({ arrayOptionsSelect, structFilter, setFilterBy }) => {
+	const [columnSeleted, setColumnSeleted] = useState(null);
+  	const [optionsChecked, setOptionsChecked] = useState([]);
+
+	return (
+		<>
+		<Select placeholder="Select option" onChange={(a) => {
+			setColumnSeleted(a.target.value);
+			setOptionsChecked([]);
+		}}>
+			{Children.toArray(
+				arrayOptionsSelect.map(column => <option>{column}</option>)
+			)}
+		</Select>
+		<Box maxHeight='20vh' overflowY='scroll' marginTop={4} marginBottom={4}>
+			{/* {console.log(optionsChecked)} */}
+			<Stack>
+			{
+				columnSeleted ? 
+				<CheckboxGroup>
+					{
+					Children.toArray(
+					structFilter[columnSeleted].map(option => {
+						return <Checkbox 
+									colorScheme="blue"
+									value={option} 
+									onChange={(e) => {
+										if (!optionsChecked.includes(e.target.value)) {
+											setOptionsChecked([...optionsChecked, e.target.value])
+										} else {
+											setOptionsChecked(optionsChecked.filter(v => v !== e.target.value))
+										}
+									}} 
+								>
+								{option}
+							</Checkbox>
+					})
+					)
+				}
+				</CheckboxGroup>
+				: null
+			}
+			</Stack>
+		</Box>
+		<MyButton onClick={() => setFilterBy({
+			columnSelected: columnSeleted,
+			optionsChecked: optionsChecked,
+		})}>Filter</MyButton>
+		</>
+				
+	)
+}
 
 export default function ParticipantList() {
   const router = useRouter();
   const [participants, setParticipants] = useState(null);
   const [token, setToken] = useState('');
   const [offerId, setOfferId] = useState('');
-  const [columnSeleted, setColumnSeleted] = useState(null);
   const [structFilter, setStructFilter] = useState({});
+  const [filterBy, setFilterBy] = useState({
+	  columnSelected: null,
+	  optionsChecked: [],
+  });
 
     useEffect(() => {
         setToken(localStorage.getItem('@etherapies:token'));
@@ -34,7 +91,7 @@ export default function ParticipantList() {
 
     return (
         <Layout menu={null} >
-		
+		{console.log(filterBy)}
 		<Flex justifyContent='space-between'>
 			<MyTitle>Participants</MyTitle>
 		</Flex>
@@ -51,24 +108,11 @@ export default function ParticipantList() {
 					<AccordionIcon />
 				</AccordionButton>
 				<AccordionPanel pb={4}>
-				<Select placeholder="Select option" onChange={(a) => setColumnSeleted(a.target.value)}>
-					{Children.toArray(
-						participants.columnsNames.map(column => <option>{column}</option>)
-					)}
-				</Select>
-			<Box maxHeight='20vh' overflowY='scroll' marginTop={4} marginBottom={4}>
-				<Stack>
-				{
-					columnSeleted ? 					
-						structFilter[columnSeleted].map(options => {
-							return <Checkbox key={Math.random()} colorScheme="blue">
-									{options}
-								</Checkbox>
-						})
-					: null
-				}
-				</Stack>
-			</Box>
+					<Filter 
+						arrayOptionsSelect={participants.columnsNames}
+						structFilter={structFilter}
+						setFilterBy={setFilterBy}
+					/>
 				</AccordionPanel>
 			</AccordionItem>
 			</Accordion>
