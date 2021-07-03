@@ -8,9 +8,25 @@ import axios from "axios";
 import MyLoading from "../../components/shared/MyLoading";
 import MyButton from "../../components/shared/MyButton";
 
-const Filter = ({ arrayOptionsSelect, structFilter, setFilterBy }) => {
-	const [columnSeleted, setColumnSeleted] = useState(null);
+const Filter = ({ arrayOptionsSelect, originalContent, setContent }) => {
+	const [columnSelected, setColumnSeleted] = useState(null);
   	const [optionsChecked, setOptionsChecked] = useState([]);
+  	const [structFilter, setStructFilter] = useState({});
+
+	  useEffect(() => {
+		arrayOptionsSelect.map(column => {
+			structFilter[column] = [];
+		})
+
+		originalContent.map(line => {
+			arrayOptionsSelect.map(column => {
+				const response = line[column];
+				if (!structFilter[column].includes(response)) {
+					structFilter[column].push(response);
+				}
+			})
+		})
+	  }, []);
 
 	return (
 		<>
@@ -23,14 +39,13 @@ const Filter = ({ arrayOptionsSelect, structFilter, setFilterBy }) => {
 			)}
 		</Select>
 		<Box maxHeight='20vh' overflowY='scroll' marginTop={4} marginBottom={4}>
-			{/* {console.log(optionsChecked)} */}
 			<Stack>
 			{
-				columnSeleted ? 
+				columnSelected ? 
 				<CheckboxGroup>
 					{
 					Children.toArray(
-					structFilter[columnSeleted].map(option => {
+					structFilter[columnSelected].map(option => {
 						return <Checkbox 
 									colorScheme="blue"
 									value={option} 
@@ -52,10 +67,18 @@ const Filter = ({ arrayOptionsSelect, structFilter, setFilterBy }) => {
 			}
 			</Stack>
 		</Box>
-		<MyButton onClick={() => setFilterBy({
-			columnSelected: columnSeleted,
-			optionsChecked: optionsChecked,
-		})}>Filter</MyButton>
+		<Flex justifyContent='space-between'>
+			<MyButton onClick={() => {
+				setContent(
+					originalContent
+					.filter(
+						line => optionsChecked.includes(line[columnSelected])
+					)
+				)
+			}}
+			>Filter</MyButton>
+			<MyButton onClick={() => setContent(originalContent)}>Unfilter</MyButton>
+		</Flex>
 		</>
 				
 	)
@@ -66,11 +89,8 @@ export default function ParticipantList() {
   const [participants, setParticipants] = useState(null);
   const [token, setToken] = useState('');
   const [offerId, setOfferId] = useState('');
-  const [structFilter, setStructFilter] = useState({});
-  const [filterBy, setFilterBy] = useState({
-	  columnSelected: null,
-	  optionsChecked: [],
-  });
+  const [content, setContent] = useState(null);
+  const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         setToken(localStorage.getItem('@etherapies:token'));
@@ -84,6 +104,8 @@ export default function ParticipantList() {
 				offerId,
 			}).then(participants => {
 				setParticipants(participants);
+				setContent(participants.objectJson);
+				setLoading(false);
 			})
 			return () => cancelRequest();
 		}
@@ -91,13 +113,12 @@ export default function ParticipantList() {
 
     return (
         <Layout menu={null} >
-		{console.log(filterBy)}
 		<Flex justifyContent='space-between'>
 			<MyTitle>Participants</MyTitle>
 		</Flex>
 
 		{
-			participants ?
+			loading ? <MyLoading /> :
 			<>
 			<Accordion allowToggle marginBottom={4}>
 			<AccordionItem>
@@ -110,8 +131,8 @@ export default function ParticipantList() {
 				<AccordionPanel pb={4}>
 					<Filter 
 						arrayOptionsSelect={participants.columnsNames}
-						structFilter={structFilter}
-						setFilterBy={setFilterBy}
+						originalContent={participants.objectJson}
+						setContent={setContent}
 					/>
 				</AccordionPanel>
 			</AccordionItem>
@@ -122,25 +143,21 @@ export default function ParticipantList() {
 				<Thead background='blue.500'>
 					<Tr>
 						{Children.toArray(
-							participants.columnsNames.map(column => {
-								structFilter[column] = [];
-								return <Th color='white'>{column}</Th>
-							})
+							participants
+							.columnsNames
+							.map(column => <Th color='white'>{column}</Th>
+						)
 						)}
 					</Tr>
 				</Thead>
 				<Tbody>
-					{participants.objectJson.map(line => {
+					{content.map(line => {
 						return Children.toArray(
 							<Tr>{
 								Children.toArray(
-									participants.columnsNames.map(column => {
-										const response = line[column];
-										if (!structFilter[column].includes(response)) {
-											structFilter[column].push(response);
-										}
-										return <Td>{line[column]}</Td>
-									})
+									participants
+									.columnsNames
+									.map(column => <Td>{line[column]}</Td>)
 								)
 							}</Tr>
 						)
@@ -149,7 +166,6 @@ export default function ParticipantList() {
 			</Table>
 			</Box>
 			</>
-			: <MyLoading />
 		}
 
         </Layout>
