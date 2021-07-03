@@ -1,4 +1,4 @@
-import { Flex, Heading, LinkBox, LinkOverlay, Table, Tr, Th, Td, Text, Thead, Wrap, Tbody, Box } from "@chakra-ui/react";
+import { Flex, Heading, LinkBox, LinkOverlay, Table, Tr, Th, Td, Text, Thead, Wrap, Tbody, Box, Select, Checkbox, Accordion, AccordionItem, AccordionButton, AccordionIcon, AccordionPanel, Stack } from "@chakra-ui/react";
 import { Children, useEffect, useState } from "react";
 import Layout from "../../components/shared/Layout";
 import MyTitle from "../../components/shared/MyTitle";
@@ -13,6 +13,7 @@ export default function ParticipantList() {
   const [token, setToken] = useState('');
   const [offerId, setOfferId] = useState('');
   const [loading, setLoading] = useState(true);
+  const [columnSeleted, setColumnSeleted] = useState(null);
 
     useEffect(() => {
         setToken(localStorage.getItem('@etherapies:token'));
@@ -42,6 +43,43 @@ export default function ParticipantList() {
 
 		{
 			participants ?
+			<>
+			<Accordion allowToggle marginBottom={4}>
+			<AccordionItem>
+				<AccordionButton>
+					<Box flex="1" textAlign="left">
+					Filter
+					</Box>
+					<AccordionIcon />
+				</AccordionButton>
+				<AccordionPanel pb={4}>
+				<Select placeholder="Select option" onChange={(a) => setColumnSeleted(a.target.value)}>
+					{Children.toArray(
+						participants.columnsNames.map(column => <option>{column}</option>)
+					)}
+				</Select>
+			<Box maxHeight='20vh' overflowY='scroll' marginTop={4} marginBottom={4}>
+				<Stack>
+				{
+					columnSeleted ? 
+					participants.objectJson.filter((thing, index) => {
+						const _thing = thing[columnSeleted];
+						return index === participants.objectJson.findIndex(obj => {
+						  return obj[columnSeleted] === _thing;
+						});
+					  }).map(line => {
+						return <Checkbox key={Math.random()} colorScheme="blue">
+							{line[columnSeleted]}
+						</Checkbox>
+					})
+					: null
+				}
+				</Stack>
+			</Box>
+				</AccordionPanel>
+			</AccordionItem>
+			</Accordion>
+			
 			<Box overflow='scroll' height='75vh'>
 			<Table variant='striped' boxSize='max-content'>
 				<Thead background='blue.500'>
@@ -64,6 +102,7 @@ export default function ParticipantList() {
 				</Tbody>
 			</Table>
 			</Box>
+			</>
 			: <MyLoading />
 		}
 
