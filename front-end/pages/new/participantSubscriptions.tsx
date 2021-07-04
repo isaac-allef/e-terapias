@@ -1,4 +1,4 @@
-import { Flex, Heading, LinkBox, LinkOverlay, Table, Tr, Th, Td, Text, Thead, Wrap, Tbody, Box, Select, Checkbox, Accordion, AccordionItem, AccordionButton, AccordionIcon, AccordionPanel, Stack, CheckboxGroup, Button, RadioGroup, Radio } from "@chakra-ui/react";
+import { Flex, Table, Tr, Th, Td, Text, Thead, Wrap, Tbody, Box, Select, Checkbox, Accordion, AccordionItem, AccordionButton, AccordionIcon, AccordionPanel, Stack, CheckboxGroup, Button, RadioGroup, Radio } from "@chakra-ui/react";
 import { Children, useEffect, useState } from "react";
 import Layout from "../../components/shared/Layout";
 import MyTitle from "../../components/shared/MyTitle";
@@ -7,6 +7,18 @@ import { useRouter } from 'next/router';
 import axios from "axios";
 import MyLoading from "../../components/shared/MyLoading";
 import MyButton from "../../components/shared/MyButton";
+import React from 'react';
+import { CSVLink } from "react-csv";
+import { MdFileDownload } from "react-icons/md";
+
+const convertColumnsNamesToCSV = (columnsNames) => {
+	return columnsNames.map(columnName => {
+		return {
+			label: columnName,
+			key: columnName,
+		}
+	})
+}
 
 const Filter = ({ columnSelected, originalContent, setContent, othersColumns }) => {
   	const [optionChoiced, setOptionChoiced] = useState('&@%#$!');
@@ -202,6 +214,16 @@ export default function ParticipantList() {
 			</AccordionItem>
 			</Accordion>
 			
+			<Flex justifyContent='flex-end' >
+			<MyButton colorScheme="green" variant='ghost' leftIcon={<MdFileDownload />} >
+				<CSVLink 
+					headers={convertColumnsNamesToCSV(participants.columnsNames)}
+					data={content}
+					filename='testing.csv'
+				>Export to CSV</CSVLink>
+			</MyButton>
+			</Flex>
+
 			<Box overflow='scroll' height='75vh'>
 			<Table variant='striped' boxSize='max-content'>
 				<Thead background='blue.500'>
