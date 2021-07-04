@@ -216,13 +216,15 @@ export default function ParticipantList() {
 			</Accordion>
 			
 			<Flex justifyContent='flex-end' >
-			<MyButton colorScheme="green" variant='ghost' leftIcon={<MdFileDownload />} >
-				<CSVLink 
-					headers={convertColumnsNamesToCSV(participants.columnsNames)}
-					data={content}
-					filename='testing.csv'
-				>Export to CSV</CSVLink>
-			</MyButton>
+			<CSVLink 
+				headers={convertColumnsNamesToCSV(participants.columnsNames)}
+				data={content}
+				filename='testing.csv'
+			>
+				<MyButton colorScheme="green" variant='ghost' leftIcon={<MdFileDownload />} >
+					Export to CSV
+				</MyButton>
+			</CSVLink>
 			</Flex>
 
 			<Box overflow='scroll' height='75vh'>
