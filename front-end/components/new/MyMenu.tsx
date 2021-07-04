@@ -7,6 +7,7 @@ import { RiPsychotherapyFill } from "react-icons/ri";
 import { BsFillPersonFill } from "react-icons/bs";
 import { VscGraph } from "react-icons/vsc";
 import { IoSettingsSharp } from "react-icons/io5";
+import { MdFormatListBulleted } from "react-icons/md";
 
 function Item({ title, link, icon, isSelected=false, ...props }) {
     return (
@@ -42,6 +43,7 @@ function Item({ title, link, icon, isSelected=false, ...props }) {
 				<Item isSelected={itemSelected === 'moderatorList'} title='Moderators' link='/new/moderatorList' icon={<Icon as={IoIosPeople} />} />
 				<Item isSelected={itemSelected === 'etherapyList'} title='Etherapies' link='/new/etherapyList' icon={<Icon as={RiPsychotherapyFill} />} />
 				<Item isSelected={itemSelected === 'settings'} title='Settings' link='/new/settings' icon={<Icon as={IoSettingsSharp} />} />
+				<Item isSelected={itemSelected === 'subscriptions'} title='Subscriptions' link='/new/participantSubscriptions' icon={<Icon as={MdFormatListBulleted} />} />
 			</Stack>
 			:
 			<Stack boxShadow='xl' spacing={0} height='100%'>

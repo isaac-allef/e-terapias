@@ -10,6 +10,7 @@ import MyButton from "../../components/shared/MyButton";
 import React from 'react';
 import { CSVLink } from "react-csv";
 import { MdFileDownload } from "react-icons/md";
+import MyMenu from "../../components/new/MyMenu";
 
 const convertColumnsNamesToCSV = (columnsNames) => {
 	return columnsNames.map(columnName => {
@@ -171,9 +172,9 @@ export default function ParticipantList() {
     }, [token]);
 
     return (
-        <Layout menu={null} >
+        <Layout menu={<MyMenu manager={true} itemSelected='subscriptions' />} >
 		<Flex justifyContent='space-between'>
-			<MyTitle>Participants</MyTitle>
+			<MyTitle>Subscriptions</MyTitle>
 		</Flex>
 
 		{
