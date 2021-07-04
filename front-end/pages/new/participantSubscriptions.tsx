@@ -8,11 +8,12 @@ import axios from "axios";
 import MyLoading from "../../components/shared/MyLoading";
 import MyButton from "../../components/shared/MyButton";
 
-const Filter = ({ columnSelected, originalContent, setContent }) => {
+const Filter = ({ columnSelected, originalContent, setContent, othersColumns }) => {
   	const [optionChoiced, setOptionChoiced] = useState('&@%#$!');
   	const [options, setOptions] = useState([]);
 	const [quantTotalSubscriptions, setQuantTotalSubscriptions] = useState(null);
 	const [quantFilteredSubscriptions, setQuantFielteredSubscriptions] = useState(null);
+  	const [columnsChecked, setColumnsChecked] = useState([]);
 
 	  useEffect(() => {
 		const responsesWithoutRepetions = [];
@@ -62,11 +63,56 @@ const Filter = ({ columnSelected, originalContent, setContent }) => {
 				</Stack>
 			</RadioGroup>
 		</Box>
+		<Text>Select the secundaries etherapies you want to filter:</Text>
+
+		<Box maxHeight='20vh' overflowY='scroll' overflowX='hidden' marginTop={4} marginBottom={4}>
+		<CheckboxGroup>
+			<Wrap>{
+			Children.toArray(
+			othersColumns.map(option => {
+				return <Checkbox 
+							isDisabled={optionChoiced === '&@%#$!'}
+							colorScheme="blue"
+							value={option} 
+							onChange={(e) => {
+								if (!columnsChecked.includes(e.target.value)) {
+									setColumnsChecked([...columnsChecked, e.target.value])
+								} else {
+									setColumnsChecked(columnsChecked.filter(v => v !== e.target.value))
+								}
+							}} 
+						>
+						{option}
+					</Checkbox>
+			})
+			)
+			}</Wrap>
+		</CheckboxGroup>
+		</Box>
 		<Flex justifyContent='space-between' marginBottom={4}>
 			<MyButton onClick={() => {
 				const contentFiltered = originalContent
 											.filter(
-												line => line[columnSelected] === optionChoiced
+												line => {
+													if (line[columnSelected] !== optionChoiced) {
+														return false;
+													}
+
+													if (JSON.stringify(columnsChecked) !== '[]') {
+														let ok = false;
+														for (let i=0; i<columnsChecked.length; i++) {
+															if (line[columnsChecked[i]] !== '') {
+																ok = true;
+																break;
+															}
+														}
+														if (!ok) {
+															return false;
+														}
+													}
+
+													return true;
+												}
 											)
 				setContent(contentFiltered);
 				setQuantFielteredSubscriptions(contentFiltered.length)
@@ -134,6 +180,23 @@ export default function ParticipantList() {
 				columnSelected='Caso tenha se interessado por mais de uma e-terapia, indique a sua primeira opção?'
 				originalContent={participants.objectJson}
 				setContent={setContent}
+				othersColumns={[
+					'e-terapia 01 - horário disponível:',
+					'e-terapia 02 - horários disponíveis:',
+					'e-terapia 03 - horário disponível',
+					'e-terapia 05 - horário disponível:',
+					'e-terapia 04 - horários disponíveis',
+					'e-terapia 06 - horários disponíveis:',
+					'e-terapia 07 - horário disponível',
+					'e-terapia 08 - horários disponíveis:',
+					'e-terapia 09 - Inscrições encerradas temporariamente.',
+					'e-terapia 10 - horários disponíveis:',
+					'e-terapia 11 - horário disponível:',
+					'e-terapia 12 - Inscrições encerradas temporariamente. ',
+					'e-terapia 13 - horário disponível:',
+					'e-terapia 14 - horário disponível:',
+					'e-terapia 15 - horário disponível:',
+				]}
 			/>
 			</AccordionPanel>
 			</AccordionItem>
