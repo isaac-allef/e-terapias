@@ -37,6 +37,10 @@ offerRouter.post(
                 participants: Joi.object().keys({
                     sheet_link: Joi.string(),
                     sheet_index: Joi.number(),
+                    column_main_choice_etherapy: Joi.string(),
+                    columns_others_choice_etherapies: Joi.array().items(
+                        Joi.string(),
+                    ),
                 }),
             }),
         }),
@@ -76,6 +80,10 @@ offerRouter.put(
                 participants: Joi.object().keys({
                     sheet_link: Joi.string(),
                     sheet_index: Joi.number(),
+                    column_main_choice_etherapy: Joi.string(),
+                    columns_others_choice_etherapies: Joi.array().items(
+                        Joi.string(),
+                    ),
                 }),
             }),
         }),

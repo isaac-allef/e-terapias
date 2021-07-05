@@ -24,6 +24,8 @@ type settings_etherapies = {
 type settings_participants = {
     sheet_link: string;
     sheet_index: number;
+    column_main_choice_etherapy: string;
+    columns_others_choice_etherapies: string[];
 };
 
 export type settings = {
