@@ -53,6 +53,8 @@ export default function Login() {
       etherapiesColumnName: Yup.string(),
       participantsLink: Yup.string(),
       participantsIndex: Yup.number().default(0),
+      participantsColumnMainChoiceEtherapy: Yup.string(),
+      participantsColumnsOthersChoiceEtherapies: Yup.string(),
   });
 
   const functionSubmitForm = async (values, actions) => {
@@ -70,10 +72,10 @@ export default function Login() {
         etherapiesColumnName,
         participantsLink,
         participantsIndex,
+        participantsColumnMainChoiceEtherapy,
+        participantsColumnsOthersChoiceEtherapies,
     } = values;
-
-    console.log(participantsLink)
-
+    
     try {
         const settings: settings = {
             serviceAccount: {
@@ -96,6 +98,11 @@ export default function Login() {
             participants: {
                 sheet_link: participantsLink,
                 sheet_index: participantsIndex,
+                column_main_choice_etherapy: participantsColumnMainChoiceEtherapy,
+                columns_others_choice_etherapies: participantsColumnsOthersChoiceEtherapies
+                                                    ?.replace(/(\r\n|\n|\r)/gm, "")
+                                                    .replace(/ /g,'')
+                                                    .split(';'),
             }
         }
 
@@ -237,6 +244,8 @@ const getSettings = async (token, offerId)  => {
         etherapiesColumnName: settings?.etherapies?.column_name,
         participantsLink: settings?.participants?.sheet_link,
         participantsIndex: settings?.participants?.sheet_index,
+        participantsColumnMainChoiceEtherapy: settings?.participants?.column_main_choice_etherapy,
+        participantsColumnsOthersChoiceEtherapies: settings?.participants?.columns_others_choice_etherapies?.join(';'),
     };
 }
 
@@ -261,6 +270,8 @@ interface settings {
     participants: {
         sheet_link: string,
         sheet_index: number,
+        column_main_choice_etherapy: string;
+        columns_others_choice_etherapies: string[];
     },
 };
 
@@ -565,6 +576,30 @@ const settingsSheetsForm = (initialValues, SignupSchema, functionSubmitForm, syn
                                 </NumberInput>
                             </InputGroup>
                         <   FormErrorMessage>{form.errors.participantsIndex}</FormErrorMessage>
+                        </FormControl>
+                        )}
+                    </Field>
+                    <Field name="participantsColumnMainChoiceEtherapy">
+                        {({ field, form }) => (
+                        <FormControl isInvalid={form.errors.participantsColumnMainChoiceEtherapy && form.touched.participantsColumnMainChoiceEtherapy}>
+                            <FormLabel margin={0} htmlFor="participantsColumnMainChoiceEtherapy">Column main choice etherapy</FormLabel>
+                            <InputGroup>
+                            <InputLeftElement pointerEvents="none" children={<Icon as={AiTwotoneMail} color="gray.400" />} />
+                                <Input {...field} id="participantsColumnMainChoiceEtherapy" placeholder="column" />
+                            </InputGroup>
+                        <   FormErrorMessage>{form.errors.participantsColumnMainChoiceEtherapy}</FormErrorMessage>
+                        </FormControl>
+                        )}
+                    </Field>
+                    <Field name="participantsColumnsOthersChoiceEtherapies">
+                        {({ field, form }) => (
+                        <FormControl isInvalid={form.errors.participantsColumnsOthersChoiceEtherapies && form.touched.participantsColumnsOthersChoiceEtherapies}>
+                            <FormLabel margin={0} htmlFor="participantsColumnsOthersChoiceEtherapies">Columns others choice etherapies ( separate per ; )</FormLabel>
+                            <InputGroup>
+                            <InputLeftElement pointerEvents="none" />
+                                <Textarea {...field} id="participantsColumnsOthersChoiceEtherapies" placeholder="columns" />
+                            </InputGroup>
+                        <   FormErrorMessage>{form.errors.participantsColumnsOthersChoiceEtherapies}</FormErrorMessage>
                         </FormControl>
                         )}
                     </Field>
