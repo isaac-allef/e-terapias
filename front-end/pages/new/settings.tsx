@@ -101,7 +101,7 @@ export default function Login() {
                 column_main_choice_etherapy: participantsColumnMainChoiceEtherapy,
                 columns_others_choice_etherapies: participantsColumnsOthersChoiceEtherapies
                                                     ?.replace(/(\r\n|\n|\r)/gm, "")
-                                                    .replace(/ /g,'')
+                                                    // .replace(/ /g,'')
                                                     .split(';'),
             }
         }
