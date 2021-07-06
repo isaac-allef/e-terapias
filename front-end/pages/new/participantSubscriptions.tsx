@@ -151,6 +151,8 @@ export default function ParticipantList() {
   const [offerId, setOfferId] = useState('');
   const [content, setContent] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [mainColumn, setMainColumn] = useState(null);
+  const [secondaryColumns, setSecondaryColumns] = useState([]);
 
     useEffect(() => {
         setToken(localStorage.getItem('@etherapies:token'));
@@ -158,18 +160,20 @@ export default function ParticipantList() {
     }, []);
 
     useEffect(() => {
-		if (token) {
-			getParticipants({ 
-				token, 
-				offerId,
-			}).then(participants => {
-				setParticipants(participants);
-				setContent(participants.objectJson);
-				setLoading(false);
+		if (token && offerId) {
+			getSettings({ token, offerId })
+				.then(settings => {
+					getParticipants({ settings }).then(participants => {
+						setParticipants(participants);
+						setContent(participants.objectJson);
+						setMainColumn(settings?.participants?.column_main_choice_etherapy);
+						setSecondaryColumns(settings?.participants?.columns_others_choice_etherapies);
+						setLoading(false);
+					})
 			})
 			return () => cancelRequest();
 		}
-    }, [token]);
+    }, [token, offerId]);
 
     return (
         <Layout menu={<MyMenu manager={true} itemSelected='subscriptions' />} >
@@ -190,26 +194,10 @@ export default function ParticipantList() {
 				</AccordionButton>
 				<AccordionPanel pb={4}>
 			<Filter 
-				columnSelected='Caso tenha se interessado por mais de uma e-terapia, indique a sua primeira opção?'
+				columnSelected={mainColumn}
 				originalContent={participants.objectJson}
 				setContent={setContent}
-				othersColumns={[
-					'e-terapia 01 - horário disponível:',
-					'e-terapia 02 - horários disponíveis:',
-					'e-terapia 03 - horário disponível',
-					'e-terapia 05 - horário disponível:',
-					'e-terapia 04 - horários disponíveis',
-					'e-terapia 06 - horários disponíveis:',
-					'e-terapia 07 - horário disponível',
-					'e-terapia 08 - horários disponíveis:',
-					'e-terapia 09 - Inscrições encerradas temporariamente.',
-					'e-terapia 10 - horários disponíveis:',
-					'e-terapia 11 - horário disponível:',
-					'e-terapia 12 - Inscrições encerradas temporariamente. ',
-					'e-terapia 13 - horário disponível:',
-					'e-terapia 14 - horário disponível:',
-					'e-terapia 15 - horário disponível:',
-				]}
+				othersColumns={secondaryColumns}
 			/>
 			</AccordionPanel>
 			</AccordionItem>
@@ -261,7 +249,7 @@ export default function ParticipantList() {
     )
 }
 
-const getParticipants = async ({ token, offerId }): Promise<any> => {
+const getSettings = async ({ token, offerId }): Promise<any> => {
 	const response = await api.get(`/offers/${offerId}`, {
 		headers: {
 			'Authorization': `token ${token}`
@@ -269,6 +257,11 @@ const getParticipants = async ({ token, offerId }): Promise<any> => {
 	});
 	const offer = response.data;
 	const { settings } = offer;
+
+	return settings;
+}
+
+const getParticipants = async ({ settings }): Promise<any> => {
 
     const response2 = await axios.get('/api/readSheet', {
 		params: {
