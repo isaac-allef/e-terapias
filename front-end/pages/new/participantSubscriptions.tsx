@@ -174,7 +174,7 @@ export default function ParticipantList() {
     return (
         <Layout menu={<MyMenu manager={true} itemSelected='subscriptions' />} >
 		<Flex justifyContent='space-between'>
-			<MyTitle>Subscriptions</MyTitle>
+			<MyTitle>Participants Reports</MyTitle>
 		</Flex>
 
 		{

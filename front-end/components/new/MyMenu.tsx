@@ -42,13 +42,13 @@ function Item({ title, link, icon, isSelected=false, ...props }) {
 				<Item isSelected={itemSelected === 'templateList'} title='Templates' link='/new/templateList' icon={<Icon as={AiFillCopy} />} />
 				<Item isSelected={itemSelected === 'moderatorList'} title='Moderators' link='/new/moderatorList' icon={<Icon as={IoIosPeople} />} />
 				<Item isSelected={itemSelected === 'etherapyList'} title='Etherapies' link='/new/etherapyList' icon={<Icon as={RiPsychotherapyFill} />} />
+				<Item isSelected={itemSelected === 'subscriptions'} title='Participants reports' link='/new/participantSubscriptions' icon={<Icon as={MdFormatListBulleted} />} />
 				<Item isSelected={itemSelected === 'settings'} title='Settings' link='/new/settings' icon={<Icon as={IoSettingsSharp} />} />
-				<Item isSelected={itemSelected === 'subscriptions'} title='Subscriptions' link='/new/participantSubscriptions' icon={<Icon as={MdFormatListBulleted} />} />
 			</Stack>
 			:
 			<Stack boxShadow='xl' spacing={0} height='100%'>
 				<Item isSelected={itemSelected === 'myFieldJournalList'} marginTop='3rem' title='Field journals' link='/new/myFieldJournalList' icon={<Icon as={IoIosJournal} />} />
-				<Item isSelected={itemSelected === 'perfil'} title='Perfil' link='/new/perfil' icon={<Icon as={BsFillPersonFill} />} />
+				<Item isSelected={itemSelected === 'perfil'} title='Profile' link='/new/perfil' icon={<Icon as={BsFillPersonFill} />} />
 			</Stack>
 		}
     </>)

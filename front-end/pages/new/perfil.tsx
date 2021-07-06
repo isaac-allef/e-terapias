@@ -30,7 +30,7 @@ export default function Perfil() {
     return (
         <Layout menu={<MyMenu manager={false} itemSelected='perfil' />}>
         
-		<MyTitle>Perfil</MyTitle>
+		<MyTitle>Profile</MyTitle>
 		
 		{ me ? details(me) : null }
         
