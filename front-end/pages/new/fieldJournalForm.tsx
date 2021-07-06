@@ -17,6 +17,7 @@ import { CalendarIcon } from "@chakra-ui/icons";
 import MyButton from "../../components/shared/MyButton";
 import MyMenu from "../../components/new/MyMenu";
 import { typesOfQuestions } from '../../utils/typesOfQuestions';
+import { Alert, AlertIcon } from "@chakra-ui/react";
 
 interface field {
     name: string;
@@ -49,6 +50,8 @@ export default function FieldJournalForm() {
     const [etherapies, setEtherapies] = useState([]);
     const [etherapySelected, setEtherapySelected] = useState(null);
     const [token, setToken] = useState('');
+    const [noTemplate, setNoTemplate] = useState(false);
+    const [noTemplateMessage, setNoTemplateMessage] = useState('No template');
 
     useEffect(() => {
         setToken(localStorage.getItem('@etherapies:token'));
@@ -93,10 +96,19 @@ export default function FieldJournalForm() {
     }
 
     useEffect(() => {
-        const templateFieldsExists = etherapySelected?.template.templateFields;
-        setTemplateFields(templateFieldsExists);
-        const newFields = createFieldsBasedInTemplateFields(templateFieldsExists);
-        setFields(newFields);
+        if (!etherapySelected) {
+            setNoTemplate(true);
+            setNoTemplateMessage('No etherapy selected.');
+        } else if (!etherapySelected?.template) {
+            setNoTemplate(true);
+            setNoTemplateMessage('This etherapy not have a template yet.');
+        } else {
+            setNoTemplate(false);
+            const templateFieldsExists = etherapySelected?.template?.templateFields;
+            setTemplateFields(templateFieldsExists);
+            const newFields = createFieldsBasedInTemplateFields(templateFieldsExists);
+            setFields(newFields);
+        }
     }, [etherapySelected]);
 
     function handleChange(newValue, index) {
@@ -157,7 +169,11 @@ export default function FieldJournalForm() {
             etherapies={etherapies}
             setEtherapySelected={setEtherapySelected}
         />
-
+        {noTemplate ? <Alert marginTop={4} marginBottom={4} status="warning">
+                        <AlertIcon />
+                        <Text>{noTemplateMessage}</Text>
+                    </Alert>
+        :
         <Formik
             initialValues={initialValues}
             validationSchema={SignupSchema}
@@ -204,6 +220,7 @@ export default function FieldJournalForm() {
             </Form>
             )}
         </Formik>
+        }
 
         <Divider />
       </Layout>
