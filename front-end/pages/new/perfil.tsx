@@ -2,7 +2,6 @@ import { Box, Divider, Grid, GridItem, Text } from "@chakra-ui/layout";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import React from "react";
-import { Button } from "@chakra-ui/button";
 import { UnlockIcon } from "@chakra-ui/icons";
 import Layout from "../../components/shared/Layout";
 import MyTitle from "../../components/shared/MyTitle";
@@ -15,16 +14,18 @@ export default function Perfil() {
     const router = useRouter();
 	const [me, setMe] = useState(null);
 	const [token, setToken] = useState('');
+	const [offerId, setOfferId] = useState('');
 
     useEffect(() => {
         setToken(localStorage.getItem('@etherapies:token'));
+        setOfferId(localStorage.getItem('@etherapies:offerId'));
     }, []);
 	
 	useEffect(() => {
-		if (token) {
-			getMeModerator(token).then(moderator => setMe(moderator));
+		if (token && offerId) {
+			getMeModerator(token, offerId).then(moderator => setMe(moderator));
 		}
-	}, [token]);
+	}, [token, offerId]);
 
     return (
         <Layout menu={<MyMenu manager={false} itemSelected='perfil' />}>
@@ -64,13 +65,16 @@ const details = (moderator) => (
 	</Box>
 )
 
-const getMeModerator = async (token: string): Promise<any> => {
+const getMeModerator = async (token: string, offerId: string): Promise<any> => {
 	const response = await api.get(`/moderators/me`, {
 		headers: {
 			'Authorization': `token ${token}`
 		}
 	});
 	const moderator = response.data;
+
+	const etherapiesFilteredByOffer = moderator.etherapies.filter(etherapy => etherapy.offer.id === offerId)
+	moderator.etherapies = etherapiesFilteredByOffer;
 
 	return moderator;
 }
