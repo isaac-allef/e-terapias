@@ -6,6 +6,7 @@ import makeLoadAllEtherapiesContoller from '../../factories/controllers/userMana
 import makeSearchEtherapiesContoller from '../../factories/controllers/userManager/makeSearchEtherapiesContoller';
 import makeLoadAllFieldJournalsPerEtherapyContoller from '../../factories/controllers/userManager/makeLoadAllFieldJournalsPerEtherapyContoller';
 import { authManager } from '../middlewares/authManager';
+import makeDeleteEtherapyContoller from '../../factories/controllers/userManager/makeDeleteEtherapyContoller';
 
 const etherapiesRouter = Router();
 
@@ -37,6 +38,12 @@ etherapiesRouter.get(
     '/:id/fieldJournals',
     authManager,
     adapterRouter(makeLoadAllFieldJournalsPerEtherapyContoller()),
+);
+
+etherapiesRouter.delete(
+    '/:id',
+    authManager,
+    adapterRouter(makeDeleteEtherapyContoller()),
 );
 
 export default etherapiesRouter;

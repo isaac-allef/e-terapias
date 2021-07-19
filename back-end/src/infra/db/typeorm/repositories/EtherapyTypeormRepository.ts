@@ -17,6 +17,7 @@ import SearchEtherapiesRepository, {
 } from '../../../../core/protocols/db/repositories/SearchEtherapiesRepository';
 import EtherapyTypeorm from '../entities/EtherapyTypeorm';
 import CountEtherapiesRepository from '../../../../core/protocols/db/repositories/CountEtherapiesRepository';
+import DeleteEtherapyByIdRepository from '../../../../core/protocols/db/repositories/DeleteEtherapyByIdRepository';
 
 @EntityRepository()
 class EtherapyTypeormRepository
@@ -28,7 +29,8 @@ class EtherapyTypeormRepository
         SearchEtherapiesRepository,
         LoadEtherapyByIdentifierRepository,
         LoadManyEtherapiesByIdentifierRepository,
-        CountEtherapiesRepository {
+        CountEtherapiesRepository,
+        DeleteEtherapyByIdRepository {
     private ormRepository: Repository<EtherapyTypeorm>;
 
     constructor() {
@@ -248,6 +250,14 @@ class EtherapyTypeormRepository
             return this.ormRepository.count();
         } catch {
             throw new Error('Count etherapies error.');
+        }
+    }
+
+    async delete(id: string): Promise<void> {
+        try {
+            await this.ormRepository.softDelete(id);
+        } catch (err) {
+            throw new Error('Delete etherapy error.');
         }
     }
 }

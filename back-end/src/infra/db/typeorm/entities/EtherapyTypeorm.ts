@@ -1,6 +1,7 @@
 import {
     Column,
     CreateDateColumn,
+    DeleteDateColumn,
     Entity,
     JoinTable,
     ManyToMany,
@@ -52,6 +53,9 @@ class EtherapyTypeorm implements Etherapy {
 
     @UpdateDateColumn()
     updated_at: Date;
+
+    @DeleteDateColumn()
+    deletedAt?: Date;
 }
 
 export default EtherapyTypeorm;
