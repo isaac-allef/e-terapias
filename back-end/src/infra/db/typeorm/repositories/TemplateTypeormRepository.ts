@@ -5,6 +5,7 @@ import CountTemplatesRepository from '../../../../core/protocols/db/repositories
 import CreateTemplateRepository, {
     params as createParams,
 } from '../../../../core/protocols/db/repositories/CreateTemplateRepository';
+import DeleteTemplateByIdRepository from '../../../../core/protocols/db/repositories/DeleteTemplateByIdRepository';
 import LoadAllTemplatesRepository, {
     params as loadAllParams,
 } from '../../../../core/protocols/db/repositories/LoadAllTemplatesRepository';
@@ -25,7 +26,8 @@ class TemplateTypeormRepository
         UpdateTemplateRepository,
         LoadAllTemplatesRepository,
         SearchTemplatesRepository,
-        CountTemplatesRepository {
+        CountTemplatesRepository,
+        DeleteTemplateByIdRepository {
     private ormRepository: Repository<TemplateTypeorm>;
 
     constructor() {
@@ -172,6 +174,14 @@ class TemplateTypeormRepository
             return queryBuilder.getCount();
         } catch {
             throw new Error('Count templates error.');
+        }
+    }
+
+    async delete(id: string): Promise<void> {
+        try {
+            await this.ormRepository.softDelete(id);
+        } catch (err) {
+            throw new Error('Delete template error.');
         }
     }
 }

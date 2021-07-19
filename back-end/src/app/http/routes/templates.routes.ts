@@ -6,6 +6,7 @@ import makeUpdateTemplateContoller from '../../factories/controllers/userManager
 import makeLoadAllTemplatesContoller from '../../factories/controllers/userManager/makeLoadAllTemplatesContoller';
 import makeSearchTemplatesContoller from '../../factories/controllers/userManager/makeSearchTemplatesContoller';
 import { authManager } from '../middlewares/authManager';
+import makeDeleteTemplateContoller from '../../factories/controllers/userManager/makeDeleteTemplateContoller';
 
 const templatesRouter = Router();
 
@@ -33,6 +34,12 @@ templatesRouter.get(
     '/search/:keywords',
     authManager,
     adapterRouter(makeSearchTemplatesContoller()),
+);
+
+templatesRouter.delete(
+    '/:id',
+    authManager,
+    adapterRouter(makeDeleteTemplateContoller()),
 );
 
 export default templatesRouter;
