@@ -103,7 +103,7 @@ class FieldJournalTypeormRepository
             queryBuilder.where('moderator.id = :id', { id: moderatorId });
 
             if (offerId) {
-                queryBuilder.where('offer.id = :id', { id: offerId });
+                queryBuilder.andWhere('offer.id = :idd', { idd: offerId });
             }
 
             queryBuilder
