@@ -7,6 +7,7 @@ import CountFieldJournalsRepository, {
 import CreateFieldJournalRepository, {
     params as createParams,
 } from '../../../../core/protocols/db/repositories/CreateFieldJournalRepository';
+import DeleteFieldJournalByIdRepository from '../../../../core/protocols/db/repositories/DeleteFieldJournalByIdRepository';
 import LoadAllFieldJournalsPerEtherapyRepository, {
     params as loadAllPerEtherapyParams,
 } from '../../../../core/protocols/db/repositories/LoadAllFieldJournalsPerEtherapyRepository';
@@ -39,7 +40,8 @@ class FieldJournalTypeormRepository
         UpdateFieldJournalRepository,
         LoadAllFieldJournalsRepository,
         SearchFieldJournalsRepository,
-        CountFieldJournalsRepository {
+        CountFieldJournalsRepository,
+        DeleteFieldJournalByIdRepository {
     private ormRepository: Repository<FieldJournalTypeorm>;
 
     constructor() {
@@ -336,6 +338,14 @@ class FieldJournalTypeormRepository
             return count;
         } catch {
             throw new Error('Count field journals error.');
+        }
+    }
+
+    async delete(id: string): Promise<void> {
+        try {
+            await this.ormRepository.softDelete(id);
+        } catch (err) {
+            throw new Error('Delete field journal error.');
         }
     }
 }

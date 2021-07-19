@@ -7,6 +7,7 @@ import makeLoadAllFieldJournalsContoller from '../../factories/controllers/userM
 import makeSearchFieldJournalsContoller from '../../factories/controllers/userManager/makeSearchFieldJournalsContoller';
 import { authModerator } from '../middlewares/authModerator';
 import { authManager } from '../middlewares/authManager';
+import makeDeleteFieldJournalContoller from '../../factories/controllers/userManager/makeDeleteFieldJournalContoller';
 
 const fieldJournalsRouter = Router();
 
@@ -38,6 +39,12 @@ fieldJournalsRouter.get(
     '/search/:keywords',
     authManager,
     adapterRouter(makeSearchFieldJournalsContoller()),
+);
+
+fieldJournalsRouter.delete(
+    '/:id',
+    authManager,
+    adapterRouter(makeDeleteFieldJournalContoller()),
 );
 
 export default fieldJournalsRouter;

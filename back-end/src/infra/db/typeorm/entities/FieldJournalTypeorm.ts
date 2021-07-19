@@ -1,6 +1,7 @@
 import {
     Column,
     CreateDateColumn,
+    DeleteDateColumn,
     Entity,
     ManyToOne,
     PrimaryGeneratedColumn,
@@ -41,6 +42,9 @@ class FieldJournalTypeorm implements FieldJournal {
 
     @UpdateDateColumn()
     updated_at: Date;
+
+    @DeleteDateColumn()
+    deletedAt?: Date;
 }
 
 export default FieldJournalTypeorm;
