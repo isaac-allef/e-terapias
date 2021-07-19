@@ -1,6 +1,7 @@
 import {
     Column,
     CreateDateColumn,
+    DeleteDateColumn,
     Entity,
     JoinTable,
     ManyToMany,
@@ -43,6 +44,9 @@ class OfferTypeorm implements Offer {
 
     @UpdateDateColumn()
     updated_at: Date;
+
+    @DeleteDateColumn()
+    deletedAt?: Date;
 }
 
 export default OfferTypeorm;

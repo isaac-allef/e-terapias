@@ -2,6 +2,7 @@ import { celebrate, errors, Joi, Segments } from 'celebrate';
 import { Router } from 'express';
 import makeLoadOfferContoller from '../../factories/controllers/shared/makeLoadOfferContoller';
 import makeCreateOfferController from '../../factories/controllers/userManager/makeCreateOfferController';
+import makeDeleteOfferContoller from '../../factories/controllers/userManager/makeDeleteOfferContoller';
 import makeLoadAllOffersContoller from '../../factories/controllers/userManager/makeLoadAllOffersContoller';
 import makeUpdateOfferController from '../../factories/controllers/userManager/makeUpdateOfferController';
 import adapterRouter from '../adapters/expressRouter';
@@ -95,6 +96,12 @@ offerRouter.put(
 offerRouter.get('/:id', authManager, adapterRouter(makeLoadOfferContoller()));
 
 offerRouter.get('/', authManager, adapterRouter(makeLoadAllOffersContoller()));
+
+offerRouter.delete(
+    '/:id',
+    authManager,
+    adapterRouter(makeDeleteOfferContoller()),
+);
 
 offerRouter.use(errors());
 

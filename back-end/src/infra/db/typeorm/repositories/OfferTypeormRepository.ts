@@ -3,6 +3,7 @@ import Offer from '../../../../core/entities/Offer';
 import CreateOfferRepository, {
     params,
 } from '../../../../core/protocols/db/repositories/CreateOfferRepository';
+import DeleteOfferByIdRepository from '../../../../core/protocols/db/repositories/DeleteOfferByIdRepository';
 import LoadAllOffersRepository, {
     params as loadAllParams,
 } from '../../../../core/protocols/db/repositories/LoadAllOffersRepository';
@@ -18,7 +19,8 @@ class OfferTypeormRepository
         CreateOfferRepository,
         UpdateOfferRepository,
         LoadOfferByIdRepository,
-        LoadAllOffersRepository {
+        LoadAllOffersRepository,
+        DeleteOfferByIdRepository {
     private ormRepository: Repository<OfferTypeorm>;
 
     constructor() {
@@ -109,6 +111,14 @@ class OfferTypeormRepository
             return offers;
         } catch (err) {
             throw new Error('Load all offers error');
+        }
+    }
+
+    async delete(id: string): Promise<void> {
+        try {
+            await this.ormRepository.softDelete(id);
+        } catch (err) {
+            throw new Error('Delete offer error.');
         }
     }
 }
