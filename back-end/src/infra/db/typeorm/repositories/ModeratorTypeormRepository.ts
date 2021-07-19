@@ -20,6 +20,7 @@ import SearchModeratorsRepository, {
 import UpdateAccessTokenRepository from '../../../../core/protocols/db/repositories/UpdateAccessTokenRepository';
 import ModeratorTypeorm from '../entities/ModeratorTypeorm';
 import CountModeratorsRepository from '../../../../core/protocols/db/repositories/CountModeratorsRepository';
+import DeleteModeratorByIdRepository from '../../../../core/protocols/db/repositories/DeleteModeratorByIdRepository';
 
 @EntityRepository()
 class ModeratorTypeormRepository
@@ -32,7 +33,8 @@ class ModeratorTypeormRepository
         ChangePasswordRepository,
         LoadAllModeratorsRepository,
         SearchModeratorsRepository,
-        CountModeratorsRepository {
+        CountModeratorsRepository,
+        DeleteModeratorByIdRepository {
     private ormRepository: Repository<ModeratorTypeorm>;
 
     constructor() {
@@ -285,6 +287,14 @@ class ModeratorTypeormRepository
             return queryBuilder.getCount();
         } catch {
             throw new Error('Count moderators error.');
+        }
+    }
+
+    async delete(id: string): Promise<void> {
+        try {
+            await this.ormRepository.softDelete(id);
+        } catch (err) {
+            throw new Error('Delete moderator error.');
         }
     }
 }

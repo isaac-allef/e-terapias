@@ -12,6 +12,7 @@ import makeSearchModeratorsContoller from '../../factories/controllers/userManag
 import { authModerator } from '../middlewares/authModerator';
 import { authManager } from '../middlewares/authManager';
 import makeLoadFieldJournalPerMeModeratorContoller from '../../factories/controllers/userModerator/makeLoadFieldJournalPerMeModeratorContoller';
+import makeDeleteModeratorContoller from '../../factories/controllers/userManager/makeDeleteModeratorContoller';
 
 const moderatorsRouter = Router();
 
@@ -73,6 +74,12 @@ moderatorsRouter.patch(
     '/me/changePassword',
     authModerator,
     adapterRouter(makeChangePasswordModeratorContoller()),
+);
+
+moderatorsRouter.delete(
+    '/:id',
+    authManager,
+    adapterRouter(makeDeleteModeratorContoller()),
 );
 
 export default moderatorsRouter;

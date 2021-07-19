@@ -1,6 +1,7 @@
 import {
     Column,
     CreateDateColumn,
+    DeleteDateColumn,
     Entity,
     ManyToMany,
     OneToMany,
@@ -47,6 +48,9 @@ class ModeratorTypeorm implements Moderator {
 
     @UpdateDateColumn()
     updated_at: Date;
+
+    @DeleteDateColumn()
+    deletedAt?: Date;
 }
 
 export default ModeratorTypeorm;
