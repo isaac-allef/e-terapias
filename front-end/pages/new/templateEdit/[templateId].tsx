@@ -273,7 +273,10 @@ export default function TemplateForm() {
                 <MyDivider />
 
                 <Flex justifyContent='space-between'>
-		            <MyButton styleType='delete' />
+		            <MyButton styleType='delete' deleteFunction={() => {
+                        deleteTemplates(token, me.id)
+                        router.push('/new/templateList');
+                    }} />
 
                     <MyButton
                         isLoading={props.isSubmitting}
@@ -326,4 +329,15 @@ const putTemplates = async (token: string, template: Template, id: string): Prom
 
     const templateUpdated = response.data;
     return templateUpdated;
+}
+
+const deleteTemplates = async (token: string, id: string): Promise<any> => {
+    const response = await api.delete(`/templates/${id}`, {
+        headers: {
+          'Authorization': `token ${token}`,
+          'Content-Type': 'application/json',
+        }
+    });
+
+    return response.data;
 }
