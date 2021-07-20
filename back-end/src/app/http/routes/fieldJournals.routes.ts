@@ -47,4 +47,10 @@ fieldJournalsRouter.delete(
     adapterRouter(makeDeleteFieldJournalContoller()),
 );
 
+fieldJournalsRouter.delete(
+    '/me/:id',
+    authModerator,
+    adapterRouter(makeDeleteFieldJournalContoller()),
+);
+
 export default fieldJournalsRouter;
