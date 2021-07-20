@@ -43,7 +43,10 @@ export default function FieldJournalDetail() {
         
 		<MyDivider />
 		
-		<MyButton styleType='delete' />
+		<MyButton styleType='delete' deleteFunction={() => {
+			deleteFieldJournal(token, me.id)
+			router.push('/new/fieldJournalList');
+		}} />
         
 		</Layout>
     )
@@ -154,4 +157,16 @@ const getFieldJournal = async (token: string, id: string): Promise<any> => {
 	const fieldJournal = response.data;
 
 	return fieldJournal;
+}
+
+
+const deleteFieldJournal = async (token: string, id: string): Promise<any> => {
+    const response = await api.delete(`/fieldJournals/${id}`, {
+        headers: {
+          'Authorization': `token ${token}`,
+          'Content-Type': 'application/json',
+        }
+    });
+
+    return response.data;
 }
