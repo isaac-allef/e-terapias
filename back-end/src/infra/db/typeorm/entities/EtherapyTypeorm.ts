@@ -31,7 +31,11 @@ class EtherapyTypeorm implements Etherapy {
     @Column()
     name: string;
 
-    @OneToMany(() => FieldJournalTypeorm, fieldJournal => fieldJournal.etherapy)
+    @OneToMany(
+        () => FieldJournalTypeorm,
+        fieldJournal => fieldJournal.etherapy,
+        { cascade: true },
+    )
     fieldJournals: FieldJournal[];
 
     @ManyToOne(() => TemplateTypeorm, template => template.etherapies, {

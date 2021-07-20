@@ -255,7 +255,15 @@ class EtherapyTypeormRepository
 
     async delete(id: string): Promise<void> {
         try {
-            await this.ormRepository.softDelete(id);
+            const etherapy = await this.ormRepository.findOne(id, {
+                relations: ['fieldJournals'],
+            });
+
+            if (!etherapy) {
+                throw new Error('Etherapy not found.');
+            }
+
+            await this.ormRepository.softRemove(etherapy);
         } catch (err) {
             throw new Error('Delete etherapy error.');
         }

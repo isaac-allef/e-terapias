@@ -37,6 +37,7 @@ class ModeratorTypeorm implements Moderator {
     @OneToMany(
         () => FieldJournalTypeorm,
         fieldJournal => fieldJournal.moderator,
+        { cascade: true },
     )
     fieldJournals: FieldJournal[];
 

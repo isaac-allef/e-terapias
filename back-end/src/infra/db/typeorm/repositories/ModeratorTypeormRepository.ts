@@ -292,7 +292,15 @@ class ModeratorTypeormRepository
 
     async delete(id: string): Promise<void> {
         try {
-            await this.ormRepository.softDelete(id);
+            const moderator = await this.ormRepository.findOne(id, {
+                relations: ['fieldJournals'],
+            });
+
+            if (!moderator) {
+                throw new Error('Moderator not found.');
+            }
+
+            await this.ormRepository.softRemove(moderator);
         } catch (err) {
             throw new Error('Delete moderator error.');
         }
