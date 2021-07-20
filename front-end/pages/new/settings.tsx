@@ -18,6 +18,7 @@ import MyMenu from '../../components/new/MyMenu';
 import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Heading, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper } from '@chakra-ui/react';
 import api from '../../services/api';
 import MyTitle from '../../components/shared/MyTitle';
+import MyButton from '../../components/shared/MyButton';
 
 export default function Login() {
     const myToast = new MyToast();
@@ -609,7 +610,8 @@ const settingsSheetsForm = (initialValues, SignupSchema, functionSubmitForm, syn
             
             <Divider />
 
-            <Flex justifyContent='flex-end' paddingBottom='3vh'>
+            <Flex justifyContent='space-between' paddingBottom='3vh'>
+                <MyButton mt={4} styleType='delete'>| Remove this offer</MyButton>
                 <Button
                     mt={4}
                     colorScheme="blue"
