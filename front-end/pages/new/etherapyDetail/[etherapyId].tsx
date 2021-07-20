@@ -100,7 +100,10 @@ export default function EtherapyDetail() {
 			setPage={setPage}
 		/>
         <MyDivider />
-		<MyButton styleType='delete' />
+		<MyButton styleType='delete' deleteFunction={() => {
+			deleteEtherapy(token, me.id)
+			router.push('/new/etherapyList');
+		}} />
         </Layout>
     )
 }
@@ -167,4 +170,15 @@ const getFieldJournals = async ({ token, etherapyId, page, per_page, sort, direc
 	}
 
 	return fieldJournals;
+}
+
+const deleteEtherapy = async (token: string, id: string): Promise<any> => {
+    const response = await api.delete(`/etherapies/${id}`, {
+        headers: {
+          'Authorization': `token ${token}`,
+          'Content-Type': 'application/json',
+        }
+    });
+
+    return response.data;
 }
