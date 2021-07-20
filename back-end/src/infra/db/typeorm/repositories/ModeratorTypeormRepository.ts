@@ -45,12 +45,14 @@ class ModeratorTypeormRepository
         try {
             const { moderatorsData, offer } = data;
             const moderators = [];
+            const moderatorsToRecover = [];
 
             for (const dto of moderatorsData) {
                 // eslint-disable-next-line no-await-in-loop
                 const moderatorExists = await this.ormRepository.findOne({
                     where: { email: dto.email },
                     relations: ['etherapies', 'etherapies.offer'],
+                    withDeleted: true,
                 });
 
                 if (moderatorExists) {
@@ -69,7 +71,11 @@ class ModeratorTypeormRepository
                         ...etherapiesOfThisOffer,
                     ];
 
-                    moderators.push(moderatorExists);
+                    if (moderatorExists.deletedAt) {
+                        moderatorsToRecover.push(moderatorExists);
+                    } else {
+                        moderators.push(moderatorExists);
+                    }
                 } else {
                     const moderator = this.ormRepository.create({
                         email: dto.email,
@@ -82,6 +88,7 @@ class ModeratorTypeormRepository
             }
 
             await this.ormRepository.save(moderators);
+            await this.ormRepository.recover(moderatorsToRecover);
 
             return moderators;
         } catch (err) {

@@ -41,16 +41,22 @@ class EtherapyTypeormRepository
         try {
             const { etherapiesData, offer } = data;
             const etherapies = [];
+            const etherapiesToRecover = [];
 
             for (const dto of etherapiesData) {
                 // eslint-disable-next-line no-await-in-loop
                 const etherapyExists = await this.ormRepository.findOne({
-                    identifier: dto.identifier,
+                    where: { identifier: dto.identifier },
+                    withDeleted: true,
                 });
 
                 if (etherapyExists) {
                     etherapyExists.name = dto.name;
-                    etherapies.push(etherapyExists);
+                    if (etherapyExists.deletedAt) {
+                        etherapiesToRecover.push(etherapyExists);
+                    } else {
+                        etherapies.push(etherapyExists);
+                    }
                 } else {
                     const etherapy = this.ormRepository.create({
                         identifier: dto.identifier,
@@ -62,6 +68,7 @@ class EtherapyTypeormRepository
             }
 
             await this.ormRepository.save(etherapies);
+            await this.ormRepository.recover(etherapiesToRecover);
 
             return etherapies;
         } catch {
