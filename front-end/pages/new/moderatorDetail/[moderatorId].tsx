@@ -102,7 +102,10 @@ export default function ModeratorDetail() {
         
 		<MyDivider />
 		
-		<MyButton styleType='delete' />
+		<MyButton styleType='delete' deleteFunction={() => {
+			deleteModerator(token, me.id)
+			router.push('/new/moderatorList');
+		}} />
 
         </Layout>
     )
@@ -174,4 +177,15 @@ const getFieldJournals = async ({ token, moderatorId, page, per_page, sort, dire
 	}
 
 	return fieldJournals;
+}
+
+const deleteModerator = async (token: string, id: string): Promise<any> => {
+    const response = await api.delete(`/moderators/${id}`, {
+        headers: {
+          'Authorization': `token ${token}`,
+          'Content-Type': 'application/json',
+        }
+    });
+
+    return response.data;
 }
